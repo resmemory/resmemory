@@ -1,0 +1,43 @@
+{
+  "name": "microservice-tcp-nbc",
+  "version": "1.0.0",
+  "description": "template for microservice ",
+  "main": "src/init.js",
+  "scripts": {
+    "start:gate": "babel-node src/app.js",
+    "start:dis": " babel-node src/modules/distributor.js",
+    "start:users": "babel-node src/modules/users/users.module.js",
+    "start:posts": " babel-node src/modules/posts/posts.module.js",
+    "start:admin": "babel-node src/modules/admin/admin.module.js",
+    "start:threads": " babel-node src/modules/threads/threads.module.js",
+    "start:gate_build": "babel-node dist/app.js",
+    "start:dis_build": "babel-node dist/modules/distributor.js",
+    "start:users_build": "babel-node dist/modules/users/users.module.js",
+    "start:posts_build": "babel-node dist/modules/posts/posts.module.js",
+    "start:admin_build": " babel-node dist/modules/admin/admin.module.js",
+    "start:threads_build": "babel-node dist/modules/threads/threads.module.js",
+    "start": "concurrently \"npm run start:gate\" \"npm run start:dis\" \"npm run start:users\" \"npm run start:posts\"  \"npm run start:admin\"  \"npm run start:threads\"",
+    "start:build": "concurrently \"npm run start:gate_build\" \"npm run start:dis_build\" \"npm run start:users_build\" \"npm run start:posts_build\"  \"npm run start:admin_build\"  \"npm run start:threads_build\"",
+    "build": " babel src --out-dir dist --copy-files "
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "bcrypt": "^5.1.1",
+    "concurrently": "^8.2.0",
+    "dotenv": "^16.3.1",
+    "jsonwebtoken": "^9.0.1",
+    "mysql2": "^3.6.0",
+    "nodemailer": "^6.9.4",
+    "redis": "^4.6.7",
+    "sequelize": "^6.32.1"
+  },
+  "devDependencies": {
+    "@babel/cli": "^7.22.10",
+    "@babel/core": "^7.22.10",
+    "@babel/node": "^7.22.10",
+    "@babel/preset-env": "^7.22.10",
+    "nodemon": "^3.0.1",
+    "prettier": "^3.0.2"
+  }
+}

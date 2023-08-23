@@ -1,0 +1,118 @@
+name: deploy
+
+on:
+  push:
+    branches: [master]
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-22.04
+
+    strategy:
+      matrix:
+        node-version: [18.17.0]
+        # See supported Node.js release schedule at https://nodejs.org/en/about/releases/
+
+    steps:
+      - name: ✅ 체크아웃 source code.
+        uses: actions/checkout@v3
+
+      - name: ⚙️ ${{ matrix.node-version }} 버전의 노드로 세팅합니다.
+        uses: actions/setup-node@v3
+        with:
+          node-version: ${{ matrix.node-version }}
+
+      - name: ⚙️ 환경변수를 설정합니다.
+        working-directory: ./
+        env:
+          HOST: ${{secrets.HOST}}
+          GATE_PORT: ${{secrets.GATE_PORT}}
+          DIS_PORT: ${{secrets.DIS_PORT}}
+          USERS_PORT: ${{secrets.USERS_PORT}}
+          POSTS_PORT: ${{secrets.ADMIN_PORT}}
+          THREADS_PORT: ${{secrets.THREADS_PORT}}
+          USERS_MYSQL_USER_NAME: ${{secrets.USERS_MYSQL_USER_NAME}}
+          USERS_MYSQL_PASSWORD: ${{secrets.USERS_MYSQL_PASSWORD}}
+          USERS_MYSQL_HOST: ${{secrets.USERS_MYSQL_HOST}}
+          ADMIN_MYSQL_USER_NAME: ${{secrets.GATE_PORT}}
+          ADMIN_MYSQL_PASSWORD: ${{secrets.DIS_PORT}}
+          ADMIN_MYSQL_HOST: ${{secrets.USERS_PORT}}
+          THREADS_MYSQL_USER_NAME: ${{secrets.ADMIN_PORT}}
+          THREADS_MYSQL_PASSWORD: ${{secrets.THREADS_PORT}}
+          THREADS_MYSQL_HOST: ${{secrets.USERS_MYSQL_USER_NAME}}
+          POSTS_MYSQL_USER_NAME: ${{secrets.POSTS_MYSQL_USER_NAME}}
+          POSTS_MYSQL_PASSWORD: ${{secrets.POSTS_MYSQL_PASSWORD}}
+          POSTS_MYSQL_HOST: ${{secrets.POSTS_MYSQL_HOST}}
+          JWT_SECRET_KEY: ${{secrets.JWT_SECRET_KEY}}
+          JWT_SECRET_KEY_REFRESH: ${{secrets.JWT_SECRET_KEY_REFRESH}}
+          JWT_EXPIRE_TIME: ${{secrets.JWT_EXPIRE_TIME}}
+          JWT_EXPIRE_TIME_REFRESH: ${{secrets.JWT_EXPIRE_TIME_REFRESH}}
+          REDIS_HOST: ${{secrets.REDIS_HOST}}
+          REDIS_PORT: ${{secrets.REDIS_PORT}}
+          REDIS_USERNAME: ${{secrets.REDIS_USERNAME}}
+          REDIS_PASSWORD: ${{secrets.REDIS_PASSWORD}}
+          NODEMAILER_EMAIL: ${{secrets.NODEMAILER_EMAIL}}
+          NODEMAILER_PASSWORD: ${{secrets.NODEMAILER_PASSWORD}}
+
+        run: |
+          pwd
+          touch .env
+          echo "HOST=$HOST" >> .env
+          echo "GATE_PORT=$GATE_PORT" >> .env
+          echo "DIS_PORT=$DIS_PORT" >> .env
+          echo "USERS_PORT=$USERS_PORT" >> .env
+          echo "POSTS_PORT=$POSTS_PORT" >> .env
+          echo "ADMIN_PORT=$ADMIN_PORT" >> .env
+          echo "THREADS_PORT=$THREADS_PORT" >> .env
+          echo "USERS_MYSQL_USER_NAME=$USERS_MYSQL_USER_NAME" >> .env
+          echo "USERS_MYSQL_PASSWORD=$USERS_MYSQL_PASSWORD" >> .env
+          echo "USERS_MYSQL_HOST=$USERS_MYSQL_HOST" >> .env
+          echo "ADMIN_MYSQL_USER_NAME=$ADMIN_MYSQL_USER_NAME" >> .env
+          echo "ADMIN_MYSQL_PASSWORD=$ADMIN_MYSQL_PASSWORD" >> .env
+          echo "ADMIN_MYSQL_HOST=$ADMIN_MYSQL_HOST" >> .env
+          echo "THREADS_MYSQL_USER_NAME=$THREADS_MYSQL_USER_NAME" >> .env
+          echo "THREADS_MYSQL_PASSWORD=$THREADS_MYSQL_PASSWORD" >> .env
+          echo "THREADS_MYSQL_HOST=$THREADS_MYSQL_HOST" >> .env
+          echo "POSTS_MYSQL_USER_NAME=$POSTS_MYSQL_USER_NAME" >> .env
+          echo "POSTS_MYSQL_PASSWORD=$POSTS_MYSQL_PASSWORD" >> .env
+          echo "POSTS_MYSQL_HOST=$POSTS_MYSQL_HOST" >> .env
+          echo "JWT_SECRET_KEY=$JWT_SECRET_KEY" >> .env
+          echo "JWT_SECRET_KEY_REFRESH=$JWT_SECRET_KEY_REFRESH" >> .env
+          echo "JWT_EXPIRE_TIME=$JWT_EXPIRE_TIME" >> .env
+          echo "JWT_EXPIRE_TIME_REFRESH=$JWT_EXPIRE_TIME_REFRESH" >> .env
+          echo "REDIS_HOST=$REDIS_HOST" >> .env
+          echo "REDIS_PORT=$REDIS_PORT" >> .env
+          echo "REDIS_USERNAME=$REDIS_USERNAME" >> .env
+          echo "REDIS_PASSWORD=$REDIS_PASSWORD" >> .env
+          echo "NODEMAILER_EMAIL=$NODEMAILER_EMAIL" >> .env
+          echo "NODEMAILER_PASSWORD=$NODEMAILER_PASSWORD" >> .env
+          cat .env
+
+      - name: ✨ 패키지 설치
+        working-directory: ./
+        run: npm i
+
+      - name: ✨ 빌드 과정을 시작
+        working-directory: ./
+        run: npm run build
+
+      - name: 📦 빌드한 코드를 압축
+        run: zip -r verdantjuly.zip ./dist ./scripts ./appspec.yml ./.env ./package.json
+
+      - name: 🌎 AWS에 접속
+        uses: aws-actions/configure-aws-credentials@v1
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: ap-northeast-2
+
+      - name: 🦖 S3에 압축된 서버 코드를 업로드
+        run: aws s3 cp --region ap-northeast-2 ./verdantjuly.zip s3://verdantjuly
+
+      - name: 🚀 AWS codeDeploy로 배포를 시작
+        run: aws deploy create-deployment
+          --ignore-application-stop-failures
+          --application-name verdantjuly
+          --deployment-config-name CodeDeployDefault.OneAtATime
+          --deployment-group-name dev
+          --s3-location bucket=verdantjuly,bundleType=zip,key=verdantjuly.zip

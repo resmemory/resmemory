@@ -1,0 +1,68 @@
+name: build
+
+on:
+  pull_request:
+    branches: [master]
+
+jobs:
+  build-check:
+    runs-on: ubuntu-22.04
+
+    strategy:
+      matrix:
+        node-version: [18.17.0]
+        # See supported Node.js release schedule at https://nodejs.org/en/about/releases/
+
+    steps:
+      - name: ✅ 체크아웃 source code.
+        uses: actions/checkout@v3
+
+      - name: ⚙️ ${{ matrix.node-version }} 버전의 노드로 세팅합니다.
+        uses: actions/setup-node@v3
+        with:
+          node-version: ${{ matrix.node-version }}
+
+      - name: ⚙️ 환경변수를 설정합니다.
+        working-directory: ./
+        run: |
+          pwd
+          touch .env
+          echo HOST=${{ secrets.HOST }} >> .env
+          echo GATE_PORT=${{ secrets.GATE_PORT }} >> .env
+          echo DIS_PORT=${{ secrets.DIS_PORT }} >> .env
+          echo USERS_PORT=${{ secrets.USERS_PORT }} >> .env
+          echo POSTS_PORT=${{ secrets.POSTS_PORT }} >> .env
+          echo ADMIN_PORT=${{ secrets.ADMIN_PORT }} >> .env
+          echo THREADS_PORT=${{ secrets.THREADS_PORT }} >> .env
+          echo USERS_MYSQL_USER_NAME=${{ secrets.USERS_MYSQL_USER_NAME }} >> .env
+          echo USERS_MYSQL_PASSWORD=${{ secrets.USERS_MYSQL_PASSWORD }} >> .env
+          echo USERS_MYSQL_HOST=${{ secrets.USERS_MYSQL_HOST }} >> .env
+          echo ADMIN_MYSQL_USER_NAME=${{ secrets.ADMIN_MYSQL_USER_NAME }} >> .env
+          echo ADMIN_MYSQL_PASSWORD=${{ secrets.ADMIN_MYSQL_PASSWORD }} >> .env
+          echo ADMIN_MYSQL_HOST=${{ secrets.ADMIN_MYSQL_HOST }} >> .env
+          echo THREADS_MYSQL_USER_NAME=${{ secrets.THREADS_MYSQL_USER_NAME }} >> .env
+          echo THREADS_MYSQL_PASSWORD=${{ secrets.THREADS_MYSQL_PASSWORD }} >> .env
+          echo THREADS_MYSQL_HOST=${{ secrets.THREADS_MYSQL_HOST }} >> .env
+          echo POSTS_MYSQL_USER_NAME=${{ secrets.POSTS_MYSQL_USER_NAME }} >> .env
+          echo POSTS_MYSQL_PASSWORD=${{ secrets.POSTS_MYSQL_PASSWORD }} >> .env
+          echo POSTS_MYSQL_HOST=${{ secrets.POSTS_MYSQL_HOST }} >> .env
+          echo JWT_SECRET_KEY=${{ secrets.JWT_SECRET_KEY }} >> .env
+          echo JWT_SECRET_KEY_REFRESH=${{ secrets.JWT_SECRET_KEY_REFRESH }} >> .env
+          echo JWT_EXPIRE_TIME=${{ secrets.JWT_EXPIRE_TIME }} >> .env
+          echo JWT_EXPIRE_TIME_REFRESH=${{ secrets.JWT_EXPIRE_TIME_REFRESH }} >> .env
+          echo REDIS_HOST=${{ secrets.REDIS_HOST }} >> .env
+          echo REDIS_PORT=${{ secrets.REDIS_PORT }} >> .env
+          echo REDIS_USERNAME=${{ secrets.REDIS_USERNAME }} >> .env
+          echo REDIS_PASSWORD=${{ secrets.REDIS_PASSWORD }} >> .env
+          echo DATABASE_URL=${{ secrets.NODEMAILER_EMAIL }} >> .env
+          echo DATABASE_URL=${{ secrets.NODEMAILER_PASSWORD }} >> .env
+
+          cat .env
+
+      - name: ✨ 패키지 설치
+        working-directory: ./
+        run: npm i
+
+      - name: ✨ 빌드 과정을 시작
+        working-directory: ./
+        run: npm run build
