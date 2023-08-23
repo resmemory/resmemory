@@ -1,4 +1,5 @@
 import Posts from './db/posts.db';
+import Comments from './db/comments.db';
 
 const onRequest = async (res, method, pathname, params, key, cb) => {
   let responseData = {};
@@ -25,6 +26,28 @@ const onRequest = async (res, method, pathname, params, key, cb) => {
         } catch (err) {
           console.log(err);
           responseData = { code: 340 };
+        }
+      }
+
+      // 댓글 작성
+      if (pathname === '/comments') {
+        try {
+          const { content, postId } = params.bodies;
+          const result = await Posts.findByPk(postId);
+
+          if (!params.userId) {
+            responseData = { code: 414 };
+          } else if (!content) {
+            responseData = { code: 412 };
+          } else if (!result) {
+            responseData = { code: 413 };
+          } else {
+            await Comments.create({ content, postId, userId: params.userId });
+            responseData = { code: 411 };
+          }
+        } catch (err) {
+          console.log(err);
+          responseData = { code: 410 };
         }
       }
 
