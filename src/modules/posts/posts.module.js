@@ -10,6 +10,7 @@ class PostsModule extends TcpServer {
     super('posts', process.env.POSTS_PORT ? Number(process.env.POSTS_PORT) : 3001, [
       'POST/posts',
       'GET/posts',
+      'PATCH/posts',
       'POST/comments',
       'GET/comments',
     ]);

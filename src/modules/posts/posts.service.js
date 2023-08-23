@@ -111,6 +111,7 @@ const onRequest = async (res, method, pathname, params, key, cb) => {
         }
       }
 
+      // 댓글 조회
       if (pathname === '/comments') {
         try {
           const findPostData = await Posts.findByPk(postId);
@@ -139,6 +140,46 @@ const onRequest = async (res, method, pathname, params, key, cb) => {
         },
         responseData,
       );
+
+    case 'PATCH':
+      // 게시글 수정
+      if (pathname === '/posts') {
+        try {
+          const { title, content, annualCategory, img } = params.bodies;
+          const postId = params.params;
+          const findPostData = await Posts.findByPk(postId);
+
+          if (!findPostData) {
+            responseData = { code: 352 };
+          } else if (!params.userId) {
+            responseData = { code: 353 };
+          } else if (params.userId !== findPostData.userId) {
+            responseData = { code: 354 };
+          } else if (!title) {
+            responseData = { code: 355 };
+          } else if (!content) {
+            responseData = { code: 356 };
+          } else if (!annualCategory) {
+            responseData = { code: 357 };
+          } else {
+            await Posts.update({ title, content, annualCategory, img }, { where: { postId } });
+            responseData = { code: 351 };
+          }
+        } catch (err) {
+          responseData = { code: 350 };
+        }
+      }
+
+      return patch(
+        method,
+        pathname,
+        params,
+        key,
+        (response) => {
+          process.nextTick(cb, res, response);
+        },
+        responseData,
+      );
   }
 };
 
@@ -153,6 +194,16 @@ function post(method, pathname, params, key, cb, responseData) {
 }
 
 function get(method, pathname, params, key, cb, responseData) {
+  const response = {
+    key,
+    errorCode: 0,
+    errormessage: 'success',
+    responseData,
+  };
+  cb(response);
+}
+
+function patch(method, pathname, params, key, cb, responseData) {
   const response = {
     key,
     errorCode: 0,
