@@ -111,6 +111,24 @@ const onRequest = async (res, method, pathname, params, key, cb) => {
         }
       }
 
+      if (pathname === '/comments') {
+        try {
+          const findPostData = await Posts.findByPk(postId);
+          if (!findPostData) {
+            responseData = { code: 421 };
+          } else {
+            const result = await Comments.findAll({
+              where: { postId },
+              limit: 10,
+              offset: (pageNum - 1) * 10,
+            });
+            responseData = { result };
+          }
+        } catch (err) {
+          responseData = { code: 420 };
+        }
+      }
+
       return get(
         method,
         pathname,
