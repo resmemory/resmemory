@@ -9,6 +9,7 @@ class PostsModule extends TcpServer {
     // 부모 클래스 생성자 호출
     super('posts', process.env.POSTS_PORT ? Number(process.env.POSTS_PORT) : 3001, [
       'POST/posts',
+      'GET/posts',
       'POST/comments',
     ]);
     this.connectToDistributor(process.env.HOST, process.env.DIS_PORT, (data) => {
