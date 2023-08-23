@@ -204,6 +204,39 @@ const onRequest = async (res, method, pathname, params, key, cb) => {
         },
         responseData,
       );
+
+    case 'DELETE':
+      // 게시글 삭제
+      if (pathname === '/posts') {
+        try {
+          const postId = params.params;
+          const findPostData = await Posts.findByPk(postId);
+
+          if (!findPostData) {
+            responseData = { code: 362 };
+          } else if (!params.userId) {
+            responseData = { code: 363 };
+          } else if (params.userId !== findPostData.userId) {
+            responseData = { code: 364 };
+          } else {
+            await Posts.destroy({ where: { postId } });
+            responseData = { code: 361 };
+          }
+        } catch (err) {
+          responseData = { code: 360 };
+        }
+      }
+
+      return remove(
+        method,
+        pathname,
+        params,
+        key,
+        (response) => {
+          process.nextTick(cb, res, response);
+        },
+        responseData,
+      );
   }
 };
 
@@ -228,6 +261,16 @@ function get(method, pathname, params, key, cb, responseData) {
 }
 
 function patch(method, pathname, params, key, cb, responseData) {
+  const response = {
+    key,
+    errorCode: 0,
+    errormessage: 'success',
+    responseData,
+  };
+  cb(response);
+}
+
+function remove(method, pathname, params, key, cb, responseData) {
   const response = {
     key,
     errorCode: 0,
