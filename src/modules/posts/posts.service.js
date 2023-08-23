@@ -170,6 +170,30 @@ const onRequest = async (res, method, pathname, params, key, cb) => {
         }
       }
 
+      // 댓글 수정
+      if (pathname === '/comments') {
+        try {
+          const { postId, content } = params.bodies;
+          const commentId = params.params;
+          const findCommentData = await Comments.findByPk(commentId);
+
+          if (!findCommentData) {
+            responseData = { code: 432 };
+          } else if (!params.userId) {
+            responseData = { code: 433 };
+          } else if (params.userId !== findCommentData.userId) {
+            responseData = { code: 434 };
+          } else if (!content) {
+            responseData = { code: 435 };
+          } else {
+            await Comments.update({ content }, { where: { postId, commentId } });
+            responseData = { code: 431 };
+          }
+        } catch (err) {
+          responseData = { code: 430 };
+        }
+      }
+
       return patch(
         method,
         pathname,
