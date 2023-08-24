@@ -22,6 +22,7 @@ Threads.init(
     sequelize,
     modelName: 'Threads',
     timestamps: true,
+    updatedAt: false,
     paranoid: true,
   },
 );
