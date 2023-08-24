@@ -69,7 +69,7 @@ const onRequest = async (res, method, pathname, params, key, cb) => {
         pageNum = params.query.pageNum;
       }
 
-      const { postId, annualCategory } = params.query;
+      const { userId, postId, annualCategory } = params.query;
 
       // 게시글 전체 조회
       if (pathname === '/posts') {
@@ -79,6 +79,17 @@ const onRequest = async (res, method, pathname, params, key, cb) => {
             limit: 10,
             offset: (pageNum - 1) * 10,
           });
+          responseData = { result };
+        } catch (err) {
+          responseData = { code: 310 };
+        }
+      }
+
+      // 게시글 전체 조회(북마크 조회용)
+      if (pathname === '/posts' && userId) {
+        try {
+          const { userId } = params.query;
+          const result = await Posts.findAll({ where: { userId } });
           responseData = { result };
         } catch (err) {
           responseData = { code: 310 };
@@ -207,7 +218,7 @@ const onRequest = async (res, method, pathname, params, key, cb) => {
 
     case 'DELETE':
       // 게시글 삭제
-      if (pathname === '/posts') {
+      if (pathname === '/posts' && params.params !== 'admin') {
         try {
           const postId = params.params;
           const findPostData = await Posts.findByPk(postId);
@@ -224,6 +235,50 @@ const onRequest = async (res, method, pathname, params, key, cb) => {
           }
         } catch (err) {
           responseData = { code: 360 };
+        }
+      }
+
+      // 게시글 완전 삭제(게시글이 삭제된지 오래되었을 때 DB 데이터 삭제)
+      if (pathname === '/posts' && params.params === 'admin') {
+        try {
+          const { contentId } = params.bodies;
+
+          await Posts.destroy({ where: { postId: contentId }, force: true });
+          responseData = { code: 371 };
+        } catch (err) {
+          responseData = { code: 370 };
+        }
+      }
+
+      // 댓글 삭제
+      if (pathname === '/comments' && params.params !== 'admin') {
+        try {
+          const { postId } = params.bodies;
+          const commentId = params.params;
+          const findCommentData = await Comments.findByPk(commentId);
+
+          if (!findCommentData) {
+            responseData = { code: 442 };
+          } else if (params.userId !== findCommentData.userId) {
+            responseData = { code: 443 };
+          } else {
+            await Comments.destroy({ where: { postId, commentId } });
+            responseData = { code: 441 };
+          }
+        } catch (err) {
+          responseData = { code: 440 };
+        }
+      }
+
+      // 댓글 완전 삭제(삭제된 댓글이 오래되었을 때 DB 데이터 삭제)
+      if (pathname === '/comments' && params.params === 'admin') {
+        try {
+          const { contentId } = params.bodies;
+
+          await Comments.destroy({ where: { commentId: contentId }, force: true });
+          responseData = { code: 451 };
+        } catch (err) {
+          responseData = { code: 450 };
         }
       }
 

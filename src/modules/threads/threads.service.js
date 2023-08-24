@@ -1,54 +1,141 @@
-/**
- * 상품 관리의 각 기능별로 분기
- */
-const onRequest = (res, method, pathname, params, key, cb, responseData) => {
+import Threads from './db/threads.db';
+import { Op } from 'sequelize';
+
+const onRequest = async (res, method, pathname, params, key, cb) => {
+  let responseData = {};
+
   switch (method) {
+    // 스레드 조회 함수
     case 'GET':
-      return get(
-        method,
-        pathname,
-        params,
-        key,
-        (response) => {
-          process.nextTick(cb, res, response);
-        },
-        responseData,
-      );
+      if (pathname === '/threads') {
+        try {
+          const today = new Date();
+          let yesterday = Date.now(today) - 86400000;
+          yesterday = new Date(yesterday);
+
+          const result = await Threads.findAll({
+            attributes: { exclude: ['userId', 'content', 'createdAt'] },
+            where: { createdAt: { [Op.between]: [yesterday, today] } },
+          });
+          if (result) {
+            responseData = { result };
+          } else {
+            responseData = { code: 711 };
+          }
+        } catch (error) {
+          responseData = { code: 713 };
+        }
+
+        return get(
+          method,
+          pathname,
+          params,
+          key,
+          (response) => {
+            process.nextTick(cb, res, response);
+          },
+          responseData,
+        );
+      }
+
+    // 스레드 생성 함수
     case 'POST':
-      return post(
-        method,
-        pathname,
-        params,
-        key,
-        (response) => {
-          process.nextTick(cb, res, response);
-        },
-        responseData,
-      );
-    case 'PATCH':
-      return patch(
-        method,
-        pathname,
-        params,
-        key,
-        (response) => {
-          process.nextTick(cb, res, response);
-        },
-        responseData,
-      );
+      if (pathname === '/threads') {
+        try {
+          const { userId } = params;
+          const { content } = params.bodies;
+
+          if (content) {
+            await Threads.create({ userId, content });
+            responseData = { code: 721 };
+          } else {
+            responseData = { code: 722 };
+          }
+        } catch (error) {
+          responseData = { code: 720 };
+        }
+        return post(
+          method,
+          pathname,
+          params,
+          key,
+          (response) => {
+            process.nextTick(cb, res, response);
+          },
+          responseData,
+        );
+      }
+
+    // 스레드 삭제 함수
     case 'DELETE':
-      return remove(
-        method,
-        pathname,
-        params,
-        key,
-        (response) => {
-          process.nextTick(cb, res, response);
-        },
-        responseData,
-      );
-    default:
-      return process.nextTick(cb, res, null);
+      if (pathname === '/threads') {
+        try {
+          const { userId } = params;
+          const threadId = params.params;
+          const threadData = await Threads.findByPk(threadId);
+
+          if (userId !== threadData.userId) {
+            responseData = { code: 734 };
+          } else if (threadId) {
+            const result = await Threads.destroy({ where: { threadId } });
+            if (result) {
+              responseData = { code: 731 };
+            } else {
+              responseData = { code: 732 };
+            }
+          } else {
+            responseData = { code: 733 };
+          }
+        } catch (error) {
+          responseData = { code: 730 };
+        }
+        return remove(
+          method,
+          pathname,
+          params,
+          key,
+          (response) => {
+            process.nextTick(cb, res, response);
+          },
+          responseData,
+        );
+      }
+
+      // 스레드 완전 삭제 함수
+      if (pathname === '/threads/admin') {
+        try {
+          const { userId } = params;
+          const { contentId } = params.bodies;
+          if (contentId) {
+            const result = await Threads.destroy({
+              where: {
+                threadId: contentId,
+              },
+              force: true,
+            });
+            if (result) {
+              responseData = { code: 371 };
+            } else {
+              responseData = { code: 372 };
+            }
+          } else {
+            // contentID가 없을 때 admin으로 에러 전달
+            responseData = { code: 373 };
+          }
+        } catch (error) {
+          responseData = { code: 370 };
+        }
+        return remove(
+          method,
+          pathname,
+          params,
+          key,
+          (response) => {
+            process.nextTick(cb, res, response);
+          },
+          responseData,
+        );
+      }
   }
 };
 
@@ -59,7 +146,6 @@ function get(method, pathname, params, key, cb, responseData) {
     errormessage: 'success',
     responseData,
   };
-
   cb(response);
 }
 
@@ -72,15 +158,7 @@ function post(method, pathname, params, key, cb, responseData) {
   };
   cb(response);
 }
-function patch(method, pathname, params, key, cb, responseData) {
-  const response = {
-    key,
-    errorCode: 0,
-    errormessage: 'success',
-    responseData,
-  };
-  cb(response);
-}
+
 function remove(method, pathname, params, key, cb, responseData) {
   const response = {
     key,
@@ -90,4 +168,5 @@ function remove(method, pathname, params, key, cb, responseData) {
   };
   cb(response);
 }
+
 export default onRequest;
