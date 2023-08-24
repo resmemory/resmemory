@@ -1,9 +1,23 @@
-/**
- * 상품 관리의 각 기능별로 분기
- */
-const onRequest = (res, method, pathname, params, key, cb, responseData) => {
+import reports from './report.service';
+
+const onRequest = async (res, method, pathname, params, key, cb) => {
+  let responseData={}
   switch (method) {
+    case 'DELETE':
+      return remove(
+        method,
+        pathname,
+        params,
+        key,
+        (response) => {
+          process.nextTick(cb, res, response);
+        },
+        responseData,
+      );
     case 'GET':
+      if (pathname == '/reports') {
+        responseData = await reports(method, params, responseData);
+      }
       return get(
         method,
         pathname,
@@ -15,6 +29,9 @@ const onRequest = (res, method, pathname, params, key, cb, responseData) => {
         responseData,
       );
     case 'POST':
+      if (pathname == '/reports') {
+        responseData = await reports(method, params, responseData);
+      }
       return post(
         method,
         pathname,
@@ -26,18 +43,10 @@ const onRequest = (res, method, pathname, params, key, cb, responseData) => {
         responseData,
       );
     case 'PATCH':
+      if (pathname == '/reports') {
+        responseData = await reports(method, params, responseData);
+      }
       return patch(
-        method,
-        pathname,
-        params,
-        key,
-        (response) => {
-          process.nextTick(cb, res, response);
-        },
-        responseData,
-      );
-    case 'DELETE':
-      return remove(
         method,
         pathname,
         params,
