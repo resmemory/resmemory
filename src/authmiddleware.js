@@ -8,6 +8,12 @@ function authmiddleware(req, res, params) {
 
   const { authorization } = req.headers;
   const [authType, authToken] = (authorization ?? '').split(' ');
+  if (!authorization) {
+    res
+      .writeHead(200, { 'Content-Type': 'application/json' })
+      .end(JSON.stringify({ respondData: { code: 0 } }));
+    return;
+  }
   if (authType !== 'Bearer' || !authToken.length) {
     res
       .writeHead(200, { 'Content-Type': 'application/json' })
