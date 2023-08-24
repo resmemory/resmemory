@@ -199,7 +199,7 @@ const server = http
         clientGetPosts.write(packetGetPosts);
       },
       (options, data) => {
-        onUsersModule(data);
+        onGetPostsModule(data);
       }, // 데이터 수신 이벤트
       (options) => {
         isConnectedGetPosts = false;
@@ -213,6 +213,41 @@ const server = http
     setInterval(() => {
       if (isConnectedGetPosts !== true) {
         clientGetPosts.connect();
+      }
+    }, 3000);
+
+    // getPosts와 통신 처리
+    const packetAllUsers = makePacket('/users', 'GET', 0, {
+      port: process.env.POSTS_PORT,
+      name: 'posts',
+      urls: [],
+    });
+
+    let isConnectedAllUsers = false;
+
+    const clientAllUsers = new TcpClient(
+      process.env.HOST,
+      process.env.DIS_PORT,
+      (options) => {
+        // 접속 이벤트
+        isConnectedAllUsers = true;
+        clientAllUsers.write(packetAllUsers);
+      },
+      (options, data) => {
+        onGetPostsModule(data);
+      }, // 데이터 수신 이벤트
+      (options) => {
+        isConnectedAllUsers = false;
+      }, // 접속 종료 이벤트
+      (options) => {
+        isConnectedAllUsers = false;
+      }, // 에러 이벤트
+    );
+
+    // 주기적인 getPosts와 접속 상태 확인
+    setInterval(() => {
+      if (isConnectedAllUsers !== true) {
+        clientAllUsers.connect();
       }
     }, 3000);
   });
@@ -303,6 +338,37 @@ export function onUsersModule(data) {
 }
 
 export function onGetPostsModule(data) {
+  for (let n in data.params) {
+    const node = data.params[n];
+    const key = node.host + ':' + node.port;
+
+    if (mapClients[key] == null && node.name !== 'posts') {
+      const client = new TcpClient(
+        node.host,
+        node.port,
+        onCreateClient,
+        onReadClient,
+        onEndClient,
+        onErrorClient,
+      );
+
+      mapClients[key] = {
+        client: client,
+        info: node,
+      };
+
+      for (let m in node.urls) {
+        const key = node.urls[m];
+        if (mapUrls[key] == null) {
+          mapUrls[key] = [];
+        }
+        mapUrls[key].push(client);
+      }
+      client.connect();
+    }
+  }
+}
+export function onAllUsersModule(data) {
   for (let n in data.params) {
     const node = data.params[n];
     const key = node.host + ':' + node.port;

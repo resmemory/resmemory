@@ -87,8 +87,8 @@ const onRequest = async (res, method, pathname, params, key, cb) => {
       if (pathname === '/posts' && params.query.userId) {
         try {
           const { userId } = params.query;
-          const result = await Posts.findAll({ where: { userId } });
-          responseData = { result };
+          const result = await Posts.findAll({ where: { userId }, raw: true });
+          responseData = { bodies: result };
         } catch (err) {
           responseData = { code: 310 };
         }

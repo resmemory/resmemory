@@ -9,6 +9,7 @@ class UsersModule extends TcpServer {
   map = {};
   constructor() {
     // 부모 클래스 생성자 호출
+    let userId;
     relationship();
     super('users', process.env.USERS_PORT ? Number(process.env.USERS_PORT) : 9010, [
       'POST/mail',
@@ -27,6 +28,15 @@ class UsersModule extends TcpServer {
       // Distributor 접속
       console.log('Distributor Notification', data);
     });
+    this.connectToGetPosts(
+      process.env.HOST,
+      process.env.DIS_PORT,
+      (data) => {
+        console.log('GET Posts Notification', data);
+      },
+      userId,
+    );
+    this.posts;
   }
 
   // 클라이언트 요청에 따른 비즈니스 로직 호출
@@ -38,4 +48,5 @@ class UsersModule extends TcpServer {
     });
   }
 }
-new UsersModule(); // 인스턴스 생성
+const usersmodule = new UsersModule(); // 인스턴스 생성
+export default usersmodule;

@@ -15,7 +15,7 @@ async function signup(pathname, params, responseData, token) {
       const { email } = params.bodies;
       const isExistEmail = await Users.findOne({ where: { email } });
       if (isExistEmail) {
-        responseData = { code: 172 };
+        responseData = { code: 182 };
       } else {
         const emailParam = {
           toEmail: email, // 수신할 이메일
@@ -32,10 +32,10 @@ async function signup(pathname, params, responseData, token) {
         const time = Date.now();
         await redisCli.set(`verifytime_${email}`, `${time}`);
         await redisCli.set(`verifyNumber_${email}`, `${verifyNumber}`);
-        responseData = { code: 171 };
+        responseData = { code: 181 };
       }
     } catch (err) {
-      responseData = { code: 170 };
+      responseData = { code: 180 };
     }
   }
 

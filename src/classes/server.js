@@ -4,6 +4,7 @@ import { makePacket } from '../utils/makePacket';
 
 class TcpServer {
   nickname = {};
+  posts = [];
   constructor(name, port, urls) {
     //서버 상태 정보
     this.context = {
@@ -174,6 +175,41 @@ class TcpServer {
     setInterval(() => {
       if (isConnectedGetPosts !== true) {
         this.clientGetPosts.connect();
+      }
+    }, 3000);
+  }
+
+  // AllUsers 접속 함수
+  connectToAllUsers(host, port, onNoti) {
+    // getPosts 전달 패킷
+    const packet = makePacket('/posts', 'GET', 0, this.context);
+    let isConnectedAllUsers = false;
+    this.clientAllUsers = new TcpClient(
+      host,
+      port,
+      (options) => {
+        // Users 접속 이벤트
+        isConnectedAllUsers = true;
+        this.clientAllUsers.write(packet);
+      },
+      // Users 데이터 수신 이벤트
+      (options, data) => {
+        onNoti(data);
+      },
+      // Users 접속 종료 이벤트
+      (options) => {
+        isConnectedAllUsers = false;
+      },
+      // Users 통신 에러 이벤트
+      (options) => {
+        isConnectedAllUsers = false;
+      },
+    );
+
+    // 주기적으로 재접속 시도
+    setInterval(() => {
+      if (isConnectedAllUsers !== true) {
+        this.clientAllUsers.connect();
       }
     }, 3000);
   }

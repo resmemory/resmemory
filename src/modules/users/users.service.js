@@ -4,6 +4,7 @@ import bcrypt from 'bcrypt';
 import redisCli from '../../redis';
 import jwt from 'jsonwebtoken';
 import signup from './signup.service';
+import usersmodule from './users.module';
 
 const onRequest = async (res, method, pathname, params, key, cb) => {
   let token;
@@ -71,19 +72,25 @@ const onRequest = async (res, method, pathname, params, key, cb) => {
         }
       }
 
+      // 북마크 추가
       if (pathname == '/bookmarks') {
         try {
           const { postId } = params.bodies;
           const { userId } = params;
 
-          if (postId) {
-            const result = await Bookmarks.create({ userId, postId });
-            responseData = { code: 221 };
-            if (!result) {
-              responseData = { code: 223 };
-            }
+          const findbookmark = await Bookmarks.findOne({ where: { postId, userId } });
+          if (findbookmark) {
+            responseData = { code: 224 };
           } else {
-            responseData = { code: 222 };
+            if (postId) {
+              const result = await Bookmarks.create({ userId, postId });
+              responseData = { code: 221 };
+              if (!result) {
+                responseData = { code: 223 };
+              }
+            } else {
+              responseData = { code: 222 };
+            }
           }
         } catch (err) {
           responseData = { code: 220 };
@@ -101,7 +108,7 @@ const onRequest = async (res, method, pathname, params, key, cb) => {
         responseData,
       );
     case 'GET':
-      if (pathname == '/users') {
+      if (pathname == '/users' && query.userId) {
         try {
           if (query) {
             const result = await Users.findByPk(query.userId, {
@@ -114,6 +121,40 @@ const onRequest = async (res, method, pathname, params, key, cb) => {
         } catch (err) {
           responseData = { code: 170 };
         }
+      }
+
+      if (pathname == '/users') {
+        try {
+          const result = await Users.findAll({
+            attributes: { exclude: ['password', 'kakaoId', 'deletedAt'] },
+          });
+
+          if (result) {
+            responseData = { bodies: result, code: 191 };
+          } else {
+            responseData = { code: 192 };
+          }
+        } catch (err) {
+          responseData = { code: 190 };
+        }
+      }
+
+      if (pathname == '/bookmarks') {
+        const { userId } = params;
+        const bookmarks = await Bookmarks.findAll({ order: ['createdAt'], where: { userId } });
+
+        usersmodule.connectToGetPosts(
+          process.env.HOST,
+          process.env.POSTS_PORT,
+          (data) => {
+            usersmodule.posts = data.responseData.bodies;
+          },
+          userId,
+        );
+        const bodies = bookmarks.map((bookmark) => {
+          return usersmodule.posts.filter((post) => bookmark.postId == post.postId);
+        });
+        responseData = { code: 171, bodies };
       }
 
       return get(
