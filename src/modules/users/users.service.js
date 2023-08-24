@@ -1,4 +1,5 @@
 import Users from './db/users.db';
+import Bookmarks from './db/bookmarks.db';
 import bcrypt from 'bcrypt';
 import redisCli from '../../redis';
 import jwt from 'jsonwebtoken';
@@ -67,6 +68,25 @@ const onRequest = async (res, method, pathname, params, key, cb) => {
           }
         } catch (err) {
           responseData = { code: 120 };
+        }
+      }
+
+      if (pathname == '/bookmarks') {
+        try {
+          const { postId } = params.bodies;
+          const { userId } = params;
+
+          if (postId) {
+            const result = await Bookmarks.create({ userId, postId });
+            responseData = { code: 221 };
+            if (!result) {
+              responseData = { code: 223 };
+            }
+          } else {
+            responseData = { code: 222 };
+          }
+        } catch (err) {
+          responseData = { code: 220 };
         }
       }
 
@@ -182,6 +202,21 @@ const onRequest = async (res, method, pathname, params, key, cb) => {
           responseData = { code: 140 };
         }
       }
+
+      if (pathname == '/bookmarks') {
+        try {
+          const bookmarkId = params.params;
+          const result = await Bookmarks.destroy({ where: { bookmarkId } });
+          if (result) {
+            responseData = { code: 231 };
+          } else {
+            responseData = { code: 232 };
+          }
+        } catch (err) {
+          responseData = { code: 230 };
+        }
+      }
+
       return remove(
         method,
         pathname,
