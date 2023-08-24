@@ -227,6 +227,26 @@ const onRequest = async (res, method, pathname, params, key, cb) => {
         }
       }
 
+      // 댓글 삭제
+      if (pathname === '/comments') {
+        try {
+          const { postId } = params.bodies;
+          const commentId = params.params;
+          const findCommentData = await Comments.findByPk(commentId);
+
+          if (!findCommentData) {
+            responseData = { code: 442 };
+          } else if (params.userId !== findCommentData.userId) {
+            responseData = { code: 443 };
+          } else {
+            await Comments.destroy({ where: { postId, commentId } });
+            responseData = { code: 441 };
+          }
+        } catch (err) {
+          responseData = { code: 440 };
+        }
+      }
+
       return remove(
         method,
         pathname,
