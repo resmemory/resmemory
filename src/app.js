@@ -146,7 +146,7 @@ const server = http
       }
     }, 3000);
 
-    // UsersTopology 와 통신 처리
+    // Users와 통신 처리
     const packetUsers = makePacket('/users', 'GET', 0, {
       port: process.env.USERS_PORT,
       name: 'users',
@@ -174,10 +174,45 @@ const server = http
       }, // 에러 이벤트
     );
 
-    // 주기적인 UsersTopology 접속 상태 확인
+    // 주기적인 Users 접속 상태 확인
     setInterval(() => {
       if (isConnectedUsers !== true) {
         clientUsers.connect();
+      }
+    }, 3000);
+
+    // getPosts와 통신 처리
+    const packetGetPosts = makePacket('/posts', 'GET', 0, {
+      port: process.env.POSTS_PORT,
+      name: 'posts',
+      urls: [],
+    });
+
+    let isConnectedGetPosts = false;
+
+    const clientGetPosts = new TcpClient(
+      process.env.HOST,
+      process.env.DIS_PORT,
+      (options) => {
+        // 접속 이벤트
+        isConnectedGetPosts = true;
+        clientGetPosts.write(packetGetPosts);
+      },
+      (options, data) => {
+        onUsersModule(data);
+      }, // 데이터 수신 이벤트
+      (options) => {
+        isConnectedGetPosts = false;
+      }, // 접속 종료 이벤트
+      (options) => {
+        isConnectedGetPosts = false;
+      }, // 에러 이벤트
+    );
+
+    // 주기적인 getPosts와 접속 상태 확인
+    setInterval(() => {
+      if (isConnectedGetPosts !== true) {
+        clientGetPosts.connect();
       }
     }, 3000);
   });
@@ -236,6 +271,38 @@ export function onDistribute(data) {
 }
 
 export function onUsersModule(data) {
+  for (let n in data.params) {
+    const node = data.params[n];
+    const key = node.host + ':' + node.port;
+
+    if (mapClients[key] == null && node.name !== 'users') {
+      const client = new TcpClient(
+        node.host,
+        node.port,
+        onCreateClient,
+        onReadClient,
+        onEndClient,
+        onErrorClient,
+      );
+
+      mapClients[key] = {
+        client: client,
+        info: node,
+      };
+
+      for (let m in node.urls) {
+        const key = node.urls[m];
+        if (mapUrls[key] == null) {
+          mapUrls[key] = [];
+        }
+        mapUrls[key].push(client);
+      }
+      client.connect();
+    }
+  }
+}
+
+export function onGetPostsModule(data) {
   for (let n in data.params) {
     const node = data.params[n];
     const key = node.host + ':' + node.port;

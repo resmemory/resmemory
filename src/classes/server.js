@@ -139,6 +139,44 @@ class TcpServer {
       }
     }, 3000);
   }
+
+  // getPosts 접속 함수
+  connectToGetPosts(host, port, onNoti, userId) {
+    // getPosts 전달 패킷
+    let params;
+    params = this.context;
+    params.query = { userId };
+    const packet = makePacket('/posts', 'GET', 0, params);
+    let isConnectedGetPosts = false;
+    this.clientGetPosts = new TcpClient(
+      host,
+      port,
+      (options) => {
+        // Users 접속 이벤트
+        isConnectedGetPosts = true;
+        this.clientGetPosts.write(packet);
+      },
+      // Users 데이터 수신 이벤트
+      (options, data) => {
+        onNoti(data);
+      },
+      // Users 접속 종료 이벤트
+      (options) => {
+        isConnectedGetPosts = false;
+      },
+      // Users 통신 에러 이벤트
+      (options) => {
+        isConnectedGetPosts = false;
+      },
+    );
+
+    // 주기적으로 재접속 시도
+    setInterval(() => {
+      if (isConnectedGetPosts !== true) {
+        this.clientGetPosts.connect();
+      }
+    }, 3000);
+  }
 }
 
 export default TcpServer;

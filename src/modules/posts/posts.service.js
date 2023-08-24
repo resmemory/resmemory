@@ -1,5 +1,9 @@
 import Posts from './db/posts.db';
 import Comments from './db/comments.db';
+import postModule from './posts.module';
+import dotenv from 'dotenv';
+
+dotenv.config();
 
 const onRequest = async (res, method, pathname, params, key, cb) => {
   let responseData = {};
@@ -32,6 +36,7 @@ const onRequest = async (res, method, pathname, params, key, cb) => {
       // 댓글 작성
       if (pathname === '/comments') {
         try {
+          const { userId } = params;
           const { content, postId } = params.bodies;
           const result = await Posts.findByPk(postId);
 
@@ -42,7 +47,7 @@ const onRequest = async (res, method, pathname, params, key, cb) => {
           } else if (!result) {
             responseData = { code: 413 };
           } else {
-            await Comments.create({ content, postId, userId: params.userId });
+            await Comments.create({ content, postId, userId });
             responseData = { code: 411 };
           }
         } catch (err) {
@@ -63,17 +68,10 @@ const onRequest = async (res, method, pathname, params, key, cb) => {
       );
 
     case 'GET':
-      let pageNum = 1;
-
-      if (params.query.pageNum) {
-        pageNum = params.query.pageNum;
-      }
-
-      const { userId, postId, annualCategory } = params.query;
-
       // 게시글 전체 조회
-      if (pathname === '/posts') {
+      if (pathname === '/posts' && params.query.pageNum) {
         try {
+          const { pageNum } = params.query;
           const result = await Posts.findAll({
             order: [['createdAt', 'DESC']],
             limit: 10,
@@ -86,7 +84,7 @@ const onRequest = async (res, method, pathname, params, key, cb) => {
       }
 
       // 게시글 전체 조회(북마크 조회용)
-      if (pathname === '/posts' && userId) {
+      if (pathname === '/posts' && params.query.userId) {
         try {
           const { userId } = params.query;
           const result = await Posts.findAll({ where: { userId } });
@@ -97,8 +95,9 @@ const onRequest = async (res, method, pathname, params, key, cb) => {
       }
 
       // 연도별 게시글 조회
-      if (pathname === '/posts' && annualCategory) {
+      if (pathname === '/posts' && params.query.annualCategory) {
         try {
+          const { annualCategory, pageNum } = params.query;
           const result = await Posts.findAll({
             where: { annualCategory },
             order: [['createdAt', 'DESC']],
@@ -112,9 +111,20 @@ const onRequest = async (res, method, pathname, params, key, cb) => {
       }
 
       // 게시글 상세 조회
-      if (pathname === '/posts' && postId) {
+      if (pathname === '/posts' && params.query.postId) {
         try {
-          const result = await Posts.findByPk(postId);
+          const { postId } = params.query;
+          const result = await Posts.findByPk(postId, { raw: true });
+          postModule.connectToUsers(
+            process.env.HOST,
+            process.env.USERS_PORT,
+            (data) => {
+              console.log(data, '111111111111111');
+              postModule.nickname = data.responseData.bodies.nickname;
+            },
+            result.userId,
+          );
+          result.nickname = postModule.nickname;
           await Posts.update({ viewCount: result.viewCount + 1 }, { where: { postId } });
           responseData = { result };
         } catch (err) {
@@ -125,14 +135,13 @@ const onRequest = async (res, method, pathname, params, key, cb) => {
       // 댓글 조회
       if (pathname === '/comments') {
         try {
+          const { postId } = params.query;
           const findPostData = await Posts.findByPk(postId);
           if (!findPostData) {
             responseData = { code: 421 };
           } else {
             const result = await Comments.findAll({
               where: { postId },
-              limit: 10,
-              offset: (pageNum - 1) * 10,
             });
             responseData = { result };
           }

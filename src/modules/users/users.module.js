@@ -19,6 +19,9 @@ class UsersModule extends TcpServer {
       'GET/users',
       'PATCH/users',
       'DELETE/users',
+      'POST/bookmarks',
+      'DELETE/bookmarks',
+      'GET/bookmarks',
     ]);
     this.connectToDistributor(process.env.HOST, process.env.DIS_PORT, (data) => {
       // Distributor 접속
