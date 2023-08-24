@@ -13,15 +13,7 @@ Reports.init(
       type: DataTypes.BIGINT,
       defaultValue: null,
     },
-    postId: {
-      type: DataTypes.BIGINT,
-      defaultValue: null,
-    },
-    commentId: {
-      type: DataTypes.BIGINT,
-      defaultValue: null,
-    },
-    threadId: {
+    contentId: {
       type: DataTypes.BIGINT,
       defaultValue: null,
     },
@@ -29,10 +21,20 @@ Reports.init(
       type: DataTypes.STRING,
       allowNull: false,
     },
+    reportType: {
+      type: DataTypes.ENUM({
+        values: ['post', 'comment', 'thread'],
+      }),
+      allowNull: false,
+    },
+    isReport: {
+      type: DataTypes.BOOLEAN,
+      defaultValue: false,
+    },
   },
   {
     sequelize,
-    modelName: 'Report',
+    modelName: 'Reports',
     timestamps: true,
     updatedAt: false,
   },
