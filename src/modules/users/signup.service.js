@@ -35,7 +35,7 @@ async function signup(pathname, params, responseData, token) {
         responseData = { code: 171 };
       }
     } catch (err) {
-      responseData = { code: 170, err };
+      responseData = { code: 170 };
     }
   }
 
