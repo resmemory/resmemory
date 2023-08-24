@@ -227,6 +227,23 @@ const onRequest = async (res, method, pathname, params, key, cb) => {
         }
       }
 
+      // 게시글 완전 삭제
+      if (pathname === '/posts/admin') {
+        try {
+          const { contentId } = params.bodies;
+          const findPostData = await Posts.findByPk({ postId: contentId });
+
+          if (!findPostData) {
+            responseData = { code: 372 };
+          } else {
+            await Posts.destroy({ where: { postId: contentId }, force: true });
+            responseData = { code: 371 };
+          }
+        } catch (err) {
+          responseData = { code: 370 };
+        }
+      }
+
       // 댓글 삭제
       if (pathname === '/comments') {
         try {
@@ -244,6 +261,23 @@ const onRequest = async (res, method, pathname, params, key, cb) => {
           }
         } catch (err) {
           responseData = { code: 440 };
+        }
+      }
+
+      // 댓글 완전 삭제
+      if (pathname === '/comments/admin') {
+        try {
+          const { contentId } = params.bodies;
+          const findCommentData = await Comments.findByPk({ commentId: contentId });
+
+          if (!findCommentData) {
+            responseData = { code: 452 };
+          } else {
+            await Comments.destroy({ where: { commentId: contentId }, force: true });
+            responseData = { code: 451 };
+          }
+        } catch (err) {
+          responseData = { code: 450 };
         }
       }
 
