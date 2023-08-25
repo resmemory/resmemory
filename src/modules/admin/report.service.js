@@ -13,7 +13,6 @@ async function reports(method, params, responseData) {
       if (!reportType && !contentId) {
         responseData = { code: 612 };
       } else if (isExistreport) {
-        //614
         responseData = { code: 614 };
       } else if (!content) {
         responseData = { code: 613 };
@@ -27,7 +26,7 @@ async function reports(method, params, responseData) {
         responseData = { code: 611 };
       }
     } catch (error) {
-      responseData = { code: 610 };
+      responseData = { code: 610, error };
     }
   }
   if (method == 'GET') {
