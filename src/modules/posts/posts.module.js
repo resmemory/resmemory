@@ -25,7 +25,15 @@ class PostsModule extends TcpServer {
       process.env.HOST,
       process.env.USERS_PORT,
       (data) => {
-        console.log(data);
+        console.log('connectToUsers Notification', data);
+      },
+      userId,
+    );
+    this.connectToAllUsers(
+      process.env.HOST,
+      process.env.USERS_PORT,
+      (data) => {
+        console.log('connectToAllUsers Notification', data);
       },
       userId,
     );

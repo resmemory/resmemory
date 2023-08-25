@@ -111,32 +111,46 @@ const onRequest = async (res, method, pathname, params, key, cb) => {
 
     // GET
     case 'GET':
-      if (pathname == '/users' && query.userId) {
+      // 내 정보 조회
+      if (pathname == '/users' && !query.userId && !Array.isArray(query.userId)) {
         try {
-          if (query) {
-            const result = await Users.findByPk(query.userId, {
-              attributes: { exclude: ['password', 'kakaoId', 'deletedAt'] },
-            });
-            responseData = { bodies: result, code: 171 };
-          } else {
-            responseData = { code: 172 };
-          }
+          const { userId } = params;
+          const result = await Users.findByPk(userId, {
+            attributes: { exclude: ['password', 'kakaoId', 'deletedAt'] },
+          });
+          responseData = { bodies: result, code: 171 };
         } catch (err) {
           responseData = { code: 170 };
         }
       }
 
-      if (pathname == '/users') {
+      // 게시글 상세 조회용
+      if (pathname == '/users' && query.userId && !Array.isArray(query.userId)) {
         try {
-          const result = await Users.findAll({
-            attributes: { exclude: ['password', 'kakaoId', 'deletedAt'] },
+          const result = await Users.findByPk(query.userId, {
+            attributes: ['userId', 'nickname'],
+            raw: true,
           });
+          responseData = { bodies: result, code: 181 };
+        } catch (err) {
+          responseData = { code: 180 };
+        }
+      }
 
-          if (result) {
-            responseData = { bodies: result, code: 191 };
-          } else {
-            responseData = { code: 192 };
+      // 게시글 전체 조회, 댓글 조회용
+      if (pathname == '/users' && Array.isArray(query.userId)) {
+        try {
+          const userIds = query.userId;
+          const result = [];
+
+          for (const userId of userIds) {
+            const user = await Users.findByPk(userId, {
+              attributes: ['userId', 'nickname'],
+              raw: true,
+            });
+            result.push(user);
           }
+          responseData = { bodies: result, code: 191 };
         } catch (err) {
           responseData = { code: 190 };
         }

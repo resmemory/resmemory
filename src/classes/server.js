@@ -154,19 +154,19 @@ class TcpServer {
       host,
       port,
       (options) => {
-        // Users 접속 이벤트
+        // getPosts 접속 이벤트
         isConnectedGetPosts = true;
         this.clientGetPosts.write(packet);
       },
-      // Users 데이터 수신 이벤트
+      // getPosts 데이터 수신 이벤트
       (options, data) => {
         onNoti(data);
       },
-      // Users 접속 종료 이벤트
+      // getPosts 접속 종료 이벤트
       (options) => {
         isConnectedGetPosts = false;
       },
-      // Users 통신 에러 이벤트
+      // getPosts 통신 에러 이벤트
       (options) => {
         isConnectedGetPosts = false;
       },
@@ -181,27 +181,30 @@ class TcpServer {
   }
 
   // AllUsers 접속 함수
-  connectToAllUsers(host, port, onNoti) {
-    // getPosts 전달 패킷
-    const packet = makePacket('/posts', 'GET', 0, this.context);
+  connectToAllUsers(host, port, onNoti, userId) {
+    // AllUsers 전달 패킷
+    let params;
+    params = this.context;
+    params.query = { userId };
+    const packet = makePacket('/users', 'GET', 0, params);
     let isConnectedAllUsers = false;
     this.clientAllUsers = new TcpClient(
       host,
       port,
       (options) => {
-        // Users 접속 이벤트
+        // AllUsers 접속 이벤트
         isConnectedAllUsers = true;
         this.clientAllUsers.write(packet);
       },
-      // Users 데이터 수신 이벤트
+      // AllUsers 데이터 수신 이벤트
       (options, data) => {
         onNoti(data);
       },
-      // Users 접속 종료 이벤트
+      // AllUsers 접속 종료 이벤트
       (options) => {
         isConnectedAllUsers = false;
       },
-      // Users 통신 에러 이벤트
+      // AllUsers 통신 에러 이벤트
       (options) => {
         isConnectedAllUsers = false;
       },

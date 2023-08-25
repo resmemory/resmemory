@@ -221,10 +221,10 @@ const server = http
       }
     }, 3000);
 
-    // getPosts와 통신 처리
+    // AllUsers와 통신 처리
     const packetAllUsers = makePacket('/users', 'GET', 0, {
-      port: process.env.POSTS_PORT,
-      name: 'posts',
+      port: process.env.USERS_PORT,
+      name: 'users',
       urls: [],
     });
 
@@ -239,7 +239,7 @@ const server = http
         clientAllUsers.write(packetAllUsers);
       },
       (options, data) => {
-        onGetPostsModule(data);
+        onAllUsersModule(data);
       }, // 데이터 수신 이벤트
       (options) => {
         isConnectedAllUsers = false;
@@ -249,7 +249,7 @@ const server = http
       }, // 에러 이벤트
     );
 
-    // 주기적인 getPosts와 접속 상태 확인
+    // 주기적인 접속 상태 확인
     setInterval(() => {
       if (isConnectedAllUsers !== true) {
         clientAllUsers.connect();

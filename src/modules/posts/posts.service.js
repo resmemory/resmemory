@@ -28,7 +28,6 @@ const onRequest = async (res, method, pathname, params, key, cb) => {
             responseData = { code: 341 };
           }
         } catch (err) {
-          console.log(err);
           responseData = { code: 340 };
         }
       }
@@ -51,7 +50,6 @@ const onRequest = async (res, method, pathname, params, key, cb) => {
             responseData = { code: 411 };
           }
         } catch (err) {
-          console.log(err);
           responseData = { code: 410 };
         }
       }
@@ -76,8 +74,25 @@ const onRequest = async (res, method, pathname, params, key, cb) => {
             order: [['createdAt', 'DESC']],
             limit: 10,
             offset: (pageNum - 1) * 10,
+            raw: true,
           });
-          responseData = { result };
+
+          const userId = result.map((post) => post.userId);
+
+          postModule.connectToAllUsers(
+            process.env.HOST,
+            process.env.USERS_PORT,
+            (data) => {
+              postModule.nickname = data.responseData.bodies;
+            },
+            userId,
+          );
+          const bodies = postModule.nickname;
+
+          responseData = result.map((post) => {
+            const nickname = bodies.filter((nickname) => nickname.userId == post.userId);
+            return { ...post, nickname: nickname[0].nickname };
+          });
         } catch (err) {
           responseData = { code: 310 };
         }
@@ -103,8 +118,25 @@ const onRequest = async (res, method, pathname, params, key, cb) => {
             order: [['createdAt', 'DESC']],
             limit: 10,
             offset: (pageNum - 1) * 10,
+            raw: true,
           });
-          responseData = { result };
+
+          const userId = result.map((post) => post.userId);
+
+          postModule.connectToAllUsers(
+            process.env.HOST,
+            process.env.USERS_PORT,
+            (data) => {
+              postModule.nickname = data.responseData.bodies;
+            },
+            userId,
+          );
+          const bodies = postModule.nickname;
+
+          responseData = result.map((post) => {
+            const nickname = bodies.filter((nickname) => nickname.userId == post.userId);
+            return { ...post, nickname: nickname[0].nickname };
+          });
         } catch (err) {
           responseData = { code: 320 };
         }
@@ -115,16 +147,17 @@ const onRequest = async (res, method, pathname, params, key, cb) => {
         try {
           const { postId } = params.query;
           const result = await Posts.findByPk(postId, { raw: true });
+
           postModule.connectToUsers(
             process.env.HOST,
             process.env.USERS_PORT,
             (data) => {
-              console.log(data, '111111111111111');
               postModule.nickname = data.responseData.bodies.nickname;
             },
             result.userId,
           );
           result.nickname = postModule.nickname;
+
           await Posts.update({ viewCount: result.viewCount + 1 }, { where: { postId } });
           responseData = { result };
         } catch (err) {
@@ -140,10 +173,27 @@ const onRequest = async (res, method, pathname, params, key, cb) => {
           if (!findPostData) {
             responseData = { code: 421 };
           } else {
-            const result = await Comments.findAll({
+            let result = await Comments.findAll({
               where: { postId },
+              raw: true,
             });
-            responseData = { result };
+
+            const userId = result.map((comment) => comment.userId);
+
+            postModule.connectToAllUsers(
+              process.env.HOST,
+              process.env.USERS_PORT,
+              (data) => {
+                postModule.nickname = data.responseData.bodies;
+              },
+              userId,
+            );
+            const bodies = postModule.nickname;
+
+            responseData = result.map((comment) => {
+              const nickname = bodies.filter((nickname) => nickname.userId == comment.userId);
+              return { ...comment, nickname: nickname[0].nickname };
+            });
           }
         } catch (err) {
           responseData = { code: 420 };
