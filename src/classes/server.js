@@ -220,7 +220,7 @@ class TcpServer {
     // Posts 전달 패킷
     let params;
     params = this.context;
-    params.params='admin'
+    params.params = 'admin';
     params.bodies = { contentId };
     const packet = makePacket('/posts', 'DELETE', 0, params);
     let isConnectedPosts = false;
@@ -250,6 +250,45 @@ class TcpServer {
     setInterval(() => {
       if (isConnectedPosts !== true) {
         this.clientPosts.connect();
+      }
+    }, 3000);
+  }
+
+  //admin/comment 통신 comment 접속 함수
+  connectToComments(host, port, onNoti, contentId) {
+    // Posts 전달 패킷
+    let params;
+    params = this.context;
+    params.params = 'admin';
+    params.bodies = { contentId };
+    const packet = makePacket('/comments', 'DELETE', 0, params);
+    let isConnectedComments = false;
+    this.clientComments = new TcpClient(
+      host,
+      port,
+      (options) => {
+        // Posts 접속 이벤트
+        isConnectedComments = true;
+        this.clientComments.write(packet);
+      },
+      // Posts 데이터 수신 이벤트
+      (options, data) => {
+        onNoti(data);
+      },
+      // Posts 접속 종료 이벤트
+      (options) => {
+        isConnectedComments = false;
+      },
+      // Posts 통신 에러 이벤트
+      (options) => {
+        isConnectedComments = false;
+      },
+    );
+
+    // 주기적으로 재접속 시도
+    setInterval(() => {
+      if (isConnectedComments !== true) {
+        this.clientComments.connect();
       }
     }, 3000);
   }

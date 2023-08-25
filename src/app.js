@@ -285,6 +285,41 @@ const server = http
         clientPosts.connect();
       }
     }, 3000);
+
+    //admin/post 간 통신 처리
+    const packetComments = makePacket('/comments/admin', 'DELETE', 0, {
+      port: process.env.POSTS_PORT,
+      name: 'posts',
+      urls: [],
+    });
+
+    let isConnectedComments = false;
+
+    const clientComments = new TcpClient(
+      process.env.HOST,
+      process.env.DIS_PORT,
+      (options) => {
+        // 접속 이벤트
+        isConnectedComments = true;
+        clientComments.write(packetComments);
+      },
+      (options, data) => {
+        onCommentsModule(data);
+      }, // 데이터 수신 이벤트
+      (options) => {
+        isConnectedComments = false;
+      }, // 접속 종료 이벤트
+      (options) => {
+        isConnectedComments = false;
+      }, // 에러 이벤트
+    );
+
+    // 주기적인 UsersTopology 접속 상태 확인
+    setInterval(() => {
+      if (isConnectedComments !== true) {
+        clientComments.connect();
+      }
+    }, 3000);
   });
 
 // API 호출 처리
@@ -436,6 +471,38 @@ export function onAllUsersModule(data) {
 }
 
 export function onPostsModule(data) {
+  for (let n in data.params) {
+    const node = data.params[n];
+    const key = node.host + ':' + node.port;
+
+    if (mapClients[key] == null && node.name !== 'posts') {
+      const client = new TcpClient(
+        node.host,
+        node.port,
+        onCreateClient,
+        onReadClient,
+        onEndClient,
+        onErrorClient,
+      );
+
+      mapClients[key] = {
+        client: client,
+        info: node,
+      };
+
+      for (let m in node.urls) {
+        const key = node.urls[m];
+        if (mapUrls[key] == null) {
+          mapUrls[key] = [];
+        }
+        mapUrls[key].push(client);
+      }
+      client.connect();
+    }
+  }
+}
+
+export function onCommentsModule(data) {
   for (let n in data.params) {
     const node = data.params[n];
     const key = node.host + ':' + node.port;
