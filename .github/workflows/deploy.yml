@@ -112,7 +112,7 @@ jobs:
       - name: 🚀 AWS codeDeploy로 배포를 시작
         run: aws deploy create-deployment
           --ignore-application-stop-failures
-          --application-name verdantjuly
+          --application-name resmemory
           --deployment-config-name CodeDeployDefault.OneAtATime
           --deployment-group-name dev
           --s3-location bucket=verdantjuly,bundleType=zip,key=verdantjuly.zip
