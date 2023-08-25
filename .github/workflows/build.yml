@@ -44,7 +44,7 @@ jobs:
           echo THREADS_MYSQL_PASSWORD=${{ secrets.THREADS_MYSQL_PASSWORD }} >> .env
           echo THREADS_MYSQL_HOST=${{ secrets.THREADS_MYSQL_HOST }} >> .env
           echo POSTS_MYSQL_USER_NAME=${{ secrets.POSTS_MYSQL_USER_NAME }} >> .env
-          echo POSTS_MYSQL_PASSWORD=${{ secrets.POSTS_MYSQL_PASSWORD }} >> .env
+          echo POSTS_MYSQL_PASSWORD=${{ secrets.POSTS_MYSQL_PASSWORD }} >> .env3002
           echo POSTS_MYSQL_HOST=${{ secrets.POSTS_MYSQL_HOST }} >> .env
           echo JWT_SECRET_KEY=${{ secrets.JWT_SECRET_KEY }} >> .env
           echo JWT_SECRET_KEY_REFRESH=${{ secrets.JWT_SECRET_KEY_REFRESH }} >> .env
