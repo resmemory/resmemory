@@ -5,20 +5,50 @@ const onRequest = async (res, method, pathname, params, key, cb) => {
   let responseData = {};
   switch (method) {
     case 'DELETE':
-      if (pathname == '/admin/post') {
+      if (params.params == 'post') {
         try {
-          const { reportType, contentId } = params.bodies;
+          const { contentId } = params.bodies;
           adminModule.connectToPosts(
             process.env.HOST,
             process.env.POSTS_PORT,
             (data) => {
-              console.log('Posts Notification', `${reportType},${contentId}`);
+              adminModule.result = data.responseData;
             },
             contentId,
           );
-          responseData = { code: 511 };
+
+          const resultNum = adminModule.result;
+
+          if (!resultNum) {
+            responseData = { code: 512 };
+          } else {
+            responseData = { code: 511 };
+          }
         } catch (error) {
           responseData = { code: 510 };
+        }
+      }
+      if (params.params == 'comment') {
+        try {
+          const { contentId } = params.bodies;
+          adminModule.connectToComments(
+            process.env.HOST,
+            process.env.POSTS_PORT,
+            (data) => {
+              adminModule.result = data.responseData;
+            },
+            contentId,
+          );
+
+          const resultNum = adminModule.result;
+
+          if (!resultNum) {
+            responseData = { code: 522 };
+          } else {
+            responseData = { code: 521 };
+          }
+        } catch (error) {
+          responseData = { code: 520 };
         }
       }
       return remove(

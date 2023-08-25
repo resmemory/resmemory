@@ -5,6 +5,7 @@ import { makePacket } from '../utils/makePacket';
 class TcpServer {
   nickname = {};
   posts = [];
+  result = {};
   constructor(name, port, urls) {
     //서버 상태 정보
     this.context = {
@@ -214,44 +215,44 @@ class TcpServer {
     }, 3000);
   }
 
-    //admin/post 통신 Posts 접속 함수
-    connectToPosts(host, port, onNoti, contentId) {
-      // Posts 전달 패킷
-      let params;
-      params = this.context;
-      params.bodies = { contentId };
-      const packet = makePacket('/posts/admin', 'DELETE', 0, params);
-      let isConnectedPosts = false;
-      this.clientPosts = new TcpClient(
-        host,
-        port,
-        (options) => {
-          // Posts 접속 이벤트
-          isConnectedPosts = true;
-          this.clientPosts.write(packet);
-        },
-        // Posts 데이터 수신 이벤트
-        (options, data) => {
-          onNoti(data);
-        },
-        // Posts 접속 종료 이벤트
-        (options) => {
-          isConnectedPosts = false;
-        },
-        // Posts 통신 에러 이벤트
-        (options) => {
-          isConnectedPosts = false;
-        },
-      );
-  
-      // 주기적으로 재접속 시도
-      setInterval(() => {
-        if (isConnectedPosts !== true) {
-          this.clientPosts.connect();
-        }
-      }, 3000);
-    }
-  }
+  //admin/post 통신 Posts 접속 함수
+  connectToPosts(host, port, onNoti, contentId) {
+    // Posts 전달 패킷
+    let params;
+    params = this.context;
+    params.params='admin'
+    params.bodies = { contentId };
+    const packet = makePacket('/posts', 'DELETE', 0, params);
+    let isConnectedPosts = false;
+    this.clientPosts = new TcpClient(
+      host,
+      port,
+      (options) => {
+        // Posts 접속 이벤트
+        isConnectedPosts = true;
+        this.clientPosts.write(packet);
+      },
+      // Posts 데이터 수신 이벤트
+      (options, data) => {
+        onNoti(data);
+      },
+      // Posts 접속 종료 이벤트
+      (options) => {
+        isConnectedPosts = false;
+      },
+      // Posts 통신 에러 이벤트
+      (options) => {
+        isConnectedPosts = false;
+      },
+    );
 
+    // 주기적으로 재접속 시도
+    setInterval(() => {
+      if (isConnectedPosts !== true) {
+        this.clientPosts.connect();
+      }
+    }, 3000);
+  }
+}
 
 export default TcpServer;

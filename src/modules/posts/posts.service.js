@@ -252,10 +252,10 @@ const onRequest = async (res, method, pathname, params, key, cb) => {
         try {
           const { contentId } = params.bodies;
 
-          await Posts.destroy({ where: { postId: contentId }, force: true });
-          responseData = { code: 371 };
+          const result = await Posts.destroy({ where: { postId: contentId }, force: true });
+          responseData = { code: 371, result };
         } catch (err) {
-          responseData = { code: 370 };
+          responseData = { code: 370, err };
         }
       }
 
