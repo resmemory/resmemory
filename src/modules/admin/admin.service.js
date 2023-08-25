@@ -1,9 +1,26 @@
 import reports from './report.service';
+import adminModule from './admin.module';
 
 const onRequest = async (res, method, pathname, params, key, cb) => {
-  let responseData={}
+  let responseData = {};
   switch (method) {
     case 'DELETE':
+      if (pathname == '/admin/post') {
+        try {
+          const { reportType, contentId } = params.bodies;
+          adminModule.connectToPosts(
+            process.env.HOST,
+            process.env.POSTS_PORT,
+            (data) => {
+              console.log('Posts Notification', `${reportType},${contentId}`);
+            },
+            contentId,
+          );
+          responseData = { code: 511 };
+        } catch (error) {
+          responseData = { code: 510 };
+        }
+      }
       return remove(
         method,
         pathname,

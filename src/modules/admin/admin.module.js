@@ -15,12 +15,22 @@ class AdminModule extends TcpServer {
       'GET/reports',
       'PATCH/reports',
     ]);
+    let contentId=undefined
     this.connectToDistributor(
       process.env.HOST,
       process.env.DIS_PORT,
       (data) => {
         console.log('Distributor Notification', data);
       },
+    );
+     //admin/post 통신
+    this.connectToPosts(
+      process.env.HOST,
+      process.env.POSTS_PORT,
+      (data) => {
+        console.log('Posts Notification', data);
+      },
+      contentId,
     );
   }
 
