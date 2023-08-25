@@ -11,6 +11,7 @@ const onRequest = async (res, method, pathname, params, key, cb) => {
   let responseData = {};
   const query = params.query;
 
+  // POST
   switch (method) {
     case 'POST':
       // 회원 가입
@@ -107,6 +108,8 @@ const onRequest = async (res, method, pathname, params, key, cb) => {
         },
         responseData,
       );
+
+    // GET
     case 'GET':
       if (pathname == '/users' && query.userId) {
         try {
@@ -140,21 +143,25 @@ const onRequest = async (res, method, pathname, params, key, cb) => {
       }
 
       if (pathname == '/bookmarks') {
-        const { userId } = params;
-        const bookmarks = await Bookmarks.findAll({ order: ['createdAt'], where: { userId } });
+        try {
+          const { userId } = params;
+          const bookmarks = await Bookmarks.findAll({ order: ['createdAt'], where: { userId } });
 
-        usersmodule.connectToGetPosts(
-          process.env.HOST,
-          process.env.POSTS_PORT,
-          (data) => {
-            usersmodule.posts = data.responseData.bodies;
-          },
-          userId,
-        );
-        const bodies = bookmarks.map((bookmark) => {
-          return usersmodule.posts.filter((post) => bookmark.postId == post.postId);
-        });
-        responseData = { code: 171, bodies };
+          usersmodule.connectToGetPosts(
+            process.env.HOST,
+            process.env.POSTS_PORT,
+            (data) => {
+              usersmodule.posts = data.responseData.bodies;
+            },
+            userId,
+          );
+          const bodies = bookmarks.map((bookmark) => {
+            return usersmodule.posts.filter((post) => bookmark.postId == post.postId);
+          });
+          responseData = { code: 171, bodies };
+        } catch (err) {
+          responseData = { code: 170, bodies: null };
+        }
       }
 
       return get(
