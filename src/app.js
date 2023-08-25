@@ -3,7 +3,7 @@ import url from 'url';
 import TcpClient from './classes/client';
 import { makePacket } from './utils/makePacket';
 import authmiddleware from './authmiddleware';
-
+import frontconnection from './frontconnection';
 import dotenv from 'dotenv';
 
 dotenv.config();
@@ -94,15 +94,20 @@ const server = http
           onRequest(res, method, path, params);
         });
       } else {
-        if (req.headers.authorization) {
-          const userId = authmiddleware(req, res, params);
+        if (pathname == '/' || pathname == '/main') {
+          frontconnection(pathname, res);
+        } else {
+          if (req.headers.authorization) {
+            const userId = authmiddleware(req, res, params);
 
-          params = { userId };
+            params = { userId };
+          }
+          params.query = uri.query;
+          onRequest(res, method, pathname, params);
         }
-        params.query = uri.query;
-        onRequest(res, method, pathname, params);
       }
     } catch (error) {
+      console.log('====================', error);
       res
         .writeHead(200, { 'Content-Type': 'application/json' })
         .end(JSON.stringify({ respondData: { code: 100 } }));
@@ -408,7 +413,6 @@ function onCreateClient(options) {
 // 마이크로서비스 응답 처리
 function onReadClient(options, packet) {
   console.log('onReadClient============', packet);
-
   if (packet.responseData.code == 121) {
     mapResponse[`key_${packet.key}`].setHeader(
       'Authorization',
@@ -435,7 +439,8 @@ function onReadClient(options, packet) {
     mapResponse[`key_${packet.key}`].setHeader('Set-Cookie', [
       `refresh=""; expires=Sat, 02 Oct 2021 17:46:04 GMT;`,
     ]);
-    mapResponse[`key_${packet.key}`].setHeader('Authorization', ``);
+    mapResponse[`key_${packet.key}`].removeHeader('Set-Cookie');
+    mapResponse[`key_${packet.key}`].removeHeader('Authorization');
   }
   mapResponse[`key_${packet.key}`].writeHead(200, { 'Content-Type': 'application/json' });
   mapResponse[`key_${packet.key}`].end(JSON.stringify(packet));
