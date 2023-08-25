@@ -3,7 +3,7 @@ import url from 'url';
 import TcpClient from './classes/client';
 import { makePacket } from './utils/makePacket';
 import authmiddleware from './authmiddleware';
-
+import frontconnection from './frontconnection';
 import dotenv from 'dotenv';
 
 dotenv.config();
@@ -94,15 +94,20 @@ const server = http
           onRequest(res, method, path, params);
         });
       } else {
-        if (req.headers.authorization) {
-          const userId = authmiddleware(req, res, params);
+        if (pathname == '/' || pathname == '/main') {
+          frontconnection(pathname, res);
+        } else {
+          if (req.headers.authorization) {
+            const userId = authmiddleware(req, res, params);
 
-          params = { userId };
+            params = { userId };
+          }
+          params.query = uri.query;
+          onRequest(res, method, pathname, params);
         }
-        params.query = uri.query;
-        onRequest(res, method, pathname, params);
       }
     } catch (error) {
+      console.log('====================', error);
       res
         .writeHead(200, { 'Content-Type': 'application/json' })
         .end(JSON.stringify({ respondData: { code: 100 } }));
@@ -248,6 +253,76 @@ const server = http
     setInterval(() => {
       if (isConnectedAllUsers !== true) {
         clientAllUsers.connect();
+      }
+    }, 3000);
+
+    //admin/post 간 통신 처리
+    const packetPosts = makePacket('/posts/admin', 'DELETE', 0, {
+      port: process.env.POSTS_PORT,
+      name: 'posts',
+      urls: [],
+    });
+
+    let isConnectedPosts = false;
+
+    const clientPosts = new TcpClient(
+      process.env.HOST,
+      process.env.DIS_PORT,
+      (options) => {
+        // 접속 이벤트
+        isConnectedPosts = true;
+        clientPosts.write(packetPosts);
+      },
+      (options, data) => {
+        onPostsModule(data);
+      }, // 데이터 수신 이벤트
+      (options) => {
+        isConnectedPosts = false;
+      }, // 접속 종료 이벤트
+      (options) => {
+        isConnectedPosts = false;
+      }, // 에러 이벤트
+    );
+
+    // 주기적인 UsersTopology 접속 상태 확인
+    setInterval(() => {
+      if (isConnectedPosts !== true) {
+        clientPosts.connect();
+      }
+    }, 3000);
+
+    //admin/post 간 통신 처리
+    const packetComments = makePacket('/comments/admin', 'DELETE', 0, {
+      port: process.env.POSTS_PORT,
+      name: 'posts',
+      urls: [],
+    });
+
+    let isConnectedComments = false;
+
+    const clientComments = new TcpClient(
+      process.env.HOST,
+      process.env.DIS_PORT,
+      (options) => {
+        // 접속 이벤트
+        isConnectedComments = true;
+        clientComments.write(packetComments);
+      },
+      (options, data) => {
+        onCommentsModule(data);
+      }, // 데이터 수신 이벤트
+      (options) => {
+        isConnectedComments = false;
+      }, // 접속 종료 이벤트
+      (options) => {
+        isConnectedComments = false;
+      }, // 에러 이벤트
+    );
+
+    // 주기적인 UsersTopology 접속 상태 확인
+    setInterval(() => {
+      if (isConnectedComments !== true) {
+        clientComments.connect();
       }
     }, 3000);
   });
@@ -400,6 +475,102 @@ export function onAllUsersModule(data) {
   }
 }
 
+export function onPostsModule(data) {
+  for (let n in data.params) {
+    const node = data.params[n];
+    const key = node.host + ':' + node.port;
+
+    if (mapClients[key] == null && node.name !== 'posts') {
+      const client = new TcpClient(
+        node.host,
+        node.port,
+        onCreateClient,
+        onReadClient,
+        onEndClient,
+        onErrorClient,
+      );
+
+      mapClients[key] = {
+        client: client,
+        info: node,
+      };
+
+      for (let m in node.urls) {
+        const key = node.urls[m];
+        if (mapUrls[key] == null) {
+          mapUrls[key] = [];
+        }
+        mapUrls[key].push(client);
+      }
+      client.connect();
+    }
+  }
+}
+
+export function onCommentsModule(data) {
+  for (let n in data.params) {
+    const node = data.params[n];
+    const key = node.host + ':' + node.port;
+
+    if (mapClients[key] == null && node.name !== 'posts') {
+      const client = new TcpClient(
+        node.host,
+        node.port,
+        onCreateClient,
+        onReadClient,
+        onEndClient,
+        onErrorClient,
+      );
+
+      mapClients[key] = {
+        client: client,
+        info: node,
+      };
+
+      for (let m in node.urls) {
+        const key = node.urls[m];
+        if (mapUrls[key] == null) {
+          mapUrls[key] = [];
+        }
+        mapUrls[key].push(client);
+      }
+      client.connect();
+    }
+  }
+}
+
+export function onThreadsModule(data) {
+  for (let n in data.params) {
+    const node = data.params[n];
+    const key = node.host + ':' + node.port;
+
+    if (mapClients[key] == null && node.name !== 'threads') {
+      const client = new TcpClient(
+        node.host,
+        node.port,
+        onCreateClient,
+        onReadClient,
+        onEndClient,
+        onErrorClient,
+      );
+
+      mapClients[key] = {
+        client: client,
+        info: node,
+      };
+
+      for (let m in node.urls) {
+        const key = node.urls[m];
+        if (mapUrls[key] == null) {
+          mapUrls[key] = [];
+        }
+        mapUrls[key].push(client);
+      }
+      client.connect();
+    }
+  }
+}
+
 // 마이크로서비스 접속 이벤트 처리
 function onCreateClient(options) {
   console.log('onCreateClient');
@@ -408,7 +579,6 @@ function onCreateClient(options) {
 // 마이크로서비스 응답 처리
 function onReadClient(options, packet) {
   console.log('onReadClient============', packet);
-
   if (packet.responseData.code == 121) {
     mapResponse[`key_${packet.key}`].setHeader(
       'Authorization',
@@ -435,7 +605,8 @@ function onReadClient(options, packet) {
     mapResponse[`key_${packet.key}`].setHeader('Set-Cookie', [
       `refresh=""; expires=Sat, 02 Oct 2021 17:46:04 GMT;`,
     ]);
-    mapResponse[`key_${packet.key}`].setHeader('Authorization', ``);
+    mapResponse[`key_${packet.key}`].removeHeader('Set-Cookie');
+    mapResponse[`key_${packet.key}`].removeHeader('Authorization');
   }
   mapResponse[`key_${packet.key}`].writeHead(200, { 'Content-Type': 'application/json' });
   mapResponse[`key_${packet.key}`].end(JSON.stringify(packet));

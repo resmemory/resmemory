@@ -68,7 +68,7 @@ const onRequest = async (res, method, pathname, params, key, cb) => {
 
     // 스레드 삭제 함수
     case 'DELETE':
-      if (pathname === '/threads') {
+      if (pathname == '/threads'&& params.params !== 'admin') {
         try {
           const { userId } = params;
           const threadId = params.params;
@@ -102,28 +102,17 @@ const onRequest = async (res, method, pathname, params, key, cb) => {
       }
 
       // 스레드 완전 삭제 함수
-      if (pathname === '/threads/admin') {
+      if (pathname == '/threads' && params.params == 'admin') {
         try {
-          const { userId } = params;
           const { contentId } = params.bodies;
-          if (contentId) {
-            const result = await Threads.destroy({
-              where: {
-                threadId: contentId,
-              },
-              force: true,
-            });
-            if (result) {
-              responseData = { code: 371 };
-            } else {
-              responseData = { code: 372 };
-            }
-          } else {
-            // contentID가 없을 때 admin으로 에러 전달
-            responseData = { code: 373 };
-          }
-        } catch (error) {
-          responseData = { code: 370 };
+
+          const result = await Threads.destroy({
+            where: { threadId: contentId },
+            force: true,
+          });
+          responseData = { code: 371, result };
+        } catch (err) {
+          responseData = { code: 370, err };
         }
         return remove(
           method,
