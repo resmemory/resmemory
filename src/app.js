@@ -534,6 +534,38 @@ export function onCommentsModule(data) {
   }
 }
 
+export function onThreadsModule(data) {
+  for (let n in data.params) {
+    const node = data.params[n];
+    const key = node.host + ':' + node.port;
+
+    if (mapClients[key] == null && node.name !== 'threads') {
+      const client = new TcpClient(
+        node.host,
+        node.port,
+        onCreateClient,
+        onReadClient,
+        onEndClient,
+        onErrorClient,
+      );
+
+      mapClients[key] = {
+        client: client,
+        info: node,
+      };
+
+      for (let m in node.urls) {
+        const key = node.urls[m];
+        if (mapUrls[key] == null) {
+          mapUrls[key] = [];
+        }
+        mapUrls[key].push(client);
+      }
+      client.connect();
+    }
+  }
+}
+
 // 마이크로서비스 접속 이벤트 처리
 function onCreateClient(options) {
   console.log('onCreateClient');

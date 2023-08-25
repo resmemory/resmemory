@@ -284,10 +284,10 @@ const onRequest = async (res, method, pathname, params, key, cb) => {
         try {
           const { contentId } = params.bodies;
 
-          await Comments.destroy({ where: { commentId: contentId }, force: true });
-          responseData = { code: 451 };
+          const result = await Comments.destroy({ where: { commentId: contentId }, force: true });
+          responseData = { code: 451, result };
         } catch (err) {
-          responseData = { code: 450 };
+          responseData = { code: 450, err };
         }
       }
 

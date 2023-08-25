@@ -12,6 +12,7 @@ const onRequest = async (res, method, pathname, params, key, cb) => {
             process.env.HOST,
             process.env.POSTS_PORT,
             (data) => {
+              console.log('=======================================================================',data)
               adminModule.result = data.responseData;
             },
             contentId,
@@ -49,6 +50,29 @@ const onRequest = async (res, method, pathname, params, key, cb) => {
           }
         } catch (error) {
           responseData = { code: 520 };
+        }
+      }
+      if (params.params == 'thread') {
+        try {
+          const { contentId } = params.bodies;
+          adminModule.connectToThreads(
+            process.env.HOST,
+            process.env.THREADS_PORT,
+            (data) => {
+              adminModule.result = data.responseData;
+            },
+            contentId,
+          );
+
+          const resultNum = adminModule.result;
+
+          if (!resultNum) {
+            responseData = { code: 532 };
+          } else {
+            responseData = { code: 531 };
+          }
+        } catch (error) {
+          responseData = { code: 530 };
         }
       }
       return remove(

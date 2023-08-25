@@ -292,6 +292,44 @@ class TcpServer {
       }
     }, 3000);
   }
+  //admin/thread 통신 comment 접속 함수
+  connectToThreads(host, port, onNoti, contentId) {
+    // Posts 전달 패킷
+    let params;
+    params = this.context;
+    params.params = 'admin';
+    params.bodies = { contentId };
+    const packet = makePacket('/threads', 'DELETE', 0, params);
+    let isConnectedThreads = false;
+    this.clientThreads = new TcpClient(
+      host,
+      port,
+      (options) => {
+        // Posts 접속 이벤트
+        isConnectedThreads = true;
+        this.clientThreads.write(packet);
+      },
+      // Posts 데이터 수신 이벤트
+      (options, data) => {
+        onNoti(data);
+      },
+      // Posts 접속 종료 이벤트
+      (options) => {
+        isConnectedThreads = false;
+      },
+      // Posts 통신 에러 이벤트
+      (options) => {
+        isConnectedThreads = false;
+      },
+    );
+
+    // 주기적으로 재접속 시도
+    setInterval(() => {
+      if (isConnectedThreads !== true) {
+        this.clientThreads.connect();
+      }
+    }, 3000);
+  }
 }
 
 export default TcpServer;

@@ -37,6 +37,16 @@ class AdminModule extends TcpServer {
       contentId,
     );
     this.result;
+
+    this.connectToThreads(
+      process.env.HOST,
+      process.env.THREADS_PORT,
+      (data) => {
+        console.log('Threads Notification', data);
+      },
+      contentId,
+    );
+    this.result;
   }
 
   // 클라이언트 요청에 따른 비즈니스 로직 호출
