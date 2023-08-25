@@ -52,7 +52,7 @@ const onRequest = async (res, method, pathname, params, key, cb) => {
             responseData = { code: 722 };
           }
         } catch (error) {
-          responseData = { code: 720 };
+          responseData = { code: 720, error };
         }
         return post(
           method,
