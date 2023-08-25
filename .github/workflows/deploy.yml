@@ -29,17 +29,18 @@ jobs:
           GATE_PORT: ${{secrets.GATE_PORT}}
           DIS_PORT: ${{secrets.DIS_PORT}}
           USERS_PORT: ${{secrets.USERS_PORT}}
-          POSTS_PORT: ${{secrets.ADMIN_PORT}}
+          POSTS_PORT: ${{secrets.POSTS_PORT}}
           THREADS_PORT: ${{secrets.THREADS_PORT}}
+          ADMIN_PORT: ${{ secrets.ADMIN_PORT }}
           USERS_MYSQL_USER_NAME: ${{secrets.USERS_MYSQL_USER_NAME}}
           USERS_MYSQL_PASSWORD: ${{secrets.USERS_MYSQL_PASSWORD}}
           USERS_MYSQL_HOST: ${{secrets.USERS_MYSQL_HOST}}
-          ADMIN_MYSQL_USER_NAME: ${{secrets.GATE_PORT}}
-          ADMIN_MYSQL_PASSWORD: ${{secrets.DIS_PORT}}
-          ADMIN_MYSQL_HOST: ${{secrets.USERS_PORT}}
-          THREADS_MYSQL_USER_NAME: ${{secrets.ADMIN_PORT}}
-          THREADS_MYSQL_PASSWORD: ${{secrets.THREADS_PORT}}
-          THREADS_MYSQL_HOST: ${{secrets.USERS_MYSQL_USER_NAME}}
+          ADMIN_MYSQL_USER_NAME: ${{secrets.ADMIN_MYSQL_USER_NAME}}
+          ADMIN_MYSQL_PASSWORD: ${{secrets.ADMIN_MYSQL_PASSWORD}}
+          ADMIN_MYSQL_HOST: ${{secrets.ADMIN_MYSQL_HOST}}
+          THREADS_MYSQL_USER_NAME: ${{secrets.THREADS_MYSQL_USER_NAME}}
+          THREADS_MYSQL_PASSWORD: ${{secrets.THREADS_MYSQL_PASSWORD}}
+          THREADS_MYSQL_HOST: ${{secrets.THREADS_MYSQL_HOST}}
           POSTS_MYSQL_USER_NAME: ${{secrets.POSTS_MYSQL_USER_NAME}}
           POSTS_MYSQL_PASSWORD: ${{secrets.POSTS_MYSQL_PASSWORD}}
           POSTS_MYSQL_HOST: ${{secrets.POSTS_MYSQL_HOST}}
