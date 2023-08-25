@@ -7,12 +7,12 @@
 - 팀 명
   1이 3김
 - 팀원 소개
-  | 역할 | 이름 | Github | Blog |
-  | ------------------- | ------ | -------------------------------- | -------------------------------- |
-  | 리더 | 이다영 | https://github.com/verdantjuly | https://verdantjuly.tistory.com/ |
-  | 부리더, 회의록, Git | 김주희 | https://github.com/kinnjoo | https://velog.io/@kinjoo |
-  | CS 스터디 관리 | 김민규 | https://github.com/kimmingyu9411 | https://minker.tistory.com/ |
-  | 기술 면접 관리 | 김지혜 | https://github.com/gajigaji04 | https://velog.io/@gajigaji04 |
+  | 역할 | 이름 | Blog |
+  | ------------------- | ------ | -------------------------------- |
+  | 리더 | 이다영 | https://verdantjuly.tistory.com/ |
+  | 부리더, 회의록, Git | 김주희 | https://velog.io/@kinjoo |
+  | CS 스터디 관리 | 김민규 | https://minker.tistory.com/ |
+  | 기술 면접 관리 | 김지혜 | https://velog.io/@gajigaji04 |
 - 기능 역할 분담
   | 이름 | Backend | Frontend |
   | ------ | -------------------------- | -------------------------------- |
