@@ -12,7 +12,10 @@ const onRequest = async (res, method, pathname, params, key, cb) => {
             process.env.HOST,
             process.env.POSTS_PORT,
             (data) => {
-              console.log('=======================================================================',data)
+              console.log(
+                '=======================================================================',
+                data,
+              );
               adminModule.result = data.responseData;
             },
             contentId,
