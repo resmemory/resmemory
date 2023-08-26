@@ -120,12 +120,12 @@ const onRequest = async (res, method, pathname, params, key, cb) => {
           });
           responseData = { bodies: result, code: 171 };
         } catch (err) {
-          responseData = { code: 170 };
+          responseData = { code: 170, bodies: null };
         }
       }
 
       // 게시글 상세 조회용
-      if (pathname == '/users' && query.userId && !Array.isArray(query.userId)) {
+      if (pathname == '/users' && query.userId && !query.userId[0] == '[') {
         try {
           const result = await Users.findByPk(query.userId, {
             attributes: ['userId', 'nickname'],
@@ -133,12 +133,12 @@ const onRequest = async (res, method, pathname, params, key, cb) => {
           });
           responseData = { bodies: result, code: 1711 };
         } catch (err) {
-          responseData = { code: 1701 };
+          responseData = { code: 1701, bodies: null };
         }
       }
 
       // 게시글 전체 조회, 댓글 조회용
-      if (pathname == '/users' && Array.isArray(query.userId)) {
+      if (pathname == '/users' && query.userId[0] == '[') {
         try {
           const userIds = query.userId;
           const result = [];
@@ -152,7 +152,7 @@ const onRequest = async (res, method, pathname, params, key, cb) => {
           }
           responseData = { bodies: result, code: 1712 };
         } catch (err) {
-          responseData = { code: 1702 };
+          responseData = { code: 1702, bodies: null };
         }
       }
 
@@ -196,6 +196,10 @@ const onRequest = async (res, method, pathname, params, key, cb) => {
           const { userId } = params;
           if (!nickname) {
             responseData = { code: 153 };
+          }
+          const target = await Users.findOne({ where: { nickname } });
+          if (target) {
+            responseData = { code: 154 };
           }
           const result = await Users.update(
             {
