@@ -92,10 +92,10 @@ async function signup(pathname, params, responseData, token) {
 
             responseData = { code: 111, refresh };
           } else {
-            responseData = { code: 112, message: 'create불가' };
+            responseData = { code: 112 };
           }
         } else {
-          responseData = { code: 112, message: 'redis진입불가' };
+          responseData = { code: 112 };
         }
       }
     } catch (err) {
