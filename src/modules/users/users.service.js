@@ -112,7 +112,7 @@ const onRequest = async (res, method, pathname, params, key, cb) => {
     // GET
     case 'GET':
       // 내 정보 조회
-      if (pathname == '/users' && !query.userId && !Array.isArray(query.userId)) {
+      if (pathname == '/users' && !query.userId && !query.userIds) {
         try {
           const { userId } = params;
           const result = await Users.findByPk(userId, {
@@ -125,7 +125,7 @@ const onRequest = async (res, method, pathname, params, key, cb) => {
       }
 
       // 게시글 상세 조회용
-      if (pathname == '/users' && query.userId && !Array.isArray(query.userId)) {
+      if (pathname == '/users' && query.userId && !query.userIds) {
         try {
           const result = await Users.findByPk(query.userId, {
             attributes: ['userId', 'nickname'],
@@ -138,18 +138,21 @@ const onRequest = async (res, method, pathname, params, key, cb) => {
       }
 
       // 게시글 전체 조회, 댓글 조회용
-      if (pathname == '/users' && Array.isArray(query.userId)) {
+      if (pathname == '/users' && !query.userId && query.userIds) {
         try {
-          const userIds = query.userId;
-          const result = [];
+          let userIds = query.userIds;
 
-          for (const userId of userIds) {
-            const user = await Users.findByPk(userId, {
-              attributes: ['userId', 'nickname'],
-              raw: true,
-            });
-            result.push(user);
+          if (typeof userIds == 'string') {
+            userIds.replace('[', '');
+            userIds.replace(']', '');
+            userIds = userIds.split(',');
           }
+
+          const result = await Users.findAll({
+            where: { userId: userIds },
+            attributes: ['userId', 'nickname'],
+            raw: true,
+          });
           responseData = { bodies: result, code: 1712 };
         } catch (err) {
           responseData = { code: 1702, bodies: null };

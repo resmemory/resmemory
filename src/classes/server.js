@@ -185,7 +185,12 @@ class TcpServer {
     // AllUsers 전달 패킷
     let params;
     params = this.context;
-    params.query = { userId };
+
+    if (Array.isArray(userId)) {
+      params.query = { userIds: userId };
+    } else {
+      params.query = { userId };
+    }
     const packet = makePacket('/users', 'GET', 0, params);
     let isConnectedAllUsers = false;
     this.clientAllUsers = new TcpClient(
