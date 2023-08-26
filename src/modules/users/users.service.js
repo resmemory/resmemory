@@ -125,7 +125,7 @@ const onRequest = async (res, method, pathname, params, key, cb) => {
       }
 
       // 게시글 상세 조회용
-      if (pathname == '/users' && query.userId && !query.userId[0] == '[') {
+      if (pathname == '/users' && query.userId && !Array.isArray(query.userId)) {
         try {
           const result = await Users.findByPk(query.userId, {
             attributes: ['userId', 'nickname'],
@@ -138,7 +138,7 @@ const onRequest = async (res, method, pathname, params, key, cb) => {
       }
 
       // 게시글 전체 조회, 댓글 조회용
-      if (pathname == '/users' && query.userId[0] == '[') {
+      if (pathname == '/users' && Array.isArray(query.userId)) {
         try {
           const userIds = query.userId;
           const result = [];
