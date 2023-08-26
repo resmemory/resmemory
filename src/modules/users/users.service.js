@@ -143,8 +143,8 @@ const onRequest = async (res, method, pathname, params, key, cb) => {
           let userIds = query.userIds;
 
           if (typeof userIds == 'string') {
-            userIds.replace('[', '');
-            userIds.replace(']', '');
+            userIds = userIds.replace('[', '');
+            userIds = userIds.replace(']', '');
             userIds = userIds.split(',');
           }
 
