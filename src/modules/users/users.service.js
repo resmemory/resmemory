@@ -273,6 +273,13 @@ const onRequest = async (res, method, pathname, params, key, cb) => {
         try {
           const { userId } = params;
           const bookmarkId = params.params;
+          const target = await Bookmarks.findByPk(bookmarkId);
+          if (!bookmarkId) {
+            responseData = { code: 233 };
+          }
+          if (target.userId !== userId) {
+            responseData = { code: 234 };
+          }
           const result = await Bookmarks.destroy({ where: { bookmarkId } });
           if (result) {
             responseData = { code: 231 };
