@@ -46,16 +46,16 @@ async function signup(pathname, params, responseData, token) {
       const time = await redisCli.get(`verifytime_${email}`);
 
       if (receiveNumber.toString() !== (await redisCli.get(`verifyNumber_${email}`))) {
-        responseData = { code: 181 };
+        responseData = { code: 191 };
       } else if (now - (time + 600000) > 0) {
-        responseData = { code: 182 };
+        responseData = { code: 192 };
         await redisCli.del(`verifytime_${email}`);
       } else {
         await redisCli.set(`isverified_${email}`, `true`);
-        responseData = { code: 183 };
+        responseData = { code: 193 };
       }
     } catch (err) {
-      responseData = { code: 180 };
+      responseData = { code: 190 };
     }
   }
 

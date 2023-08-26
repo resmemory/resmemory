@@ -131,9 +131,9 @@ const onRequest = async (res, method, pathname, params, key, cb) => {
             attributes: ['userId', 'nickname'],
             raw: true,
           });
-          responseData = { bodies: result, code: 181 };
+          responseData = { bodies: result, code: 1711 };
         } catch (err) {
-          responseData = { code: 180 };
+          responseData = { code: 1701 };
         }
       }
 
@@ -150,9 +150,9 @@ const onRequest = async (res, method, pathname, params, key, cb) => {
             });
             result.push(user);
           }
-          responseData = { bodies: result, code: 191 };
+          responseData = { bodies: result, code: 1712 };
         } catch (err) {
-          responseData = { code: 190 };
+          responseData = { code: 1702 };
         }
       }
 
@@ -172,9 +172,9 @@ const onRequest = async (res, method, pathname, params, key, cb) => {
           const bodies = bookmarks.map((bookmark) => {
             return usersmodule.posts.filter((post) => bookmark.postId == post.postId);
           });
-          responseData = { code: 171, bodies };
+          responseData = { code: 211, bodies };
         } catch (err) {
-          responseData = { code: 170, bodies: null };
+          responseData = { code: 210, bodies: null };
         }
       }
 
@@ -191,21 +191,25 @@ const onRequest = async (res, method, pathname, params, key, cb) => {
 
     case 'PATCH':
       if (params.params == 'nickname') {
-        const { nickname } = params.bodies;
-        const { userId } = params;
-        if (!nickname) {
-          responseData = { code: 153 };
-        }
-        const result = await Users.update(
-          {
-            nickname,
-          },
-          { where: { userId } },
-        );
-        if (result) {
-          responseData = { code: 151 };
-        } else {
-          responseData = { code: 153 };
+        try {
+          const { nickname } = params.bodies;
+          const { userId } = params;
+          if (!nickname) {
+            responseData = { code: 153 };
+          }
+          const result = await Users.update(
+            {
+              nickname,
+            },
+            { where: { userId } },
+          );
+          if (result) {
+            responseData = { code: 151 };
+          } else {
+            responseData = { code: 152 };
+          }
+        } catch (err) {
+          responseData = { code: 150 };
         }
       }
       if (params.params == 'password') {
@@ -267,6 +271,7 @@ const onRequest = async (res, method, pathname, params, key, cb) => {
 
       if (pathname == '/bookmarks') {
         try {
+          const { userId } = params;
           const bookmarkId = params.params;
           const result = await Bookmarks.destroy({ where: { bookmarkId } });
           if (result) {
