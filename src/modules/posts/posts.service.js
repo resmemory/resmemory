@@ -16,19 +16,19 @@ const onRequest = async (res, method, pathname, params, key, cb) => {
           const { title, content, annualCategory, img } = params.bodies;
 
           if (!params.userId) {
-            responseData = { code: 345 };
+            responseData = { code: 312 };
           } else if (!title) {
-            responseData = { code: 342 };
+            responseData = { code: 313 };
           } else if (!content) {
-            responseData = { code: 343 };
+            responseData = { code: 314 };
           } else if (!annualCategory) {
-            responseData = { code: 344 };
+            responseData = { code: 315 };
           } else {
             await Posts.create({ title, content, annualCategory, img, userId: params.userId });
-            responseData = { code: 341 };
+            responseData = { code: 311 };
           }
         } catch (err) {
-          responseData = { code: 340 };
+          responseData = { code: 310 };
         }
       }
 
@@ -37,17 +37,19 @@ const onRequest = async (res, method, pathname, params, key, cb) => {
         try {
           const { userId } = params;
           const { content, postId } = params.bodies;
-          const result = await Posts.findByPk(postId);
 
           if (!params.userId) {
-            responseData = { code: 414 };
-          } else if (!content) {
             responseData = { code: 412 };
-          } else if (!result) {
+          } else if (!content) {
             responseData = { code: 413 };
           } else {
-            await Comments.create({ content, postId, userId });
-            responseData = { code: 411 };
+            const findPostData = await Posts.findByPk(postId);
+            if (!findPostData) {
+              responseData = { code: 414 };
+            } else {
+              await Comments.create({ content, postId, userId });
+              responseData = { code: 411 };
+            }
           }
         } catch (err) {
           responseData = { code: 410 };
@@ -79,15 +81,6 @@ const onRequest = async (res, method, pathname, params, key, cb) => {
 
           const userId = result.map((post) => post.userId);
 
-          postModule.connectToAllUsers(
-            process.env.HOST,
-            process.env.USERS_PORT,
-            (data) => {
-              postModule.nickname = data;
-            },
-            userId,
-          );
-
           await new Promise((resolve, reject) => {
             postModule.connectToAllUsers(
               process.env.HOST,
@@ -100,12 +93,14 @@ const onRequest = async (res, method, pathname, params, key, cb) => {
             );
           });
 
+          const bodies = postModule.nickname.responseData.bodies;
+
           responseData = result.map((post) => {
             const nickname = bodies.filter((nickname) => nickname.userId == post.userId);
             return { ...post, nickname: nickname[0].nickname };
           });
         } catch (err) {
-          responseData = { code: 310 };
+          responseData = { code: 320 };
         }
       }
 
@@ -116,7 +111,7 @@ const onRequest = async (res, method, pathname, params, key, cb) => {
           const result = await Posts.findAll({ where: { userId }, raw: true });
           responseData = { bodies: result };
         } catch (err) {
-          responseData = { code: 310 };
+          responseData = { code: 380 };
         }
       }
 
@@ -153,7 +148,7 @@ const onRequest = async (res, method, pathname, params, key, cb) => {
             return { ...post, nickname: nickname[0].nickname };
           });
         } catch (err) {
-          responseData = { code: 320 };
+          responseData = { code: 330 };
         }
       }
 
@@ -163,24 +158,28 @@ const onRequest = async (res, method, pathname, params, key, cb) => {
           const { postId } = params.query;
           const result = await Posts.findByPk(postId, { raw: true });
 
-          await new Promise((resolve, reject) => {
-            postModule.connectToUsers(
-              process.env.HOST,
-              process.env.USERS_PORT,
-              (data) => {
-                postModule.nickname = data;
-                resolve();
-              },
-              result.userId,
-            );
-          });
+          if (!result) {
+            responseData = { code: 342 };
+          } else {
+            await new Promise((resolve, reject) => {
+              postModule.connectToUsers(
+                process.env.HOST,
+                process.env.USERS_PORT,
+                (data) => {
+                  postModule.nickname = data;
+                  resolve();
+                },
+                result.userId,
+              );
+            });
 
-          result.nickname = postModule.nickname.responseData.bodies.nickname;
+            result.nickname = postModule.nickname.responseData.bodies.nickname;
 
-          await Posts.update({ viewCount: result.viewCount + 1 }, { where: { postId } });
-          responseData = { result };
+            await Posts.update({ viewCount: result.viewCount + 1 }, { where: { postId } });
+            responseData = { result };
+          }
         } catch (err) {
-          responseData = { code: 330 };
+          responseData = { code: 340 };
         }
       }
 
@@ -191,7 +190,7 @@ const onRequest = async (res, method, pathname, params, key, cb) => {
           const findPostData = await Posts.findByPk(postId);
 
           if (!findPostData) {
-            responseData = { code: 421 };
+            responseData = { code: 422 };
           } else {
             let result = await Comments.findAll({
               where: { postId },
@@ -241,23 +240,25 @@ const onRequest = async (res, method, pathname, params, key, cb) => {
         try {
           const { title, content, annualCategory, img } = params.bodies;
           const postId = params.params;
-          const findPostData = await Posts.findByPk(postId);
 
-          if (!findPostData) {
+          if (!params.userId) {
             responseData = { code: 352 };
-          } else if (!params.userId) {
-            responseData = { code: 353 };
-          } else if (params.userId !== findPostData.userId) {
-            responseData = { code: 354 };
           } else if (!title) {
-            responseData = { code: 355 };
+            responseData = { code: 353 };
           } else if (!content) {
-            responseData = { code: 356 };
+            responseData = { code: 354 };
           } else if (!annualCategory) {
-            responseData = { code: 357 };
+            responseData = { code: 355 };
           } else {
-            await Posts.update({ title, content, annualCategory, img }, { where: { postId } });
-            responseData = { code: 351 };
+            const findPostData = await Posts.findByPk(postId);
+            if (!findPostData) {
+              responseData = { code: 356 };
+            } else if (params.userId !== findPostData.userId) {
+              responseData = { code: 357 };
+            } else {
+              await Posts.update({ title, content, annualCategory, img }, { where: { postId } });
+              responseData = { code: 351 };
+            }
           }
         } catch (err) {
           responseData = { code: 350 };
@@ -269,19 +270,21 @@ const onRequest = async (res, method, pathname, params, key, cb) => {
         try {
           const { postId, content } = params.bodies;
           const commentId = params.params;
-          const findCommentData = await Comments.findByPk(commentId);
 
-          if (!findCommentData) {
+          if (!params.userId) {
             responseData = { code: 432 };
-          } else if (!params.userId) {
-            responseData = { code: 433 };
-          } else if (params.userId !== findCommentData.userId) {
-            responseData = { code: 434 };
           } else if (!content) {
-            responseData = { code: 435 };
+            responseData = { code: 433 };
           } else {
-            await Comments.update({ content }, { where: { postId, commentId } });
-            responseData = { code: 431 };
+            const findCommentData = await Comments.findByPk(commentId);
+            if (!findCommentData) {
+              responseData = { code: 434 };
+            } else if (params.userId !== findCommentData.userId) {
+              responseData = { code: 435 };
+            } else {
+              await Comments.update({ content }, { where: { postId, commentId } });
+              responseData = { code: 431 };
+            }
           }
         } catch (err) {
           responseData = { code: 430 };
@@ -304,17 +307,19 @@ const onRequest = async (res, method, pathname, params, key, cb) => {
       if (pathname === '/posts' && params.params !== 'admin') {
         try {
           const postId = params.params;
-          const findPostData = await Posts.findByPk(postId);
 
-          if (!findPostData) {
+          if (!params.userId) {
             responseData = { code: 362 };
-          } else if (!params.userId) {
-            responseData = { code: 363 };
-          } else if (params.userId !== findPostData.userId) {
-            responseData = { code: 364 };
           } else {
-            await Posts.destroy({ where: { postId } });
-            responseData = { code: 361 };
+            const findPostData = await Posts.findByPk(postId);
+            if (!findPostData) {
+              responseData = { code: 363 };
+            } else if (params.userId !== findPostData.userId) {
+              responseData = { code: 364 };
+            } else {
+              await Posts.destroy({ where: { postId } });
+              responseData = { code: 361 };
+            }
           }
         } catch (err) {
           responseData = { code: 360 };
@@ -329,7 +334,7 @@ const onRequest = async (res, method, pathname, params, key, cb) => {
           const result = await Posts.destroy({ where: { postId: contentId }, force: true });
           responseData = { code: 371, result };
         } catch (err) {
-          responseData = { code: 370, err };
+          responseData = { code: 370 };
         }
       }
 
@@ -338,15 +343,19 @@ const onRequest = async (res, method, pathname, params, key, cb) => {
         try {
           const { postId } = params.bodies;
           const commentId = params.params;
-          const findCommentData = await Comments.findByPk(commentId);
 
-          if (!findCommentData) {
+          if (!params.userId) {
             responseData = { code: 442 };
-          } else if (params.userId !== findCommentData.userId) {
-            responseData = { code: 443 };
           } else {
-            await Comments.destroy({ where: { postId, commentId } });
-            responseData = { code: 441 };
+            const findCommentData = await Comments.findByPk(commentId);
+            if (!findCommentData) {
+              responseData = { code: 443 };
+            } else if (params.userId !== findCommentData.userId) {
+              responseData = { code: 444 };
+            } else {
+              await Comments.destroy({ where: { postId, commentId } });
+              responseData = { code: 441 };
+            }
           }
         } catch (err) {
           responseData = { code: 440 };
