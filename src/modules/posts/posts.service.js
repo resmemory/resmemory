@@ -87,7 +87,7 @@ const onRequest = async (res, method, pathname, params, key, cb) => {
             },
             userId,
           );
-          const bodies = postModule.nickname.responseData.bodies;
+
           await new Promise((resolve, reject) => {
             postModule.connectToAllUsers(
               process.env.HOST,
@@ -99,8 +99,6 @@ const onRequest = async (res, method, pathname, params, key, cb) => {
               userId,
             );
           });
-
-          const bodies = postModule.nickname.responseData.bodies;
 
           responseData = result.map((post) => {
             const nickname = bodies.filter((nickname) => nickname.userId == post.userId);
