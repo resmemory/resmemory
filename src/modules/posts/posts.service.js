@@ -79,17 +79,6 @@ const onRequest = async (res, method, pathname, params, key, cb) => {
 
           const userId = result.map((post) => post.userId);
 
-<<<<<<< Updated upstream
-          postModule.connectToAllUsers(
-            process.env.HOST,
-            process.env.USERS_PORT,
-            (data) => {
-              postModule.nickname = data.responseData.bodies;
-            },
-            userId,
-          );
-          const bodies = postModule.nickname;
-=======
           await new Promise((resolve, reject) => {
             postModule.connectToAllUsers(
               process.env.HOST,
@@ -103,7 +92,6 @@ const onRequest = async (res, method, pathname, params, key, cb) => {
           });
 
           const bodies = postModule.nickname.responseData.bodies;
->>>>>>> Stashed changes
 
           responseData = result.map((post) => {
             const nickname = bodies.filter((nickname) => nickname.userId == post.userId);
@@ -139,17 +127,6 @@ const onRequest = async (res, method, pathname, params, key, cb) => {
 
           const userId = result.map((post) => post.userId);
 
-<<<<<<< Updated upstream
-          postModule.connectToAllUsers(
-            process.env.HOST,
-            process.env.USERS_PORT,
-            (data) => {
-              postModule.nickname = data.responseData.bodies;
-            },
-            userId,
-          );
-          const bodies = postModule.nickname;
-=======
           await new Promise((resolve, reject) => {
             postModule.connectToAllUsers(
               process.env.HOST,
@@ -163,7 +140,6 @@ const onRequest = async (res, method, pathname, params, key, cb) => {
           });
 
           const bodies = postModule.nickname.responseData.bodies;
->>>>>>> Stashed changes
 
           responseData = result.map((post) => {
             const nickname = bodies.filter((nickname) => nickname.userId == post.userId);
@@ -206,6 +182,7 @@ const onRequest = async (res, method, pathname, params, key, cb) => {
         try {
           const { postId } = params.query;
           const findPostData = await Posts.findByPk(postId);
+
           if (!findPostData) {
             responseData = { code: 421 };
           } else {
@@ -216,14 +193,18 @@ const onRequest = async (res, method, pathname, params, key, cb) => {
 
             const userId = result.map((comment) => comment.userId);
 
-            postModule.connectToAllUsers(
-              process.env.HOST,
-              process.env.USERS_PORT,
-              (data) => {
-                postModule.nickname = data.responseData.bodies;
-              },
-              userId,
-            );
+            await new Promise((resolve, reject) => {
+              postModule.connectToAllUsers(
+                process.env.HOST,
+                process.env.USERS_PORT,
+                (data) => {
+                  postModule.nickname = data.responseData.bodies;
+                  resolve();
+                },
+                userId,
+              );
+            });
+
             const bodies = postModule.nickname;
 
             responseData = result.map((comment) => {
