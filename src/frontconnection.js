@@ -3,10 +3,10 @@ import fs from 'fs';
 function frontconnection(pathname, res) {
   let filePath;
   if (pathname == '/main') {
-    filePath = './src/public/main.html';
+    filePath = './dist/public/main.html';
   }
   if (pathname == '/') {
-    filePath = './src/public/index.html';
+    filePath = './dist/public/index.html';
   }
 
   res.writeHead(200, { 'Content-Type': 'text/html' });
