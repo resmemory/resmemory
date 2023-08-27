@@ -2,11 +2,10 @@ import fs from 'fs';
 
 function frontconnection(pathname, res) {
   let filePath;
-  if (pathname == '/main') {
-    filePath = './dist/public/main.html';
-  }
   if (pathname == '/') {
     filePath = './dist/public/index.html';
+  } else {
+    filePath = `./dist/public${pathname}`;
   }
 
   res.writeHead(200, { 'Content-Type': 'text/html' });

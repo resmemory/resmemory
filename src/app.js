@@ -94,7 +94,12 @@ const server = http
           onRequest(res, method, path, params);
         });
       } else {
-        if (pathname == '/' || pathname == '/main') {
+        if (
+          pathname == '/' ||
+          pathname.endsWith('.js') ||
+          pathname.endsWith('.html') ||
+          pathname.endsWith('.css')
+        ) {
           frontconnection(pathname, res);
         } else {
           if (req.headers.authorization) {
