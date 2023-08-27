@@ -83,11 +83,11 @@ const onRequest = async (res, method, pathname, params, key, cb) => {
             process.env.HOST,
             process.env.USERS_PORT,
             (data) => {
-              postModule.nickname = data.responseData.bodies;
+              postModule.nickname = data;
             },
             userId,
           );
-          const bodies = postModule.nickname;
+          const bodies = postModule.nickname.responseData.bodies;
 
           responseData = result.map((post) => {
             const nickname = bodies.filter((nickname) => nickname.userId == post.userId);
@@ -127,11 +127,11 @@ const onRequest = async (res, method, pathname, params, key, cb) => {
             process.env.HOST,
             process.env.USERS_PORT,
             (data) => {
-              postModule.nickname = data.responseData.bodies;
+              postModule.nickname = data;
             },
             userId,
           );
-          const bodies = postModule.nickname;
+          const bodies = postModule.nickname.responseData.bodies;
 
           responseData = result.map((post) => {
             const nickname = bodies.filter((nickname) => nickname.userId == post.userId);
@@ -184,11 +184,11 @@ const onRequest = async (res, method, pathname, params, key, cb) => {
               process.env.HOST,
               process.env.USERS_PORT,
               (data) => {
-                postModule.nickname = data.responseData.bodies;
+                postModule.nickname = data;
               },
               userId,
             );
-            const bodies = postModule.nickname;
+            const bodies = postModule.nickname.responseData.bodies;
 
             responseData = result.map((comment) => {
               const nickname = bodies.filter((nickname) => nickname.userId == comment.userId);
