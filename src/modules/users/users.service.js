@@ -14,7 +14,7 @@ const onRequest = async (res, method, pathname, params, key, cb) => {
   // POST
   switch (method) {
     case 'POST':
-      // 회원 가입
+      // 회원 가입 관련 함수 호출
       if (pathname == '/mail' || pathname == '/verified' || pathname == '/signup') {
         responseData = await signup(pathname, params, responseData, token);
       }
@@ -124,7 +124,7 @@ const onRequest = async (res, method, pathname, params, key, cb) => {
         }
       }
 
-      // 게시글 상세 조회용
+      // 회원 조회 (게시글 상세 조회용)
       if (pathname == '/users' && query.userId && !query.userIds) {
         try {
           const result = await Users.findByPk(query.userId, {
@@ -137,7 +137,7 @@ const onRequest = async (res, method, pathname, params, key, cb) => {
         }
       }
 
-      // 게시글 전체 조회, 댓글 조회용
+      // 회원 조회 (게시글 전체 조회, 댓글 조회용)
       if (pathname == '/users' && !query.userId && query.userIds) {
         try {
           let userIds = query.userIds;
@@ -199,6 +199,7 @@ const onRequest = async (res, method, pathname, params, key, cb) => {
       );
 
     case 'PATCH':
+      // 닉네임 수정
       if (params.params == 'nickname') {
         try {
           const { nickname } = params.bodies;
@@ -225,6 +226,8 @@ const onRequest = async (res, method, pathname, params, key, cb) => {
           responseData = { code: 150 };
         }
       }
+
+      // 비밀번호 수정
       if (params.params == 'password') {
         try {
           const { password, confirm } = params.bodies;
@@ -263,6 +266,7 @@ const onRequest = async (res, method, pathname, params, key, cb) => {
       );
 
     case 'DELETE':
+      // 회원 탈퇴
       if (pathname == '/users') {
         try {
           const { message } = params.bodies;
