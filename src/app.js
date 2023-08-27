@@ -94,7 +94,12 @@ const server = http
           onRequest(res, method, path, params);
         });
       } else {
-        if (pathname == '/' || pathname == '/main') {
+        if (
+          pathname == '/' ||
+          pathname.endsWith('.js') ||
+          pathname.endsWith('.html') ||
+          pathname.endsWith('.css')
+        ) {
           frontconnection(pathname, res);
         } else {
           if (req.headers.authorization) {
@@ -107,7 +112,6 @@ const server = http
         }
       }
     } catch (error) {
-      console.log('====================', error);
       res
         .writeHead(200, { 'Content-Type': 'application/json' })
         .end(JSON.stringify({ respondData: { code: 100 } }));

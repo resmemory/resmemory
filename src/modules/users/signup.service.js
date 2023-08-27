@@ -8,6 +8,7 @@ import dotenv from 'dotenv';
 dotenv.config();
 
 async function signup(pathname, params, responseData, token) {
+  // 인증 메일 발송
   if (pathname == '/mail') {
     try {
       const verifyNumber = Math.floor(Math.random() * (999999 - 111111 + 1)) + 111111;
@@ -39,6 +40,7 @@ async function signup(pathname, params, responseData, token) {
     }
   }
 
+  // 인증 번호 확인
   if (pathname == '/verified') {
     try {
       const now = Date.now();
@@ -59,6 +61,7 @@ async function signup(pathname, params, responseData, token) {
     }
   }
 
+  // 회원가입
   if (pathname == '/signup') {
     try {
       const emailcheck =
