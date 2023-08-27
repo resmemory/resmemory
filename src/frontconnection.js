@@ -3,12 +3,18 @@ import fs from 'fs';
 function frontconnection(pathname, res) {
   let filePath;
   if (pathname == '/') {
-    filePath = './dist/public/index.html';
+    filePath = './src/public/index.html';
   } else {
-    filePath = `./dist/public${pathname}`;
+    filePath = `./src/public${pathname}`;
+    if (pathname.endsWith('.html')) {
+      res.writeHead(200, { 'Content-Type': 'text/html' });
+    } else if (pathname.endsWith('.js')) {
+      res.writeHead(200, { 'Content-Type': 'text/javascript' });
+    } else if (pathname.endsWith('.css') || pathname.endsWith('.ttf')) {
+      res.writeHead(200, { 'Content-Type': 'text/css' });
+    }
   }
 
-  res.writeHead(200, { 'Content-Type': 'text/html' });
   const readStream = fs.createReadStream(filePath);
   readStream.pipe(res);
 }

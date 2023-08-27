@@ -122,13 +122,13 @@
 
 https://www.figma.com/file/1l98XQdWwLR1L1htxBHEgR/resmemoriesArchitecture?type=whiteboard&node-id=0%3A1&t=YJ4qVaveqxSP8WTO-1
 
-![resmemoriesArchitecture.png](./src/public/assets/architecture.png)
+![resmemoriesArchitecture.png](./src/public/assets/image/architecture.png)
 
 # 🖼️ Wireframe
 
 https://www.figma.com/file/b8GjWz4MGgQbGMbBkBSHZl/resmemories?type=whiteboard&node-id=0%3A1&t=RGpa4XHCwBNTUugN-1
 
-![wireframe.png](./src/public/assets/wireframe.png)
+![wireframe.png](./src/public/assets/image/wireframe.png)
 
 # 📋 API
 
@@ -146,4 +146,4 @@ https://www.figma.com/file/b8GjWz4MGgQbGMbBkBSHZl/resmemories?type=whiteboard&no
 
 [https://drawsql.app/teams/verdantjuly/diagrams/resmemory](https://drawsql.app/teams/verdantjuly/diagrams/resmemory)
 
-![drawSQL-resmemory-export-2023-08-21 (2).png](./src/public/assets/erd.png)
+![drawSQL-resmemory-export-2023-08-21 (2).png](./src/public/assets/image/erd.png)

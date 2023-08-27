@@ -98,7 +98,9 @@ const server = http
           pathname == '/' ||
           pathname.endsWith('.js') ||
           pathname.endsWith('.html') ||
-          pathname.endsWith('.css')
+          pathname.endsWith('.css') ||
+          pathname.endsWith('.ttf') ||
+          pathname.endsWith('.png')
         ) {
           frontconnection(pathname, res);
         } else {
