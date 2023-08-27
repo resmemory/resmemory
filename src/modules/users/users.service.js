@@ -159,22 +159,28 @@ const onRequest = async (res, method, pathname, params, key, cb) => {
         }
       }
 
-      if (pathname == '/bookmarks') {
+      // 북마크 전체 조회
+      if (pathname === '/bookmarks') {
         try {
           const { userId } = params;
           const bookmarks = await Bookmarks.findAll({ order: ['createdAt'], where: { userId } });
 
-          usersmodule.connectToGetPosts(
-            process.env.HOST,
-            process.env.POSTS_PORT,
-            (data) => {
-              usersmodule.posts = data.responseData.bodies;
-            },
-            userId,
-          );
+          await new Promise((resolve, reject) => {
+            usersmodule.connectToGetPosts(
+              process.env.HOST,
+              process.env.POSTS_PORT,
+              (data) => {
+                usersmodule.posts = data.responseData.bodies;
+                resolve();
+              },
+              userId,
+            );
+          });
+
           const bodies = bookmarks.map((bookmark) => {
             return usersmodule.posts.filter((post) => bookmark.postId == post.postId);
           });
+
           responseData = { code: 211, bodies };
         } catch (err) {
           responseData = { code: 210, bodies: null };
