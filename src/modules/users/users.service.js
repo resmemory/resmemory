@@ -286,6 +286,7 @@ const onRequest = async (res, method, pathname, params, key, cb) => {
         }
       }
 
+      // 북마크 삭제
       if (pathname == '/bookmarks') {
         try {
           const { userId } = params;
