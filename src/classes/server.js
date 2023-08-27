@@ -139,7 +139,7 @@ class TcpServer {
       if (isConnectedUsers !== true) {
         this.clientUsers.connect();
       }
-    }, 3000);
+    }, 300);
   }
 
   // getPosts 접속 함수
@@ -177,7 +177,7 @@ class TcpServer {
       if (isConnectedGetPosts !== true) {
         this.clientGetPosts.connect();
       }
-    }, 3000);
+    }, 300);
   }
 
   // AllUsers 접속 함수
@@ -220,7 +220,7 @@ class TcpServer {
       if (isConnectedAllUsers !== true) {
         this.clientAllUsers.connect();
       }
-    }, 3000);
+    }, 300);
   }
 
   //admin/post 통신 Posts 접속 함수
@@ -259,7 +259,7 @@ class TcpServer {
       if (isConnectedPosts !== true) {
         this.clientPosts.connect();
       }
-    }, 3000);
+    }, 300);
   }
 
   //admin/comment 통신 comment 접속 함수
@@ -298,7 +298,7 @@ class TcpServer {
       if (isConnectedComments !== true) {
         this.clientComments.connect();
       }
-    }, 3000);
+    }, 300);
   }
   //admin/thread 통신 comment 접속 함수
   connectToThreads(host, port, onNoti, contentId) {
@@ -336,7 +336,7 @@ class TcpServer {
       if (isConnectedThreads !== true) {
         this.clientThreads.connect();
       }
-    }, 3000);
+    }, 300);
   }
 }
 

@@ -152,11 +152,11 @@ const onRequest = async (res, method, pathname, params, key, cb) => {
             process.env.HOST,
             process.env.USERS_PORT,
             (data) => {
-              postModule.nickname = data.responseData.bodies.nickname;
+              postModule.nickname = data;
             },
             result.userId,
           );
-          result.nickname = postModule.nickname;
+          result.nickname = postModule.nickname.responseData.bodies.nickname;
 
           await Posts.update({ viewCount: result.viewCount + 1 }, { where: { postId } });
           responseData = { result };
