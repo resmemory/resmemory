@@ -79,6 +79,15 @@ const onRequest = async (res, method, pathname, params, key, cb) => {
 
           const userId = result.map((post) => post.userId);
 
+          postModule.connectToAllUsers(
+            process.env.HOST,
+            process.env.USERS_PORT,
+            (data) => {
+              postModule.nickname = data;
+            },
+            userId,
+          );
+          const bodies = postModule.nickname.responseData.bodies;
           await new Promise((resolve, reject) => {
             postModule.connectToAllUsers(
               process.env.HOST,
