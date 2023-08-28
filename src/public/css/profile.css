@@ -2,9 +2,13 @@
   font-family: 'jaram';
   src: url('http://localhost:8000/assets/ttf/jaram.ttf');
 }
+@font-face {
+  font-family: 'jaemin';
+  src: url('http://localhost:8000/assets/ttf/Jaemin3-Regular.ttf');
+}
 
 * {
-  font-family: 'jaram';
+  font-family: 'jaemin';
   font-weight: 900px;
 }
 
@@ -21,8 +25,20 @@ header {
 
 .headerBtns > button {
   width: 80px;
-  height: 40px;
-  font-size: 20px;
+  height: 30px;
+  font-size: 15px;
+  background-color: black;
+  color: white;
+  border-radius: 5px;
+}
+
+.headerBtns > button:hover {
+  width: 80px;
+  height: 30px;
+  font-size: 15px;
+  background-color: white;
+  color: black;
+  border-radius: 5px;
 }
 
 /* footer */
