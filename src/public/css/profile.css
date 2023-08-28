@@ -1,0 +1,16 @@
+@font-face {
+  font-family: 'jaram';
+  src: url('http://localhost:8000/assets/ttf/jaram.ttf');
+}
+
+* {
+  font-family: 'jaram';
+  font-weight: 900px;
+}
+
+/* footer */
+footer {
+  margin-top: 200px;
+  text-align: center;
+  font-family: Arial, Helvetica, sans-serif;
+}
