@@ -114,6 +114,11 @@ const server = http
 
             params = { userId };
           }
+          const pathArray = path.split('/');
+          if (pathArray.length > 2) {
+            path = path.substring(0, path.lastIndexOf('/'));
+            params.params = pathArray.pop();
+          }
           params.query = uri.query;
           onRequest(res, method, path, params);
         }
