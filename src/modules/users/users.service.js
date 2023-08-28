@@ -69,6 +69,7 @@ const onRequest = async (res, method, pathname, params, key, cb) => {
             responseData = { code: 123, refresh, token };
           }
         } catch (err) {
+          console.log(err);
           responseData = { code: 120 };
         }
       }
