@@ -3,33 +3,35 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <link rel="stylesheet" href="http://localhost:8000/css/login.css" />
-    <script src="http://localhost:8000/js/login.js"></script>
-    <link rel="stylesheet" href="http://localhost:8000/css/login.css" type="text/css" />
+    <script src="./js/login.js"></script>
+    <link rel="stylesheet" href="./css/login.css" type="text/css" />
 
     <title>[ 응답하라 추억시대 ] - 회원가입 / 로그인</title>
   </head>
   <body>
     <header>
-      <img
-        class="logo"
-        src="http://localhost:8000/assets/image/logo.png"
-        onclick="location.href = `http://localhost:8000/index.html`"
-      />
+      <img class="logo" src="./assets/image/logo.png" onclick="location.href = `./index.html`" />
       <div class="headerBtns"></div>
     </header>
     <main>
-      <div class="modal">
+      <div class="loginBtns">
+        <button class="signupModalBtn">회원 가입</button>
+        <button class="loginModalBtn" onclick="modalOn('#loginModal')">로그인</button>
+        <button class="kakaoBtn">카카오 로그인</button>
+      </div>
+      <div class="modal" id="loginModal" style="display: none">
         <div class="modalContent">
+          <button class=".close" onclick="modalClose('#loginModal')">X</button>
           <div class="loginBox">
             <div>
               <label>로그인 이메일</label>
-              <input class="email" />
+              <input class="email" type="text" />
             </div>
             <div>
               <label>비밀번호</label>
-              <input class="password" />
+              <input class="password" type="text" />
             </div>
+            <button class="login" onclick="login()">로그인</button>
           </div>
         </div>
       </div>
