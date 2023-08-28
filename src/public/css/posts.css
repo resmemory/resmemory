@@ -1,0 +1,47 @@
+@font-face {
+  font-family: 'jaemin';
+  src: url('http://localhost:8000/assets/ttf/Jaemin3-Regular.ttf');
+}
+
+* {
+  font-family: 'jaemin';
+  font-weight: 900px;
+}
+
+/* header */
+
+header {
+  height: 120px;
+}
+
+.logo {
+  height: 100px;
+  float: right;
+}
+
+/* main */
+
+main {
+  padding-top: 50px;
+}
+
+.container {
+  margin-left: auto;
+  margin-right: auto;
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+}
+
+.postBox {
+  display: inline-block;
+}
+
+/* footer */
+
+footer {
+  margin-top: 200px;
+  text-align: center;
+  font-family: Arial, Helvetica, sans-serif;
+}

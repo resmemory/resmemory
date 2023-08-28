@@ -114,18 +114,26 @@ const onRequest = async (res, method, pathname, params, key, cb) => {
           responseData = { code: 380 };
         }
       }
+
       // 게시글 전체 조회(리스트 출력용)
       if (pathname === '/posts' && params.params == 'list') {
         try {
-          const result = await Posts.count();
-          responseData = { bodies: result };
+          if (params.query.annualCategory) {
+            const result = await Posts.count({
+              where: { annualCategory: params.query.annualCategory },
+            });
+            responseData = { bodies: result };
+          } else {
+            const result = await Posts.count();
+            responseData = { bodies: result };
+          }
         } catch (err) {
           responseData = { code: 390 };
         }
       }
 
       // 연도별 게시글 조회
-      if (pathname === '/posts' && params.query.annualCategory) {
+      if (pathname === '/posts' && params.query.annualCategory && !params.params) {
         try {
           const { annualCategory, pageNum } = params.query;
           const result = await Posts.findAll({
