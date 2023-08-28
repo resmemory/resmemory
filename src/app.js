@@ -126,7 +126,7 @@ const server = http
     } catch (error) {
       res
         .writeHead(200, { 'Content-Type': 'application/json' })
-        .end(JSON.stringify({ respondData: { code: 100 } }));
+        .end(JSON.stringify({ responseData: { code: 100 } }));
     }
   })
   .listen(port, () => {
