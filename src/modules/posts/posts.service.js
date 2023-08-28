@@ -379,7 +379,7 @@ const onRequest = async (res, method, pathname, params, key, cb) => {
           const result = await Comments.destroy({ where: { commentId: contentId }, force: true });
           responseData = { code: 451, result };
         } catch (err) {
-          responseData = { code: 450, err };
+          responseData = { code: 450 };
         }
       }
 
