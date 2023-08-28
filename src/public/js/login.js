@@ -20,7 +20,7 @@ function modalClose(classname) {
 async function login() {
   const password = document.querySelector('.password').value;
   const email = document.querySelector('.email').value;
-  const response = await fetch(`http://localhost:8000/login`, {
+  const response = await fetch(`./api/login`, {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
@@ -33,6 +33,6 @@ async function login() {
   alert(code[result.responseData.code]);
   if (result.responseData.code == 121 || result.responseData.code == 123) {
     localStorage.setItem('Authorization', response.headers.get('Authorization'));
-    window.location.href = './main.html';
+    window.location.href = './main';
   }
 }

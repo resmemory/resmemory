@@ -32,6 +32,12 @@ const server = http
           params.refresh = refresh;
         }
       }
+      if (
+        (method == 'POST' || method == 'PATCH' || method == 'DELETE') &&
+        !pathname.startsWith('/api')
+      ) {
+        throw new Error('올바른 요청이 아닙니다.');
+      }
 
       if (method === 'POST') {
         if (req.headers.authorization) {
@@ -40,33 +46,36 @@ const server = http
           params = { userId };
         }
         let body = '';
+        let path = pathname.replace('/api', '');
 
         req.on('data', function (data) {
           body += data;
         });
+
         req.on('end', function () {
           if (req.headers['content-type'] === 'application/json') {
             params.bodies = JSON.parse(body);
           }
-          onRequest(res, method, pathname, params);
+          onRequest(res, method, path, params);
         });
       } else if (method === 'PATCH') {
         let body = '';
         const userId = authmiddleware(req, res, params);
-
+        let path = pathname.replace('/api', '');
         params = { userId };
+
         req.on('data', function (data) {
           body += data;
         });
+
         req.on('end', function () {
           if (req.headers['content-type'] === 'application/json') {
             params.bodies = JSON.parse(body);
           }
 
-          const pathArray = pathname.split('/');
-          let path = pathname;
+          const pathArray = path.split('/');
           if (pathArray.length > 2) {
-            path = pathname.substring(0, pathname.lastIndexOf('/'));
+            path = path.substring(0, path.lastIndexOf('/'));
             params.params = pathArray.pop();
           }
 
@@ -77,40 +86,36 @@ const server = http
 
         params = { userId };
         let body = '';
+        let path = pathname.replace('/api', '');
+
         req.on('data', function (data) {
           body += data;
         });
+
         req.on('end', function () {
           if (req.headers['content-type'] === 'application/json') {
             params.bodies = JSON.parse(body);
           }
-          const pathArray = pathname.split('/');
-          let path = pathname;
+          const pathArray = path.split('/');
           if (pathArray.length > 2) {
-            path = pathname.substring(0, pathname.lastIndexOf('/'));
+            path = path.substring(0, path.lastIndexOf('/'));
             params.params = pathArray.pop();
           }
 
           onRequest(res, method, path, params);
         });
       } else {
-        if (
-          pathname == '/' ||
-          pathname.endsWith('.js') ||
-          pathname.endsWith('.html') ||
-          pathname.endsWith('.css') ||
-          pathname.endsWith('.ttf') ||
-          pathname.endsWith('.png')
-        ) {
+        if (!pathname.startsWith('/api')) {
           frontconnection(pathname, res);
         } else {
+          let path = pathname.replace('/api', '');
           if (req.headers.authorization) {
             const userId = authmiddleware(req, res, params);
 
             params = { userId };
           }
           params.query = uri.query;
-          onRequest(res, method, pathname, params);
+          onRequest(res, method, path, params);
         }
       }
     } catch (error) {
