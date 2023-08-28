@@ -1,0 +1,33 @@
+@font-face {
+  font-family: 'jaram';
+  src: url('http://localhost:8000/assets/ttf/jaram.ttf');
+}
+
+* {
+  font-family: 'jaram';
+  font-weight: 900px;
+}
+
+/* header */
+
+header {
+  height: 120px;
+}
+
+.logo {
+  height: 100px;
+  float: right;
+}
+
+.headerBtns > button {
+  width: 80px;
+  height: 40px;
+  font-size: 20px;
+}
+
+/* footer */
+footer {
+  margin-top: 200px;
+  text-align: center;
+  font-family: Arial, Helvetica, sans-serif;
+}

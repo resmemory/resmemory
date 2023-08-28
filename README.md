@@ -132,7 +132,7 @@ https://www.figma.com/file/b8GjWz4MGgQbGMbBkBSHZl/resmemories?type=whiteboard&no
 
 # 📋 API
 
-[https://verdantjuly.gitbook.io/resmemory/](https://verdantjuly.gitbook.io/resmemory/)
+[응답하라 추억시대 API 명세서](https://www.notion.so/c01e87e20d754c11a0d8d93740057ab2?pvs=21)
 
 [admin 서비스 코드 별 메시지](https://www.notion.so/b70891e997b645b380b20bb319b4a965?pvs=21)
 

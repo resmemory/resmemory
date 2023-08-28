@@ -19,31 +19,12 @@ header {
   float: right;
 }
 
-.loginPageBtns {
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-}
+/* footer */
 
-.loginPageBtns > button {
-  width: 300px;
-  height: 80px;
-  margin: 20px 20px 20px 20px;
-  font-size: 40px;
-  background-color: black;
-  color: white;
-  border-radius: 15px;
-}
-.loginPageBtns > button:hover {
-  width: 300px;
-  height: 80px;
-  margin: 20px 20px 20px 20px;
-  font-size: 40px;
-  background-color: white;
-  color: black;
-  border-radius: 15px;
-  border: 3px solid black;
+footer {
+  margin-top: 200px;
+  text-align: center;
+  font-family: Arial, Helvetica, sans-serif;
 }
 
 /* 모달 스타일 */
@@ -80,6 +61,33 @@ label {
 }
 
 /* 페이지 영역 */
+
+.loginPageBtns {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.loginPageBtns > button {
+  width: 300px;
+  height: 80px;
+  margin: 20px 20px 20px 20px;
+  font-size: 40px;
+  background-color: black;
+  color: white;
+  border-radius: 15px;
+}
+.loginPageBtns > button:hover {
+  width: 300px;
+  height: 80px;
+  margin: 20px 20px 20px 20px;
+  font-size: 40px;
+  background-color: white;
+  color: black;
+  border-radius: 15px;
+  border: 3px solid black;
+}
 
 /* loginBox */
 
