@@ -14,24 +14,64 @@
       <div class="headerBtns"></div>
     </header>
     <main>
-      <div class="loginBtns">
-        <button class="signupModalBtn">회원 가입</button>
+      <div class="loginPageBtns">
+        <button class="signupModalBtn" onclick="modalOn('#signupModal')">회원 가입</button>
         <button class="loginModalBtn" onclick="modalOn('#loginModal')">로그인</button>
         <button class="kakaoBtn">카카오 로그인</button>
       </div>
       <div class="modal" id="loginModal" style="display: none">
         <div class="modalContent">
-          <button class=".close" onclick="modalClose('#loginModal')">X</button>
           <div class="loginBox">
             <div>
-              <label>로그인 이메일</label>
+              <label>이메일</label>
+              <br />
               <input class="email" type="text" />
             </div>
             <div>
               <label>비밀번호</label>
+              <br />
               <input class="password" type="text" />
             </div>
-            <button class="login" onclick="login()">로그인</button>
+            <div class="loginBoxBtns">
+              <button class="login" onclick="login()">로그인</button>
+              <button class=".close" onclick="modalClose('#loginModal')">닫기</button>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="modal" id="signupModal" style="display: none">
+        <div class="modalContent">
+          <div class="signupBox">
+            <div>
+              <label>이메일</label>
+              <br />
+              <input class="email" type="text" />
+              <button onclick="email()" class="verified">인증</button>
+            </div>
+            <div>
+              <label>인증번호</label>
+              <br />
+              <input class="receiveNumber" type="text" />
+              <button onclick="verified()" class="check">확인</button>
+            </div>
+            <div>
+              <label>닉네임</label>
+              <br />
+              <input class="nickname" type="text" />
+            </div>
+            <div>
+              <label>비밀번호</label>
+              <br />
+              <input class="password" type="text" />
+            </div>
+            <div>
+              <label>확인 비밀번호</label>
+              <input class="confirm" type="text" />
+            </div>
+            <div class="signupBoxBtns">
+              <button class="login" onclick="signup()">회원가입</button>
+              <button class=".close" onclick="modalClose('#signupModal')">닫기</button>
+            </div>
           </div>
         </div>
       </div>
