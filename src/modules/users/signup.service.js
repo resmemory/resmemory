@@ -53,6 +53,7 @@ async function signup(pathname, params, responseData, token) {
         responseData = { code: 192 };
         await redisCli.del(`verifytime_${email}`);
       } else {
+        await redisCli.del(`verifytime_${email}`);
         await redisCli.set(`isverified_${email}`, `true`);
         responseData = { code: 193 };
       }
@@ -81,6 +82,7 @@ async function signup(pathname, params, responseData, token) {
         responseData = { code: 116 };
       } else {
         if ((await redisCli.get(`isverified_${email}`)) == 'true') {
+          await redisCli.del(`isverified_${email}`);
           const hashedPassword = await bcrypt.hash(password, 10);
           const result = await Users.create({
             email,
