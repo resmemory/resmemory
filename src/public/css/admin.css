@@ -1,0 +1,73 @@
+@font-face {
+  font-family: 'jaram';
+  src: url('http://localhost:8000/assets/ttf/jaram.ttf');
+}
+
+* {
+  font-family: 'jaram';
+}
+
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 20px;
+  height: 50px;
+  font-size: 50px;
+  font-weight: bold;
+}
+
+.header::before {
+  content: '응답하라 추억시대';
+  margin-left: 50px;
+}
+
+.logo {
+  height: 130px;
+  cursor: pointer;
+}
+
+/* 추가로 생성된 상자 세트 스타일 설정 */
+.additionalBoxSet {
+  display: flex;
+  flex-direction: column; /* 세로 방향으로 정렬 */
+  align-items: flex-start;
+  border: 2px solid black;
+  border-radius: 10px;
+  padding: 10px;
+  margin: 10px 20px;
+  background-color: white;
+  position: absolute;
+  top: 120px;
+  left: 0;
+  right: 0;
+}
+
+/* 추가로 생성된 상자 스타일 설정 */
+.additionalBox {
+  display: flex;
+  flex-direction: row; /* 가로 방향으로 정렬 */
+  align-items: center;
+  border: 2px solid black;
+  border-radius: 10px;
+  padding: 10px;
+  margin-top: 10px; /* 위쪽 마진 추가 */
+  background-color: white;
+}
+
+/* 각각의 요소 스타일 설정 */
+.additionalBox p {
+  font-weight: bold;
+  margin: 0;
+  padding-right: 20px;
+}
+
+/* 삭제 버튼 스타일 설정 */
+.deleteButton {
+  background-color: black;
+  color: white;
+  border: none;
+  border-radius: 10px;
+  padding: 5px 10px;
+  cursor: pointer;
+}
