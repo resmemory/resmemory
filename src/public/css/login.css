@@ -2,6 +2,10 @@
   font-family: 'jaram';
   src: url('http://localhost:8000/assets/ttf/jaram.ttf');
 }
+@font-face {
+  font-family: 'jaemin';
+  src: url('http://localhost:8000/assets/ttf/Jaemin3-Regular.ttf');
+}
 
 * {
   font-family: 'jaram';
@@ -118,7 +122,7 @@ label {
   width: 380px;
   height: 30px;
   font-size: 20px;
-  font-family: Arial, Helvetica, sans-serif;
+  font-family: 'jaemin';
 }
 
 /* signupBox */
@@ -131,7 +135,7 @@ label {
   width: 330px;
   height: 30px;
   font-size: 20px;
-  font-family: Arial, Helvetica, sans-serif;
+  font-family: 'jaemin';
 }
 
 .signupBoxBtns {
