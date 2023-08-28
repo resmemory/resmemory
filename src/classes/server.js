@@ -143,11 +143,11 @@ class TcpServer {
   }
 
   // getPosts 접속 함수
-  connectToGetPosts(host, port, onNoti, userId) {
+  connectToGetPosts(host, port, onNoti, postIds) {
     // getPosts 전달 패킷
     let params;
     params = this.context;
-    params.query = { userId };
+    params.query = { postIds };
     const packet = makePacket('/posts', 'GET', 0, params);
     let isConnectedGetPosts = false;
     this.clientGetPosts = new TcpClient(

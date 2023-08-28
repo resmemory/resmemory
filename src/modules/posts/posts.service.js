@@ -105,10 +105,16 @@ const onRequest = async (res, method, pathname, params, key, cb) => {
       }
 
       // 게시글 전체 조회(북마크 조회용)
-      if (pathname === '/posts' && params.query.userId) {
+      if (pathname === '/posts' && params.query.postIds) {
         try {
-          const { userId } = params.query;
-          const result = await Posts.findAll({ where: { userId }, raw: true });
+          let postIds = params.query.postIds;
+          if (typeof postIds == 'string') {
+            postIds = postIds.replace('[', '');
+            postIds = postIds.replace(']', '');
+            postIds = postIds.split(',');
+          }
+
+          const result = await Posts.findAll({ where: { postId: postIds }, raw: true });
           responseData = { bodies: result };
         } catch (err) {
           responseData = { code: 380 };
