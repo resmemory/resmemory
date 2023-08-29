@@ -16,21 +16,19 @@
     <div class="threadbox">
       <div class="flex-container">
         <div id="threadList"></div>
-        <div class="button-container">
-          <button id="openModal">신고</button>
-          <button id="btn2">삭제</button>
-        </div>
+        <div class="button-container"></div>
       </div>
       <div class="pagination" id="pagination"></div>
     </div>
 
-    <!-- 신고 모달 창 -->
-    <div id="myModal" class="modal">
+    <!-- 모달창 -->
+    <div id="reportModal" class="modal">
       <div class="modal-content">
-        <p>신고 내용을 입력하세요:</p>
-        <input type="text" id="reportInput" placeholder="신고 내용을 입력하세요" />
-        <button id="submitReport">신고하기</button>
-        <button id="closeModal">닫기</button>
+        <span class="close-button" id="closeModal">&times;</span>
+        <h2>스레드 신고</h2>
+        <p>이 스레드를 신고하시겠습니까?</p>
+        <textarea id="reportReason" placeholder="신고 이유를 입력하세요"></textarea>
+        <button id="confirmReport">신고</button>
       </div>
     </div>
 

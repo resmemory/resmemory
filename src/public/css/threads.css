@@ -22,12 +22,33 @@ h1 {
   text-align: center;
 }
 
+/* threadbox */
 .threadbox {
   position: absolute;
   border: 2px solid black;
-  padding: 10px;
-  width: 1500px;
+  padding: 20px;
+  width: 70%;
+  left: 50%;
+  transform: translateX(-50%);
   display: inline-block;
+  overflow: auto;
+}
+
+@media screen and (max-width: 768px) {
+  .threadbox {
+    width: 90%;
+    max-width: none;
+  }
+}
+
+.threadList {
+  position: absolute;
+  padding: 10px;
+  width: 70%;
+  left: 50%;
+  transform: translateX(-50%);
+  display: inline-block;
+  overflow: auto;
 }
 
 .report {
@@ -56,36 +77,53 @@ body {
 }
 
 .button-container {
-  margin-left: 10px; /* 원하는 여백 설정 */
+  margin-left: 10px;
 }
 
 /* 모달 스타일 */
+/* 모달 스타일링 */
 .modal {
   display: none;
   position: fixed;
-  top: 0;
+  z-index: 1;
   left: 0;
+  top: 0;
   width: 100%;
   height: 100%;
-  background-color: rgba(0, 0, 0, 0.5);
-  justify-content: center;
-  align-items: center;
+  background-color: rgba(0, 0, 0, 0.7);
 }
 
 .modal-content {
-  background-color: white;
+  background-color: #fefefe;
+  margin: 10% auto;
   padding: 20px;
-  border-radius: 5px;
-  box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.3);
-  display: flex;
-  flex-direction: column; /* 입력란과 버튼을 위아래로 배치 */
-  align-items: center; /* 수직 가운데 정렬 */
+  border: 1px solid #888;
+  width: 60%;
+  border-radius: 8px;
+  box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.2);
+
+  max-width: 400px; /* 모달창의 최대 너비 설정 */
+  margin: 10% auto;
 }
 
-/* 입력란 스타일 */
-input[type='text'] {
-  width: 100%;
+.close-button {
+  float: right;
+  font-size: 20px;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+textarea {
+  width: 94%; 
   padding: 10px;
-  font-size: 16px;
-  margin-bottom: 10px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  resize: vertical;
+  min-height: 60px; 
+  max-height: 200px;
+}
+
+#confirmReport {
+  display: block;
+  margin: 0 auto;
 }
