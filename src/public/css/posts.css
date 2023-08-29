@@ -9,7 +9,6 @@
 }
 
 /* header */
-
 header {
   height: 120px;
 }
@@ -17,14 +16,15 @@ header {
 .logo {
   height: 100px;
   float: right;
+  cursor: pointer;
 }
 
 /* main */
-
 main {
   padding-top: 50px;
 }
 
+/* 게시글(페이지버튼) + 연도별 카테고리 나란히 정렬 */
 .container {
   margin-left: auto;
   margin-right: auto;
@@ -34,12 +34,83 @@ main {
   justify-content: space-between;
 }
 
+/* 게시글 + 페이지버튼 정렬 */
+.post_pagination {
+  margin-left: 100px;
+}
+
+/* 게시글 상단 표기 */
+.title {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+}
+
+/* 페이지네이션 버튼 */
+.pagination {
+  text-align: center;
+}
+
+.pagination > button {
+  cursor: pointer;
+  margin: 20px 20px 0px 0px;
+  background-color: black;
+  color: white;
+  border: none;
+  border-radius: 10px;
+  padding: 5px 10px;
+}
+
+/* 게시글 */
 .postBox {
-  display: inline-block;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+}
+
+.postBox > p {
+  margin-right: 90px;
+}
+
+.postBox > p:nth-child(2) {
+  width: 350px;
+  cursor: pointer;
+}
+
+.postBox > p:nth-child(2):hover {
+  text-decoration: underline;
+}
+
+/* 연도별 카테고리 */
+.annual_category_box {
+  margin: 50px 100px 0px 0px;
+  gap: 10px;
+  border: 1px solid #ebeaec;
+  box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.3);
+  border-radius: 16px;
+  padding: 30px 50px 30px 50px;
+}
+
+.annual_category_box > p {
+  text-align: center;
+  margin: 20px;
+  cursor: pointer;
+}
+
+.annual_category_box > p:hover {
+  text-decoration: underline;
+}
+
+/* 익명 스레드 버튼 */
+.thread_btn {
+  margin-top: 20px;
+  cursor: pointer;
+  background-color: black;
+  color: white;
+  padding: 5px 10px;
 }
 
 /* footer */
-
 footer {
   margin-top: 200px;
   text-align: center;
