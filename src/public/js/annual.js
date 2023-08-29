@@ -17,9 +17,6 @@ fetch(`./api/posts/list?annualCategory=${category}`, {
   .then((data) => {
     totalPosts = data.responseData.bodies;
     annualPosts(currentPage, category, totalPosts);
-  })
-  .catch((error) => {
-    console.error('Error fetching total posts:', error);
   });
 
 const annualPosts = async (page, category, totalPosts) => {
@@ -30,19 +27,22 @@ const annualPosts = async (page, category, totalPosts) => {
     },
   });
   const data = await response.json();
+  const titleColumn = document.querySelector('.title_column');
+  if (totalPosts == 0) {
+    titleColumn.innerHTML = `<p style=color:gray;>${category}년대 카테고리에 아직 작성된 게시물이 없습니다. 첫 작성자가 되어주세요!✋</p>`;
+  }
   const postlist = document.querySelector('.postlist');
-  postlist.innerHTML = '';
 
   const postsData = data.responseData
     .map(
       (post) =>
-        `<div class="postBox">
-        <p>${post.annualCategory}</p>
-        <p onclick="clickPost(${post.postId})">${post.title}</p>
-        <p>${post.nickname}</p>
-        <p>${new Date(post.createdAt).toLocaleDateString('ko-KR', { timeZone: 'Asia/Seoul' })}</p>
-        <p>${post.viewCount}</p>
-        </div>`,
+        `<tr class="postBox">
+      <td>${post.annualCategory}</td>
+      <td onclick="clickPost(${post.postId})">${post.title}</td>
+      <td>${post.nickname}</td>
+      <td>${new Date(post.createdAt).toLocaleDateString('ko-KR', { timeZone: 'Asia/Seoul' })}</td>
+      <td>${post.viewCount}</td>
+      </tr>`,
     )
     .join('');
   postlist.innerHTML = postsData;
@@ -74,7 +74,7 @@ const annualCategory = (category) => {
   location.href = `./annual?category=${category}`;
 };
 
-// 상세 페이지로 이동(url 주소 확인 필요)
+// 상세 페이지로 이동
 const clickPost = (postId) => {
   location.href = `./detail?post=${postId}`;
 };

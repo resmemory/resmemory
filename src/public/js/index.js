@@ -15,9 +15,6 @@ fetch(`./api/posts/list`, {
   .then((data) => {
     totalPosts = data.responseData.bodies;
     loadPosts(currentPage, totalPosts);
-  })
-  .catch((error) => {
-    console.error('Error fetching total posts:', error);
   });
 
 const loadPosts = async (page, totalPosts) => {
@@ -33,13 +30,13 @@ const loadPosts = async (page, totalPosts) => {
   const postsData = data.responseData
     .map(
       (post) =>
-        `<div class="postBox">
-        <p>${post.annualCategory}</p>
-        <p onclick="clickPost(${post.postId})">${post.title}</p>
-        <p>${post.nickname}</p>
-        <p>${new Date(post.createdAt).toLocaleDateString('ko-KR', { timeZone: 'Asia/Seoul' })}</p>
-        <p>${post.viewCount}</p>
-        </div>`,
+        `<tr class="postBox">
+        <td>${post.annualCategory}</td>
+        <td class="post_title" onclick="clickPost(${post.postId})">${post.title}</td>
+        <td>${post.nickname}</td>
+        <td>${new Date(post.createdAt).toLocaleDateString('ko-KR', { timeZone: 'Asia/Seoul' })}</td>
+        <td>${post.viewCount}</td>
+        </tr>`,
     )
     .join('');
   postlist.innerHTML = postsData;
@@ -71,7 +68,7 @@ const annualCategory = (category) => {
   location.href = `./annual?category=${category}`;
 };
 
-// 상세 페이지로 이동(url 주소 확인 필요)
+// 상세 페이지로 이동
 const clickPost = (postId) => {
   location.href = `./detail?post=${postId}`;
 };
