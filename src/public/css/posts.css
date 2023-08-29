@@ -1,10 +1,10 @@
 @font-face {
-  font-family: 'jaemin';
-  src: url('http://localhost:8000/assets/ttf/Jaemin3-Regular.ttf');
+  font-family: 'blueroad';
+  src: url('http://localhost:8000/assets/ttf/Yeongdeok_Blueroad.ttf');
 }
 
 * {
-  font-family: 'jaemin';
+  font-family: 'blueroad';
   font-weight: 900px;
 }
 
@@ -20,9 +20,6 @@ header {
 }
 
 /* main */
-main {
-  padding-top: 50px;
-}
 
 /* 게시글(페이지버튼) + 연도별 카테고리 나란히 정렬 */
 .container {
@@ -52,6 +49,11 @@ main {
   border: none;
   border-radius: 10px;
   padding: 5px 10px;
+}
+
+.pagination > button:hover {
+  transform: scale(1.2);
+  transition-duration: 0.1s;
 }
 
 /* 게시글 */
@@ -126,12 +128,17 @@ td {
 /* 익명 스레드 버튼 */
 .thread_btn {
   position: relative;
-  top: 50px;
+  top: 60px;
   margin-top: 20px;
   cursor: pointer;
   background-color: black;
   color: white;
   padding: 5px 10px;
+}
+
+.thread_btn:hover {
+  transform: scale(1.2);
+  transition-duration: 0.1s;
 }
 
 /* footer */

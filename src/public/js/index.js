@@ -1,21 +1,35 @@
+const code = {
+  320: '알 수 없는 오류가 발생하였습니다.',
+  390: '게시글 조회에 실패하였습니다.',
+};
+
 document.addEventListener('DOMContentLoaded', () => {
-  loadPosts();
+  countPosts();
 });
 
-let currentPage = 1;
-let totalPosts = 0;
+const countPosts = async () => {
+  let currentPage = 1;
+  let totalPosts = 0;
 
-fetch(`./api/posts/list`, {
-  method: 'GET',
-  headers: {
-    'Content-Type': 'application/json',
-  },
-})
-  .then((response) => response.json())
-  .then((data) => {
-    totalPosts = data.responseData.bodies;
-    loadPosts(currentPage, totalPosts);
+  const response = await fetch(`./api/posts/list`, {
+    method: 'GET',
+    headers: {
+      'Content-Type': 'application/json',
+    },
   });
+
+  const data = await response.json();
+  if (data.responseData.code) {
+    alert(code[data.responseData.code]);
+  }
+
+  totalPosts = data.responseData.bodies;
+  if (totalPosts > 100) {
+    totalPosts = 100;
+  }
+
+  loadPosts(currentPage, totalPosts);
+};
 
 const loadPosts = async (page, totalPosts) => {
   const response = await fetch(`./api/posts?pageNum=${page}`, {
@@ -24,9 +38,13 @@ const loadPosts = async (page, totalPosts) => {
       'Content-Type': 'application/json',
     },
   });
-  const data = await response.json();
-  const postlist = document.querySelector('.postlist');
 
+  const data = await response.json();
+  if (data.responseData.code) {
+    alert(code[data.responseData.code]);
+  }
+
+  const postlist = document.querySelector('.postlist');
   const postsData = data.responseData
     .map(
       (post) =>

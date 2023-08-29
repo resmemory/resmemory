@@ -1,6 +1,7 @@
 import TcpServer from '../../classes/server';
 import dotenv from 'dotenv';
 import onRequest from './posts.service';
+import relationship from './db/relationship';
 import TcpClient from '../../classes/client';
 import { makePacket } from '../../utils/makePacket';
 dotenv.config();
@@ -8,7 +9,7 @@ dotenv.config();
 class PostsModule extends TcpServer {
   constructor() {
     // 부모 클래스 생성자 호출
-
+    relationship();
     super('posts', process.env.POSTS_PORT ? Number(process.env.POSTS_PORT) : 3001, [
       'POST/posts',
       'GET/posts',

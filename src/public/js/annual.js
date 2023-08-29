@@ -1,23 +1,37 @@
+const code = {
+  330: '알 수 없는 오류가 발생하였습니다.',
+  390: '게시글 조회에 실패하였습니다.',
+};
+
 document.addEventListener('DOMContentLoaded', () => {
-  annualPosts();
+  countPosts();
 });
 
-const urlParams = new URLSearchParams(window.location.search);
-const category = urlParams.get('category');
-let currentPage = 1;
-let totalPosts = 0;
+const countPosts = async () => {
+  const urlParams = new URLSearchParams(window.location.search);
+  const category = urlParams.get('category');
+  let currentPage = 1;
+  let totalPosts = 0;
 
-fetch(`./api/posts/list?annualCategory=${category}`, {
-  method: 'GET',
-  headers: {
-    'Content-Type': 'application/json',
-  },
-})
-  .then((response) => response.json())
-  .then((data) => {
-    totalPosts = data.responseData.bodies;
-    annualPosts(currentPage, category, totalPosts);
+  const response = await fetch(`./api/posts/list?annualCategory=${category}`, {
+    method: 'GET',
+    headers: {
+      'Content-Type': 'application/json',
+    },
   });
+
+  const data = await response.json();
+  if (data.responseData.code) {
+    alert(code[data.responseData.code]);
+  }
+
+  totalPosts = data.responseData.bodies;
+  if (totalPosts > 100) {
+    totalPosts = 100;
+  }
+
+  annualPosts(currentPage, category, totalPosts);
+};
 
 const annualPosts = async (page, category, totalPosts) => {
   const response = await fetch(`./api/posts?annualCategory=${category}&pageNum=${page}`, {
@@ -27,12 +41,16 @@ const annualPosts = async (page, category, totalPosts) => {
     },
   });
   const data = await response.json();
+  if (data.responseData.code) {
+    alert(code[data.responseData.code]);
+  }
+
   const titleColumn = document.querySelector('.title_column');
   if (totalPosts == 0) {
     titleColumn.innerHTML = `<p style=color:gray;>${category}년대 카테고리에 아직 작성된 게시물이 없습니다. 첫 작성자가 되어주세요!✋</p>`;
   }
-  const postlist = document.querySelector('.postlist');
 
+  const postlist = document.querySelector('.postlist');
   const postsData = data.responseData
     .map(
       (post) =>
