@@ -2,7 +2,8 @@ import TcpServer from '../../classes/server';
 import dotenv from 'dotenv';
 import onRequest from './users.service';
 import relationship from './db/relationship';
-
+import { makePacket } from '../../utils/makePacket';
+import TcpClient from '../../classes/client';
 dotenv.config();
 
 class UsersModule extends TcpServer {
@@ -37,6 +38,46 @@ class UsersModule extends TcpServer {
       userId,
     );
     this.posts;
+  }
+
+  // getPosts 접속 함수
+  connectToGetPosts(host, port, onNoti, postIds) {
+    // getPosts 전달 패킷
+    let params;
+    params = this.context;
+    params.query = { postIds };
+    const packet = makePacket('/posts', 'GET', 0, params);
+    let isConnectedGetPosts = false;
+    this.clientGetPosts = new TcpClient(
+      host,
+      port,
+      (options) => {
+        // getPosts 접속 이벤트
+        isConnectedGetPosts = true;
+        this.clientGetPosts.write(packet);
+      },
+      // getPosts 데이터 수신 이벤트
+      (options, data) => {
+        onNoti(data);
+      },
+      // getPosts 접속 종료 이벤트
+      (options) => {
+        isConnectedGetPosts = false;
+      },
+      // getPosts 통신 에러 이벤트
+      (options) => {
+        isConnectedGetPosts = false;
+      },
+    );
+
+    // 주기적으로 재접속 시도
+    const interval = setInterval(() => {
+      if (isConnectedGetPosts !== true) {
+        this.clientGetPosts.connect();
+      } else {
+        clearInterval(interval);
+      }
+    }, 1);
   }
 
   // 클라이언트 요청에 따른 비즈니스 로직 호출
