@@ -87,6 +87,7 @@ jobs:
           echo "REDIS_PASSWORD=$REDIS_PASSWORD" >> .env
           echo "NODEMAILER_EMAIL=$NODEMAILER_EMAIL" >> .env
           echo "NODEMAILER_PASSWORD=$NODEMAILER_PASSWORD" >> .env
+          echo "DIRECTORY=$DIRECTORY" >> .env
           cat .env
 
       - name: ✨ 패키지 설치
