@@ -20,12 +20,13 @@ const onRequest = async (res, method, pathname, params, key, cb) => {
             },
             contentId,
           );
-
+          
           const resultNum = adminModule.result;
-
+          
           if (!resultNum) {
             responseData = { code: 512 };
           } else {
+            //updateone
             responseData = { code: 511 };
           }
         } catch (error) {

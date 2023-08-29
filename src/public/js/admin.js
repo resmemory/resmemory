@@ -14,8 +14,9 @@ const getAllreport = fetch(`/api/reports`, {
 
 const getReportList = () => {
   getAllreport.then(async (datas) => {
+    console.log(datas)
    await $('#reportBox').empty();
-    if (datas.responseData.code == 100) {
+    if (datas.responseData.code == 0) {
       return alert('로그인이 되어있지 않습니다.');
     }
     if (datas.responseData.code == 622) {
