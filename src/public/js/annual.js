@@ -1,11 +1,13 @@
 document.addEventListener('DOMContentLoaded', () => {
-  loadPosts();
+  annualPosts();
 });
 
+const urlParams = new URLSearchParams(window.location.search);
+const category = urlParams.get('category');
 let currentPage = 1;
 let totalPosts = 0;
 
-fetch(`./api/posts/list`, {
+fetch(`./api/posts/list?annualCategory=${category}`, {
   method: 'GET',
   headers: {
     'Content-Type': 'application/json',
@@ -14,14 +16,14 @@ fetch(`./api/posts/list`, {
   .then((response) => response.json())
   .then((data) => {
     totalPosts = data.responseData.bodies;
-    loadPosts(currentPage, totalPosts);
+    annualPosts(currentPage, category, totalPosts);
   })
   .catch((error) => {
     console.error('Error fetching total posts:', error);
   });
 
-const loadPosts = async (page, totalPosts) => {
-  const response = await fetch(`./api/posts?pageNum=${page}`, {
+const annualPosts = async (page, category, totalPosts) => {
+  const response = await fetch(`./api/posts?annualCategory=${category}&pageNum=${page}`, {
     method: 'GET',
     headers: {
       'Content-Type': 'application/json',
@@ -29,6 +31,7 @@ const loadPosts = async (page, totalPosts) => {
   });
   const data = await response.json();
   const postlist = document.querySelector('.postlist');
+  postlist.innerHTML = '';
 
   const postsData = data.responseData
     .map(
@@ -44,10 +47,10 @@ const loadPosts = async (page, totalPosts) => {
     .join('');
   postlist.innerHTML = postsData;
 
-  createPaginationButtons(page, totalPosts);
+  createPaginationButtons(page, category, totalPosts);
 };
 
-const createPaginationButtons = (currentPage, totalPosts) => {
+const createPaginationButtons = (currentPage, category, totalPosts) => {
   const paginationContainer = document.querySelector('.pagination');
   const totalPages = Math.ceil(totalPosts / 10);
 
@@ -56,7 +59,7 @@ const createPaginationButtons = (currentPage, totalPosts) => {
     button.innerText = i;
     button.addEventListener('click', () => {
       currentPage = i;
-      loadPosts(currentPage);
+      annualPosts(currentPage, category);
     });
 
     if (i === currentPage) {
@@ -66,7 +69,7 @@ const createPaginationButtons = (currentPage, totalPosts) => {
   }
 };
 
-// 연도별 조회로 이동
+// 다른 연도별 조회로 이동
 const annualCategory = (category) => {
   location.href = `./annual?category=${category}`;
 };

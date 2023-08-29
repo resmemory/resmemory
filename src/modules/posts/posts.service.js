@@ -105,27 +105,41 @@ const onRequest = async (res, method, pathname, params, key, cb) => {
       }
 
       // 게시글 전체 조회(북마크 조회용)
-      if (pathname === '/posts' && params.query.userId) {
+      if (pathname === '/posts' && params.query.postIds) {
         try {
-          const { userId } = params.query;
-          const result = await Posts.findAll({ where: { userId }, raw: true });
+          let postIds = params.query.postIds;
+          if (typeof postIds == 'string') {
+            postIds = postIds.replace('[', '');
+            postIds = postIds.replace(']', '');
+            postIds = postIds.split(',');
+          }
+
+          const result = await Posts.findAll({ where: { postId: postIds }, raw: true });
           responseData = { bodies: result };
         } catch (err) {
           responseData = { code: 380 };
         }
       }
+
       // 게시글 전체 조회(리스트 출력용)
       if (pathname === '/posts' && params.params == 'list') {
         try {
-          const result = await Posts.count();
-          responseData = { bodies: result };
+          if (params.query.annualCategory) {
+            const result = await Posts.count({
+              where: { annualCategory: params.query.annualCategory },
+            });
+            responseData = { bodies: result };
+          } else {
+            const result = await Posts.count();
+            responseData = { bodies: result };
+          }
         } catch (err) {
           responseData = { code: 390 };
         }
       }
 
       // 연도별 게시글 조회
-      if (pathname === '/posts' && params.query.annualCategory) {
+      if (pathname === '/posts' && params.query.annualCategory && !params.params) {
         try {
           const { annualCategory, pageNum } = params.query;
           const result = await Posts.findAll({
