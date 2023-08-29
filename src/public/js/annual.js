@@ -1,5 +1,5 @@
 const code = {
-  320: '알 수 없는 오류가 발생하였습니다.',
+  330: '알 수 없는 오류가 발생하였습니다.',
   390: '게시글 조회에 실패하였습니다.',
 };
 
@@ -8,10 +8,12 @@ document.addEventListener('DOMContentLoaded', () => {
 });
 
 const countPosts = async () => {
+  const urlParams = new URLSearchParams(window.location.search);
+  const category = urlParams.get('category');
   let currentPage = 1;
   let totalPosts = 0;
 
-  const response = await fetch(`./api/posts/list`, {
+  const response = await fetch(`./api/posts/list?annualCategory=${category}`, {
     method: 'GET',
     headers: {
       'Content-Type': 'application/json',
@@ -28,20 +30,24 @@ const countPosts = async () => {
     totalPosts = 100;
   }
 
-  loadPosts(currentPage, totalPosts);
+  annualPosts(currentPage, category, totalPosts);
 };
 
-const loadPosts = async (page, totalPosts) => {
-  const response = await fetch(`./api/posts?pageNum=${page}`, {
+const annualPosts = async (page, category, totalPosts) => {
+  const response = await fetch(`./api/posts?annualCategory=${category}&pageNum=${page}`, {
     method: 'GET',
     headers: {
       'Content-Type': 'application/json',
     },
   });
-
   const data = await response.json();
   if (data.responseData.code) {
     alert(code[data.responseData.code]);
+  }
+
+  const titleColumn = document.querySelector('.title_column');
+  if (totalPosts == 0) {
+    titleColumn.innerHTML = `<p style=color:gray;>${category}년대 카테고리에 아직 작성된 게시물이 없습니다. 첫 작성자가 되어주세요!✋</p>`;
   }
 
   const postlist = document.querySelector('.postlist');
@@ -49,20 +55,20 @@ const loadPosts = async (page, totalPosts) => {
     .map(
       (post) =>
         `<tr class="postBox">
-        <td>${post.annualCategory}</td>
-        <td class="post_title" onclick="clickPost(${post.postId})">${post.title}</td>
-        <td>${post.nickname}</td>
-        <td>${new Date(post.createdAt).toLocaleDateString('ko-KR', { timeZone: 'Asia/Seoul' })}</td>
-        <td>${post.viewCount}</td>
-        </tr>`,
+      <td>${post.annualCategory}</td>
+      <td onclick="clickPost(${post.postId})">${post.title}</td>
+      <td>${post.nickname}</td>
+      <td>${new Date(post.createdAt).toLocaleDateString('ko-KR', { timeZone: 'Asia/Seoul' })}</td>
+      <td>${post.viewCount}</td>
+      </tr>`,
     )
     .join('');
   postlist.innerHTML = postsData;
 
-  createPaginationButtons(page, totalPosts);
+  createPaginationButtons(page, category, totalPosts);
 };
 
-const createPaginationButtons = (currentPage, totalPosts) => {
+const createPaginationButtons = (currentPage, category, totalPosts) => {
   const paginationContainer = document.querySelector('.pagination');
   const totalPages = Math.ceil(totalPosts / 10);
 
@@ -71,7 +77,7 @@ const createPaginationButtons = (currentPage, totalPosts) => {
     button.innerText = i;
     button.addEventListener('click', () => {
       currentPage = i;
-      loadPosts(currentPage);
+      annualPosts(currentPage, category);
     });
 
     if (i === currentPage) {
@@ -81,7 +87,7 @@ const createPaginationButtons = (currentPage, totalPosts) => {
   }
 };
 
-// 연도별 조회로 이동
+// 다른 연도별 조회로 이동
 const annualCategory = (category) => {
   location.href = `./annual?category=${category}`;
 };

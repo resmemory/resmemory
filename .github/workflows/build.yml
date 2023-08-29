@@ -54,8 +54,9 @@ jobs:
           echo REDIS_PORT=${{ secrets.REDIS_PORT }} >> .env
           echo REDIS_USERNAME=${{ secrets.REDIS_USERNAME }} >> .env
           echo REDIS_PASSWORD=${{ secrets.REDIS_PASSWORD }} >> .env
-          echo DATABASE_URL=${{ secrets.NODEMAILER_EMAIL }} >> .env
-          echo DATABASE_URL=${{ secrets.NODEMAILER_PASSWORD }} >> .env
+          echo NODEMAILER_EMAIL=${{ secrets.NODEMAILER_EMAIL }} >> .env
+          echo NODEMAILER_PASSWORD=${{ secrets.NODEMAILER_PASSWORD }} >> .env
+          echo DIRECTORY=${{ secrets.DIRECTORY }} >> .env
 
           cat .env
 

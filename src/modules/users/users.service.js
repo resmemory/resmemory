@@ -165,25 +165,37 @@ const onRequest = async (res, method, pathname, params, key, cb) => {
         try {
           const { userId } = params;
           const bookmarks = await Bookmarks.findAll({ order: ['createdAt'], where: { userId } });
-
+          const postIds = bookmarks.map((bookmark) => bookmark.postId);
+          const userIds = bookmarks.map((bookmark) => bookmark.userId);
+          const users = await Users.findAll({
+            where: { userId: userIds },
+            attributes: ['userId', 'nickname'],
+          });
           await new Promise((resolve, reject) => {
             usersmodule.connectToGetPosts(
               process.env.HOST,
               process.env.POSTS_PORT,
               (data) => {
-                usersmodule.posts = data.responseData.bodies;
+                usersmodule.posts = data;
                 resolve();
               },
-              userId,
+              postIds,
             );
           });
 
-          const bodies = bookmarks.map((bookmark) => {
-            return usersmodule.posts.filter((post) => bookmark.postId == post.postId);
+          const bodies = usersmodule.posts.responseData.bodies.map((post) => {
+            const bookmarkId = bookmarks.filter((bookmark) => post.postId == bookmark.postId);
+            const nickname = users.filter((user) => user.userId == post.userId);
+            return {
+              ...post,
+              bookmarkId: bookmarkId[0].bookmarkId,
+              nickname: nickname.nickname,
+            };
           });
 
           responseData = { code: 211, bodies };
         } catch (err) {
+          console.log(err);
           responseData = { code: 210, bodies: null };
         }
       }
@@ -225,6 +237,7 @@ const onRequest = async (res, method, pathname, params, key, cb) => {
           }
         } catch (err) {
           responseData = { code: 150 };
+          console.log(err);
         }
       }
 
@@ -274,6 +287,28 @@ const onRequest = async (res, method, pathname, params, key, cb) => {
           const { userId } = params;
           if (message == '회원 탈퇴를 희망합니다.') {
             const result = await Users.destroy({ where: { userId } });
+
+            await new Promise((resolve, reject) => {
+              usersmodule.connectToRemovePosts(
+                process.env.HOST,
+                process.env.POSTS_PORT,
+                (data) => {
+                  resolve();
+                },
+                userId,
+              );
+            });
+
+            await new Promise((resolve, reject) => {
+              usersmodule.connectToRemoveComments(
+                process.env.HOST,
+                process.env.POSTS_PORT,
+                (data) => {
+                  resolve();
+                },
+                userId,
+              );
+            });
             if (result) {
               responseData = { code: 141 };
             } else {

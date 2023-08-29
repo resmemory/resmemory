@@ -9,7 +9,7 @@
   </head>
   <body>
     <header>
-      <img class="logo" src="./assets/image/logo.png" onclick="location.href = `./index.html`" />
+      <img class="logo" src="./assets/image/logo.png" onclick="location.href = `./`" />
       <div class="headerBtns">
         <button class="logout" style="display: none" onclick="logout()">로그아웃</button>
         <button class="login" style="display: none" onclick="location.href=`./login`">
@@ -18,11 +18,75 @@
       </div>
     </header>
     <main>
-      <div>
+      <div class="profileBox">
         <div class="profileSidebar">
-          <div class="nickname"></div>
+          <div class="profile"></div>
+          <button class="editNickname" onclick="modalOn('#editNicknameModal')">닉네임 수정</button>
+          <button class="editPassword" onclick="modalOn('#editPasswordModal')">
+            비밀번호 수정
+          </button>
+          <button class="signout" onclick="modalOn('#signoutModal')">회원 탈퇴</button>
+          <button class="admin" onclick="location.href = `./admin`">관리자 페이지</button>
+          <div class="modal" id="editNicknameModal" style="display: none">
+            <div class="modalContent">
+              <div class="nicknameBox">
+                <div>
+                  <label>닉네임</label>
+                  <br />
+                  <input class="nickname" type="text" />
+                </div>
+                <div class="nicknameBoxBtns">
+                  <button class="login" onclick="editNickname()">수정</button>
+                  <button class=".close" onclick="modalClose('#editNicknameModal')">닫기</button>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="modal" id="editPasswordModal" style="display: none">
+            <div class="modalContent">
+              <div class="passwordBox">
+                <div>
+                  <label>비밀번호</label>
+                  <br />
+                  <input class="password" type="text" />
+                </div>
+                <div>
+                  <label>확인 비밀번호</label>
+                  <br />
+                  <input class="confirm" type="text" placeholder="한번 더 입력하세요." />
+                </div>
+                <div class="loginBoxBtns">
+                  <button class="login" onclick="editPassword()">수정</button>
+                  <button class=".close" onclick="modalClose('#editPasswordModal')">닫기</button>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="modal" id="signoutModal" style="display: none">
+            <div class="modalContent">
+              <div class="loginBox">
+                <div>
+                  <label>아래 문구를 똑같이 입력해 주세요.</label>
+                  <p>회원 탈퇴를 희망합니다.</p>
+                  <br />
+                  <input
+                    class="message"
+                    type="text"
+                    placeholder="띄어쓰기와 온점도 적어 주셔야 합니다."
+                  />
+                </div>
+                <div class="loginBoxBtns">
+                  <button class="login" onclick="signout()">탈퇴</button>
+                  <button class=".close" onclick="modalClose('#signoutModal')">닫기</button>
+                </div>
+              </div>
+            </div>
+          </div>
         </div>
-        <div></div>
+        <div class="bookmarkBox">
+          <div class="headtitle">기억하고 싶은 추억들</div>
+          <div class="bookmarks"></div>
+        </div>
       </div>
     </main>
     <footer>제작 - TEAM 1이3김 : 이다영 김주희 김민규 김지혜</footer>
