@@ -87,7 +87,36 @@ footer {
   margin: 0px 100px 0px 0px;
 }
 
+.profileSidebar > button {
+  width: 180px;
+  height: 50px;
+  font-size: 20px;
+  padding: 10px;
+  border-radius: 5px;
+  background-color: lightgray;
+  color: black;
+  margin: 10px 0px 10px 0px;
+}
+
 .profileBox {
   display: flex;
   flex-direction: row;
+}
+.bookmarkBox {
+  display: flex;
+  flex-direction: column;
+}
+
+.title {
+  font-family: 'jaram';
+  font-size: 40px;
+  border-bottom: 2px solid black;
+}
+
+.headtitle {
+  font-family: 'jaram';
+  font-size: 40px;
+  background-color: black;
+  color: white;
+  padding: 0px 20px 0px 20px;
 }

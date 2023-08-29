@@ -15,16 +15,21 @@
     <main>
       <div class="container">
         <div class="post_pagination">
-          <div class="title">
-            <p>제목</p>
-            <p>닉네임</p>
-            <p>작성일</p>
-            <p>조회수</p>
-          </div>
-          <div class="postlist"></div>
+          <table>
+            <thead>
+              <tr>
+                <th scope="col">카테고리</th>
+                <th scope="col">제목</th>
+                <th scope="col">닉네임</th>
+                <th scope="col">작성일</th>
+                <th scope="col">조회수</th>
+              </tr>
+            </thead>
+            <tbody class="postlist"></tbody>
+          </table>
           <div class="pagination"></div>
         </div>
-        <div>
+        <div class="box_button">
           <div class="annual_category_box">
             <h4>연도별 카테고리</h4>
             <p onclick="annualCategory(2020)">2020</p>

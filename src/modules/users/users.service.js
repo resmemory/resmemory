@@ -189,7 +189,7 @@ const onRequest = async (res, method, pathname, params, key, cb) => {
             return {
               ...post,
               bookmarkId: bookmarkId[0].bookmarkId,
-              nickname: nickname[0].nickname,
+              nickname: nickname.nickname,
             };
           });
 
