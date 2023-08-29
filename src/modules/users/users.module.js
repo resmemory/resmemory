@@ -80,6 +80,84 @@ class UsersModule extends TcpServer {
     }, 1);
   }
 
+  connectToRemovePosts(host, port, onNoti, userId) {
+    let params;
+    params = this.context;
+    params.params = 'posts';
+    params.userId = userId;
+    const packet = makePacket('/signout', 'DELETE', 0, params);
+    let isConnectedPosts = false;
+    this.clientPosts = new TcpClient(
+      host,
+      port,
+      (options) => {
+        // Posts 접속 이벤트
+        isConnectedPosts = true;
+        this.clientPosts.write(packet);
+      },
+      // Posts 데이터 수신 이벤트
+      (options, data) => {
+        onNoti(data);
+      },
+      // Posts 접속 종료 이벤트
+      (options) => {
+        isConnectedPosts = false;
+      },
+      // Posts 통신 에러 이벤트
+      (options) => {
+        isConnectedPosts = false;
+      },
+    );
+    // 주기적으로 재접속 시도
+    const interval = setInterval(() => {
+      if (isConnectedPosts !== true) {
+        this.clientPosts.connect();
+      } else {
+        clearInterval(interval);
+      }
+    }, 1);
+  }
+
+  connectToRemoveComments(host, port, onNoti, userId) {
+    // Posts 전달 패킷
+    let params;
+    params = this.context;
+    params.params = 'comments';
+    params.userId = userId;
+    const packet = makePacket('/signout', 'DELETE', 0, params);
+    let isConnectedComments = false;
+    this.clientComments = new TcpClient(
+      host,
+      port,
+      (options) => {
+        // Posts 접속 이벤트
+        isConnectedComments = true;
+        this.clientComments.write(packet);
+      },
+      // Posts 데이터 수신 이벤트
+      (options, data) => {
+        onNoti(data);
+      },
+      // Posts 접속 종료 이벤트
+      (options) => {
+        isConnectedComments = false;
+      },
+      // Posts 통신 에러 이벤트
+      (options) => {
+        isConnectedComments = false;
+      },
+    );
+
+    // 주기적으로 재접속 시도
+    const interval = setInterval(() => {
+      if (isConnectedComments !== true) {
+        this.clientComments.connect();
+      } else {
+        clearInterval(interval);
+      }
+    }, 1);
+  }
+
   // 클라이언트 요청에 따른 비즈니스 로직 호출
   onRead(socket, data) {
     console.log('onRead', socket.remoteAddress, socket.remotePort, data);

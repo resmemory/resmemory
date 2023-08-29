@@ -5,6 +5,7 @@ class Bookmarks extends Model {}
 
 Bookmarks.init(
   {
+    bookmarkId: { type: DataTypes.BIGINT, autoIncrement: true, primaryKey: true },
     postId: { type: DataTypes.BIGINT, allowNull: false },
     userId: { type: DataTypes.BIGINT, allowNull: false },
   },
@@ -15,5 +16,4 @@ Bookmarks.init(
     updatedAt: false,
   },
 );
-Bookmarks.removeAttribute('id');
 export default Bookmarks;
