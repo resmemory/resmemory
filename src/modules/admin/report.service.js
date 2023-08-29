@@ -31,10 +31,6 @@ async function reports(method, params, responseData) {
   }
   if (method == 'GET') {
     try {
-      if (!params.userId) {
-        responseData = { code: 622 };
-        return responseData;
-      }
       const userId = params.userId;
       if (userId !== 1) {
         responseData = { code: 622 };

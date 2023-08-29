@@ -1,0 +1,71 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="./js/detail.js"></script>
+    <link rel="stylesheet" href="./css/detail.css" type="text/css" />
+    <title>[ 응답하라 추억시대 ] - 게시글 상세페이지</title>
+  </head>
+  <body>
+    <header class="header">
+      <div class="headerBtns"></div>
+      <img
+        class="logo"
+        src="./assets/image/logo.png"
+        alt="로고"
+        onclick="location.href = `./index.html`"
+      />
+    </header>
+
+    <div class="post-box">
+      <div class="post-view">조회수: nn</div>
+      <div class="post-buttons">
+        <button class="button">수정</button>
+        <button class="button">삭제</button>
+        <button class="button">북마크</button>
+      </div>
+      <div class="post-content">게시글 내용</div>
+    </div>
+
+    <div class="comment-box">
+      <input type="text" class="comment-input" placeholder="댓글을 작성하세요" />
+      <button class="comment-submit-button">작성</button>
+      <div class="comment-list">
+        <div class="comment-item">
+          <div class="comment-content">
+            <span class="comment-nickname">사용자1 :</span>
+            첫 번째 댓글 내용
+          </div>
+          <div class="comment-buttons">
+            <button class="comment-edit-button">수정</button>
+            <button class="comment-delete-button">삭제</button>
+            <button class="comment-report-button">신고</button>
+          </div>
+        </div>
+        <div class="comment-item">
+          <div class="comment-content">
+            <span class="comment-nickname">사용자2 :</span>
+            두 번째 댓글 내용
+          </div>
+          <div class="comment-buttons">
+            <button class="comment-edit-button">수정</button>
+            <button class="comment-delete-button">삭제</button>
+            <button class="comment-report-button">신고</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="annual-box">
+      <p>연도별 카테고리</p>
+      <p>1990</p>
+      <p>1990</p>
+      <p>1990</p>
+      <p>1990</p>
+      <p>1990</p>
+    </div>
+    <button class="post-delete-button">게시글 삭제 버튼</button>
+  </body>
+</html>
