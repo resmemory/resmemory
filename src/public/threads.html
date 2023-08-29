@@ -1,0 +1,39 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="./css/threads.css" type="text/css" />
+    <title>익명 스레드 페이지</title>
+  </head>
+  <body>
+    <header>
+      <img src="assets/image/logo.png" alt="logo" />
+      <h1>응답하라 추억시대</h1>
+    </header>
+
+    <div class="threadbox">
+      <div class="flex-container">
+        <div id="threadList"></div>
+        <div class="button-container">
+          <button id="openModal">신고</button>
+          <button id="btn2">삭제</button>
+        </div>
+      </div>
+      <div class="pagination" id="pagination"></div>
+    </div>
+
+    <!-- 신고 모달 창 -->
+    <div id="myModal" class="modal">
+      <div class="modal-content">
+        <p>신고 내용을 입력하세요:</p>
+        <input type="text" id="reportInput" placeholder="신고 내용을 입력하세요" />
+        <button id="submitReport">신고하기</button>
+        <button id="closeModal">닫기</button>
+      </div>
+    </div>
+
+    <script src="./js/threads.js"></script>
+  </body>
+</html>

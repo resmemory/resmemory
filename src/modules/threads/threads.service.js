@@ -14,7 +14,7 @@ const onRequest = async (res, method, pathname, params, key, cb) => {
           yesterday = new Date(yesterday);
 
           const result = await Threads.findAll({
-            attributes: { exclude: ['userId', 'content', 'createdAt'] },
+            attributes: { exclude: ['userId'] },
             where: { createdAt: { [Op.between]: [yesterday, today] } },
           });
           if (result) {
@@ -68,7 +68,7 @@ const onRequest = async (res, method, pathname, params, key, cb) => {
 
     // 스레드 삭제 함수
     case 'DELETE':
-      if (pathname == '/threads'&& params.params !== 'admin') {
+      if (pathname == '/threads' && params.params !== 'admin') {
         try {
           const { userId } = params;
           const threadId = params.params;
