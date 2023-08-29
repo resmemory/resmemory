@@ -1,0 +1,38 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <script src="./js/annual.js"></script>
+    <link rel="stylesheet" href="./css/posts.css" type="text/css" />
+    <title>[ 응답하라 추억시대 ]</title>
+  </head>
+  <body>
+    <header>
+      <img class="logo" src="./assets/image/logo.png" onclick="location.href = `./`" />
+    </header>
+
+    <main>
+      <div class="container">
+        <div class="post_pagination">
+          <div class="postlist"></div>
+          <div class="pagination"></div>
+        </div>
+        <div>
+          <div class="annual_category_box">
+            <h4>연도별 카테고리</h4>
+            <p onclick="annualCategory(2020)">2020</p>
+            <p onclick="annualCategory(2010)">2010</p>
+            <p onclick="annualCategory(2000)">2000</p>
+            <p onclick="annualCategory(1990)">1990</p>
+            <p onclick="annualCategory(1980)">1980</p>
+            <p onclick="annualCategory(1970)">1970</p>
+          </div>
+          <button class="thread_btn" onclick="location.href = `./threads`">익명 스레드</button>
+        </div>
+      </div>
+    </main>
+
+    <footer>제작 - TEAM 1이3김 : 이다영 김주희 김민규 김지혜</footer>
+  </body>
+</html>

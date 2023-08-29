@@ -2,9 +2,13 @@
   font-family: 'jaram';
   src: url('http://localhost:8000/assets/ttf/jaram.ttf');
 }
+@font-face {
+  font-family: 'jaemin';
+  src: url('http://localhost:8000/assets/ttf/Jaemin3-Regular.ttf');
+}
 
 * {
-  font-family: 'jaram';
+  font-family: 'jaemin';
   font-weight: 900px;
 }
 
@@ -21,8 +25,20 @@ header {
 
 .headerBtns > button {
   width: 80px;
-  height: 40px;
-  font-size: 20px;
+  height: 30px;
+  font-size: 15px;
+  background-color: black;
+  color: white;
+  border-radius: 5px;
+}
+
+.headerBtns > button:hover {
+  width: 80px;
+  height: 30px;
+  font-size: 15px;
+  background-color: white;
+  color: black;
+  border-radius: 5px;
 }
 
 /* footer */
@@ -30,4 +46,31 @@ footer {
   margin-top: 200px;
   text-align: center;
   font-family: Arial, Helvetica, sans-serif;
+}
+
+/* 모달 스타일 */
+.modal {
+  display: none;
+  position: fixed;
+  z-index: 1;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgb(0, 0, 0, 0.1);
+}
+
+.modal .modalContent {
+  background-color: #fefefe;
+  padding: 20px;
+  border: 1px solid #888;
+  width: 30%;
+  box-shadow: 0px 4px 8px 0px rgb(0, 0, 0, 0.1);
+  color: #000;
+  height: 80%;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  text-align: left;
 }

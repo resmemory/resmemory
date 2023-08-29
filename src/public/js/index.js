@@ -1,39 +1,24 @@
 document.addEventListener('DOMContentLoaded', () => {
-  let currentPage = 1;
-  let totalPosts = 0;
-
-  fetch(`./api/posts/list`, {
-    method: 'GET',
-    headers: {
-      'Content-Type': 'application/json',
-    },
-  })
-    .then((response) => response.json())
-    .then((data) => {
-      totalPosts = data.responseData.bodies;
-      loadPosts(currentPage, totalPosts);
-    })
-    .catch((error) => {
-      console.error('Error fetching total posts:', error);
-    });
+  loadPosts();
 });
 
-const totalPostCount = async () => {
-  await fetch(`./api/posts/list`, {
-    method: 'GET',
-    headers: {
-      'Content-Type': 'application/json',
-    },
+let currentPage = 1;
+let totalPosts = 0;
+
+fetch(`./api/posts/list`, {
+  method: 'GET',
+  headers: {
+    'Content-Type': 'application/json',
+  },
+})
+  .then((response) => response.json())
+  .then((data) => {
+    totalPosts = data.responseData.bodies;
+    loadPosts(currentPage, totalPosts);
   })
-    .then((response) => response.json())
-    .then((data) => {
-      totalPosts = data.responseData.bodies;
-      loadPosts(currentPage, totalPosts);
-    })
-    .catch((error) => {
-      console.error('Error fetching total posts:', error);
-    });
-};
+  .catch((error) => {
+    console.error('Error fetching total posts:', error);
+  });
 
 const loadPosts = async (page, totalPosts) => {
   const response = await fetch(`./api/posts?pageNum=${page}`, {
@@ -50,9 +35,10 @@ const loadPosts = async (page, totalPosts) => {
       (post) =>
         `<div class="postBox">
         <p>${post.annualCategory}</p>
-        <p>${post.title}</p>
+        <p onclick="clickPost(${post.postId})">${post.title}</p>
         <p>${post.nickname}</p>
         <p>${new Date(post.createdAt).toLocaleDateString('ko-KR', { timeZone: 'Asia/Seoul' })}</p>
+        <p>${post.viewCount}</p>
         </div>`,
     )
     .join('');
@@ -64,14 +50,13 @@ const loadPosts = async (page, totalPosts) => {
 const createPaginationButtons = (currentPage, totalPosts) => {
   const paginationContainer = document.querySelector('.pagination');
   const totalPages = Math.ceil(totalPosts / 10);
-  console.log(totalPosts);
 
   for (let i = 1; i <= totalPages; i++) {
     const button = document.createElement('button');
     button.innerText = i;
     button.addEventListener('click', () => {
       currentPage = i;
-      loadPosts(currentPage, totalPosts);
+      loadPosts(currentPage);
     });
 
     if (i === currentPage) {
@@ -79,4 +64,14 @@ const createPaginationButtons = (currentPage, totalPosts) => {
     }
     paginationContainer.appendChild(button);
   }
+};
+
+// 연도별 조회로 이동
+const annualCategory = (category) => {
+  location.href = `./annual?category=${category}`;
+};
+
+// 상세 페이지로 이동(url 주소 확인 필요)
+const clickPost = (postId) => {
+  location.href = `./detail?post=${postId}`;
 };
