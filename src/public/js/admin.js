@@ -33,5 +33,21 @@ const getReportList = () => {
     });
   });
 };
-const deleteContent = () => {};
+const deleteContent = (contentId, reportType) => {
+    const req = {
+        contentId: contentId,
+      };
+  fetch(`/api/admin/${reportType}`, {
+    method: 'DELETE',
+    headers: {
+      'Content-Type': 'application/json',
+      Authorization: adminId,
+    },
+    body: JSON.stringify(req),
+  })
+    .then((res) => res.json())
+    .then((res) => {
+      console.log(res)
+    });
+};
 getReportList();
