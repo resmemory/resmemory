@@ -3,9 +3,6 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-    <script src="./js/detail.js"></script>
-    <link rel="stylesheet" href="./css/detail.css" type="text/css" />
     <title>[ 응답하라 추억시대 ] - 게시글 상세페이지</title>
   </head>
   <body>
@@ -19,15 +16,24 @@
       />
     </header>
 
-    <div class="post-box">
-      <div class="post-view">조회수: nn</div>
-      <div class="post-buttons">
-        <button class="button">수정</button>
-        <button class="button">삭제</button>
-        <button class="button">북마크</button>
+    <div class="post-box" id="post-box">
+      <div class="post-info">
+        <div class="post-nickname">kim</div>
+        <div class="post-view">조회수: nn</div>
+        <div class="post-date">2023-08-29</div>
       </div>
-      <div class="post-content">게시글 내용</div>
+      <div class="post-title">게시글제목</div>
+      <div class="post-buttons">
+        <button class="button edit-button">수정</button>
+        <button class="button delete-button">삭제</button>
+        <button class="button bookmark-button">북마크</button>
+      </div>
+      <div class="post-content">
+        <img src="이미지URL" alt="게시글 이미지" />
+        <p>게시글의 내용이 들어갑니다.</p>
+      </div>
     </div>
+
 
     <div class="comment-box">
       <input type="text" class="comment-input" placeholder="댓글을 작성하세요" />
@@ -67,5 +73,9 @@
       <p>1990</p>
     </div>
     <button class="post-delete-button">게시글 삭제 버튼</button>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="./js/detail.js"></script>
   </body>
+  <script src="./js/detail.js"></script>
+  <link rel="stylesheet" href="./css/detail.css" type="text/css" />
 </html>

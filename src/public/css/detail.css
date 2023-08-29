@@ -1,10 +1,10 @@
 @font-face {
-  font-family: 'jaram';
-  src: url('http://localhost:8000/assets/ttf/jaram.ttf');
+  font-family: 'jaemin';
+  src: url('http://localhost:8000/assets/ttf/Jaemin3-Regular.ttf');
 }
 
 * {
-  font-family: 'jaram';
+  font-family: 'jaemin';
 }
 
 .header {
@@ -31,6 +31,23 @@
   padding: 20px; /* 내용과 버튼 간격을 위해 패딩 추가 */
 }
 
+.post-info {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.post-nickname,
+.post-view,
+.post-date {
+  font-size: 14px;
+}
+
+.post-title {
+  font-size: 24px;
+  font-weight: bold;
+  margin-top: 10px;
+}
 .post-view {
   display: inline-block;
   margin-right: auto; /* 좌측 정렬 */
@@ -38,8 +55,32 @@
 }
 
 .post-buttons {
-  display: inline-block;
-  margin-left: auto; /* 우측 정렬 */
+  display: flex;
+  gap: 10px;
+  justify-content: flex-end;
+  margin-top: 10px;
+}
+
+.edit-button {
+  background-color: black;
+  color: rgb(255, 255, 255);
+}
+
+.delete-button {
+  background-color: black;
+  color: rgb(255, 255, 255);
+}
+
+.post-buttons button {
+  padding: 5px 10px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.bookmark-button {
+  background-color: yellow;
+  color: black;
 }
 .post-content {
   width: 1200px;
