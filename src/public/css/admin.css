@@ -1,8 +1,10 @@
 @font-face {
   font-family: 'jaram';
-  src: url('http://localhost:8000/assets/ttf/jaram.ttf');
+  src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_2307-2@1.0/iceJaram-Rg.woff2')
+    format('woff2');
+  font-weight: normal;
+  font-style: normal;
 }
-
 * {
   font-family: 'jaram';
 }

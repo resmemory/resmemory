@@ -1,19 +1,27 @@
 @font-face {
   font-family: 'jaram';
-  src: url('http://localhost:8000/assets/ttf/jaram.ttf');
+  src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_2307-2@1.0/iceJaram-Rg.woff2')
+    format('woff2');
+  font-weight: normal;
+  font-style: normal;
 }
 @font-face {
   font-family: 'jaemin';
-  src: url('http://localhost:8000/assets/ttf/Jaemin3-Regular.ttf');
+  src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_2307-1@1.1/Hangeuljaemin4-Regular.woff2')
+    format('woff2');
+  font-weight: normal;
+  font-style: normal;
 }
-
 @font-face {
-  font-family: 'blueroad';
-  src: url('http://localhost:8000/assets/ttf/Yeongdeok_Blueroad.ttf');
+  font-family: 'GangwonEdu_OTFBoldA';
+  src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_2201-2@1.0/GangwonEdu_OTFBoldA.woff')
+    format('woff');
+  font-weight: normal;
+  font-style: normal;
 }
 
 * {
-  font-family: 'blueroad';
+  font-family: 'GangwonEdu_OTFBoldA';
   font-weight: 900px;
 }
 
