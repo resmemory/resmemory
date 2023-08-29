@@ -45,7 +45,7 @@ async function login() {
   alert(code[result.responseData.code]);
   if (result.responseData.code == 121 || result.responseData.code == 123) {
     localStorage.setItem('Authorization', response.headers.get('Authorization'));
-    window.location.href = './main';
+    window.location.href = './';
   }
 }
 
@@ -66,13 +66,14 @@ async function email() {
 
 async function verified() {
   const receiveNumber = document.querySelector('.receiveNumber').value;
+  const email = document.querySelector('.signupEmail').value;
 
   const response = await fetch(`./api/verified`, {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
     },
-    body: JSON.stringify({ receiveNumber }),
+    body: JSON.stringify({ receiveNumber, email }),
   });
 
   const result = await response.json();

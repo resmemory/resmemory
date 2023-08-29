@@ -18,6 +18,7 @@ class PostsModule extends TcpServer {
       'GET/comments',
       'PATCH/comments',
       'DELETE/comments',
+      'DELETE/signout',
     ]);
     this.connectToDistributor(process.env.HOST, process.env.DIS_PORT, (data) => {
       console.log('Users Notification', data);

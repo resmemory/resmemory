@@ -7,8 +7,13 @@
   src: url('http://localhost:8000/assets/ttf/Jaemin3-Regular.ttf');
 }
 
+@font-face {
+  font-family: 'blueroad';
+  src: url('http://localhost:8000/assets/ttf/Yeongdeok_Blueroad.ttf');
+}
+
 * {
-  font-family: 'jaemin';
+  font-family: 'blueroad';
   font-weight: 900px;
 }
 
@@ -73,4 +78,16 @@ footer {
   left: 50%;
   transform: translate(-50%, -50%);
   text-align: left;
+}
+
+.profileSidebar {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  margin: 0px 100px 0px 0px;
+}
+
+.profileBox {
+  display: flex;
+  flex-direction: row;
 }

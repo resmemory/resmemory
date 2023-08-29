@@ -54,7 +54,7 @@ jobs:
           REDIS_PASSWORD: ${{secrets.REDIS_PASSWORD}}
           NODEMAILER_EMAIL: ${{secrets.NODEMAILER_EMAIL}}
           NODEMAILER_PASSWORD: ${{secrets.NODEMAILER_PASSWORD}}
-
+          DIRECTORY: ${{secrets.DIRECTORY}}
         run: |
           pwd
           touch .env
@@ -87,6 +87,7 @@ jobs:
           echo "REDIS_PASSWORD=$REDIS_PASSWORD" >> .env
           echo "NODEMAILER_EMAIL=$NODEMAILER_EMAIL" >> .env
           echo "NODEMAILER_PASSWORD=$NODEMAILER_PASSWORD" >> .env
+          echo "DIRECTORY=$DIRECTORY" >> .env
           cat .env
 
       - name: ✨ 패키지 설치
