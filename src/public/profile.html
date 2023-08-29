@@ -26,7 +26,7 @@
             비밀번호 수정
           </button>
           <button class="signout" onclick="modalOn('#signoutModal')">회원 탈퇴</button>
-          <button class="admin">관리자 페이지</button>
+          <button class="admin" onclick="location.href = `./admin`">관리자 페이지</button>
           <div class="modal" id="editNicknameModal" style="display: none">
             <div class="modalContent">
               <div class="nicknameBox">
@@ -83,8 +83,10 @@
             </div>
           </div>
         </div>
-        <div class="bookmarks"></div>
-        <div></div>
+        <div class="bookmarkBox">
+          <div class="headtitle">기억하고 싶은 추억들</div>
+          <div class="bookmarks"></div>
+        </div>
       </div>
     </main>
     <footer>제작 - TEAM 1이3김 : 이다영 김주희 김민규 김지혜</footer>
