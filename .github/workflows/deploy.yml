@@ -54,7 +54,7 @@ jobs:
           REDIS_PASSWORD: ${{secrets.REDIS_PASSWORD}}
           NODEMAILER_EMAIL: ${{secrets.NODEMAILER_EMAIL}}
           NODEMAILER_PASSWORD: ${{secrets.NODEMAILER_PASSWORD}}
-
+          DIRECTORY: ${{secrets.DIRECTORY}}
         run: |
           pwd
           touch .env
