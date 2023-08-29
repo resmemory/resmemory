@@ -2,7 +2,8 @@ document.addEventListener('DOMContentLoaded', () => {
   annualPosts();
 });
 
-let category = sessionStorage.getItem('category');
+const urlParams = new URLSearchParams(window.location.search);
+const category = urlParams.get('category');
 let currentPage = 1;
 let totalPosts = 0;
 
@@ -37,9 +38,10 @@ const annualPosts = async (page, category, totalPosts) => {
       (post) =>
         `<div class="postBox">
         <p>${post.annualCategory}</p>
-        <p>${post.title}</p>
+        <p onclick="clickPost(${post.postId})">${post.title}</p>
         <p>${post.nickname}</p>
         <p>${new Date(post.createdAt).toLocaleDateString('ko-KR', { timeZone: 'Asia/Seoul' })}</p>
+        <p>${post.viewCount}</p>
         </div>`,
     )
     .join('');
@@ -67,7 +69,12 @@ const createPaginationButtons = (currentPage, category, totalPosts) => {
   }
 };
 
+// 다른 연도별 조회로 이동
 const annualCategory = (category) => {
-  sessionStorage.setItem('category', `${category}`);
-  location.href = `./annual`;
+  location.href = `./annual?category=${category}`;
+};
+
+// 상세 페이지로 이동(url 주소 확인 필요)
+const clickPost = (postId) => {
+  location.href = `./detail?post=${postId}`;
 };
