@@ -36,8 +36,8 @@ async function viewThreads() {
         return `<div class="thread" >
                     ${thread.content}, ${thread.createdAt}
                     <div class="button-container">
-                      <button class="report-button" data-thread-id="${thread.threadId}">신고</button>
-                      <button class="delete-button" onclick="removeThread"(${thread.threadId})">삭제</button>
+                      <button class="report-button" onclick ="openReportModal(${thread.threadId})">신고</button>
+                      <button class="delete-button" onclick ="removeThread(${thread.threadId})">삭제</button>
                     </div>
                   </div>`;
       })
@@ -64,18 +64,6 @@ async function removeThread(threadId) {
   }
 }
 
-// 신고 버튼 클릭 시 모달창 띄우기
-// document.addEventListener('click', (event) => {
-//   if (event.target.classList.contains('report-button')) {
-//     const threadId = event.target.getAttribute('data-thread-id');
-//     openReportModal(threadId);
-//   }
-//   if (event.target.classList.contains('delete-button')) {
-//     const threadId = event.target.getAttribute('data-thread-id');
-//     removeThread(threadId);
-//   }
-// });
-
 // 모달창 열기
 function openReportModal(threadId) {
   const reportModal = document.getElementById('reportModal');
@@ -83,12 +71,34 @@ function openReportModal(threadId) {
   const closeModalButton = document.getElementById('closeModal');
   const reportReasonInput = document.getElementById('reportReason');
 
-  confirmReportButton.onclick = () => {
+  confirmReportButton.onclick = async () => {
     const reason = reportReasonInput.value;
     if (reason.trim() !== '') {
-      // TODO: 스레드를 신고하는 로직 추가 (이유(reason)를 함께 전송)
-      console.log(`스레드 ${threadId}를 신고합니다. 이유: ${reason}`);
-      closeReportModal();
+      try {
+        // AJAX 요청으로 신고 내역 전송
+        const response = await fetch(`/api/report/${threadId}`, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            Authorization: localStorage.getItem('Authorization'),
+          },
+          body: JSON.stringify({ reason }), // 이유를 함께 전송
+        });
+
+        const result = await response.json();
+
+        if (result.responseData.code === 611) {
+          alert('신고가 접수되었습니다.');
+          closeReportModal();
+
+          // 다른 HTML 페이지로 이동
+          window.location.href = './admin.html';
+        } else {
+          alert('신고 실패: ' + result.responseData.message);
+        }
+      } catch (error) {
+        console.error('에러 발생: ', error);
+      }
     } else {
       alert('신고 이유를 입력해주세요.');
     }
@@ -103,9 +113,4 @@ function openReportModal(threadId) {
 function closeReportModal() {
   const reportModal = document.getElementById('reportModal');
   reportModal.style.display = 'none';
-}
-
-// 스레드 삭제 함수와 중복되지 않도록 주의
-async function removeThread(threadId) {
-  // ... 이전 코드 ...
 }

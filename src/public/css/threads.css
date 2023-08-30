@@ -51,22 +51,6 @@ h1 {
   overflow: auto;
 }
 
-.report {
-  list-style: none;
-  padding: 0;
-  display: flex;
-}
-
-.delete {
-  margin-right: 10px;
-}
-
-.pagination {
-  color: #000;
-  text-align: center;
-  margin-top: 10px;
-}
-
 body {
   font-family: Arial, sans-serif;
 }
@@ -76,12 +60,7 @@ body {
   align-items: center;
 }
 
-.button-container {
-  margin-left: 10px;
-}
-
 /* 모달 스타일 */
-/* 모달 스타일링 */
 .modal {
   display: none;
   position: fixed;
@@ -102,7 +81,7 @@ body {
   border-radius: 8px;
   box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.2);
 
-  max-width: 400px; /* 모달창의 최대 너비 설정 */
+  max-width: 400px;
   margin: 10% auto;
 }
 
@@ -114,12 +93,12 @@ body {
 }
 
 textarea {
-  width: 94%; 
+  width: 94%;
   padding: 10px;
   border: 1px solid #ccc;
   border-radius: 4px;
   resize: vertical;
-  min-height: 60px; 
+  min-height: 60px;
   max-height: 200px;
 }
 
