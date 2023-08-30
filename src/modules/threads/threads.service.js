@@ -74,17 +74,19 @@ const onRequest = async (res, method, pathname, params, key, cb) => {
           const threadId = params.params;
           const threadData = await Threads.findByPk(threadId);
 
-          if (userId !== threadData.userId) {
-            responseData = { code: 734 };
-          } else if (threadId) {
-            const result = await Threads.destroy({ where: { threadId } });
-            if (result) {
-              responseData = { code: 731 };
+          if (userId == threadData.userId || userId == 1) {
+            if (threadId) {
+              const result = await Threads.destroy({ where: { threadId } });
+              if (result) {
+                responseData = { code: 731 };
+              } else {
+                responseData = { code: 732 };
+              }
             } else {
-              responseData = { code: 732 };
+              responseData = { code: 733 };
             }
           } else {
-            responseData = { code: 733 };
+            responseData = { code: 734 };
           }
         } catch (error) {
           responseData = { code: 730 };
