@@ -1,12 +1,21 @@
 @font-face {
   font-family: 'jaram';
-  src: url('./assets/ttf/jaram.ttf');
+  src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_2307-2@1.0/iceJaram-Rg.woff2')
+    format('woff2');
+  font-weight: normal;
+  font-style: normal;
+}
+@font-face {
+  font-family: 'GangwonEdu_OTFBoldA';
+  src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_2201-2@1.0/GangwonEdu_OTFBoldA.woff')
+    format('woff');
+  font-weight: normal;
+  font-style: normal;
 }
 
-/* * {
-  font-family: 'jaram';
-  font-weight: 900px;
-} */
+* {
+  font-family: 'GangwonEdu_OTFBoldA';
+}
 
 img {
   position: absolute;
@@ -17,47 +26,22 @@ img {
 }
 
 h1 {
+  padding-left: 20px;
   font-family: 'jaram';
   font-size: 50px;
-  text-align: center;
 }
 
 /* threadbox */
 .threadbox {
-  position: absolute;
-  border: 2px solid black;
   padding: 20px;
-  width: 70%;
-  left: 50%;
-  transform: translateX(-50%);
-  display: inline-block;
+  width: 100%;
   overflow: auto;
-}
-
-@media screen and (max-width: 768px) {
-  .threadbox {
-    width: 90%;
-    max-width: none;
-  }
+  display: flex;
+  flex-direction: column;
 }
 
 .threadList {
-  position: absolute;
-  padding: 10px;
-  width: 70%;
-  left: 50%;
-  transform: translateX(-50%);
-  display: inline-block;
   overflow: auto;
-}
-
-body {
-  font-family: Arial, sans-serif;
-}
-
-.flex-container {
-  display: flex;
-  align-items: center;
 }
 
 /* 모달 스타일 */
@@ -85,13 +69,6 @@ body {
   margin: 10% auto;
 }
 
-.close-button {
-  float: right;
-  font-size: 20px;
-  font-weight: bold;
-  cursor: pointer;
-}
-
 textarea {
   width: 94%;
   padding: 10px;
@@ -105,4 +82,42 @@ textarea {
 #confirmReport {
   display: block;
   margin: 0 auto;
+}
+
+.writeThreadBox {
+  margin-bottom: 40px;
+}
+.close-button {
+  float: right;
+}
+
+button {
+  background-color: black;
+  color: white;
+  border-radius: 5px;
+  border: 1px solid white;
+  padding: 5px 10px 5px 10px;
+}
+
+button:hover {
+  background-color: white;
+  color: black;
+  border-radius: 5px;
+  border: 1px solid black;
+  padding: 5px 10px 5px 10px;
+}
+
+.writeThread {
+  width: 700px;
+  height: 30px;
+  font-size: 20px;
+}
+
+.writeThreadBox > button {
+  width: 60px;
+  height: 45px;
+  font-size: 18px;
+}
+.thread {
+  margin: 10px 0px 10px 0px;
 }

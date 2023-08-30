@@ -77,15 +77,22 @@ footer {
   background-color: #fefefe;
   padding: 20px;
   border: 1px solid #888;
-  width: 30%;
+  width: 20%;
   box-shadow: 0px 4px 8px 0px rgb(0, 0, 0, 0.1);
   color: #000;
-  height: 80%;
+  height: 20%;
   position: absolute;
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
   text-align: left;
+  overflow: auto;
+}
+
+button {
+  background-color: black;
+  color: white;
+  border-radius: 5px;
 }
 
 .profileSidebar {
@@ -165,4 +172,10 @@ footer {
   box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.3);
   border-radius: 5px;
   padding: 5px 10px 5px 10px;
+}
+
+input {
+  font-size: 20px;
+  width: 90%;
+  margin: 10px 0px 10px 0px;
 }
