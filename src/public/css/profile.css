@@ -100,10 +100,25 @@ footer {
   height: 50px;
   font-size: 20px;
   padding: 10px;
-  border-radius: 5px;
-  background-color: lightgray;
+  background-color: white;
   color: black;
   margin: 10px 0px 10px 0px;
+  border: 1px solid #ebeaec;
+  box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.3);
+  border-radius: 16px;
+}
+
+.profileSidebar > button:hover {
+  width: 180px;
+  height: 50px;
+  font-size: 20px;
+  padding: 10px;
+  background-color: black;
+  color: white;
+  margin: 10px 0px 10px 0px;
+  border: 1px solid #ebeaec;
+  box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.3);
+  border-radius: 16px;
 }
 
 .profileBox {
@@ -113,6 +128,10 @@ footer {
 .bookmarkBox {
   display: flex;
   flex-direction: column;
+}
+
+.bookmarkInnerBox {
+  margin: 40px 40px 40px 0px;
 }
 
 .title {
@@ -127,4 +146,23 @@ footer {
   background-color: black;
   color: white;
   padding: 0px 20px 0px 20px;
+}
+.removeBookmark {
+  background-color: white;
+  color: black;
+  margin: 10px 0px 10px 0px;
+  border: 1px solid #ebeaec;
+  box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.3);
+  border-radius: 5px;
+  padding: 5px 10px 5px 10px;
+}
+
+.removeBookmark:hover {
+  background-color: black;
+  color: white;
+  margin: 10px 0px 10px 0px;
+  border: 1px solid #ebeaec;
+  box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.3);
+  border-radius: 5px;
+  padding: 5px 10px 5px 10px;
 }
