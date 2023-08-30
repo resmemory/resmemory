@@ -1,5 +1,10 @@
 const code = {
   100: '일시적인 오류가 발생하였습니다.',
+  220: '알 수 없는 오류가 발생하였습니다.',
+  221: '북마크 추가에 성공하였습니다.',
+  222: '북마크 추가에 실패하였습니다.',
+  223: '북마크 추가에 실패하였습니다.',
+  224: '이미 북마크에 추가하였습니다.',
   340: '알 수 없는 오류가 발생하였습니다.',
   342: '존재하지 않는 게시글입니다.',
   350: '알 수 없는 오류가 발생하였습니다.',
@@ -35,7 +40,7 @@ const code = {
   444: '댓글 삭제 권한이 없습니다.',
 };
 const urlParams = new URL(location.href).searchParams;
-const postId = urlParams.get('postId');
+const postId = urlParams.get('post');
 const userId = localStorage.getItem('Authorization');
 const getOnePost = fetch(`/api/posts?postId=${postId}`, {
   method: 'GET',
@@ -51,7 +56,7 @@ const getOnePost = fetch(`/api/posts?postId=${postId}`, {
     content = result.content; // 전역 변수에 할당
     annualCategory = result.annualCategory; // 전역 변수에 할당
     img = result.img; // 전역 변수에 할당
-    return data
+    return data;
   });
 
 const getPost = () => {
@@ -74,7 +79,7 @@ const getPost = () => {
   <div class="post-buttons">
     <button class="button edit-button" onclick="modalOn('#edit-post-Modal')">수정</button>
     <button class="button delete-button" onclick="deletePost()">삭제</button>
-    <button class="button bookmark-button">북마크</button>
+    <button class="button bookmark-button" onclick="postBookmark()">북마크</button>
   </div>
   <div class="post-content">
     <img src="${img}" alt="${img}">
@@ -157,7 +162,7 @@ function updatePost() {
   })
     .then((res) => res.json())
     .then((res) => {
-      if(res.responseData.code==351){
+      if (res.responseData.code == 351) {
         alert(code[res.responseData.code]);
         return window.location.reload();
       }
@@ -165,23 +170,77 @@ function updatePost() {
     });
 }
 
-function deletePost(){
+function deletePost() {
   fetch(`api/posts/${postId}`, {
     method: 'DELETE',
     headers: {
-      'Content-Type': 'application/json',
+      Authorization: userId,
     },
-    body: JSON.stringify(),
   })
-    .then(res => res.json())
-    .then(res => {
-      console.log(res)
-      if(res.responseData.code==361){
+    .then((res) => res.json())
+    .then((res) => {
+      if (res.responseData.code == 361) {
         alert(code[res.responseData.code]);
-        return window.location.reload();
+        return (window.location.href = `/`);
       }
       alert(code[res.responseData.code]);
+    });
+}
+
+function postBookmark() {
+  const req = {
+    postId: postId,
+  };
+
+  fetch(`/api/bookmarks`, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+      Authorization: userId,
+    },
+    body: JSON.stringify(req),
+  })
+    .then((res) => res.json())
+    .then((res) => {
+      alert(code[res.responseData.code]);
+    });
+}
+
+function postComment() {
+  const commentContent = $('.comment-input').val();
+  const req = {
+    content: commentContent,
+    postId: postId,
+  };
+
+  fetch(`/api/comments`, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+      Authorization: userId,
+    },
+    body: JSON.stringify(req),
+  })
+    .then((res) => res.json())
+    .then((res) => {
+      if (res.responseData.code == 411) {
+        alert(code[res.responseData.code]);
+        return (location.reload());
+      }
+      alert(code[res.responseData.code]);
+    });
+}
+
+function getComment() {
+  console.log(postId)
+  fetch(`/api/comments?postId=${postId}`, {
+    method: 'GET',
+  })
+    .then((res) => res.json())
+    .then((res) => {
+     console.log(res)
     });
 }
 
 getPost();
+getComment();

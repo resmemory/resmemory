@@ -5,7 +5,7 @@ function dataconnection(host, port, onNoti, query, params, bodies, userId, metho
   const context = {
     port,
     name: 'connection',
-    urls: ['GET/posts', 'GET/users', 'DELETE/signout'],
+    urls: ['GET/posts', 'GET/users', 'DELETE/signout','DELETE/posts','DELETE/comments','DELETE/threads'],
     query,
     params,
     bodies,
