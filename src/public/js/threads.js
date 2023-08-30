@@ -13,6 +13,15 @@ const code = {
   372: '로그인이 필요한 기능입니다.',
   373: '스레드가 존재하지 않습니다.',
   370: '알 수 없는 오류가 발생하였습니다.',
+
+  // 신고
+  610: '알 수 없는 오류가 발생하였습니다.',
+  611: '신고가 접수 되었습니다.',
+  612: '로그인이 필요한 기능입니다.',
+  613: '해당 신고 글의 데이터가 읽히지 않았습니다.',
+  614: '이미 신고하신 상태입니다.',
+  615: '신고 내용의 입력이 필요합니다.',
+  620: '알 수 없는 오류가 발생하였습니다.',
 };
 
 document.addEventListener('DOMContentLoaded', () => {
@@ -38,6 +47,15 @@ async function viewThreads() {
                     <div class="button-container">
                       <button class="report-button" onclick ="openReportModal(${thread.threadId})">신고</button>
                       <button class="delete-button" onclick ="removeThread(${thread.threadId})">삭제</button>
+                      <div id="reportModal_${thread.threadId}" class="modal">
+                        <div class="modal-content">
+                          <span class="close-button" id="closeModal" onclick="closeReportModal(${thread.threadId})">&times;</span>
+                          <h2>스레드 신고</h2>
+                          <p>이 스레드를 신고하시겠습니까?</p>
+                          <textarea id="reportReason" placeholder="신고 이유를 입력하세요"></textarea>
+                          <button id="confirmReport" onclick ="report(${thread.threadId})">신고</button>
+                        </div>
+                      </div>
                     </div>
                   </div>`;
       })
@@ -66,51 +84,27 @@ async function removeThread(threadId) {
 
 // 모달창 열기
 function openReportModal(threadId) {
-  const reportModal = document.getElementById('reportModal');
-  const confirmReportButton = document.getElementById('confirmReport');
-  const closeModalButton = document.getElementById('closeModal');
-  const reportReasonInput = document.getElementById('reportReason');
-
-  confirmReportButton.onclick = async () => {
-    const reason = reportReasonInput.value;
-    if (reason.trim() !== '') {
-      try {
-        // AJAX 요청으로 신고 내역 전송
-        const response = await fetch(`/api/report/${threadId}`, {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-            Authorization: localStorage.getItem('Authorization'),
-          },
-          body: JSON.stringify({ reason }), // 이유를 함께 전송
-        });
-
-        const result = await response.json();
-
-        if (result.responseData.code === 611) {
-          alert('신고가 접수되었습니다.');
-          closeReportModal();
-
-          // 다른 HTML 페이지로 이동
-          window.location.href = './admin.html';
-        } else {
-          alert('신고 실패: ' + result.responseData.message);
-        }
-      } catch (error) {
-        console.error('에러 발생: ', error);
-      }
-    } else {
-      alert('신고 이유를 입력해주세요.');
-    }
-  };
-
-  closeModalButton.onclick = closeReportModal;
-
+  const reportModal = document.getElementById(`reportModal_${threadId}`);
   reportModal.style.display = 'block';
 }
 
 // 모달창 닫기
-function closeReportModal() {
-  const reportModal = document.getElementById('reportModal');
+function closeReportModal(threadId) {
+  const reportModal = document.getElementById(`reportModal_${threadId}`);
   reportModal.style.display = 'none';
+}
+
+async function report(contentId) {
+  const content = document.querySelector('#reportReason').value;
+  const response = await fetch(`./api/reports`, {
+    method: 'POST',
+    headers: {
+      Authorization: localStorage.getItem('Authorization'),
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify({ content, reportType: 'thread', contentId }),
+  });
+  const result = await response.json();
+  console.log(result);
+  alert(code[result.responseData.code]);
 }
