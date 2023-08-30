@@ -248,6 +248,7 @@ const onRequest = async (res, method, pathname, params, key, cb) => {
             });
           }
         } catch (err) {
+          console.log(err)
           responseData = { code: 420 };
         }
       }

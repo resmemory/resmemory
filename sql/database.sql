@@ -13,7 +13,7 @@ CREATE TABLE `Users` (
     `kakaoId` VARCHAR(255) DEFAULT NULL ,  
     PRIMARY KEY (`userId`));
 CREATE TABLE `Bookmarks` (
-  `bookmarkId` BIGINT auto_increment NOT NULL , 
+    `bookmarkId` BIGINT auto_increment NOT NULL , 
     `postId` BIGINT NOT NULL, 
     `userId` BIGINT NOT NULL,   
     `createdAt` DATETIME, 
