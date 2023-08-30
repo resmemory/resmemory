@@ -1,16 +1,9 @@
-const code = {
-  0: '로그인이 필요한 기능입니다.',
-  100: '일시적인 오류가 발생했습니다.',
-  131: '로그아웃에 성공하였습니다.',
-  320: '일시적인 오류가 발생했습니다.',
-  390: '게시글 조회에 실패하였습니다.',
-};
-
 document.addEventListener('DOMContentLoaded', () => {
   countPosts();
   headerBtns();
 });
 
+// 게시물 총 개수 파악 후 loadPosts 함수 실행
 const countPosts = async () => {
   let currentPage = 1;
   let totalPosts = 0;
@@ -35,6 +28,7 @@ const countPosts = async () => {
   loadPosts(currentPage, totalPosts);
 };
 
+// 게시글 목록 생성 함수
 const loadPosts = async (page, totalPosts) => {
   const response = await fetch(`./api/posts?pageNum=${page}`, {
     method: 'GET',
@@ -66,6 +60,7 @@ const loadPosts = async (page, totalPosts) => {
   createPaginationButtons(page, totalPosts);
 };
 
+// 페이지네이션 버튼 생성 함수
 const createPaginationButtons = (currentPage, totalPosts) => {
   const paginationContainer = document.querySelector('.pagination');
   const totalPages = Math.ceil(totalPosts / 10);
@@ -108,7 +103,7 @@ const logout = async () => {
     },
   });
   const result = await response.json();
-  console.log(result);
+
   alert(code[result.responseData.code]);
   localStorage.removeItem('Authorization');
   location.reload();
@@ -124,6 +119,7 @@ const clickPost = (postId) => {
   location.href = `./detail?post=${postId}`;
 };
 
+// 글 작성 페이지로 이동
 const writingPost = () => {
   const Authorization = localStorage.getItem('Authorization');
   if (!Authorization) {

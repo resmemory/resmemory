@@ -11,8 +11,22 @@
   font-weight: 900px;
 }
 
+/* 모든 버튼 */
+button {
+  background-color: black;
+  color: white;
+  padding: 5px 10px;
+  cursor: pointer;
+}
+
+button:hover {
+  transform: scale(1.1);
+  transition-duration: 0.1s;
+}
+
 /* header */
 header {
+  margin-top: 40px;
   height: 120px;
 }
 
@@ -20,16 +34,68 @@ header {
   height: 100px;
   float: right;
   cursor: pointer;
+  margin-right: 30px;
+}
+
+/* main */
+main {
+  text-align: center;
+}
+
+.container {
+  font-size: 20px;
+  margin: 0 auto;
+  border: 1px solid;
+  padding: 19px 27px 30px;
+  box-sizing: border-box;
+  border-radius: 2px;
+  text-align: left;
+  width: 870px;
+  border-color: #efefef;
+}
+
+.annualcategory {
+  font-size: 16px;
+  cursor: pointer;
+  padding: 5px;
 }
 
 /* 제목 내용 작성폼 */
-.writing_form {
+.write_box {
   display: flex;
   flex-direction: column;
+  margin-top: 10px;
 }
 
-.writing_form > label {
-  margin-bottom: 10px;
+.write_box > * {
+  margin-bottom: 20px;
+}
+
+.write_box > input {
+  height: 30px;
+  font-size: 20px;
+}
+
+.post_title::placeholder {
+  font-size: 20px;
+}
+
+.post_img::placeholder {
+  font-size: 20px;
+}
+
+.post_content {
+  height: 300px;
+  font-size: 20px;
+}
+
+.post_content::placeholder {
+  font-size: 20px;
+}
+
+.post_buttons {
+  display: flex;
+  gap: 689px;
 }
 
 /* footer */

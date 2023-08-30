@@ -1,5 +1,5 @@
 button:hover {
-  transform: scale(1.2);
+  transform: scale(1.1);
   transition-duration: 0.1s;
 }
 
@@ -10,7 +10,6 @@ header button {
   padding: 5px 10px;
   position: relative;
   left: 80px;
-  top: 50px;
   cursor: pointer;
 }
 
