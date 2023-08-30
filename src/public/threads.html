@@ -22,14 +22,11 @@
       <div class="pagination" id="pagination"></div>
     </div>
 
-    <!-- 모달창 -->
-    <div id="reportModal" class="modal">
+    <!-- 모달을 전체 페이지에 추가 -->
+    <div id="globalModal" class="modal">
       <div class="modal-content">
-        <span class="close-button" id="closeModal">&times;</span>
-        <h2>스레드 신고</h2>
-        <p>이 스레드를 신고하시겠습니까?</p>
-        <textarea id="reportReason" placeholder="신고 이유를 입력하세요"></textarea>
-        <button id="confirmReport">신고</button>
+        <span class="close-button" id="closeGlobalModal">&times;</span>
+        <div id="modalContent"></div>
       </div>
     </div>
 
