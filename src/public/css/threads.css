@@ -1,6 +1,6 @@
 @font-face {
   font-family: 'jaram';
-  src: url('http://localhost:8000/assets/ttf/jaram.ttf');
+  src: url('./assets/ttf/jaram.ttf');
 }
 
 /* * {
