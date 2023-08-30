@@ -1,18 +1,12 @@
-const code = {
-  0: '로그인이 필요한 기능입니다.',
-  100: '일시적인 오류가 발생했습니다.',
-  311: '게시글을 작성하였습니다.',
-  312: '로그인이 필요한 기능입니다.',
-  313: '제목을 입력해주세요.',
-  314: '내용을 입력해주세요.',
-  315: '카테고리를 설정해주세요.',
-  310: '일시적인 오류가 발생했습니다.',
-};
+document.addEventListener('DOMContentLoaded', () => {
+  headerBtns();
+});
 
 const writingPost = async () => {
   const annualCategory = document.querySelector('.annualcategory').value;
-  const title = document.querySelector('.title').value;
-  const content = document.querySelector('.content').value;
+  const title = document.querySelector('.post_title').value;
+  const content = document.querySelector('.post_content').value;
+  const img = document.querySelector('.post_img').value;
 
   const response = await fetch(`./api/posts`, {
     method: 'POST',
@@ -20,7 +14,7 @@ const writingPost = async () => {
       'Content-Type': 'application/json',
       Authorization: localStorage.getItem('Authorization'),
     },
-    body: JSON.stringify({ title, content, annualCategory }),
+    body: JSON.stringify({ title, content, annualCategory, img }),
   });
 
   const data = await response.json();
@@ -29,6 +23,35 @@ const writingPost = async () => {
   if (data.responseData.code === 311) {
     location.href = `./`;
   }
+};
+
+// 헤더버튼들
+const headerBtns = () => {
+  const login = document.querySelector('.login');
+  const logout = document.querySelector('.logout');
+  const mypage = document.querySelector('.mypage');
+
+  if (localStorage.getItem('Authorization')) {
+    logout.style.display = 'block';
+    mypage.style.display = 'block';
+  } else {
+    login.style.display = 'block';
+  }
+};
+
+// 로그아웃 버튼 누를시
+const logout = async () => {
+  const response = await fetch(`./api/logout`, {
+    method: 'POST',
+    headers: {
+      Authorization: localStorage.getItem('Authorization'),
+    },
+  });
+  const result = await response.json();
+
+  alert(code[result.responseData.code]);
+  localStorage.removeItem('Authorization');
+  location.href = `./`;
 };
 
 // 취소 버튼 누를시 이전 페이지로 이동

@@ -1,0 +1,23 @@
+button:hover {
+  transform: scale(1.1);
+  transition-duration: 0.1s;
+}
+
+header button {
+  margin: 20px 0px 0px 20px;
+  background-color: black;
+  color: white;
+  padding: 5px 10px;
+  position: relative;
+  left: 80px;
+  cursor: pointer;
+}
+
+.headerBtns {
+  display: flex;
+  flex-direction: row;
+}
+
+.headerBtns > button {
+  margin-right: 0px;
+}
