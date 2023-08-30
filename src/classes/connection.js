@@ -1,8 +1,9 @@
 import net from 'net';
 
-export default class TcpClient {
+export default class Connections {
   /* * 생성자 */
   constructor(host, port, packet) {
+    let isConnectedGetPosts;
     this.options = {
       host: host,
       port: port,
