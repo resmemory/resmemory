@@ -306,7 +306,6 @@ const onRequest = async (res, method, pathname, params, key, cb) => {
             }
           }
         } catch (err) {
-          console.log(err);
           responseData = { code: 350 };
         }
       }
@@ -368,6 +367,7 @@ const onRequest = async (res, method, pathname, params, key, cb) => {
             }
           }
         } catch (err) {
+          console.log(err);
           responseData = { code: 360 };
         }
       }
@@ -403,7 +403,6 @@ const onRequest = async (res, method, pathname, params, key, cb) => {
       // 댓글 삭제
       if (pathname === '/comments' && params.params !== 'admin') {
         try {
-          const { postId } = params.bodies;
           const commentId = params.params;
 
           if (!params.userId) {
@@ -415,11 +414,12 @@ const onRequest = async (res, method, pathname, params, key, cb) => {
             } else if (params.userId !== findCommentData.userId) {
               responseData = { code: 444 };
             } else {
-              await Comments.destroy({ where: { postId, commentId } });
+              await Comments.destroy({ where: { commentId } });
               responseData = { code: 441 };
             }
           }
         } catch (err) {
+          console.log(err)
           responseData = { code: 440 };
         }
       }

@@ -1,6 +1,6 @@
 import reports from './report.service';
 import adminModule from './admin.module';
-
+import dataconnection from '../connection';
 const onRequest = async (res, method, pathname, params, key, cb) => {
   let responseData = {};
   switch (method) {
@@ -8,6 +8,7 @@ const onRequest = async (res, method, pathname, params, key, cb) => {
       if (params.params == 'post') {
         try {
           const { contentId } = params.bodies;
+          const { userId } = params;
           await new Promise((resolve, reject) => {
             dataconnection(
               process.env.HOST,
@@ -16,10 +17,10 @@ const onRequest = async (res, method, pathname, params, key, cb) => {
                 adminModule.result = data;
                 resolve();
               },
-              { contentId },
               null,
+              contentId ,
               null,
-              null,
+              userId,
               'DELETE',
               '/posts',
             );
@@ -33,12 +34,14 @@ const onRequest = async (res, method, pathname, params, key, cb) => {
             responseData = { code: 511 };
           }
         } catch (error) {
+          console.log(error);
           responseData = { code: 510 };
         }
       }
       if (params.params == 'comment') {
         try {
           const { contentId } = params.bodies;
+          const { userId } = params;
           await new Promise((resolve, reject) => {
             dataconnection(
               process.env.HOST,
@@ -47,10 +50,10 @@ const onRequest = async (res, method, pathname, params, key, cb) => {
                 adminModule.result = data;
                 resolve();
               },
-              { contentId },
               null,
+              contentId ,
               null,
-              null,
+              userId,
               'DELETE',
               '/comments',
             );
@@ -70,18 +73,19 @@ const onRequest = async (res, method, pathname, params, key, cb) => {
       if (params.params == 'thread') {
         try {
           const { contentId } = params.bodies;
+          const { userId } = params;
           await new Promise((resolve, reject) => {
             dataconnection(
               process.env.HOST,
-              process.env.POSTS_PORT,
+              process.env.THREADS_PORT,
               (data) => {
                 adminModule.result = data;
                 resolve();
               },
-              { contentId },
               null,
+              contentId ,
               null,
-              null,
+              userId,
               'DELETE',
               '/threads',
             );
