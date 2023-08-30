@@ -158,7 +158,7 @@ const getPost = () => {
     <button class="button report-button" onclick="modalOn('#report-post-Modal')">신고</button>
   </div>
   <div class="post-content">
-    <img src="${img}" alt="${img}">
+    <img src="${img}" alt="${img}" style="${img ? '' : 'display: none;'}">
     <p>${content}</p>
   </div>
 
