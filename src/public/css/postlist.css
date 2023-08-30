@@ -11,9 +11,25 @@
   font-weight: 900px;
 }
 
+button:hover {
+  transform: scale(1.2);
+  transition-duration: 0.1s;
+  cursor: pointer;
+}
+
 /* header */
 header {
   height: 120px;
+}
+
+.writing_btn {
+  position: relative;
+  left: 50px;
+  top: 100px;
+  margin: 20px 0px 0px 50px;
+  background-color: black;
+  color: white;
+  padding: 5px 10px;
 }
 
 .logo {
@@ -45,18 +61,12 @@ header {
 }
 
 .pagination > button {
-  cursor: pointer;
   margin: 20px 20px 0px 0px;
   background-color: black;
   color: white;
   border: none;
   border-radius: 10px;
   padding: 5px 10px;
-}
-
-.pagination > button:hover {
-  transform: scale(1.2);
-  transition-duration: 0.1s;
 }
 
 /* 게시글 */
@@ -133,15 +143,9 @@ td {
   position: relative;
   top: 60px;
   margin-top: 20px;
-  cursor: pointer;
   background-color: black;
   color: white;
   padding: 5px 10px;
-}
-
-.thread_btn:hover {
-  transform: scale(1.2);
-  transition-duration: 0.1s;
 }
 
 /* footer */

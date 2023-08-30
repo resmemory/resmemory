@@ -1,0 +1,40 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <script src="./js/post.js"></script>
+    <link rel="stylesheet" href="./css/post.css" type="text/css" />
+    <title>[ 응답하라 추억시대 ] - 글 작성하기</title>
+  </head>
+  <body>
+    <header>
+      <img class="logo" src="./assets/image/logo.png" onclick="location.href = `./`" />
+    </header>
+
+    <main>
+      <div>
+        <label>카테고리</label>
+        <select class="annualcategory">
+          <option selected></option>
+          <option>1970</option>
+          <option>1980</option>
+          <option>1990</option>
+          <option>2000</option>
+          <option>2010</option>
+          <option>2020</option>
+        </select>
+      </div>
+      <form class="writing_form">
+        <label>제목<input class="title" type="text" placeholder="제목을 입력해주세요." /></label>
+        <label>내용<input class="content" type="text" placeholder="내용을 입력해주세요." /></label>
+      </form>
+      <div class="post_buttons">
+        <button onclick="writingPost()">게시글 작성</button>
+        <button onclick="cancelPost()">취소</button>
+      </div>
+    </main>
+
+    <footer>제작 - TEAM 1이3김 : 이다영 김주희 김민규 김지혜</footer>
+  </body>
+</html>
