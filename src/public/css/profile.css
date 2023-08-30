@@ -1,19 +1,27 @@
 @font-face {
   font-family: 'jaram';
-  src: url('http://localhost:8000/assets/ttf/jaram.ttf');
+  src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_2307-2@1.0/iceJaram-Rg.woff2')
+    format('woff2');
+  font-weight: normal;
+  font-style: normal;
 }
 @font-face {
   font-family: 'jaemin';
-  src: url('http://localhost:8000/assets/ttf/Jaemin3-Regular.ttf');
+  src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_2307-1@1.1/Hangeuljaemin4-Regular.woff2')
+    format('woff2');
+  font-weight: normal;
+  font-style: normal;
 }
-
 @font-face {
-  font-family: 'blueroad';
-  src: url('http://localhost:8000/assets/ttf/Yeongdeok_Blueroad.ttf');
+  font-family: 'GangwonEdu_OTFBoldA';
+  src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_2201-2@1.0/GangwonEdu_OTFBoldA.woff')
+    format('woff');
+  font-weight: normal;
+  font-style: normal;
 }
 
 * {
-  font-family: 'blueroad';
+  font-family: 'GangwonEdu_OTFBoldA';
   font-weight: 900px;
 }
 
@@ -92,10 +100,25 @@ footer {
   height: 50px;
   font-size: 20px;
   padding: 10px;
-  border-radius: 5px;
-  background-color: lightgray;
+  background-color: white;
   color: black;
   margin: 10px 0px 10px 0px;
+  border: 1px solid #ebeaec;
+  box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.3);
+  border-radius: 16px;
+}
+
+.profileSidebar > button:hover {
+  width: 180px;
+  height: 50px;
+  font-size: 20px;
+  padding: 10px;
+  background-color: black;
+  color: white;
+  margin: 10px 0px 10px 0px;
+  border: 1px solid #ebeaec;
+  box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.3);
+  border-radius: 16px;
 }
 
 .profileBox {
@@ -105,6 +128,10 @@ footer {
 .bookmarkBox {
   display: flex;
   flex-direction: column;
+}
+
+.bookmarkInnerBox {
+  margin: 40px 40px 40px 0px;
 }
 
 .title {
@@ -119,4 +146,23 @@ footer {
   background-color: black;
   color: white;
   padding: 0px 20px 0px 20px;
+}
+.removeBookmark {
+  background-color: white;
+  color: black;
+  margin: 10px 0px 10px 0px;
+  border: 1px solid #ebeaec;
+  box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.3);
+  border-radius: 5px;
+  padding: 5px 10px 5px 10px;
+}
+
+.removeBookmark:hover {
+  background-color: black;
+  color: white;
+  margin: 10px 0px 10px 0px;
+  border: 1px solid #ebeaec;
+  box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.3);
+  border-radius: 5px;
+  padding: 5px 10px 5px 10px;
 }

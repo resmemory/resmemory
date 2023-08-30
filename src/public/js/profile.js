@@ -71,12 +71,14 @@ async function bookmarks() {
   const bookmarks = result.responseData.bodies
     .map((bookmark) => {
       return `
-      <div>
+      <div class = "bookmarkInnerBox">
       <h1 class = "title">${bookmark.title}</h1> 
       <p>${bookmark.annualCategory} | ${new Date(bookmark.createdAt).toLocaleDateString('ko-KR', {
         timeZone: 'Asia/Seoul',
       })} | ${bookmark.nickname}</p>
-      <button onclick="removeBookmark(${bookmark.bookmarkId})">삭제</button>
+      <button class = "removeBookmark" onclick="removeBookmark(${
+        bookmark.bookmarkId
+      })">삭제</button>
       </div>
     `;
     })
