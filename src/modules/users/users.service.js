@@ -166,11 +166,6 @@ const onRequest = async (res, method, pathname, params, key, cb) => {
           const { userId } = params;
           const bookmarks = await Bookmarks.findAll({ order: ['createdAt'], where: { userId } });
           const postIds = bookmarks.map((bookmark) => bookmark.postId);
-          const userIds = bookmarks.map((bookmark) => bookmark.userId);
-          const users = await Users.findAll({
-            where: { userId: userIds },
-            attributes: ['userId', 'nickname'],
-          });
 
           await new Promise((resolve, reject) => {
             dataconnection(
@@ -188,14 +183,21 @@ const onRequest = async (res, method, pathname, params, key, cb) => {
               '/posts',
             );
           });
+          let bodies = usersmodule.posts.responseData.bodies;
+          const userIds = bodies.map((post) => post.userId);
+          const users = await Users.findAll({
+            where: { userId: userIds },
+            attributes: ['userId', 'nickname'],
+          });
 
-          const bodies = usersmodule.posts.responseData.bodies.map((post) => {
+          bodies = bodies.map((post) => {
             const bookmarkId = bookmarks.filter((bookmark) => post.postId == bookmark.postId);
             const nickname = users.filter((user) => user.userId == post.userId);
+
             return {
               ...post,
               bookmarkId: bookmarkId[0].bookmarkId,
-              nickname: nickname.nickname,
+              nickname: nickname[0].nickname,
             };
           });
 
