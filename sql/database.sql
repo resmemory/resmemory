@@ -13,10 +13,12 @@ CREATE TABLE `Users` (
     `kakaoId` VARCHAR(255) DEFAULT NULL ,  
     PRIMARY KEY (`userId`));
 CREATE TABLE `Bookmarks` (
+  `bookmarkId` BIGINT auto_increment NOT NULL , 
     `postId` BIGINT NOT NULL, 
     `userId` BIGINT NOT NULL,   
     `createdAt` DATETIME, 
-    FOREIGN KEY (`userId`) REFERENCES `Users` (`userId`) ON DELETE CASCADE ON UPDATE CASCADE);
+    FOREIGN KEY (`userId`) REFERENCES `Users` (`userId`) ON DELETE CASCADE ON UPDATE CASCADE,
+    PRIMARY KEY (`bookmarkId`));
 
 -- reports 서비스
 CREATE TABLE `Reports` (
