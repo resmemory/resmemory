@@ -17,20 +17,29 @@ async function viewThreads() {
     const threadsHTML = data.responseData.result
       .map((thread) => {
         return `<div class="thread" >
-                    ${thread.content}, ${thread.createdAt}
-                    <div class="button-container">
-                      <button class="report-button" onclick ="openReportModal(${thread.threadId})">신고</button>
-                      <button class="delete-button" onclick ="removeThread(${thread.threadId})">삭제</button>
+                  <h2> ${thread.content} </h2>
+                  <p>  ${new Date(thread.createdAt).toLocaleString('ko-KR', {
+                    timeZone: 'Asia/Seoul',
+                  })}
+                      <button class="report-button" onclick ="openReportModal(${
+                        thread.threadId
+                      })">신고</button>
+                      <button class="delete-button" onclick ="removeThread(${
+                        thread.threadId
+                      })">삭제</button>
                       <div id="reportModal_${thread.threadId}" class="modal">
                         <div class="modal-content">
-                          <span class="close-button" id="closeModal" onclick="closeReportModal(${thread.threadId})">&times;</span>
+                          <span class="close-button" id="closeModal" onclick="closeReportModal(${
+                            thread.threadId
+                          })">&times;</span>
                           <h2>스레드 신고</h2>
                           <p>이 스레드를 신고하시겠습니까?</p>
                           <textarea id="reportReason" placeholder="신고 이유를 입력하세요"></textarea>
-                          <button id="confirmReport" onclick ="report(${thread.threadId})">신고</button>
+                          <button id="confirmReport" onclick ="report(${
+                            thread.threadId
+                          })">신고</button>
                         </div>
                       </div>
-                    </div>
                   </div>`;
       })
       .join('');

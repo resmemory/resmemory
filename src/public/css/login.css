@@ -12,10 +12,16 @@
   font-weight: normal;
   font-style: normal;
 }
+@font-face {
+  font-family: 'GangwonEdu_OTFBoldA';
+  src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_2201-2@1.0/GangwonEdu_OTFBoldA.woff')
+    format('woff');
+  font-weight: normal;
+  font-style: normal;
+}
 
 * {
-  font-family: 'jaram';
-  font-weight: 900px;
+  font-family: 'GangwonEdu_OTFBoldA';
 }
 
 /* header */
@@ -56,18 +62,19 @@ footer {
   width: 30%;
   box-shadow: 0px 4px 8px 0px rgb(0, 0, 0, 0.1);
   color: #000;
-  height: 80%;
+  height: 55%;
   position: absolute;
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
   text-align: left;
+  overflow: auto;
 }
 
 /* 공통영역 */
 
 label {
-  font-size: 30px;
+  font-size: 20px;
 }
 
 /* 페이지 영역 */
@@ -105,30 +112,27 @@ label {
   float: right;
 }
 .loginBoxBtns > button {
-  width: 60px;
-  height: 30px;
   font-size: 20px;
   background-color: black;
   color: white;
   border-radius: 10px;
+  padding: 5px 10px 5px 10px;
 }
 .loginBoxBtns > button:hover {
-  width: 60px;
-  height: 30px;
   font-size: 20px;
   background-color: white;
   color: black;
   border-radius: 10px;
+  padding: 5px 10px 5px 10px;
 }
 .loginBox > div {
   margin: 20px 20px 20px 20px;
 }
 
 .loginBox > div > input {
-  width: 380px;
-  height: 30px;
+  width: 80%;
+  height: 20%;
   font-size: 20px;
-  font-family: 'jaemin';
 }
 
 /* signupBox */
@@ -138,10 +142,10 @@ label {
 }
 
 .signupBox > div > input {
-  width: 330px;
-  height: 30px;
+  width: 75%;
+  height: 20%;
   font-size: 20px;
-  font-family: 'jaemin';
+  margin-right: 5px;
 }
 
 .signupBoxBtns {
