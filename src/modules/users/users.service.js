@@ -38,7 +38,7 @@ const onRequest = async (res, method, pathname, params, key, cb) => {
             responseData = { code: 122 };
           } else if (refresh) {
             const verified = jwt.verify(refresh, process.env.JWT_SECRET_KEY_REFRESH);
-            if (today - jwt.decode(refresh).exp * 1000 > 0) {
+            if (today - jwt.decode(refresh).exp > 0) {
               if (verified && redisCli.get(`refresh_${user.userId}`) == refresh) {
                 token = jwt.sign({ user }, process.env.JWT_SECRET_KEY, {
                   expiresIn: process.env.JWT_EXPIRE_TIME,
