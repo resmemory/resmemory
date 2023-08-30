@@ -88,6 +88,7 @@ const onRequest = async (res, method, pathname, params, key, cb) => {
           }
         } catch (error) {
           responseData = { code: 730 };
+          console.log(error);
         }
         return remove(
           method,

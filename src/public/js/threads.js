@@ -15,116 +15,102 @@ const code = {
   370: '알 수 없는 오류가 발생하였습니다.',
 };
 
-const ITEMS_PER_PAGE = 10; // 페이지당 표시할 아이템 개수
-let currentPage = 1;
+document.addEventListener('DOMContentLoaded', () => {
+  viewThreads();
+});
 
-document.addEventListener('DOMContentLoaded', async () => {
+// 스레드 삭제 버튼 클릭 시 DELETE 요청
+async function viewThreads() {
   const threadList = document.getElementById('threadList');
-  const paginationContainer = document.getElementById('pagination');
+  const response = await fetch('/api/threads', {
+    method: 'GET',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+  });
+  const data = await response.json();
 
-  try {
-    const response = await fetch('/api/threads');
-    const data = await response.json();
-
-    if (data.responseData.result) {
-      const threadsHTML = data.responseData.result
-        .map((thread) => {
-          return `<div class="thread" data-thread-id="${thread.id}">
+  if (data.responseData.result) {
+    const threadsHTML = data.responseData.result
+      .map((thread) => {
+        return `<div class="thread" >
                     ${thread.content}, ${thread.createdAt}
                     <div class="button-container">
-                      <button class="delete-button">삭제</button>
+                      <button class="report-button" onclick ="openReportModal(${thread.threadId})">신고</button>
+                      <button class="delete-button" onclick ="removeThread(${thread.threadId})">삭제</button>
                     </div>
                   </div>`;
-        })
-        .join('');
-      threadList.innerHTML = threadsHTML;
-
-      // 스레드 삭제 버튼 클릭 시 DELETE 요청
-      document.addEventListener('click', async (event) => {
-        if (event.target.classList.contains('delete-button')) {
-          const threadContainer = event.target.closest('.thread');
-          const threadId = threadContainer.dataset.threadId;
-
-          try {
-            const response = await fetch(`/api/threads/${threadId}`, {
-              method: 'DELETE',
-            });
-
-            if (response.ok) {
-              threadContainer.remove();
-            } else {
-              console.error('Failed to delete thread');
-            }
-          } catch (error) {
-            console.error('Error deleting thread:', error);
-          }
-        }
-      });
-
-      // 페이지네이션 생성
-      generatePagination(data.totalPages, paginationContainer);
-    } else {
-      threadList.innerHTML = '<p>No threads available.</p>';
-    }
-  } catch (error) {
-    console.error('Error fetching threads:', error);
+      })
+      .join('');
+    threadList.innerHTML = threadsHTML;
   }
-});
-
-function generatePagination(totalPages, paginationContainer) {
-  let paginationHTML = '';
-
-  for (let i = 1; i <= totalPages; i++) {
-    paginationHTML += `<a class="page-link" data-page="${i}">${i}</a>`;
-  }
-
-  paginationContainer.innerHTML = paginationHTML;
 }
 
-// 신고 모달 관련 코드
-const openModalButton = document.getElementById('openModal');
-const closeModalButton = document.getElementById('closeModal');
-const modal = document.getElementById('myModal');
-const submitReportButton = document.getElementById('submitReport');
-const reportInput = document.getElementById('reportInput');
+// 스레드 삭제 버튼 클릭 시 DELETE 요청
+async function removeThread(threadId) {
+  const response = await fetch(`./api/threads/${threadId}`, {
+    method: 'DELETE',
+    headers: {
+      Authorization: localStorage.getItem('Authorization'),
+    },
+  });
+  const result = await response.json();
+  console.log(result);
+  if (result.responseData.code == 731) {
+    alert(code[result.responseData.code]);
+    location.reload();
+  } else {
+    alert(code[result.responseData.code]);
+  }
+}
 
-openModalButton.addEventListener('click', function () {
-  modal.style.display = 'flex';
-});
+// 모달창 열기
+function openReportModal(threadId) {
+  const reportModal = document.getElementById('reportModal');
+  const confirmReportButton = document.getElementById('confirmReport');
+  const closeModalButton = document.getElementById('closeModal');
+  const reportReasonInput = document.getElementById('reportReason');
 
-closeModalButton.addEventListener('click', function () {
-  modal.style.display = 'none';
-});
-
-// 스레드 신고 버튼 클릭 시
-document.addEventListener('click', async (event) => {
-  if (event.target.classList.contains('report-button')) {
-    const threadId = event.target.dataset.threadId;
-    modal.style.display = 'flex'; // 모달 열기
-
-    // 신고 내용 제출 버튼 클릭 시
-    submitReportButton.addEventListener('click', async () => {
-      const reportContent = reportInput.value;
-
+  confirmReportButton.onclick = async () => {
+    const reason = reportReasonInput.value;
+    if (reason.trim() !== '') {
       try {
-        const response = await fetch(`/api/threads/${threadId}/report`, {
+        // AJAX 요청으로 신고 내역 전송
+        const response = await fetch(`/api/report/${threadId}`, {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
+            Authorization: localStorage.getItem('Authorization'),
           },
-          body: JSON.stringify({ reportContent }),
+          body: JSON.stringify({ reason }), // 이유를 함께 전송
         });
 
-        if (response.ok) {
-          console.log('Thread reported successfully');
+        const result = await response.json();
+
+        if (result.responseData.code === 611) {
+          alert('신고가 접수되었습니다.');
+          closeReportModal();
+
+          // 다른 HTML 페이지로 이동
+          window.location.href = './admin.html';
         } else {
-          console.error('Failed to report thread');
+          alert('신고 실패: ' + result.responseData.message);
         }
       } catch (error) {
-        console.error('Error reporting thread:', error);
+        console.error('에러 발생: ', error);
       }
+    } else {
+      alert('신고 이유를 입력해주세요.');
+    }
+  };
 
-      modal.style.display = 'none'; // 모달 닫기
-    });
-  }
-});
+  closeModalButton.onclick = closeReportModal;
+
+  reportModal.style.display = 'block';
+}
+
+// 모달창 닫기
+function closeReportModal() {
+  const reportModal = document.getElementById('reportModal');
+  reportModal.style.display = 'none';
+}
