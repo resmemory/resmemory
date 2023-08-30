@@ -284,6 +284,7 @@ const onRequest = async (res, method, pathname, params, key, cb) => {
             }
           }
         } catch (err) {
+          console.log(err)
           responseData = { code: 350 };
         }
       }
@@ -361,6 +362,22 @@ const onRequest = async (res, method, pathname, params, key, cb) => {
         }
       }
 
+      // 게시글 삭제 (회원 탈퇴 용)
+      if (pathname === '/signout' && params.params == 'posts') {
+        try {
+          const { userId } = params;
+          console.log('========================', userId);
+          if (!userId) {
+            responseData = { code: 382 };
+          } else {
+            await Posts.destroy({ where: { userId } });
+            responseData = { code: 381 };
+          }
+        } catch (err) {
+          responseData = { code: 380 };
+        }
+      }
+
       // 댓글 삭제
       if (pathname === '/comments' && params.params !== 'admin') {
         try {
@@ -394,6 +411,22 @@ const onRequest = async (res, method, pathname, params, key, cb) => {
           responseData = { code: 451, result };
         } catch (err) {
           responseData = { code: 450 };
+        }
+      }
+
+      // 댓글 삭제 (회원 탈퇴 용)
+      if (pathname === '/signout' && params.params == 'comments') {
+        try {
+          const { userId } = params;
+
+          if (!userId) {
+            responseData = { code: 462 };
+          } else {
+            await Comments.destroy({ where: { userId } });
+            responseData = { code: 461 };
+          }
+        } catch (err) {
+          responseData = { code: 460 };
         }
       }
 

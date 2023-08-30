@@ -1,24 +1,35 @@
+const code = {
+  320: '알 수 없는 오류가 발생하였습니다.',
+  390: '게시글 조회에 실패하였습니다.',
+};
+
 document.addEventListener('DOMContentLoaded', () => {
-  loadPosts();
+  countPosts();
 });
 
-let currentPage = 1;
-let totalPosts = 0;
+const countPosts = async () => {
+  let currentPage = 1;
+  let totalPosts = 0;
 
-fetch(`./api/posts/list`, {
-  method: 'GET',
-  headers: {
-    'Content-Type': 'application/json',
-  },
-})
-  .then((response) => response.json())
-  .then((data) => {
-    totalPosts = data.responseData.bodies;
-    loadPosts(currentPage, totalPosts);
-  })
-  .catch((error) => {
-    console.error('Error fetching total posts:', error);
+  const response = await fetch(`./api/posts/list`, {
+    method: 'GET',
+    headers: {
+      'Content-Type': 'application/json',
+    },
   });
+
+  const data = await response.json();
+  if (data.responseData.code) {
+    alert(code[data.responseData.code]);
+  }
+
+  totalPosts = data.responseData.bodies;
+  if (totalPosts > 100) {
+    totalPosts = 100;
+  }
+
+  loadPosts(currentPage, totalPosts);
+};
 
 const loadPosts = async (page, totalPosts) => {
   const response = await fetch(`./api/posts?pageNum=${page}`, {
@@ -27,19 +38,23 @@ const loadPosts = async (page, totalPosts) => {
       'Content-Type': 'application/json',
     },
   });
-  const data = await response.json();
-  const postlist = document.querySelector('.postlist');
 
+  const data = await response.json();
+  if (data.responseData.code) {
+    alert(code[data.responseData.code]);
+  }
+
+  const postlist = document.querySelector('.postlist');
   const postsData = data.responseData
     .map(
       (post) =>
-        `<div class="postBox">
-        <p>${post.annualCategory}</p>
-        <p onclick="clickPost(${post.postId})">${post.title}</p>
-        <p>${post.nickname}</p>
-        <p>${new Date(post.createdAt).toLocaleDateString('ko-KR', { timeZone: 'Asia/Seoul' })}</p>
-        <p>${post.viewCount}</p>
-        </div>`,
+        `<tr class="postBox">
+        <td>${post.annualCategory}</td>
+        <td class="post_title" onclick="clickPost(${post.postId})">${post.title}</td>
+        <td>${post.nickname}</td>
+        <td>${new Date(post.createdAt).toLocaleDateString('ko-KR', { timeZone: 'Asia/Seoul' })}</td>
+        <td>${post.viewCount}</td>
+        </tr>`,
     )
     .join('');
   postlist.innerHTML = postsData;
@@ -71,7 +86,7 @@ const annualCategory = (category) => {
   location.href = `./annual?category=${category}`;
 };
 
-// 상세 페이지로 이동(url 주소 확인 필요)
+// 상세 페이지로 이동
 const clickPost = (postId) => {
   location.href = `./detail?post=${postId}`;
 };

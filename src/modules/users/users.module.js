@@ -10,7 +10,6 @@ class UsersModule extends TcpServer {
   map = {};
   constructor() {
     // 부모 클래스 생성자 호출
-    let userId;
     relationship();
     super('users', process.env.USERS_PORT ? Number(process.env.USERS_PORT) : 9010, [
       'POST/mail',
@@ -29,14 +28,6 @@ class UsersModule extends TcpServer {
       // Distributor 접속
       console.log('Distributor Notification', data);
     });
-    this.connectToGetPosts(
-      process.env.HOST,
-      process.env.DIS_PORT,
-      (data) => {
-        console.log('GET Posts Notification', data);
-      },
-      userId,
-    );
     this.posts;
   }
 
@@ -74,6 +65,84 @@ class UsersModule extends TcpServer {
     const interval = setInterval(() => {
       if (isConnectedGetPosts !== true) {
         this.clientGetPosts.connect();
+      } else {
+        clearInterval(interval);
+      }
+    }, 1);
+  }
+
+  connectToRemovePosts(host, port, onNoti, userId) {
+    let params;
+    params = this.context;
+    params.params = 'posts';
+    params.userId = userId;
+    const packet = makePacket('/signout', 'DELETE', 0, params);
+    let isConnectedPosts = false;
+    this.clientPosts = new TcpClient(
+      host,
+      port,
+      (options) => {
+        // Posts 접속 이벤트
+        isConnectedPosts = true;
+        this.clientPosts.write(packet);
+      },
+      // Posts 데이터 수신 이벤트
+      (options, data) => {
+        onNoti(data);
+      },
+      // Posts 접속 종료 이벤트
+      (options) => {
+        isConnectedPosts = false;
+      },
+      // Posts 통신 에러 이벤트
+      (options) => {
+        isConnectedPosts = false;
+      },
+    );
+    // 주기적으로 재접속 시도
+    const interval = setInterval(() => {
+      if (isConnectedPosts !== true) {
+        this.clientPosts.connect();
+      } else {
+        clearInterval(interval);
+      }
+    }, 1);
+  }
+
+  connectToRemoveComments(host, port, onNoti, userId) {
+    // Posts 전달 패킷
+    let params;
+    params = this.context;
+    params.params = 'comments';
+    params.userId = userId;
+    const packet = makePacket('/signout', 'DELETE', 0, params);
+    let isConnectedComments = false;
+    this.clientComments = new TcpClient(
+      host,
+      port,
+      (options) => {
+        // Posts 접속 이벤트
+        isConnectedComments = true;
+        this.clientComments.write(packet);
+      },
+      // Posts 데이터 수신 이벤트
+      (options, data) => {
+        onNoti(data);
+      },
+      // Posts 접속 종료 이벤트
+      (options) => {
+        isConnectedComments = false;
+      },
+      // Posts 통신 에러 이벤트
+      (options) => {
+        isConnectedComments = false;
+      },
+    );
+
+    // 주기적으로 재접속 시도
+    const interval = setInterval(() => {
+      if (isConnectedComments !== true) {
+        this.clientComments.connect();
       } else {
         clearInterval(interval);
       }

@@ -1,10 +1,13 @@
 @font-face {
-  font-family: 'jaemin';
-  src: url('http://localhost:8000/assets/ttf/Jaemin3-Regular.ttf');
+  font-family: 'GangwonEdu_OTFBoldA';
+  src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_2201-2@1.0/GangwonEdu_OTFBoldA.woff')
+    format('woff');
+  font-weight: normal;
+  font-style: normal;
 }
 
 * {
-  font-family: 'jaemin';
+  font-family: 'GangwonEdu_OTFBoldA';
   font-weight: 900px;
 }
 
@@ -20,9 +23,6 @@ header {
 }
 
 /* main */
-main {
-  padding-top: 50px;
-}
 
 /* 게시글(페이지버튼) + 연도별 카테고리 나란히 정렬 */
 .container {
@@ -37,13 +37,6 @@ main {
 /* 게시글 + 페이지버튼 정렬 */
 .post_pagination {
   margin-left: 100px;
-}
-
-/* 게시글 상단 표기 */
-.title {
-  display: flex;
-  flex-direction: row;
-  justify-content: space-between;
 }
 
 /* 페이지네이션 버튼 */
@@ -61,30 +54,62 @@ main {
   padding: 5px 10px;
 }
 
+.pagination > button:hover {
+  transform: scale(1.2);
+  transition-duration: 0.1s;
+}
+
 /* 게시글 */
-.postBox {
-  display: flex;
-  flex-direction: row;
-  justify-content: space-between;
+table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 50px 0px 50px 0px;
 }
 
-.postBox > p {
-  margin-right: 90px;
+th {
+  /* background-color: #f2f2f2; */
+  padding: 15px;
+  text-align: center;
 }
 
-.postBox > p:nth-child(2) {
-  width: 350px;
+tr {
+  border: 1px solid #f7f0ff;
+}
+
+td {
+  padding: 10px;
+  text-align: center;
+}
+
+.postBox:hover {
+  background-color: #f6f6f6;
+}
+
+.postBox > td:nth-child(2) {
+  width: 530px;
   cursor: pointer;
+  text-align: left;
 }
 
-.postBox > p:nth-child(2):hover {
+.postBox > td:nth-child(2):hover {
   text-decoration: underline;
+}
+
+.postBox > td:nth-child(3) {
+  width: 120px;
+  text-align: left;
+}
+
+.box_button {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  margin: 0px 100px 0px 0px;
 }
 
 /* 연도별 카테고리 */
 .annual_category_box {
-  margin: 50px 100px 0px 0px;
-  gap: 10px;
   border: 1px solid #ebeaec;
   box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.3);
   border-radius: 16px;
@@ -93,21 +118,30 @@ main {
 
 .annual_category_box > p {
   text-align: center;
-  margin: 20px;
+  margin: 30px;
   cursor: pointer;
 }
 
 .annual_category_box > p:hover {
   text-decoration: underline;
+  transform: scale(1.2);
+  transition-duration: 0.1s;
 }
 
 /* 익명 스레드 버튼 */
 .thread_btn {
+  position: relative;
+  top: 60px;
   margin-top: 20px;
   cursor: pointer;
   background-color: black;
   color: white;
   padding: 5px 10px;
+}
+
+.thread_btn:hover {
+  transform: scale(1.2);
+  transition-duration: 0.1s;
 }
 
 /* footer */
