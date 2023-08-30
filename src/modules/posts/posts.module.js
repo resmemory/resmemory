@@ -76,51 +76,6 @@ class PostsModule extends TcpServer {
       }
     }, 1);
   }
-
-  // AllUsers 접속 함수
-  connectToAllUsers(host, port, onNoti, userId) {
-    // AllUsers 전달 패킷
-    let params;
-    params = this.context;
-
-    if (Array.isArray(userId)) {
-      params.query = { userIds: userId };
-    } else {
-      params.query = { userId };
-    }
-    const packet = makePacket('/users', 'GET', 0, params);
-    let isConnectedAllUsers = false;
-    this.clientAllUsers = new TcpClient(
-      host,
-      port,
-      (options) => {
-        // AllUsers 접속 이벤트
-        isConnectedAllUsers = true;
-        this.clientAllUsers.write(packet);
-      },
-      // AllUsers 데이터 수신 이벤트
-      (options, data) => {
-        onNoti(data);
-      },
-      // AllUsers 접속 종료 이벤트
-      (options) => {
-        isConnectedAllUsers = false;
-      },
-      // AllUsers 통신 에러 이벤트
-      (options) => {
-        isConnectedAllUsers = false;
-      },
-    );
-
-    // 주기적으로 재접속 시도
-    const interval = setInterval(() => {
-      if (isConnectedAllUsers !== true) {
-        this.clientAllUsers.connect();
-      } else {
-        clearInterval(interval);
-      }
-    }, 1);
-  }
 }
 
 const postModule = new PostsModule();

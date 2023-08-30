@@ -2,6 +2,7 @@ import Posts from './db/posts.db';
 import Comments from './db/comments.db';
 import postModule from './posts.module';
 import dotenv from 'dotenv';
+import dataconnection from '../connection';
 
 dotenv.config();
 
@@ -79,17 +80,21 @@ const onRequest = async (res, method, pathname, params, key, cb) => {
             raw: true,
           });
 
-          const userId = result.map((post) => post.userId);
+          const userIds = result.map((post) => post.userId);
 
           await new Promise((resolve, reject) => {
-            postModule.connectToAllUsers(
+            dataconnection(
               process.env.HOST,
               process.env.USERS_PORT,
               (data) => {
                 postModule.nickname = data;
                 resolve();
               },
-              userId,
+              { userIds },
+              null,
+              null,
+              'GET',
+              '/users',
             );
           });
 
@@ -100,6 +105,7 @@ const onRequest = async (res, method, pathname, params, key, cb) => {
             return { ...post, nickname: nickname[0].nickname };
           });
         } catch (err) {
+          console.log(err);
           responseData = { code: 320 };
         }
       }
@@ -284,7 +290,7 @@ const onRequest = async (res, method, pathname, params, key, cb) => {
             }
           }
         } catch (err) {
-          console.log(err)
+          console.log(err);
           responseData = { code: 350 };
         }
       }

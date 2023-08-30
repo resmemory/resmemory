@@ -5,6 +5,7 @@ import redisCli from '../../redis';
 import jwt from 'jsonwebtoken';
 import signup from './signup.service';
 import usersmodule from './users.module';
+import dataconnection from '../connection';
 
 const onRequest = async (res, method, pathname, params, key, cb) => {
   let token;
@@ -142,7 +143,6 @@ const onRequest = async (res, method, pathname, params, key, cb) => {
       if (pathname == '/users' && !query.userId && query.userIds) {
         try {
           let userIds = query.userIds;
-
           if (typeof userIds == 'string') {
             userIds = userIds.replace('[', '');
             userIds = userIds.replace(']', '');
@@ -171,15 +171,20 @@ const onRequest = async (res, method, pathname, params, key, cb) => {
             where: { userId: userIds },
             attributes: ['userId', 'nickname'],
           });
+
           await new Promise((resolve, reject) => {
-            usersmodule.connectToGetPosts(
+            dataconnection(
               process.env.HOST,
               process.env.POSTS_PORT,
               (data) => {
                 usersmodule.posts = data;
                 resolve();
               },
-              postIds,
+              { postIds },
+              null,
+              userId,
+              'GET',
+              '/posts',
             );
           });
 
@@ -289,24 +294,31 @@ const onRequest = async (res, method, pathname, params, key, cb) => {
             const result = await Users.destroy({ where: { userId } });
 
             await new Promise((resolve, reject) => {
-              usersmodule.connectToRemovePosts(
+              dataconnection(
                 process.env.HOST,
                 process.env.POSTS_PORT,
                 (data) => {
                   resolve();
                 },
+                null,
+                'posts',
                 userId,
+                'DELETE',
+                '/signout',
               );
             });
-
             await new Promise((resolve, reject) => {
-              usersmodule.connectToRemoveComments(
+              dataconnection(
                 process.env.HOST,
                 process.env.POSTS_PORT,
                 (data) => {
                   resolve();
                 },
+                null,
+                'comments',
                 userId,
+                'DELETE',
+                '/signout',
               );
             });
             if (result) {

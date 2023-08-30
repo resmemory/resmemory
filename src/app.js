@@ -60,9 +60,9 @@ const server = http
         });
       } else if (method === 'PATCH') {
         let body = '';
-        if (req.headers.authorization) {
-          const userId = authmiddleware(req, res, params);
-        }
+
+        const userId = authmiddleware(req, res, params);
+
         let path = pathname.replace('/api', '');
         params = { userId };
 
@@ -84,9 +84,7 @@ const server = http
           onRequest(res, method, path, params);
         });
       } else if (method === 'DELETE') {
-        if (req.headers.authorization) {
-          const userId = authmiddleware(req, res, params);
-        }
+        const userId = authmiddleware(req, res, params);
 
         params = { userId };
         let body = '';
