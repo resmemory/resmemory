@@ -93,6 +93,7 @@ const onRequest = async (res, method, pathname, params, key, cb) => {
               { userIds },
               null,
               null,
+              null,
               'GET',
               '/users',
             );
@@ -156,17 +157,22 @@ const onRequest = async (res, method, pathname, params, key, cb) => {
             raw: true,
           });
 
-          const userId = result.map((post) => post.userId);
+          const userIds = result.map((post) => post.userId);
 
           await new Promise((resolve, reject) => {
-            postModule.connectToAllUsers(
+            dataconnection(
               process.env.HOST,
               process.env.USERS_PORT,
               (data) => {
                 postModule.nickname = data;
                 resolve();
               },
-              userId,
+              { userIds },
+              null,
+              null,
+              null,
+              'GET',
+              '/users',
             );
           });
 
@@ -191,14 +197,19 @@ const onRequest = async (res, method, pathname, params, key, cb) => {
             responseData = { code: 342 };
           } else {
             await new Promise((resolve, reject) => {
-              postModule.connectToUsers(
+              dataconnection(
                 process.env.HOST,
                 process.env.USERS_PORT,
                 (data) => {
                   postModule.nickname = data;
                   resolve();
                 },
-                result.userId,
+                { userId: result.userId },
+                null,
+                null,
+                null,
+                'GET',
+                '/users',
               );
             });
 
@@ -226,21 +237,26 @@ const onRequest = async (res, method, pathname, params, key, cb) => {
               raw: true,
             });
 
-            const userId = result.map((comment) => comment.userId);
+            const userIds = result.map((comment) => comment.userId);
 
             await new Promise((resolve, reject) => {
-              postModule.connectToAllUsers(
+              dataconnection(
                 process.env.HOST,
                 process.env.USERS_PORT,
                 (data) => {
-                  postModule.nickname = data.responseData.bodies;
+                  postModule.nickname = data;
                   resolve();
                 },
-                userId,
+                { userIds },
+                null,
+                null,
+                null,
+                'GET',
+                '/users',
               );
             });
 
-            const bodies = postModule.nickname;
+            const bodies = postModule.nickname.responseData.bodies;
 
             responseData = result.map((comment) => {
               const nickname = bodies.filter((nickname) => nickname.userId == comment.userId);
@@ -248,7 +264,6 @@ const onRequest = async (res, method, pathname, params, key, cb) => {
             });
           }
         } catch (err) {
-          console.log(err)
           responseData = { code: 420 };
         }
       }

@@ -1,6 +1,6 @@
 import { makePacket } from '../utils/makePacket';
 import TcpClient from '../classes/client';
-function dataconnection(host, port, onNoti, query, params, userId, method, uri) {
+function dataconnection(host, port, onNoti, query, params, bodies, userId, method, uri) {
   // getPosts 전달 패킷
   const context = {
     port,
@@ -8,6 +8,7 @@ function dataconnection(host, port, onNoti, query, params, userId, method, uri) 
     urls: ['GET/posts', 'GET/users', 'DELETE/signout'],
     query,
     params,
+    bodies,
     userId,
   };
 
