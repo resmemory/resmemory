@@ -4,32 +4,24 @@
     <meta charset="UTF-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <script src="./js/threads.js"></script>
+    <script src="./js/code.js"></script>
     <link rel="stylesheet" href="./css/threads.css" type="text/css" />
     <title>[ 응답하라 추억시대 ] - 익명 스레드 페이지</title>
   </head>
   <body>
     <header>
-      <img src="assets/image/logo.png" alt="logo" />
-      <h1>응답하라 추억시대</h1>
+      <img src="assets/image/logo.png" alt="logo" onclick="location.href=`./`" />
+      <h1>소통하라 익명시대</h1>
     </header>
 
     <!-- 스레드 -->
     <div class="threadbox">
-      <div class="flex-container">
-        <div id="threadList"></div>
-        <div class="button-container"></div>
+      <div class="writeThreadBox">
+        <input class="writeThread" type="text" />
+        <button class="writeThreadBtn" onclick="writeThread()">작성</button>
       </div>
-      <div class="pagination" id="pagination"></div>
+      <div id="threadList"></div>
     </div>
-
-    <!-- 모달을 전체 페이지에 추가 -->
-    <div id="globalModal" class="modal">
-      <div class="modal-content">
-        <span class="close-button" id="closeGlobalModal">&times;</span>
-        <div id="modalContent"></div>
-      </div>
-    </div>
-
-    <script src="./js/threads.js"></script>
   </body>
 </html>
