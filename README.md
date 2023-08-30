@@ -2,6 +2,8 @@
 
 누군가의 기억을 가치있게 생각하는 공간, “ 응답하라 추억시대 “ 입니다.
 
+- 배포 주소 : http://resmemory.shop
+
 # 🎞️ TEAM
 
 - 팀 명
@@ -17,9 +19,9 @@
   | 이름 | Backend | Frontend |
   | ------ | -------------------------- | -------------------------------- |
   | 이다영 | 회원, 북마크, CI/CD | 로그인 페이지, 프로필 페이지 |
-  | 김주희 | 추억 게시판 CRUD 댓글 CRUD | 메인페이지, 연도별 게시판 페이지 |
+  | 김주희 | 추억 게시판 CRUD 댓글 CRUD | 메인페이지, 연도별 게시판, 글 작성 페이지|
   | 김민규 | 관리자 D 신고 CR | 관리자 페이지, 글 상세페이지 |
-  | 김지혜 | 익명 스레드 CRD | 스레드 페이지, 글 작성 페이지 |
+  | 김지혜 | 익명 스레드 CRD | 스레드 페이지 |
   - 테스트 코드 : 각자 작성한 API integration test
 - 기타 역할 분담
   | 이름 | 기타 역할 |
@@ -27,10 +29,10 @@
   | 이다영 | 중간 발표, S.A. , 회의 진행 |
   | 김주희 | 최종 시연 영상, 회의록 작성, Git 책임자 |
   | 김민규 | 최종 발표, CS 스터디 관리 |
-  | 김지혜 | 중간 시연 영상, 기술면접 30제 관리 |
+  | 김지혜 | 기술면접 30제 관리 |
 - 팀 규칙 및 정규 일정
   - 회의 : 평일 아침 9시 15분(to-do, Q&A), 오후 9시 15분 (merge, code review, TIL)
-  - CS study : 월, 화, 수 오후 2시~3시
+  - CS study : 수 오후 2시~
   - 기술면접 : 목 오후 2시 ~ 3시
   - 기술 멘토링 : 매주 금요일 오전 11시~ 11시 30분 - 조호영 튜터 님
   - Ground Rules
@@ -124,12 +126,6 @@ https://www.figma.com/file/1l98XQdWwLR1L1htxBHEgR/resmemoriesArchitecture?type=w
 
 ![resmemoriesArchitecture.png](./src/public/assets/image/architecture.png)
 
-# 🖼️ Wireframe
-
-https://www.figma.com/file/b8GjWz4MGgQbGMbBkBSHZl/resmemories?type=whiteboard&node-id=0%3A1&t=RGpa4XHCwBNTUugN-1
-
-![wireframe.png](./src/public/assets/image/wireframe.png)
-
 # 📋 API
 
 [응답하라 추억시대 API 명세서](https://www.notion.so/c01e87e20d754c11a0d8d93740057ab2?pvs=21)
@@ -147,3 +143,9 @@ https://www.figma.com/file/b8GjWz4MGgQbGMbBkBSHZl/resmemories?type=whiteboard&no
 [https://drawsql.app/teams/verdantjuly/diagrams/resmemory](https://drawsql.app/teams/verdantjuly/diagrams/resmemory)
 
 ![drawSQL-resmemory-export-2023-08-21 (2).png](./src/public/assets/image/erd.png)
+
+# 🖼️ 초기 Wireframe
+
+https://www.figma.com/file/b8GjWz4MGgQbGMbBkBSHZl/resmemories?type=whiteboard&node-id=0%3A1&t=RGpa4XHCwBNTUugN-1
+
+![wireframe.png](./src/public/assets/image/wireframe.png)
