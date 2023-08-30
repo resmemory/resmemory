@@ -1,29 +1,3 @@
-const code = {
-  721: '스레드가 생성되었습니다.',
-  722: '내용 양식이 올바르지 않습니다.',
-  720: '알 수 없는 오류가 발생하였습니다.',
-  711: '스레드가 존재하지 않습니다.',
-  710: '알 수 없는 오류가 발생하였습니다.',
-  731: '스레드가 삭제 되었습니다.',
-  732: '로그인이 필요한 기능입니다.',
-  733: '스레드가 존재하지 않습니다.',
-  744: '댓글 삭제 권한이 없습니다.',
-  730: '알 수 없는 오류가 발생하였습니다.',
-  371: '스레드가 삭제 되었습니다.',
-  372: '로그인이 필요한 기능입니다.',
-  373: '스레드가 존재하지 않습니다.',
-  370: '알 수 없는 오류가 발생하였습니다.',
-
-  // 신고
-  610: '알 수 없는 오류가 발생하였습니다.',
-  611: '신고가 접수 되었습니다.',
-  612: '로그인이 필요한 기능입니다.',
-  613: '해당 신고 글의 데이터가 읽히지 않았습니다.',
-  614: '이미 신고하신 상태입니다.',
-  615: '신고 내용의 입력이 필요합니다.',
-  620: '알 수 없는 오류가 발생하였습니다.',
-};
-
 document.addEventListener('DOMContentLoaded', () => {
   viewThreads();
 });
@@ -105,6 +79,22 @@ async function report(contentId) {
     body: JSON.stringify({ content, reportType: 'thread', contentId }),
   });
   const result = await response.json();
-  console.log(result);
   alert(code[result.responseData.code]);
+  location.reload();
+}
+
+async function writeThread() {
+  const content = document.querySelector('.writeThread').value;
+  const response = await fetch(`./api/threads`, {
+    method: 'POST',
+    headers: {
+      Authorization: localStorage.getItem('Authorization'),
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify({ content }),
+  });
+
+  const result = await response.json();
+  alert(code[result.responseData.code]);
+  location.reload();
 }
