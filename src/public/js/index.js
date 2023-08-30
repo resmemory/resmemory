@@ -1,11 +1,14 @@
 const code = {
   0: '로그인이 필요한 기능입니다.',
+  100: '일시적인 오류가 발생했습니다.',
+  131: '로그아웃에 성공하였습니다.',
   320: '일시적인 오류가 발생했습니다.',
   390: '게시글 조회에 실패하였습니다.',
 };
 
 document.addEventListener('DOMContentLoaded', () => {
   countPosts();
+  headerBtns();
 });
 
 const countPosts = async () => {
@@ -80,6 +83,35 @@ const createPaginationButtons = (currentPage, totalPosts) => {
     }
     paginationContainer.appendChild(button);
   }
+};
+
+// 헤더버튼들
+const headerBtns = () => {
+  const login = document.querySelector('.login');
+  const logout = document.querySelector('.logout');
+  const mypage = document.querySelector('.mypage');
+
+  if (localStorage.getItem('Authorization')) {
+    logout.style.display = 'block';
+    mypage.style.display = 'block';
+  } else {
+    login.style.display = 'block';
+  }
+};
+
+// 로그아웃 버튼 누를시
+const logout = async () => {
+  const response = await fetch(`./api/logout`, {
+    method: 'POST',
+    headers: {
+      Authorization: localStorage.getItem('Authorization'),
+    },
+  });
+  const result = await response.json();
+  console.log(result);
+  alert(code[result.responseData.code]);
+  localStorage.removeItem('Authorization');
+  location.reload();
 };
 
 // 연도별 조회로 이동
