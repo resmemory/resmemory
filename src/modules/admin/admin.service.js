@@ -8,21 +8,24 @@ const onRequest = async (res, method, pathname, params, key, cb) => {
       if (params.params == 'post') {
         try {
           const { contentId } = params.bodies;
-          adminModule.connectToPosts(
-            process.env.HOST,
-            process.env.POSTS_PORT,
-            (data) => {
-              console.log(
-                '=======================================================================',
-                data,
-              );
-              adminModule.result = data.responseData;
-            },
-            contentId,
-          );
-          
+          await new Promise((resolve, reject) => {
+            dataconnection(
+              process.env.HOST,
+              process.env.POSTS_PORT,
+              (data) => {
+                adminModule.result = data;
+                resolve();
+              },
+              { contentId },
+              null,
+              null,
+              null,
+              'DELETE',
+              '/posts',
+            );
+          });
           const resultNum = adminModule.result;
-          
+
           if (!resultNum) {
             responseData = { code: 512 };
           } else {
@@ -36,14 +39,22 @@ const onRequest = async (res, method, pathname, params, key, cb) => {
       if (params.params == 'comment') {
         try {
           const { contentId } = params.bodies;
-          adminModule.connectToComments(
-            process.env.HOST,
-            process.env.POSTS_PORT,
-            (data) => {
-              adminModule.result = data.responseData;
-            },
-            contentId,
-          );
+          await new Promise((resolve, reject) => {
+            dataconnection(
+              process.env.HOST,
+              process.env.POSTS_PORT,
+              (data) => {
+                adminModule.result = data;
+                resolve();
+              },
+              { contentId },
+              null,
+              null,
+              null,
+              'DELETE',
+              '/comments',
+            );
+          });
 
           const resultNum = adminModule.result;
 
@@ -59,14 +70,22 @@ const onRequest = async (res, method, pathname, params, key, cb) => {
       if (params.params == 'thread') {
         try {
           const { contentId } = params.bodies;
-          adminModule.connectToThreads(
-            process.env.HOST,
-            process.env.THREADS_PORT,
-            (data) => {
-              adminModule.result = data.responseData;
-            },
-            contentId,
-          );
+          await new Promise((resolve, reject) => {
+            dataconnection(
+              process.env.HOST,
+              process.env.POSTS_PORT,
+              (data) => {
+                adminModule.result = data;
+                resolve();
+              },
+              { contentId },
+              null,
+              null,
+              null,
+              'DELETE',
+              '/threads',
+            );
+          });
 
           const resultNum = adminModule.result;
 

@@ -2,8 +2,7 @@ import TcpServer from '../../classes/server';
 import dotenv from 'dotenv';
 import onRequest from './posts.service';
 import relationship from './db/relationship';
-import TcpClient from '../../classes/client';
-import { makePacket } from '../../utils/makePacket';
+
 dotenv.config();
 
 class PostsModule extends TcpServer {
@@ -35,46 +34,6 @@ class PostsModule extends TcpServer {
       console.log(packet);
       socket.write(JSON.stringify(packet) + '¶');
     });
-  }
-
-  // Users 접속 함수
-  connectToUsers(host, port, onNoti, userId) {
-    // Users 전달 패킷
-    let params;
-    params = this.context;
-    params.query = { userId };
-    const packet = makePacket('/users', 'GET', 0, params);
-    let isConnectedUsers = false;
-    this.clientUsers = new TcpClient(
-      host,
-      port,
-      (options) => {
-        // Users 접속 이벤트
-        isConnectedUsers = true;
-        this.clientUsers.write(packet);
-      },
-      // Users 데이터 수신 이벤트
-      (options, data) => {
-        onNoti(data);
-      },
-      // Users 접속 종료 이벤트
-      (options) => {
-        isConnectedUsers = false;
-      },
-      // Users 통신 에러 이벤트
-      (options) => {
-        isConnectedUsers = false;
-      },
-    );
-
-    // 주기적으로 재접속 시도
-    const interval = setInterval(() => {
-      if (isConnectedUsers !== true) {
-        this.clientUsers.connect();
-      } else {
-        clearInterval(interval);
-      }
-    }, 1);
   }
 }
 
