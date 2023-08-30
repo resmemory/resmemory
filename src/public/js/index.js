@@ -1,5 +1,6 @@
 const code = {
-  320: '알 수 없는 오류가 발생하였습니다.',
+  0: '로그인이 필요한 기능입니다.',
+  320: '일시적인 오류가 발생했습니다.',
   390: '게시글 조회에 실패하였습니다.',
 };
 
@@ -89,4 +90,14 @@ const annualCategory = (category) => {
 // 상세 페이지로 이동
 const clickPost = (postId) => {
   location.href = `./detail?post=${postId}`;
+};
+
+const writingPost = () => {
+  const Authorization = localStorage.getItem('Authorization');
+  if (!Authorization) {
+    alert(code[0]);
+    location.href = `./login`;
+  } else {
+    location.href = `./post`;
+  }
 };
