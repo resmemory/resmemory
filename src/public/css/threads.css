@@ -108,7 +108,15 @@ button:hover {
 }
 
 .writeThread {
-  width: 500px;
+  width: 700px;
+  height: 30px;
+  font-size: 20px;
+}
+
+.writeThreadBox > button {
+  width: 60px;
+  height: 45px;
+  font-size: 18px;
 }
 .thread {
   margin: 10px 0px 10px 0px;
