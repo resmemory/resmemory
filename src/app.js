@@ -60,7 +60,9 @@ const server = http
         });
       } else if (method === 'PATCH') {
         let body = '';
-        const userId = authmiddleware(req, res, params);
+        if (req.headers.authorization) {
+          const userId = authmiddleware(req, res, params);
+        }
         let path = pathname.replace('/api', '');
         params = { userId };
 
@@ -82,7 +84,9 @@ const server = http
           onRequest(res, method, path, params);
         });
       } else if (method === 'DELETE') {
-        const userId = authmiddleware(req, res, params);
+        if (req.headers.authorization) {
+          const userId = authmiddleware(req, res, params);
+        }
 
         params = { userId };
         let body = '';
@@ -124,6 +128,7 @@ const server = http
         }
       }
     } catch (error) {
+      console.log('---------------', error);
       res
         .writeHead(200, { 'Content-Type': 'application/json' })
         .end(JSON.stringify({ responseData: { code: 100 } }));
