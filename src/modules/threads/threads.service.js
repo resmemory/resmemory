@@ -74,7 +74,9 @@ const onRequest = async (res, method, pathname, params, key, cb) => {
           const { userId } = params;
           const threadId = params.params;
           const threadData = await Threads.findByPk(threadId);
-
+          if (!threadData) {
+            responseData = { code: 735 };
+          }
           if (userId == threadData.userId || userId == 1) {
             if (threadId) {
               const result = await Threads.destroy({ where: { threadId } });
