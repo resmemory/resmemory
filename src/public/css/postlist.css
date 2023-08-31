@@ -1,3 +1,5 @@
+@import 'reset.css';
+
 @font-face {
   font-family: 'GangwonEdu_OTFBoldA';
   src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_2201-2@1.0/GangwonEdu_OTFBoldA.woff')
@@ -9,6 +11,47 @@
 * {
   font-family: 'GangwonEdu_OTFBoldA';
   font-weight: 900px;
+}
+
+@media screen and (min-width: 769px) and (max-width: 1024px) {
+  .container {
+    flex-direction: column;
+  }
+
+  .post_pagination {
+    margin: 0px 100px 0px 100px;
+  }
+
+  .postBox > td:nth-child(2) {
+    width: 50%;
+  }
+
+  .annual_category_box {
+    margin-top: 50px;
+  }
+}
+
+@media screen and (min-width: 1025px) {
+  .container {
+    flex-direction: row;
+    justify-content: space-between;
+  }
+
+  .post_pagination {
+    margin-left: 100px;
+  }
+
+  .postBox > td:nth-child(2) {
+    width: 530px;
+  }
+
+  .box_button {
+    margin-right: 100px;
+  }
+
+  .thread_btn {
+    margin-top: 20px;
+  }
 }
 
 /* 모든 버튼 */
@@ -31,6 +74,10 @@ header {
   margin-right: 30px;
 }
 
+.writing_btn {
+  margin-top: 50px;
+}
+
 /* main */
 
 /* 게시글(페이지버튼) + 연도별 카테고리 나란히 정렬 */
@@ -39,13 +86,6 @@ header {
   margin-right: auto;
   width: 100%;
   display: flex;
-  flex-direction: row;
-  justify-content: space-between;
-}
-
-/* 게시글 + 페이지버튼 정렬 */
-.post_pagination {
-  margin-left: 100px;
 }
 
 /* 페이지네이션 버튼 */
@@ -72,6 +112,7 @@ table {
 th {
   padding: 15px;
   text-align: center;
+  background-color: #e4e4e4;
 }
 
 tr {
@@ -88,7 +129,6 @@ td {
 }
 
 .postBox > td:nth-child(2) {
-  width: 530px;
   cursor: pointer;
   text-align: left;
 }
@@ -102,12 +142,12 @@ td {
   text-align: left;
 }
 
+/* 연도별 카테고리 + 익명 스레드 버튼 */
 .box_button {
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  margin: 0px 100px 0px 0px;
 }
 
 /* 연도별 카테고리 */
@@ -134,7 +174,6 @@ td {
 .thread_btn {
   position: relative;
   top: 60px;
-  margin-top: 20px;
   background-color: black;
   color: white;
   padding: 5px 10px;
