@@ -91,7 +91,7 @@ const getCommentList = () => {
       <div class="comment-buttons">
         <button class="comment-edit-button" onclick="modalOn('#edit-comment-Modal${commentId}')">수정</button>
         <button class="comment-delete-button" onclick="deleteComment(${commentId})">삭제</button>
-        <button class="comment-report-button" onclick="modalOn('#report-comment-Modal')">신고</button>
+        <button class="comment-report-button" onclick="modalOn('#report-comment-Modal${commentId}')">신고</button>
       </div>
     </div>
     
@@ -101,7 +101,7 @@ const getCommentList = () => {
         <div>
           <label>댓글 내용</label>
           <br />
-          <input class="comment_content" type="text" value="${content}" />
+          <input class="comment_content${commentId}" type="text" value="${content}" />
         </div>
         <div class="edit-comment-Box-btn">
             <button class="edit-comment-btn" onclick="updateComment(${commentId})">수정</button>
@@ -111,7 +111,7 @@ const getCommentList = () => {
     </div>
   </div>
 
-  <div class="modal" id="report-comment-Modal" style="display: none">
+  <div class="modal" id="report-comment-Modal${commentId}" style="display: none">
 <div class="modalContent">
   <div class="report-comment-Box">
     <div>
@@ -134,7 +134,6 @@ const getCommentList = () => {
 
 const getPost = () => {
   getOnePost.then((data) => {
-    console.log(data);
     $('#post-box').empty();
     const postId = data.responseData.result.postId;
     const viewCount = data.responseData.result.viewCount;
@@ -325,7 +324,7 @@ function postComment() {
 }
 
 function updateComment(commentId) {
-  const updatedContent = $('.comment_content').val();
+  const updatedContent = $(`.comment_content${commentId}`).val();
 
   const req = { postId: postId, content: updatedContent };
   fetch(`/api/comments/${commentId}`, {
@@ -338,9 +337,14 @@ function updateComment(commentId) {
   })
     .then((res) => res.json())
     .then((res) => {
-      console.log(res);
+      if (res.responseData.code == 431) {
+        alert(code[res.responseData.code]);
+        return location.reload();
+      }
+      alert(code[res.responseData.code]);
     });
-}
+    };
+
 
 function deleteComment(contentId) {
   fetch(`api/comments/${contentId}`, {
@@ -366,7 +370,6 @@ function postReport(reportType, contentId) {
     contentId,
     content: postContent,
   };
-  console.log(req);
   fetch(`api/reports`, {
     method: 'POST',
     headers: {
@@ -377,6 +380,7 @@ function postReport(reportType, contentId) {
   })
     .then((res) => res.json())
     .then((res) => {
+      console.log(res)
       if (res.responseData.code == 611) {
         alert(code[res.responseData.code]);
         return location.reload();

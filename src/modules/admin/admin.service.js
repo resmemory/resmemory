@@ -1,3 +1,4 @@
+import Reports from './db/reports.db';
 import reports from './report.service';
 import adminModule from './admin.module';
 import dataconnection from '../connection';
@@ -7,7 +8,7 @@ const onRequest = async (res, method, pathname, params, key, cb) => {
     case 'DELETE':
       if (params.params == 'post') {
         try {
-          const { contentId } = params.bodies;
+          const { reportId, contentId } = params.bodies;
           const { userId } = params;
           await new Promise((resolve, reject) => {
             dataconnection(
@@ -18,7 +19,7 @@ const onRequest = async (res, method, pathname, params, key, cb) => {
                 resolve();
               },
               null,
-              contentId ,
+              contentId,
               null,
               userId,
               'DELETE',
@@ -27,20 +28,29 @@ const onRequest = async (res, method, pathname, params, key, cb) => {
           });
           const resultNum = adminModule.result;
 
-          if (!resultNum) {
+          const report = await Reports.findOne({ where: { reportId } });
+          if (!report) {
             responseData = { code: 512 };
+          } else if (report.dataValues.isReport=='true') {
+            responseData = { code: 513 };
+            await Reports.update({ isReport: '2' }, { where: { reportId } });
+          } else if (resultNum.responseData.code == 363) {
+            responseData = { code: 514 };
+          } else if (resultNum.responseData.code !== 361) {
+            responseData = { code: 515 };
           } else {
-            //updateone
+            await Reports.update({ isReport: 'true' }, { where: { reportId } });
             responseData = { code: 511 };
           }
         } catch (error) {
-          console.log(error);
+          console.log(error)
           responseData = { code: 510 };
         }
       }
+
       if (params.params == 'comment') {
         try {
-          const { contentId } = params.bodies;
+          const { reportId, contentId } = params.bodies;
           const { userId } = params;
           await new Promise((resolve, reject) => {
             dataconnection(
@@ -51,7 +61,7 @@ const onRequest = async (res, method, pathname, params, key, cb) => {
                 resolve();
               },
               null,
-              contentId ,
+              contentId,
               null,
               userId,
               'DELETE',
@@ -61,18 +71,28 @@ const onRequest = async (res, method, pathname, params, key, cb) => {
 
           const resultNum = adminModule.result;
 
-          if (!resultNum) {
+          const report = await Reports.findOne({ where: { reportId } });
+          if (!report) {
             responseData = { code: 522 };
+          } else if (report.dataValues.isReport=='true') {
+            responseData = { code: 523 };
+          } else if (resultNum.responseData.code == 443) {
+            await Reports.update({ isReport: '2' }, { where: { reportId } });
+            responseData = { code: 524 };
+          } else if (resultNum.responseData.code !== 441) {
+            responseData = { code: 525 };
           } else {
+            await Reports.update({ isReport: 'true' }, { where: { reportId } });
             responseData = { code: 521 };
           }
         } catch (error) {
+          console.log(error)
           responseData = { code: 520 };
         }
       }
       if (params.params == 'thread') {
         try {
-          const { contentId } = params.bodies;
+          const { reportId, contentId } = params.bodies;
           const { userId } = params;
           await new Promise((resolve, reject) => {
             dataconnection(
@@ -83,7 +103,7 @@ const onRequest = async (res, method, pathname, params, key, cb) => {
                 resolve();
               },
               null,
-              contentId ,
+              contentId,
               null,
               userId,
               'DELETE',
@@ -93,12 +113,22 @@ const onRequest = async (res, method, pathname, params, key, cb) => {
 
           const resultNum = adminModule.result;
 
-          if (!resultNum) {
+          const report = await Reports.findOne({ where: { reportId } });
+          if (!report) {
             responseData = { code: 532 };
+          } else if (report.dataValues.isReport=='true') {
+            responseData = { code: 533 };
+          } else if (resultNum.responseData.code == 733) {
+            await Reports.update({ isReport: '2' }, { where: { reportId } });
+            responseData = { code: 534 };
+          } else if (resultNum.responseData.code !== 731) {
+            responseData = { code: 535 };
           } else {
+            await Reports.update({ isReport: 'true' }, { where: { reportId } });
             responseData = { code: 531 };
           }
         } catch (error) {
+          console.log(error)
           responseData = { code: 530 };
         }
       }
