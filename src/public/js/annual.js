@@ -1,11 +1,6 @@
-const code = {
-  0: '로그인이 필요한 기능입니다.',
-  330: '일시적인 오류가 발생했습니다.',
-  390: '게시글 조회에 실패하였습니다.',
-};
-
 document.addEventListener('DOMContentLoaded', () => {
   countPosts();
+  headerBtns();
 });
 
 const countPosts = async () => {
@@ -88,6 +83,35 @@ const createPaginationButtons = (currentPage, category, totalPosts) => {
   }
 };
 
+// 헤더버튼들
+const headerBtns = () => {
+  const login = document.querySelector('.login');
+  const logout = document.querySelector('.logout');
+  const mypage = document.querySelector('.mypage');
+
+  if (localStorage.getItem('Authorization')) {
+    logout.style.display = 'block';
+    mypage.style.display = 'block';
+  } else {
+    login.style.display = 'block';
+  }
+};
+
+// 로그아웃 버튼 누를시
+const logout = async () => {
+  const response = await fetch(`./api/logout`, {
+    method: 'POST',
+    headers: {
+      Authorization: localStorage.getItem('Authorization'),
+    },
+  });
+  const result = await response.json();
+
+  alert(code[result.responseData.code]);
+  localStorage.removeItem('Authorization');
+  location.reload();
+};
+
 // 다른 연도별 조회로 이동
 const annualCategory = (category) => {
   location.href = `./annual?category=${category}`;
@@ -98,6 +122,7 @@ const clickPost = (postId) => {
   location.href = `./detail?post=${postId}`;
 };
 
+// 글 작성 페이지로 이동
 const writingPost = () => {
   const Authorization = localStorage.getItem('Authorization');
   if (!Authorization) {

@@ -27,7 +27,7 @@ CREATE TABLE `Reports` (
   `reportType` ENUM('post', 'comment', 'thread') NOT NULL, 
   `contentId` BIGINT NOT NULL,
   `content` VARCHAR(255) NOT NULL,
-  `isReport` BOOLEAN DEFAULT FALSE,
+  `isReport` ENUM('true', 'false', '2') DEFAULT 'false',
   `createdAt` DATETIME,
   PRIMARY KEY (`reportId`));
 

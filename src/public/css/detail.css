@@ -85,6 +85,10 @@
   background-color: yellow;
   color: black;
 }
+.report-button{
+  background-color: rgb(255, 145, 0);
+  color: rgb(255, 255, 255);
+}
 .post-content {
   width: 1200px;
   background-color: #ffffff;
@@ -186,11 +190,4 @@
   border: none;
   border-radius: 4px;
   cursor: pointer;
-}
-
-.post-delete-button {
-  margin: -130px -160px 0 0;
-  position: relative;
-  padding: 20px;
-  float: right;
 }

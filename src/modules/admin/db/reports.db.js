@@ -28,8 +28,10 @@ Reports.init(
       allowNull: false,
     },
     isReport: {
-      type: DataTypes.BOOLEAN,
-      defaultValue: false,
+      type: DataTypes.ENUM({
+        values: ['true', 'false', '2'],
+      }),
+      defaultValue: 'false',
     },
   },
   {
