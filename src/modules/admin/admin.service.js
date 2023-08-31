@@ -118,7 +118,7 @@ const onRequest = async (res, method, pathname, params, key, cb) => {
             responseData = { code: 532 };
           } else if (report.dataValues.isReport == 'true') {
             responseData = { code: 533 };
-          } else if (resultNum.responseData.code == 733) {
+          } else if (resultNum.responseData.code == 735) {
             await Reports.update({ isReport: '2' }, { where: { reportId } });
             responseData = { code: 534 };
           } else if (resultNum.responseData.code !== 731) {

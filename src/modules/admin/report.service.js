@@ -35,7 +35,7 @@ async function reports(method, params, responseData) {
       if (userId !== 1) {
         responseData = { code: 622 };
       } else {
-        const result = await Reports.findAll();
+        const result = await Reports.findAll({ order: [['createdAt', 'DESC']] });
         responseData = { code: 621, result };
       }
     } catch (error) {

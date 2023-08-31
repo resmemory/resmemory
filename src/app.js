@@ -237,32 +237,35 @@ function onReadClient(options, packet) {
       `Bearer ${packet.responseData.token}`,
     );
     delete packet.token;
-  }
-  if (packet.responseData.code == 111) {
+    mapResponse[`key_${packet.key}`].end(JSON.stringify(packet));
+  } else if (packet.responseData.code == 111) {
     const today = new Date();
+
     mapResponse[`key_${packet.key}`].setHeader('Set-Cookie', [
       `refresh=${packet.responseData.refresh}; expires=7d`,
     ]);
+    mapResponse[`key_${packet.key}`].end(JSON.stringify(packet));
     delete packet.responseData.refresh;
-  }
-  if (packet.responseData.code == 123) {
+  } else if (packet.responseData.code == 123) {
     mapResponse[`key_${packet.key}`].setHeader(
       'Authorization',
       `Bearer ${packet.responseData.token}`,
     );
     delete packet.responseData.refresh;
     delete packet.token;
-  }
-  if (packet.responseData.code == 131) {
+    mapResponse[`key_${packet.key}`].end(JSON.stringify(packet));
+  } else if (packet.responseData.code == 131) {
     mapResponse[`key_${packet.key}`].setHeader('Set-Cookie', [
       `refresh=""; expires=Sat, 02 Oct 2021 17:46:04 GMT;`,
     ]);
     mapResponse[`key_${packet.key}`].removeHeader('Set-Cookie');
     mapResponse[`key_${packet.key}`].removeHeader('Authorization');
+    mapResponse[`key_${packet.key}`].end(JSON.stringify(packet));
+  } else {
+    mapResponse[`key_${packet.key}`].writeHead(200, { 'Content-Type': 'application/json' });
+    mapResponse[`key_${packet.key}`].end(JSON.stringify(packet));
+    delete mapResponse[`key_${packet.key}`];
   }
-  mapResponse[`key_${packet.key}`].writeHead(200, { 'Content-Type': 'application/json' });
-  mapResponse[`key_${packet.key}`].end(JSON.stringify(packet));
-  delete mapResponse[`key_${packet.key}`]; // http 응답 객체 삭제
 }
 
 // 마이크로서비스 접속 종료 처리
