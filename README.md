@@ -126,7 +126,7 @@ https://www.figma.com/file/1l98XQdWwLR1L1htxBHEgR/resmemoriesArchitecture?type=w
 
 ![resmemoriesArchitecture.png](./src/public/assets/image/architecture.png)
 
-# 📋 API 명세서
+# 📋 API
 
 [응답하라 추억시대 API 명세서](https://www.notion.so/c01e87e20d754c11a0d8d93740057ab2?pvs=21)
 
