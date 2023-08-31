@@ -17,7 +17,3 @@ header button {
   display: flex;
   flex-direction: row;
 }
-
-.headerBtns > button {
-  margin-right: 0px;
-}
