@@ -31,10 +31,10 @@ const onRequest = async (res, method, pathname, params, key, cb) => {
           const report = await Reports.findOne({ where: { reportId } });
           if (!report) {
             responseData = { code: 512 };
-          } else if (report.dataValues.isReport=='true') {
+          } else if (report.dataValues.isReport == 'true') {
             responseData = { code: 513 };
-            await Reports.update({ isReport: '2' }, { where: { reportId } });
           } else if (resultNum.responseData.code == 363) {
+            await Reports.update({ isReport: '2' }, { where: { reportId } });
             responseData = { code: 514 };
           } else if (resultNum.responseData.code !== 361) {
             responseData = { code: 515 };
@@ -43,7 +43,7 @@ const onRequest = async (res, method, pathname, params, key, cb) => {
             responseData = { code: 511 };
           }
         } catch (error) {
-          console.log(error)
+          console.log(error);
           responseData = { code: 510 };
         }
       }
@@ -74,7 +74,7 @@ const onRequest = async (res, method, pathname, params, key, cb) => {
           const report = await Reports.findOne({ where: { reportId } });
           if (!report) {
             responseData = { code: 522 };
-          } else if (report.dataValues.isReport=='true') {
+          } else if (report.dataValues.isReport == 'true') {
             responseData = { code: 523 };
           } else if (resultNum.responseData.code == 443) {
             await Reports.update({ isReport: '2' }, { where: { reportId } });
@@ -86,7 +86,7 @@ const onRequest = async (res, method, pathname, params, key, cb) => {
             responseData = { code: 521 };
           }
         } catch (error) {
-          console.log(error)
+          console.log(error);
           responseData = { code: 520 };
         }
       }
@@ -116,7 +116,7 @@ const onRequest = async (res, method, pathname, params, key, cb) => {
           const report = await Reports.findOne({ where: { reportId } });
           if (!report) {
             responseData = { code: 532 };
-          } else if (report.dataValues.isReport=='true') {
+          } else if (report.dataValues.isReport == 'true') {
             responseData = { code: 533 };
           } else if (resultNum.responseData.code == 733) {
             await Reports.update({ isReport: '2' }, { where: { reportId } });
@@ -128,7 +128,7 @@ const onRequest = async (res, method, pathname, params, key, cb) => {
             responseData = { code: 531 };
           }
         } catch (error) {
-          console.log(error)
+          console.log(error);
           responseData = { code: 530 };
         }
       }

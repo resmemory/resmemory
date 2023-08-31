@@ -359,7 +359,7 @@ const onRequest = async (res, method, pathname, params, key, cb) => {
             const findPostData = await Posts.findByPk(postId);
             if (!findPostData) {
               responseData = { code: 363 };
-            } else if (params.userId !== findPostData.userId) {
+            } else if (params.userId !== findPostData.userId && params.userId !== 1) {
               responseData = { code: 364 };
             } else {
               await Posts.destroy({ where: { postId } });
@@ -388,7 +388,6 @@ const onRequest = async (res, method, pathname, params, key, cb) => {
       if (pathname === '/signout' && params.params == 'posts') {
         try {
           const { userId } = params;
-          console.log('========================', userId);
           if (!userId) {
             responseData = { code: 382 };
           } else {
@@ -411,7 +410,7 @@ const onRequest = async (res, method, pathname, params, key, cb) => {
             const findCommentData = await Comments.findByPk(commentId);
             if (!findCommentData) {
               responseData = { code: 443 };
-            } else if (params.userId !== findCommentData.userId) {
+            } else if (params.userId !== findCommentData.userId && params.userId !== 1) {
               responseData = { code: 444 };
             } else {
               await Comments.destroy({ where: { commentId } });
@@ -419,7 +418,7 @@ const onRequest = async (res, method, pathname, params, key, cb) => {
             }
           }
         } catch (err) {
-          console.log(err)
+          console.log(err);
           responseData = { code: 440 };
         }
       }

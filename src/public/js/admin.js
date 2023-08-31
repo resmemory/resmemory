@@ -47,9 +47,15 @@ const getReportList = () => {
       const userId = reportList.userId;
       const reportType = reportList.reportType;
       const contentId = reportList.contentId;
-      const isReport=reportList.isReport;
-      const buttonColor = isReport ? 'blue' : 'black';
-
+      const isReport = reportList.isReport;
+      let buttonColor;
+      if (isReport === 'true') {
+        buttonColor = 'blue';
+      } else if (isReport === '2') {
+        buttonColor = 'gray';
+      } else if (isReport === 'false') {
+        buttonColor = 'black';
+      } 
       const temp_html = `<div class="additionalBox id=${reportId}">
           <p class="additionalBoxText" id="reportContent">신고내용 : ${content}</p>
           <p class="additionalBoxText" id="userId">userId: ${userId}</p>
@@ -77,19 +83,8 @@ const deleteContent = (reportId, contentId, reportType) => {
   })
     .then((res) => res.json())
     .then((res) => {
-      if (res.responseData.code == 511) {
-        alert(code[res.responseData.code]);
-        return window.location.reload();
-      }
-      if (res.responseData.code == 521) {
-        alert(code[res.responseData.code]);
-        return window.location.reload();
-      }
-      if (res.responseData.code == 531) {
-        alert(code[res.responseData.code]);
-        return window.location.reload();
-      }
       alert(code[res.responseData.code]);
+      return window.location.reload();
     });
 };
 
