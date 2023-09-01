@@ -374,10 +374,16 @@ const onRequest = async (res, method, pathname, params, key, cb) => {
       // 게시글 완전 삭제(게시글이 삭제된지 오래되었을 때 DB 데이터 삭제)
       if (pathname === '/posts' && params.params === 'admin') {
         try {
-          const { contentId } = params.bodies;
+          if (!params.userId) {
+            responseData = { code: 372 };
+          } else if (params.userId !== 1) {
+            responseData = { code: 372 };
+          } else {
+            const { contentId } = params.bodies;
 
-          const result = await Posts.destroy({ where: { postId: contentId }, force: true });
-          responseData = { code: 371, result };
+            const result = await Posts.destroy({ where: { postId: contentId }, force: true });
+            responseData = { code: 371, result };
+          }
         } catch (err) {
           responseData = { code: 370 };
         }
@@ -425,10 +431,16 @@ const onRequest = async (res, method, pathname, params, key, cb) => {
       // 댓글 완전 삭제(삭제된 댓글이 오래되었을 때 DB 데이터 삭제)
       if (pathname === '/comments' && params.params === 'admin') {
         try {
-          const { contentId } = params.bodies;
+          if (!params.userId) {
+            responseData = { code: 452 };
+          } else if (params.userId !== 1) {
+            responseData = { code: 452 };
+          } else {
+            const { contentId } = params.bodies;
 
-          const result = await Comments.destroy({ where: { commentId: contentId }, force: true });
-          responseData = { code: 451, result };
+            const result = await Comments.destroy({ where: { commentId: contentId }, force: true });
+            responseData = { code: 451, result };
+          }
         } catch (err) {
           responseData = { code: 450 };
         }

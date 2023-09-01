@@ -110,13 +110,19 @@ const onRequest = async (res, method, pathname, params, key, cb) => {
       // 스레드 완전 삭제 함수
       if (pathname == '/threads' && params.params == 'admin') {
         try {
-          const { contentId } = params.bodies;
+          if (!params.userId) {
+            responseData = { code: 372 };
+          } else if (params.userId !== 1) {
+            responseData = { code: 372 };
+          } else {
+            const { contentId } = params.bodies;
 
-          const result = await Threads.destroy({
-            where: { threadId: contentId },
-            force: true,
-          });
-          responseData = { code: 371, result };
+            const result = await Threads.destroy({
+              where: { threadId: contentId },
+              force: true,
+            });
+            responseData = { code: 371, result };
+          }
         } catch (err) {
           responseData = { code: 370, err };
         }
