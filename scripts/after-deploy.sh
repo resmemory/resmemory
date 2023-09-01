@@ -3,6 +3,7 @@
 cd /home/ubuntu/build
 
 sudo npm install
+sudo pm2 kill
 sudo pm2 start "npm run start:gate_build"
 sudo pm2 start "npm run start:dis_build"
 sudo pm2 start "npm run start:users_build"

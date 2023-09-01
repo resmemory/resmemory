@@ -30,46 +30,50 @@ const onRequest = async (res, method, pathname, params, key, cb) => {
           const { email, password } = params.bodies;
 
           const user = await Users.findOne({ where: { email } });
+
           if (!user) {
             responseData = { code: 122 };
-          }
-          const isValidPassword = await bcrypt.compare(password, user.password);
-          let refresh = params.bodies.refresh;
-          const today = Date.now();
+          } else {
+            const isValidPassword = await bcrypt.compare(password, user.password);
 
-          if (!isValidPassword) {
-            responseData = { code: 122 };
-          } else if (refresh) {
-            const verified = jwt.verify(refresh, process.env.JWT_SECRET_KEY_REFRESH);
-            if (today - jwt.decode(refresh).exp > 0) {
-              if (verified && redisCli.get(`refresh_${user.userId}`) == refresh) {
-                token = jwt.sign({ user }, process.env.JWT_SECRET_KEY, {
-                  expiresIn: process.env.JWT_EXPIRE_TIME,
-                });
-                responseData = { code: 121 };
-              } else {
-                responseData = { code: 122 };
-              }
+            if (!isValidPassword) {
+              responseData = { code: 122 };
             } else {
-              if (verified) {
+              let refresh = params.bodies.refresh;
+              const today = Date.now();
+              if (refresh) {
+                const verified = jwt.verify(refresh, process.env.JWT_SECRET_KEY_REFRESH);
+                if (today - jwt.decode(refresh).exp > 0) {
+                  if (verified && redisCli.get(`refresh_${user.userId}`) == refresh) {
+                    token = jwt.sign({ user }, process.env.JWT_SECRET_KEY, {
+                      expiresIn: process.env.JWT_EXPIRE_TIME,
+                    });
+                    responseData = { code: 121 };
+                  } else {
+                    responseData = { code: 122 };
+                  }
+                } else {
+                  if (verified) {
+                    refresh = jwt.sign({ ok: 'ok' }, process.env.JWT_SECRET_KEY_REFRESH, {
+                      expiresIn: process.env.JWT_EXPIRE_TIME_REFRESH,
+                    });
+                    token = jwt.sign({ user }, process.env.JWT_SECRET_KEY, {
+                      expiresIn: process.env.JWT_EXPIRE_TIME,
+                    });
+                    responseData = { code: 123, refresh, token };
+                  }
+                }
+              } else {
                 refresh = jwt.sign({ ok: 'ok' }, process.env.JWT_SECRET_KEY_REFRESH, {
                   expiresIn: process.env.JWT_EXPIRE_TIME_REFRESH,
                 });
                 token = jwt.sign({ user }, process.env.JWT_SECRET_KEY, {
                   expiresIn: process.env.JWT_EXPIRE_TIME,
                 });
+                redisCli.set(`refresh_${user.userId}`, `${refresh}`);
                 responseData = { code: 123, refresh, token };
               }
             }
-          } else {
-            refresh = jwt.sign({ ok: 'ok' }, process.env.JWT_SECRET_KEY_REFRESH, {
-              expiresIn: process.env.JWT_EXPIRE_TIME_REFRESH,
-            });
-            token = jwt.sign({ user }, process.env.JWT_SECRET_KEY, {
-              expiresIn: process.env.JWT_EXPIRE_TIME,
-            });
-            redisCli.set(`refresh_${user.userId}`, `${refresh}`);
-            responseData = { code: 123, refresh, token };
           }
         } catch (err) {
           console.log(err);
