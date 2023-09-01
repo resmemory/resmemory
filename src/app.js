@@ -254,7 +254,7 @@ function onReadClient(options, packet) {
     delete packet.responseData.refresh;
     delete packet.token;
     mapResponse[`key_${packet.key}`].end(JSON.stringify(packet));
-  } else if (packet.responseData.code == 131) {
+  } else if (packet.responseData.code == 131 || packet.responseData.code == 141) {
     mapResponse[`key_${packet.key}`].removeHeader('Set-Cookie');
     mapResponse[`key_${packet.key}`].removeHeader('Authorization');
     mapResponse[`key_${packet.key}`].end(JSON.stringify(packet));

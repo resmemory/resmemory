@@ -5,7 +5,6 @@ import redisCli from '../../redis';
 import jwt from 'jsonwebtoken';
 import signup from './signup.service';
 import usersmodule from './users.module';
-import dataconnection from '../connection';
 
 const onRequest = async (res, method, pathname, params, key, cb) => {
   let token;
@@ -80,7 +79,9 @@ const onRequest = async (res, method, pathname, params, key, cb) => {
         try {
           const { postId } = params.bodies;
           const { userId } = params;
-
+          if (!userId) {
+            responseData = { code: 0 };
+          }
           const findbookmark = await Bookmarks.findOne({ where: { postId, userId } });
           if (findbookmark) {
             responseData = { code: 224 };
@@ -117,6 +118,9 @@ const onRequest = async (res, method, pathname, params, key, cb) => {
       if (pathname == '/users' && !query.userId && !query.userIds) {
         try {
           const { userId } = params;
+          if (!userId) {
+            responseData = { code: 0 };
+          }
           const result = await Users.findByPk(userId, {
             attributes: { exclude: ['password', 'kakaoId', 'deletedAt'] },
           });
@@ -164,11 +168,14 @@ const onRequest = async (res, method, pathname, params, key, cb) => {
       if (pathname === '/bookmarks') {
         try {
           const { userId } = params;
+          if (!userId) {
+            responseData = { code: 0 };
+          }
           const bookmarks = await Bookmarks.findAll({ order: ['createdAt'], where: { userId } });
           const postIds = bookmarks.map((bookmark) => bookmark.postId);
 
           await new Promise((resolve, reject) => {
-            dataconnection(
+            usersmodule.dataconnection(
               process.env.HOST,
               process.env.POSTS_PORT,
               (data) => {
@@ -225,6 +232,9 @@ const onRequest = async (res, method, pathname, params, key, cb) => {
         try {
           const { nickname } = params.bodies;
           const { userId } = params;
+          if (!userId) {
+            responseData = { code: 0 };
+          }
           if (!nickname) {
             responseData = { code: 153 };
           }
@@ -254,22 +264,30 @@ const onRequest = async (res, method, pathname, params, key, cb) => {
         try {
           const { password, confirm } = params.bodies;
           const { userId } = params;
+          const passwordcheck = /^[A-Za-z0-9]{6,12}$/;
+          if (!userId) {
+            responseData = { code: 0 };
+          }
+
           if (!password || !confirm) {
             responseData = { code: 164 };
           } else if (password !== confirm) {
             responseData = { code: 163 };
-          }
-          const hashedPassword = await bcrypt.hash(password, 10);
-          const result = await Users.update(
-            {
-              password: hashedPassword,
-            },
-            { where: { userId } },
-          );
-          if (result) {
-            responseData = { code: 161 };
+          } else if (!passwordcheck.test(password)) {
+            responseData = { code: 114 };
           } else {
-            responseData = { code: 162 };
+            const hashedPassword = await bcrypt.hash(password, 10);
+            const result = await Users.update(
+              {
+                password: hashedPassword,
+              },
+              { where: { userId } },
+            );
+            if (result) {
+              responseData = { code: 161 };
+            } else {
+              responseData = { code: 162 };
+            }
           }
         } catch (err) {
           responseData = { code: 160 };
@@ -293,11 +311,14 @@ const onRequest = async (res, method, pathname, params, key, cb) => {
         try {
           const { message } = params.bodies;
           const { userId } = params;
+          if (!userId) {
+            responseData = { code: 0 };
+          }
           if (message == '회원 탈퇴를 희망합니다.') {
             const result = await Users.destroy({ where: { userId } });
-
+            await Bookmarks.destroy({ where: { userId } });
             await new Promise((resolve, reject) => {
-              dataconnection(
+              usersmodule.dataconnection(
                 process.env.HOST,
                 process.env.POSTS_PORT,
                 (data) => {
@@ -312,7 +333,7 @@ const onRequest = async (res, method, pathname, params, key, cb) => {
               );
             });
             await new Promise((resolve, reject) => {
-              dataconnection(
+              usersmodule.dataconnection(
                 process.env.HOST,
                 process.env.POSTS_PORT,
                 (data) => {
@@ -344,6 +365,9 @@ const onRequest = async (res, method, pathname, params, key, cb) => {
         try {
           const { userId } = params;
           const bookmarkId = params.params;
+          if (!userId) {
+            responseData = { code: 0 };
+          }
           const target = await Bookmarks.findByPk(bookmarkId);
           if (!bookmarkId) {
             responseData = { code: 233 };

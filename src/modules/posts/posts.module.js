@@ -25,6 +25,7 @@ class PostsModule extends TcpServer {
     });
 
     this.nickname;
+    this.dataconnection;
   }
 
   // 클라이언트 요청에 따른 비즈니스 로직 호출

@@ -2,7 +2,6 @@ import Posts from './db/posts.db';
 import Comments from './db/comments.db';
 import postModule from './posts.module';
 import dotenv from 'dotenv';
-import dataconnection from '../connection';
 
 dotenv.config();
 
@@ -83,7 +82,7 @@ const onRequest = async (res, method, pathname, params, key, cb) => {
           const userIds = result.map((post) => post.userId);
 
           await new Promise((resolve, reject) => {
-            dataconnection(
+            postModule.dataconnection(
               process.env.HOST,
               process.env.USERS_PORT,
               (data) => {
@@ -160,7 +159,7 @@ const onRequest = async (res, method, pathname, params, key, cb) => {
           const userIds = result.map((post) => post.userId);
 
           await new Promise((resolve, reject) => {
-            dataconnection(
+            postModule.dataconnection(
               process.env.HOST,
               process.env.USERS_PORT,
               (data) => {
@@ -197,7 +196,7 @@ const onRequest = async (res, method, pathname, params, key, cb) => {
             responseData = { code: 342 };
           } else {
             await new Promise((resolve, reject) => {
-              dataconnection(
+              postModule.dataconnection(
                 process.env.HOST,
                 process.env.USERS_PORT,
                 (data) => {
@@ -240,7 +239,7 @@ const onRequest = async (res, method, pathname, params, key, cb) => {
             const userIds = result.map((comment) => comment.userId);
 
             await new Promise((resolve, reject) => {
-              dataconnection(
+              postModule.dataconnection(
                 process.env.HOST,
                 process.env.USERS_PORT,
                 (data) => {

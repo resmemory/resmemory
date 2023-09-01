@@ -1,7 +1,7 @@
 import Reports from './db/reports.db';
 import reports from './report.service';
 import adminModule from './admin.module';
-import dataconnection from '../connection';
+
 const onRequest = async (res, method, pathname, params, key, cb) => {
   let responseData = {};
   switch (method) {
@@ -11,7 +11,7 @@ const onRequest = async (res, method, pathname, params, key, cb) => {
           const { reportId, contentId } = params.bodies;
           const { userId } = params;
           await new Promise((resolve, reject) => {
-            dataconnection(
+            adminModule.dataconnection(
               process.env.HOST,
               process.env.POSTS_PORT,
               (data) => {
@@ -53,7 +53,7 @@ const onRequest = async (res, method, pathname, params, key, cb) => {
           const { reportId, contentId } = params.bodies;
           const { userId } = params;
           await new Promise((resolve, reject) => {
-            dataconnection(
+            adminModule.dataconnection(
               process.env.HOST,
               process.env.POSTS_PORT,
               (data) => {
@@ -95,7 +95,7 @@ const onRequest = async (res, method, pathname, params, key, cb) => {
           const { reportId, contentId } = params.bodies;
           const { userId } = params;
           await new Promise((resolve, reject) => {
-            dataconnection(
+            adminModule.dataconnection(
               process.env.HOST,
               process.env.THREADS_PORT,
               (data) => {

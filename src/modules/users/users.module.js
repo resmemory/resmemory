@@ -28,6 +28,7 @@ class UsersModule extends TcpServer {
       // Distributor 접속
       console.log('Distributor Notification', data);
     });
+
     this.posts;
   }
 

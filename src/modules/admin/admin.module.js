@@ -2,7 +2,6 @@ import TcpServer from '../../classes/server';
 import dotenv from 'dotenv';
 import onRequest from './admin.service';
 
-
 dotenv.config();
 
 class AdminModule extends TcpServer {
@@ -21,7 +20,6 @@ class AdminModule extends TcpServer {
 
     this.result;
   }
-
   // 클라이언트 요청에 따른 비즈니스 로직 호출
   async onRead(socket, data) {
     console.log(data);
