@@ -22,9 +22,6 @@ function authmiddleware(req, res, params) {
   }
   const today = Date.now();
   if (today - jwt.decode(authToken).exp * 1000 > 0) {
-    res
-      .writeHead(200, { 'Content-Type': 'application/json' })
-      .end(JSON.stringify({ responseData: { code: 0 } }));
     return;
   } else {
     const verified = jwt.verify(authToken, process.env.JWT_SECRET_KEY);

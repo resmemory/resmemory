@@ -40,7 +40,7 @@ const server = http
       }
 
       if (method === 'POST') {
-        if (req.headers.authorization || pathname !== 'logout') {
+        if (req.headers.authorization) {
           const userId = authmiddleware(req, res, params);
 
           params = { userId };
