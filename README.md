@@ -101,11 +101,6 @@
     `thread` : 댓글 스레드  
     `posts` : 게시판  
     `admin` : 관리자  
-    **[학습 브랜치]**  
-    `study_users` : 회원 (이다영)  
-    `study_comments` : 댓글 스레드 (김지혜)  
-    `study_thread` : 게시판 (김주희)  
-    `study_admin` : 관리자 (김민규)  
     **[최종 집합 브랜치]**  
     `develope` : 기능별 브랜치 집합  
     `release` : 배포 전 테스트  
@@ -143,3 +138,101 @@
 ![architecture1](./src/public/assets/image/architecture1.png)
 ![architecture2](./src/public/assets/image/architecture2.png)
 ![architecture3](./src/public/assets/image/architecture3.png)
+
+# 📁 Directory Structure
+
+```
+resmemory
+├─ .prettierrc
+├─ README.md
+├─ appspec.yml
+├─ babel.config.json
+├─ package-lock.json
+├─ package.json
+├─ scripts
+│  └─ after-deploy.sh
+├─ sql
+│  └─ database.sql
+└─ src
+   ├─ app.js
+   ├─ authmiddleware.js
+   ├─ classes
+   │  ├─ client.js
+   │  └─ server.js
+   ├─ frontconnection.js
+   ├─ mail.js
+   ├─ modules
+   │  ├─ admin
+   │  │  ├─ admin.module.js
+   │  │  ├─ admin.service.js
+   │  │  ├─ db
+   │  │  │  ├─ reports.db.js
+   │  │  │  └─ reports.init.js
+   │  │  └─ report.service.js
+   │  ├─ distributor.js
+   │  ├─ posts
+   │  │  ├─ db
+   │  │  │  ├─ comments.db.js
+   │  │  │  ├─ posts.db.js
+   │  │  │  ├─ posts.init.js
+   │  │  │  └─ relationship.js
+   │  │  ├─ posts.module.js
+   │  │  └─ posts.service.js
+   │  ├─ threads
+   │  │  ├─ db
+   │  │  │  ├─ threads.db.js
+   │  │  │  └─ threads.init.js
+   │  │  ├─ threads.module.js
+   │  │  └─ threads.service.js
+   │  └─ users
+   │     ├─ db
+   │     │  ├─ bookmarks.db.js
+   │     │  ├─ relationship.js
+   │     │  ├─ users.db.js
+   │     │  └─ users.init.js
+   │     ├─ signup.service.js
+   │     ├─ users.module.js
+   │     └─ users.service.js
+   ├─ public
+   │  ├─ admin.html
+   │  ├─ annual.html
+   │  ├─ assets
+   │  │  └─ image
+   │  │     ├─ architecture1.png
+   │  │     ├─ architecture2.png
+   │  │     ├─ architecture3.png
+   │  │     ├─ erd.png
+   │  │     ├─ logo.png
+   │  │     └─ thumbnail.png
+   │  ├─ css
+   │  │  ├─ admin.css
+   │  │  ├─ detail.css
+   │  │  ├─ headerButtons.css
+   │  │  ├─ login.css
+   │  │  ├─ post.css
+   │  │  ├─ postlist.css
+   │  │  ├─ profile.css
+   │  │  ├─ reset.css
+   │  │  └─ threads.css
+   │  ├─ detail.html
+   │  ├─ index.html
+   │  ├─ js
+   │  │  ├─ admin.js
+   │  │  ├─ annual.js
+   │  │  ├─ code.js
+   │  │  ├─ detail.js
+   │  │  ├─ index.js
+   │  │  ├─ login.js
+   │  │  ├─ post.js
+   │  │  ├─ profile.js
+   │  │  └─ threads.js
+   │  ├─ login.html
+   │  ├─ notfound.html
+   │  ├─ post.html
+   │  ├─ profile.html
+   │  └─ threads.html
+   ├─ redis.js
+   └─ utils
+      └─ makePacket.js
+
+```
