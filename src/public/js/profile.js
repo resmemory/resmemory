@@ -132,6 +132,10 @@ async function profile() {
   });
   const result = await response.json();
   console.log(result);
+  if (result.responseData.bodies.userId == 1) {
+    const adminBtn = document.querySelector('.admin');
+    adminBtn.style.display = 'block';
+  }
   const tempHtml = `
   <div>
   <p>${result.responseData.bodies.nickname}</p>
