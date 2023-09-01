@@ -30,6 +30,9 @@ const onRequest = async (res, method, pathname, params, key, cb) => {
           const { email, password } = params.bodies;
 
           const user = await Users.findOne({ where: { email } });
+          if (!user) {
+            responseData = { code: 122 };
+          }
           const isValidPassword = await bcrypt.compare(password, user.password);
           let refresh = params.bodies.refresh;
           const today = Date.now();
