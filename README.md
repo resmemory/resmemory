@@ -137,7 +137,16 @@
 
 ![architecture1](./src/public/assets/image/architecture1.png)
 ![architecture2](./src/public/assets/image/architecture2.png)
-![architecture3](./src/public/assets/image/architecture3.png)
+
+# 💻 Tech Spec
+
+- Backend Language : Node.js (ver 18.17.0)
+- Frontend Language : Html5, Javascript
+- Server : Amazon EC2
+- Project Management : PM2
+- DB : mysql(ver.3.6.0)
+- Cache : Redis(ver.4.6.7)
+- CI/CD : Github Actions, Code Deploy
 
 # 📁 Directory Structure
 
