@@ -49,7 +49,7 @@ async function bookmarks() {
   const bookmarks = result.responseData.bodies
     .map((bookmark) => {
       return `
-      <div class = "bookmarkInnerBox">
+      <div class = "bookmarkInnerBox" onclick = "location.href='./detail?post=${bookmark.postId}'">
       <h1 class = "title">${bookmark.title}</h1> 
       <p>${bookmark.annualCategory} | ${new Date(bookmark.createdAt).toLocaleDateString('ko-KR', {
         timeZone: 'Asia/Seoul',
