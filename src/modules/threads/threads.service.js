@@ -45,8 +45,9 @@ const onRequest = async (res, method, pathname, params, key, cb) => {
         try {
           const { userId } = params;
           const { content } = params.bodies;
-
-          if (content) {
+          if (!userId) {
+            responseData = { code: 0 };
+          } else if (content) {
             await Threads.create({ userId, content });
             responseData = { code: 721 };
           } else {
@@ -74,10 +75,11 @@ const onRequest = async (res, method, pathname, params, key, cb) => {
           const { userId } = params;
           const threadId = params.params;
           const threadData = await Threads.findByPk(threadId);
-          if (!threadData) {
+          if (!userId) {
+            responseData = { code: 0 };
+          } else if (!threadData) {
             responseData = { code: 735 };
-          }
-          if (userId == threadData.userId || userId == 1) {
+          } else if (userId == threadData.userId) {
             if (threadId) {
               const result = await Threads.destroy({ where: { threadId } });
               if (result) {
