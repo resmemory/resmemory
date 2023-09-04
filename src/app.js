@@ -16,7 +16,7 @@ let mapResponse = {};
 let mapRR = {};
 let index = 0;
 
-const server = http
+export const server = http
   .createServer((req, res) => {
     try {
       const method = req.method;
@@ -32,6 +32,7 @@ const server = http
           params.refresh = refresh;
         }
       }
+
       if (
         (method == 'POST' || method == 'PATCH' || method == 'DELETE') &&
         !pathname.startsWith('/api')

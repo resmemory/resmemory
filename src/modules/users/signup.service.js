@@ -14,26 +14,32 @@ async function signup(pathname, params, responseData, token) {
       const verifyNumber = Math.floor(Math.random() * (999999 - 111111 + 1)) + 111111;
 
       const { email } = params.bodies;
-      const isExistEmail = await Users.findOne({ where: { email } });
-      if (isExistEmail) {
-        responseData = { code: 182 };
+      const emailcheck =
+        /^[0-9a-zA-Z]([-_\.]?[0-9a-zA-Z])*@[0-9a-zA-Z]([-_\.]?[0-9a-zA-Z])*\.[a-zA-Z]{2,3}$/i;
+      if (!emailcheck.test(email)) {
+        responseData = { code: 113 };
       } else {
-        const emailParam = {
-          toEmail: email, // 수신할 이메일
+        const isExistEmail = await Users.findOne({ where: { email } });
+        if (isExistEmail) {
+          responseData = { code: 182 };
+        } else {
+          const emailParam = {
+            toEmail: email, // 수신할 이메일
 
-          subject: '[응답하라 추억시대] 인증번호를 확인하세요!', // 메일 제목
+            subject: '[응답하라 추억시대] 인증번호를 확인하세요!', // 메일 제목
 
-          text: `
+            text: `
                     응답하라 추억시대에 찾아 주셔서 감사합니다!
                     회원 가입을 위해 이 숫자를 입력해 주세요. 
                     [ ${verifyNumber} ]`, // 메일 내용
-        };
+          };
 
-        mailSender.sendGmail(emailParam);
-        const time = Date.now();
-        await redisCli.set(`verifytime_${email}`, `${time}`);
-        await redisCli.set(`verifyNumber_${email}`, `${verifyNumber}`);
-        responseData = { code: 181 };
+          mailSender.sendGmail(emailParam);
+          const time = Date.now();
+          await redisCli.set(`verifytime_${email}`, `${time}`);
+          await redisCli.set(`verifyNumber_${email}`, `${verifyNumber}`);
+          responseData = { code: 181 };
+        }
       }
     } catch (err) {
       responseData = { code: 180 };
@@ -65,8 +71,6 @@ async function signup(pathname, params, responseData, token) {
   // 회원가입
   if (pathname == '/signup') {
     try {
-      const emailcheck =
-        /^[0-9a-zA-Z]([-_\.]?[0-9a-zA-Z])*@[0-9a-zA-Z]([-_\.]?[0-9a-zA-Z])*\.[a-zA-Z]{2,3}$/i;
       const passwordcheck = /^[A-Za-z0-9]{6,12}$/;
       const { email, nickname, password, confirm } = params.bodies;
       const isExistNickname = await Users.findOne({ where: { nickname } });
@@ -74,8 +78,6 @@ async function signup(pathname, params, responseData, token) {
         responseData = { code: 115 };
       } else if (isExistNickname) {
         responseData = { code: 117 };
-      } else if (!emailcheck.test(email)) {
-        responseData = { code: 113 };
       } else if (!passwordcheck.test(password)) {
         responseData = { code: 114 };
       } else if (password !== confirm) {
