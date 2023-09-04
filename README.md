@@ -145,7 +145,7 @@
 - Server : Amazon EC2
 - Project Management : PM2
 - DB : mysql(ver.8.0.33)
-- Cache : Redis(ver.4.6.7)
+- Cache : Redis(ver.6.2.6)
 - CI/CD : Github Actions, Code Deploy
 
 # 📁 Directory Structure
