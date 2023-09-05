@@ -1,4 +1,6 @@
 .env
+kakao.js
+oauth.js
 
 # compiled output
 /dist

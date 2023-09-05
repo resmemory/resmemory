@@ -5,10 +5,13 @@ dotenv.config();
 
 const directory = process.env.DIRECTORY;
 
-function frontconnection(pathname, res) {
+function frontconnection(pathname, res, data) {
   let filePath;
   if (pathname == '/') {
     filePath = `./${directory}/public/index.html`;
+  } else if (pathname == '/oauth') {
+    filePath = `./${directory}/public/oauth.html`;
+    res.setHeader('code', data);
   } else {
     filePath = `./${directory}/public${pathname}`;
     if (pathname.endsWith('.js')) {

@@ -15,7 +15,12 @@ const onRequest = async (res, method, pathname, params, key, cb) => {
   switch (method) {
     case 'POST':
       // 회원 가입 관련 함수 호출
-      if (pathname == '/mail' || pathname == '/verified' || pathname == '/signup') {
+      if (
+        pathname == '/mail' ||
+        pathname == '/verified' ||
+        pathname == '/signup' ||
+        pathname == '/oauth'
+      ) {
         responseData = await signup(pathname, params, responseData, token);
       }
 
@@ -80,7 +85,56 @@ const onRequest = async (res, method, pathname, params, key, cb) => {
           responseData = { code: 120 };
         }
       }
+      // 카카오 로그인
+      if (pathname == '/kakaoLogin') {
+        try {
+          const { kakaoId } = params.bodies;
 
+          const user = await Users.findOne({ where: { kakaoId } });
+
+          if (!user) {
+            responseData = { code: 122 };
+          } else {
+            let refresh = params.bodies.refresh;
+            const today = Date.now();
+            if (refresh) {
+              const verified = jwt.verify(refresh, process.env.JWT_SECRET_KEY_REFRESH);
+              if (today - jwt.decode(refresh).exp > 0) {
+                if (verified && redisCli.get(`refresh_${user.userId}`) == refresh) {
+                  token = jwt.sign({ user }, process.env.JWT_SECRET_KEY, {
+                    expiresIn: process.env.JWT_EXPIRE_TIME,
+                  });
+                  responseData = { code: 121 };
+                } else {
+                  responseData = { code: 122 };
+                }
+              } else {
+                if (verified) {
+                  refresh = jwt.sign({ ok: 'ok' }, process.env.JWT_SECRET_KEY_REFRESH, {
+                    expiresIn: process.env.JWT_EXPIRE_TIME_REFRESH,
+                  });
+                  token = jwt.sign({ user }, process.env.JWT_SECRET_KEY, {
+                    expiresIn: process.env.JWT_EXPIRE_TIME,
+                  });
+                  responseData = { code: 123, refresh, token };
+                }
+              }
+            } else {
+              refresh = jwt.sign({ ok: 'ok' }, process.env.JWT_SECRET_KEY_REFRESH, {
+                expiresIn: process.env.JWT_EXPIRE_TIME_REFRESH,
+              });
+              token = jwt.sign({ user }, process.env.JWT_SECRET_KEY, {
+                expiresIn: process.env.JWT_EXPIRE_TIME,
+              });
+              redisCli.set(`refresh_${user.userId}`, `${refresh}`);
+              responseData = { code: 123, refresh, token };
+            }
+          }
+        } catch (err) {
+          console.log(err);
+          responseData = { code: 120 };
+        }
+      }
       // 북마크 추가
       if (pathname == '/bookmarks') {
         try {
@@ -121,6 +175,11 @@ const onRequest = async (res, method, pathname, params, key, cb) => {
 
     // GET
     case 'GET':
+      // 카카오 인가 코드 발급
+      if (pathname == '/oauth' && query.code) {
+        const { code } = query;
+        responseData = { kakaocode: code, code: 1211 };
+      }
       // 내 정보 조회
       if (pathname == '/users' && !query.userId && !query.userIds) {
         try {
