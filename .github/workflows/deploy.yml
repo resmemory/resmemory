@@ -96,13 +96,13 @@ jobs:
           cd ./src/public/js
           touch config.js
           echo "const config = {" >> config.js
-          echo "client_id: $client_id ," >> config.js
-          echo " client_secret: $client_secret , " >> config.js
-          echo "grant_type: $authorization_code ," >> config.js
-          echo "redirect_uri: $redirect_uri ," >> config.js
+          echo "client_id: '$client_id' ," >> config.js
+          echo "client_secret: '$client_secret' , " >> config.js
+          echo "grant_type: '$authorization_code' ," >> config.js
+          echo "redirect_uri: '$redirect_uri' ," >> config.js
           echo "code," >> config.js
           echo "};" >> config.js
-          echo "const kakaoJSkey = $kakaoJSkey ;" >> config.js
+          echo "const kakaoJSkey = '$kakaoJSkey' ;" >> config.js
           cat config.js
 
       - name: ✨ 패키지 설치
