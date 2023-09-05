@@ -71,7 +71,7 @@ async function signup(pathname, params, responseData, token) {
   // 회원가입
   if (pathname == '/signup') {
     try {
-      const passwordcheck = /^[A-Za-z0-9]{6,12}$/;
+      const passwordcheck = /^[A-Za-z0-9@$!%*#?&]{6,12}$/;
       const { email, nickname, password, confirm } = params.bodies;
       const isExistNickname = await Users.findOne({ where: { nickname } });
       if (!email || !nickname || !password) {

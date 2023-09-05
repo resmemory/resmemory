@@ -330,7 +330,7 @@ const onRequest = async (res, method, pathname, params, key, cb) => {
         try {
           const { password, confirm } = params.bodies;
           const { userId } = params;
-          const passwordcheck = /^[A-Za-z0-9]{6,12}$/;
+          const passwordcheck = /^[A-Za-z0-9@$!%*#?&]{6,12}$/;
           if (!userId) {
             responseData = { code: 0 };
           }
