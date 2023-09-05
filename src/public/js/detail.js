@@ -32,12 +32,13 @@ async function loadPostDetail() {
   postBox.innerHTML = '';
 
   const temp_html = `
-  <div class="post-info">
-  <div class="post-nickname">${nickname}</div>
-  <div class="post-view">조회수: ${viewCount}</div>
-  <div class="post-date">${updatedAt}</div>
-</div>
+ 
 <div class="post-title">${title}</div>
+<div class="post-info">
+<div class="post-nickname">${nickname}</div>
+<div class="post-view">조회수: ${viewCount}</div>
+<div class="post-date">${updatedAt}</div>
+</div>
 <div class="post-buttons">
   <button class="button edit-button" onclick="modalOn('#edit-post-Modal')">수정</button>
   <button class="button delete-button" onclick="deletePost()">삭제</button>
@@ -54,6 +55,7 @@ async function loadPostDetail() {
 <div class="modalContent">
   <div class="edit-post-Box">
     <div>
+    <h2>글 수정하기</h2>
       <label>제목</label>
       <br />
       <input class="post_title" type="text" value="${title}" />
@@ -61,12 +63,20 @@ async function loadPostDetail() {
     <div>
       <label>내용</label>
       <br />
-      <input class="post_content" type="text" value="${content}" />
+      <textarea class="post_content" type="text" >${content}</textarea>
     </div>
     <div>
       <label>연도</label>
       <br />
-      <input class="post_annualCategory" type="text" value="${annualCategory}" />
+      <select class="post_annualCategory">
+        <option selected>${annualCategory}</option>
+        <option>1970</option>
+        <option>1980</option>
+        <option>1990</option>
+        <option>2000</option>
+        <option>2010</option>
+        <option>2020</option>
+      </select>
     </div>
     <div>
       <label>이미지</label>
@@ -84,16 +94,15 @@ async function loadPostDetail() {
 
 <div class="modal" id="report-post-Modal" style="display: none">
 <div class="modalContent">
-<div class="report-post-Box">
-  <div>
+
+
     <label>신고 내용</label>
     <br />
     <input class="report_content" type="text" id="reportContentInput"/>
-  </div>
   <div class="report-post-Box-btn">
       <button class="report-post-btn" onclick="postReport('post',${postId},)">신고</button>
       <button class="report-post-btn" onclick="modalClose('#report-post-Modal')">닫기</button>
-  </div>
+
 </div>
 </div>
 </div>

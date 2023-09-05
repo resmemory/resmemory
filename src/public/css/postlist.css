@@ -68,10 +68,10 @@ header {
 }
 
 .logo {
-  height: 100px;
+  height: 210px;
   float: right;
   cursor: pointer;
-  margin-right: 30px;
+  margin-right: 90px;
 }
 
 .write {
@@ -106,7 +106,7 @@ header {
 table {
   width: 100%;
   border-collapse: collapse;
-  margin: 50px 0px 50px 0px;
+  margin: 20px 0px 50px 0px;
 }
 
 th {
@@ -172,11 +172,14 @@ td {
 
 /* 익명 스레드 버튼 */
 .thread_btn {
+  border: none;
+  border-radius: 5px;
+  font-size: 28px;
+  margin-top: 50px;
   position: relative;
-  top: 60px;
   background-color: black;
   color: white;
-  padding: 5px 10px;
+  padding: 30px 30px;
 }
 
 /* footer */
