@@ -55,6 +55,10 @@ jobs:
           NODEMAILER_EMAIL: ${{secrets.NODEMAILER_EMAIL}}
           NODEMAILER_PASSWORD: ${{secrets.NODEMAILER_PASSWORD}}
           DIRECTORY: ${{secrets.DIRECTORY}}
+          client_id: ${{secrets.client_id}}
+          client_secret: ${{secrets.client_secret}}
+          redirect_uri: ${{secrets.redirect_uri}}
+          kakaoJSkey: ${{secrets.kakaoJSkey}}
         run: |
           pwd
           touch .env
@@ -89,6 +93,17 @@ jobs:
           echo "NODEMAILER_PASSWORD=$NODEMAILER_PASSWORD" >> .env
           echo "DIRECTORY=$DIRECTORY" >> .env
           cat .env
+          cd ./src/public/js
+          touch config.js
+          echo "const config = {" >> .env
+          echo "client_id: $client_id ," >> .env
+          echo " client_secret: $client_secret , " >> .env
+          echo "grant_type: $authorization_code ," >> .env
+          echo "redirect_uri: $redirect_uri ," >> .env
+          echo "code," >> .env
+          echo "};" >> .env
+          echo "const kakaoJSkey = $kakaoJSkey ;" >> .env
+          cat config.js
 
       - name: ✨ 패키지 설치
         working-directory: ./
