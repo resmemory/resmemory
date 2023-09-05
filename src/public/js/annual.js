@@ -88,10 +88,12 @@ const headerBtns = () => {
   const login = document.querySelector('.login');
   const logout = document.querySelector('.logout');
   const mypage = document.querySelector('.mypage');
+  const write = document.querySelector('.write');
 
   if (localStorage.getItem('Authorization')) {
     logout.style.display = 'block';
     mypage.style.display = 'block';
+    write.style.display = 'block';
   } else {
     login.style.display = 'block';
   }
@@ -124,11 +126,5 @@ const clickPost = (postId) => {
 
 // 글 작성 페이지로 이동
 const writingPost = () => {
-  const Authorization = localStorage.getItem('Authorization');
-  if (!Authorization) {
-    alert(code[0]);
-    location.href = `./login`;
-  } else {
-    location.href = `./post`;
-  }
+  location.href = `./post`;
 };
