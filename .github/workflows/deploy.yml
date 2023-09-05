@@ -93,7 +93,7 @@ jobs:
           echo "NODEMAILER_PASSWORD=$NODEMAILER_PASSWORD" >> .env
           echo "DIRECTORY=$DIRECTORY" >> .env
           cat .env
-          cd ./src/public/js
+          cd ./dist/public/js
           touch config.js
           echo "const config = {" >> .env
           echo "client_id: $client_id ," >> .env
