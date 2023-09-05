@@ -231,7 +231,6 @@ function onCreateClient(options) {
 
 // 마이크로서비스 응답 처리
 function onReadClient(options, packet) {
-  console.log('onReadClient============', packet);
   if (packet.responseData.code == 121) {
     mapResponse[`key_${packet.key}`].setHeader(
       'Authorization',
@@ -259,6 +258,8 @@ function onReadClient(options, packet) {
     mapResponse[`key_${packet.key}`].removeHeader('Set-Cookie');
     mapResponse[`key_${packet.key}`].removeHeader('Authorization');
     mapResponse[`key_${packet.key}`].end(JSON.stringify(packet));
+  } else if (packet.responseData.code == 1211) {
+    frontconnection('/oauth', mapResponse[`key_${packet.key}`], packet.responseData.kakaocode);
   } else {
     mapResponse[`key_${packet.key}`].writeHead(200, { 'Content-Type': 'application/json' });
     mapResponse[`key_${packet.key}`].end(JSON.stringify(packet));

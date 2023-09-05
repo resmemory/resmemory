@@ -110,6 +110,20 @@ async function signup(pathname, params, responseData, token) {
     }
   }
 
+  if (pathname == '/oauth') {
+    try {
+      const { kakaoId } = params.bodies;
+      const lastUserId = await Users.count();
+      await Users.findOrCreate({
+        where: { kakaoId },
+        defaults: { email: 'kakaoId', password: 'kakaoId', nickname: `${lastUserId + 1}번째 낭만` },
+      });
+      responseData = {};
+    } catch (err) {
+      responseData = {};
+    }
+  }
+
   return responseData;
 }
 

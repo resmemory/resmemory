@@ -23,6 +23,9 @@ class UsersModule extends TcpServer {
       'POST/bookmarks',
       'DELETE/bookmarks',
       'GET/bookmarks',
+      'POST/oauth',
+      'GET/oauth',
+      'POST/kakaoLogin',
     ]);
     this.connectToDistributor(process.env.HOST, process.env.DIS_PORT, (data) => {
       // Distributor 접속
