@@ -1,6 +1,6 @@
-import sequelize from '../../db/users.init';
-import usersmodule from '../../users.module';
-import Users from '../../db/users.db';
+import sequelize from '../../modules/users/db/users.init';
+import usersmodule from '../../modules/users/users.module';
+import Users from '../../modules/users/db/users.db';
 import bcrypt from 'bcrypt';
 
 beforeAll(async () => {

@@ -1,6 +1,5 @@
-import sequelize from '../../db/threads.init';
-import threadsmodule from '../../threads.module';
-
+import sequelize from '../../modules/threads/db/threads.init';
+import threadsmodule from '../../modules/threads/threads.module';
 beforeAll(async () => {
   if (process.env.NODE_ENV === 'test') {
     await sequelize.sync();
@@ -39,7 +38,6 @@ describe('POST /api/threads', () => {
     });
   });
 });
-
 describe('GET /api/threads', () => {
   test('/threads', async () => {
     let result;
@@ -103,7 +101,7 @@ describe('DELETE /api/threads', () => {
       errormessage: 'success',
       key: 0,
       responseData: {
-        result: expect.any(Number), 
+        result: expect.any(Number),
       },
     });
   });
