@@ -82,6 +82,7 @@ async function loadPostDetail() {
       <label>이미지</label>
       <br />
       <input class="post_img" type="text" value="${img}" />
+      <input class="post_img" type="file" />
     </div>
     <div class="edit-post-Box-btn">
         <button class="edit-post-btn" onclick="updatePost()">수정</button>
