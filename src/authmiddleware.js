@@ -3,10 +3,8 @@ import dotenv from 'dotenv';
 
 dotenv.config();
 
-function authmiddleware(req, res, params) {
+function authmiddleware(req, res, authorization) {
   let user;
-
-  const { authorization } = req.headers;
   const [authType, authToken] = (authorization ?? '').split(' ');
   if (!authorization) {
     res

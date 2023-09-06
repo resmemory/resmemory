@@ -3,18 +3,13 @@ document.addEventListener('DOMContentLoaded', () => {
 });
 
 const writingPost = async () => {
-  const annualCategory = document.querySelector('.annualcategory').value;
-  const title = document.querySelector('.post_title').value;
-  const content = document.querySelector('.post_content').value;
-  const img = document.querySelector('.post_img').value;
-
+  const form = document.querySelector('#form');
+  const authorization = document.querySelector('.Authorization');
+  authorization.value = localStorage.getItem('Authorization');
+  const formData = new FormData(form);
   const response = await fetch(`./api/posts`, {
     method: 'POST',
-    headers: {
-      'Content-Type': 'application/json',
-      Authorization: localStorage.getItem('Authorization'),
-    },
-    body: JSON.stringify({ title, content, annualCategory, img }),
+    body: formData,
   });
 
   const data = await response.json();
