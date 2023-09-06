@@ -36,6 +36,7 @@ const onRequest = async (res, method, pathname, params, key, cb) => {
 
           const user = await Users.findOne({ where: { email } });
 
+          const nickname = user.nickname;
           if (!user) {
             responseData = { code: 122 };
           } else {
@@ -65,7 +66,7 @@ const onRequest = async (res, method, pathname, params, key, cb) => {
                     token = jwt.sign({ user }, process.env.JWT_SECRET_KEY, {
                       expiresIn: process.env.JWT_EXPIRE_TIME,
                     });
-                    responseData = { code: 123, refresh, token };
+                    responseData = { code: 123, refresh, token, nickname };
                   }
                 }
               } else {
@@ -76,7 +77,7 @@ const onRequest = async (res, method, pathname, params, key, cb) => {
                   expiresIn: process.env.JWT_EXPIRE_TIME,
                 });
                 redisCli.set(`refresh_${user.userId}`, `${refresh}`);
-                responseData = { code: 123, refresh, token };
+                responseData = { code: 123, refresh, token, nickname };
               }
             }
           }
@@ -91,7 +92,7 @@ const onRequest = async (res, method, pathname, params, key, cb) => {
           const { kakaoId } = params.bodies;
 
           const user = await Users.findOne({ where: { kakaoId } });
-
+          const nickname = user.nickname;
           if (!user) {
             responseData = { code: 122 };
           } else {
@@ -116,7 +117,7 @@ const onRequest = async (res, method, pathname, params, key, cb) => {
                   token = jwt.sign({ user }, process.env.JWT_SECRET_KEY, {
                     expiresIn: process.env.JWT_EXPIRE_TIME,
                   });
-                  responseData = { code: 123, refresh, token };
+                  responseData = { code: 123, refresh, token, nickname };
                 }
               }
             } else {
@@ -127,7 +128,7 @@ const onRequest = async (res, method, pathname, params, key, cb) => {
                 expiresIn: process.env.JWT_EXPIRE_TIME,
               });
               redisCli.set(`refresh_${user.userId}`, `${refresh}`);
-              responseData = { code: 123, refresh, token };
+              responseData = { code: 123, refresh, token, nickname };
             }
           }
         } catch (err) {

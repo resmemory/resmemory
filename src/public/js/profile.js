@@ -34,6 +34,7 @@ async function logout() {
   console.log(result);
   alert(code[result.responseData.code]);
   localStorage.removeItem('Authorization');
+  localStorage.removeItem('nickname');
   location.reload();
 }
 

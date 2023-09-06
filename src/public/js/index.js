@@ -108,6 +108,7 @@ const logout = async () => {
 
   alert(code[result.responseData.code]);
   localStorage.removeItem('Authorization');
+  localStorage.removeItem('nickname');
   location.reload();
 };
 
