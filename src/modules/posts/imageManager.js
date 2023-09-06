@@ -38,4 +38,13 @@ async function imageUploader(img) {
   return result.Location;
 }
 
-export default imageUploader;
+async function imageDelete(key) {
+  const params = {
+    Bucket: process.env.AWS_BUCKET_NAME,
+    Key: key,
+  };
+
+  await s3.deleteObject(params).promise();
+}
+
+export { imageUploader, imageDelete };

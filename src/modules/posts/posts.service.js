@@ -2,7 +2,7 @@ import Posts from './db/posts.db';
 import Comments from './db/comments.db';
 import postModule from './posts.module';
 import dotenv from 'dotenv';
-import imageUploader from './imageUploader';
+import { imageUploader, imageDelete } from './imageManager';
 
 dotenv.config();
 
@@ -390,6 +390,16 @@ const onRequest = async (res, method, pathname, params, key, cb) => {
           } else {
             const { contentId } = params.bodies;
 
+            const findByImg = await Posts.findOne({
+              where: { postId: contentId },
+              attributes: ['img'],
+              raw: true,
+            });
+
+            if (findByImg.img !== null) {
+              const imgKey = findByImg.img.substring(findByImg.img.lastIndexOf('/') + 1);
+              await imageDelete(imgKey);
+            }
             const result = await Posts.destroy({ where: { postId: contentId }, force: true });
             responseData = { code: 371, result };
           }
