@@ -1,4 +1,3 @@
-import server from '../../../../app';
 import sequelize from '../../db/users.init';
 import usersmodule from '../../users.module';
 import Users from '../../db/users.db';
@@ -8,7 +7,7 @@ beforeAll(async () => {
   if (process.env.NODE_ENV === 'test') {
     await sequelize.sync();
   } else throw new Error('NODE_ENV가 test 환경으로 설정되어 있지 않습니다.');
-  await server;
+
   const hashedPassword = await bcrypt.hash('test', 10);
   await Users.create({ email: 'test@test.com', password: 'test1234', nickname: hashedPassword });
 });
