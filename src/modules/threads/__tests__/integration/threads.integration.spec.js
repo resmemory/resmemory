@@ -1,5 +1,6 @@
 import sequelize from '../../db/threads.init';
 import threadsmodule from '../../threads.module';
+
 beforeAll(async () => {
   if (process.env.NODE_ENV === 'test') {
     await sequelize.sync();
@@ -39,20 +40,105 @@ describe('POST /api/threads', () => {
   });
 });
 
-// describe('DELETE /api/threads', () => {
-//   it('should delete a thread when path is /threads', async () => {
-//     const res = {};
-//     const method = 'DELETE';
-//     const pathname = '/threads';
-//     const params = { userId: 1, params: 1 };
-//     const key = 'testKey';
+describe('GET /api/threads', () => {
+  test('/threads', async () => {
+    let result;
+    await new Promise((resolve, reject) => {
+      threadsmodule.dataconnection(
+        process.env.HOST,
+        process.env.THREADS_PORT,
+        (data) => {
+          result = data;
+          resolve();
+        },
+        null,
+        null,
+        { result },
+        1,
+        'GET',
+        '/threads',
+      );
+    });
 
-//     const response = await onRequest(res, method, pathname, params, key);
+    expect(result).toEqual({
+      errorCode: 0,
+      errormessage: 'success',
+      key: 0,
+      responseData: {
+        result: [
+          {
+            content: 'New thread',
+            createdAt: expect.any(String),
+            deletedAt: null,
+            threadId: expect.any(Number),
+          },
+        ],
+      },
+    });
+  });
+});
 
-//     expect(response.errorCode).toBe(0);
-//     expect(response.responseData).toEqual({ code: 731 });
-//   });
-// });
+describe('DELETE /api/threads', () => {
+  test('/threads', async () => {
+    let result;
+    await new Promise((resolve, reject) => {
+      threadsmodule.dataconnection(
+        process.env.HOST,
+        process.env.THREADS_PORT,
+        (data) => {
+          result = data;
+          resolve();
+        },
+        null,
+        null,
+        { result },
+        1,
+        'DELETE',
+        '/threads',
+      );
+    });
+
+    expect(result).toEqual({
+      errorCode: 0,
+      errormessage: 'success',
+      key: 0,
+      responseData: {
+        result: expect.any(Number), 
+      },
+    });
+  });
+});
+
+describe('DELETE /api/admin', () => {
+  test('/threads', async () => {
+    let result;
+    await new Promise((resolve, reject) => {
+      threadsmodule.dataconnection(
+        process.env.HOST,
+        process.env.THREADS_PORT,
+        (data) => {
+          result = data;
+          resolve();
+        },
+        null,
+        null,
+        { result },
+        1,
+        'DELETE',
+        '/threads',
+      );
+    });
+
+    expect(result).toEqual({
+      errorCode: 0,
+      errormessage: 'success',
+      key: 0,
+      responseData: {
+        code: 371,
+      },
+    });
+  });
+});
 
 afterAll(async () => {
   if (process.env.NODE_ENV === 'test') {
