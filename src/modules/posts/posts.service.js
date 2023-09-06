@@ -2,7 +2,7 @@ import Posts from './db/posts.db';
 import Comments from './db/comments.db';
 import postModule from './posts.module';
 import dotenv from 'dotenv';
-import { imageUploader, imageDelete } from './imageManager';
+import { imageUploade, imageDelete } from './imageManager';
 
 dotenv.config();
 
@@ -26,7 +26,7 @@ const onRequest = async (res, method, pathname, params, key, cb) => {
           } else if (!annualCategory) {
             responseData = { code: 315 };
           } else if (img.size !== 0) {
-            result = await imageUploader(img);
+            result = await imageUploade(img);
           }
           await Posts.create({
             title,

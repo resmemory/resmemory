@@ -11,7 +11,7 @@ let s3 = new aws.S3({
   region: process.env.AWS_REGION,
 });
 
-async function imageUploader(img) {
+async function imageUploade(img) {
   const filename = `${Date.now()}_${img.originalFilename}`;
   const resizedFilename = `resized+${filename}`;
 
@@ -47,4 +47,4 @@ async function imageDelete(key) {
   await s3.deleteObject(params).promise();
 }
 
-export { imageUploader, imageDelete };
+export { imageUploade, imageDelete };
