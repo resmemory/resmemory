@@ -15,6 +15,7 @@ const onRequest = async (res, method, pathname, params, key, cb) => {
       if (pathname === '/posts') {
         try {
           const { title, content, annualCategory, img } = params.bodies;
+          let result = null;
 
           if (!params.userId) {
             responseData = { code: 312 };
@@ -24,20 +25,19 @@ const onRequest = async (res, method, pathname, params, key, cb) => {
             responseData = { code: 314 };
           } else if (!annualCategory) {
             responseData = { code: 315 };
-          } else {
-            const result = await imageUploader(img);
-            await Posts.create({
-              title,
-              content,
-              annualCategory,
-              img: result,
-              userId: params.userId,
-            });
-            responseData = { code: 311 };
+          } else if (img.size !== 0) {
+            result = await imageUploader(img);
           }
+          await Posts.create({
+            title,
+            content,
+            annualCategory,
+            img: result,
+            userId: params.userId,
+          });
+          responseData = { code: 311 };
         } catch (err) {
           responseData = { code: 310 };
-          console.log(err);
         }
       }
 

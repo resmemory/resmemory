@@ -40,15 +40,15 @@ export const server = http
       ) {
         throw new Error('올바른 요청이 아닙니다.');
       }
+
       if (method === 'POST' && pathname == '/api/posts') {
         let path = pathname.replace('/api', '');
-        const form = formidable({});
+        const form = formidable({ allowEmptyFiles: true, minFileSize: 0 });
         let fields;
         let files;
         try {
           [fields, files] = await form.parse(req);
         } catch (err) {
-          // example to check for a very specific error
           if (err.code === formidableErrors.maxFieldsExceeded) {
           }
           console.error(err);
@@ -56,18 +56,22 @@ export const server = http
           res.end(String(err));
           return;
         }
+
         if (fields.authorization[0]) {
           const authorization = fields.authorization[0];
           const userId = authmiddleware(req, res, authorization);
 
           params = { userId };
         }
+
         params.bodies = {};
         params.bodies.annualCategory = fields.annualCategory[0];
         params.bodies.title = fields.title[0];
         params.bodies.content = fields.content[0];
-        params.bodies.img = files.img[0];
-        console.log(params);
+        if (files.img && files.img[0]) {
+          params.bodies.img = files.img[0];
+        }
+
         req.on('end', function () {
           onRequest(res, method, path, params);
         });
