@@ -66,7 +66,7 @@ export const server = http
         params.bodies.annualCategory = fields.annualCategory[0];
         params.bodies.title = fields.title[0];
         params.bodies.content = fields.content[0];
-        params.bodies.img = files.img[0].filepath;
+        params.bodies.img = files.img[0];
         console.log(params);
         req.on('end', function () {
           onRequest(res, method, path, params);

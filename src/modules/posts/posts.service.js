@@ -2,6 +2,7 @@ import Posts from './db/posts.db';
 import Comments from './db/comments.db';
 import postModule from './posts.module';
 import dotenv from 'dotenv';
+import imageUploader from './imageUploader';
 
 dotenv.config();
 
@@ -24,11 +25,19 @@ const onRequest = async (res, method, pathname, params, key, cb) => {
           } else if (!annualCategory) {
             responseData = { code: 315 };
           } else {
-            await Posts.create({ title, content, annualCategory, img, userId: params.userId });
+            const result = await imageUploader(img);
+            await Posts.create({
+              title,
+              content,
+              annualCategory,
+              img: result,
+              userId: params.userId,
+            });
             responseData = { code: 311 };
           }
         } catch (err) {
           responseData = { code: 310 };
+          console.log(err);
         }
       }
 
