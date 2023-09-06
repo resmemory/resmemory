@@ -184,14 +184,16 @@ const onRequest = async (res, method, pathname, params, key, cb) => {
       // 내 정보 조회
       if (pathname == '/users' && !query.userId && !query.userIds) {
         try {
-          const { userId } = params;
-          if (!userId) {
+          if (!params.userId) {
             responseData = { code: 0 };
+          } else {
+            const { userId } = params;
+
+            const result = await Users.findByPk(userId, {
+              attributes: { exclude: ['password', 'kakaoId', 'deletedAt'] },
+            });
+            responseData = { bodies: result, code: 171 };
           }
-          const result = await Users.findByPk(userId, {
-            attributes: { exclude: ['password', 'kakaoId', 'deletedAt'] },
-          });
-          responseData = { bodies: result, code: 171 };
         } catch (err) {
           responseData = { code: 170, bodies: null };
         }

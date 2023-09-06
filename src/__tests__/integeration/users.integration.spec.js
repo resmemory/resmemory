@@ -49,7 +49,7 @@ describe('GET /api/users', () => {
       },
     });
   });
-  test('내 정보 조회', async () => {
+  test('내 정보 조회 실패 : userId 없음', async () => {
     let result;
     await new Promise((resolve, reject) => {
       usersmodule.dataconnection(
@@ -214,7 +214,7 @@ describe('POST /api/verified', () => {
         null,
         null,
         {
-          receiveNumber: 'NAN',
+          receiveNumber: 123456789,
           email: 'teamresmemory@gmail.com',
         },
         null,
