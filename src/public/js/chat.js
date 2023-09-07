@@ -8,7 +8,7 @@ const messageInput = document.getElementById('message-input');
 const sendButton = document.getElementById('send-button');
 
 // WebSocket 연결
-const socket = new WebSocket(`ws://resmemory.shop/?nickname=${userNickname}`); // WebSocket 주소 설정
+const socket = new WebSocket(`ws://localhost:3000/?nickname=${userNickname}`); // WebSocket 주소 설정
 
 // 웹 소켓 연결 이벤트 핸들러
 socket.addEventListener('open', (event) => {
