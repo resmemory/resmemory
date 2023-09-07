@@ -59,6 +59,10 @@ jobs:
           client_secret: ${{secrets.client_secret}}
           redirect_uri: ${{secrets.redirect_uri}}
           kakaoJSkey: ${{secrets.kakaoJSkey}}
+          S3_AWS_ACCESS_KEY_ID: ${{secrets.S3_AWS_ACCESS_KEY_ID}}
+          S3_AWS_SECRET_ACCESS_KEY: ${{secrets.S3_AWS_SECRET_ACCESS_KEY}}
+          S3_AWS_REGION: ${{secrets.S3_AWS_REGION}}
+          S3_AWS_BUCKET_NAME: ${{secrets.S3_AWS_BUCKET_NAME}}
         run: |
           pwd
           touch .env
@@ -92,7 +96,12 @@ jobs:
           echo "NODEMAILER_EMAIL=$NODEMAILER_EMAIL" >> .env
           echo "NODEMAILER_PASSWORD=$NODEMAILER_PASSWORD" >> .env
           echo "DIRECTORY=$DIRECTORY" >> .env
+          echo "S3_AWS_ACCESS_KEY_ID=$S3_AWS_ACCESS_KEY_ID" >> .env
+          echo "S3_AWS_SECRET_ACCESS_KEY=$S3_AWS_SECRET_ACCESS_KEY" >> .env
+          echo "S3_AWS_REGION=$S3_AWS_REGION" >> .env
+          echo "S3_AWS_BUCKET_NAME=$S3_AWS_BUCKET_NAME" >> .env
           cat .env
+
           cd ./src/public/js
           touch config.js
           echo "const config = {" >> config.js
