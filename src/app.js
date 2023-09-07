@@ -270,35 +270,10 @@ function onCreateClient(options) {
 
 // 마이크로서비스 응답 처리
 function onReadClient(options, packet) {
-  if (packet.responseData.code == 121) {
-    mapResponse[`key_${packet.key}`].setHeader(
-      'Authorization',
-      `Bearer ${packet.responseData.token}`,
-    );
-    delete packet.token;
-    mapResponse[`key_${packet.key}`].end(JSON.stringify(packet));
-  } else if (packet.responseData.code == 111) {
-    const today = new Date();
-
-    mapResponse[`key_${packet.key}`].setHeader('Set-Cookie', [
-      `refresh=${packet.responseData.refresh}; expires=7d`,
-    ]);
-    mapResponse[`key_${packet.key}`].end(JSON.stringify(packet));
-    delete packet.responseData.refresh;
-  } else if (packet.responseData.code == 123) {
-    mapResponse[`key_${packet.key}`].setHeader(
-      'Authorization',
-      `Bearer ${packet.responseData.token}`,
-    );
-    delete packet.responseData.refresh;
-    delete packet.token;
-    mapResponse[`key_${packet.key}`].end(JSON.stringify(packet));
-  } else if (packet.responseData.code == 131 || packet.responseData.code == 141) {
-    mapResponse[`key_${packet.key}`].removeHeader('Set-Cookie');
-    mapResponse[`key_${packet.key}`].removeHeader('Authorization');
-    mapResponse[`key_${packet.key}`].end(JSON.stringify(packet));
+  if ([121, 111, 123, 131, 141].includes(mapResponse[`key_${packet.key}`])) {
+    loginResponse(res, packet);
   } else if (packet.responseData.code == 1211) {
-    frontconnection('/oauth', mapResponse[`key_${packet.key}`], packet.responseData.kakaocode);
+    frontconnection('/oauth', res, packet.responseData.kakaocode);
   } else {
     mapResponse[`key_${packet.key}`].writeHead(200, { 'Content-Type': 'application/json' });
     mapResponse[`key_${packet.key}`].end(JSON.stringify(packet));
