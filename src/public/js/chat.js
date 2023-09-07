@@ -43,18 +43,18 @@ sendButton.addEventListener('click', () => {
   }
 });
 
-socket.addEventListener('message', (event) => {
+socket.addEventListener('message', async (event) => {
   const data = event.data;
-  const dataParse = JSON.parse(data);
+  const dataParse = await JSON.parse(data);
   const message = dataParse.message;
   const nickname = dataParse.nickname;
 
   // 채팅 데이터를 화면에 추가
-  displayMessage(message, nickname);
+  await displayMessage(message, nickname);
 });
 
 // 채팅 메시지 화면에 표시
-function displayMessage(message, nickname) {
+async function displayMessage(message, nickname) {
   const messageElement = document.createElement('div');
   messageElement.textContent = `${nickname}: ${message}`;
 
