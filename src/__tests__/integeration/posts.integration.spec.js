@@ -24,6 +24,7 @@ describe('POST /api/posts', () => {
           title: '테스트',
           content: '테스트',
           annualCategory: '1990',
+          img: { size: 0 },
         },
         1,
         'POST',

@@ -16,18 +16,18 @@ const onRequest = async (res, method, pathname, params, key, cb) => {
         try {
           const { title, content, annualCategory, img } = params.bodies;
           let result = null;
-
           if (!params.userId) {
             responseData = { code: 312 };
-          } else if (!title) {
+          } else if (title.length < 1) {
             responseData = { code: 313 };
-          } else if (!content) {
+          } else if (content.length < 1) {
             responseData = { code: 314 };
-          } else if (!annualCategory) {
+          } else if (annualCategory.length < 1) {
             responseData = { code: 315 };
-          } else if (img) {
-            result = await imageUpload(img);
           } else {
+            result = await imageUpload(img);
+
+            console.log('else문 통과=======');
             await Posts.create({
               title,
               content,
