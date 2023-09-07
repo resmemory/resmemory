@@ -271,10 +271,8 @@ function onCreateClient(options) {
 
 // 마이크로서비스 응답 처리
 function onReadClient(options, packet) {
-  if ([121, 111, 123, 131, 141].includes(mapResponse[`key_${packet.key}`])) {
-    loginResponse(res, packet);
-  } else if (packet.responseData.code == 1211) {
-    frontconnection('/oauth', res, packet.responseData.kakaocode);
+  if ([121, 111, 123, 131, 141, 1211].includes(packet.responseData.code)) {
+    loginResponse(mapResponse[`key_${packet.key}`], packet);
   } else {
     mapResponse[`key_${packet.key}`].writeHead(200, { 'Content-Type': 'application/json' });
     mapResponse[`key_${packet.key}`].end(JSON.stringify(packet));
