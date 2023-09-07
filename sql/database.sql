@@ -46,7 +46,7 @@ CREATE TABLE `Threads` (
   `postId` BIGINT auto_increment, 
   `userId` BIGINT NOT NULL, 
   `title` VARCHAR(255) NOT NULL, 
-  `content` VARCHAR(255) NOT NULL, 
+  `content` VARCHAR(500) NOT NULL, 
   `img` VARCHAR(255) DEFAULT NULL, 
   `viewCount` BIGINT DEFAULT 0, 
   `annualCategory` ENUM('1970', '1980', '1990', '2000', '2010', '2020') NOT NULL, 

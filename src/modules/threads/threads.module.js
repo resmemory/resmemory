@@ -37,4 +37,5 @@ class ThreadsModule extends TcpServer {
   }
 }
 
-new ThreadsModule(); // 인스턴스 생성
+const threadsmodule = new ThreadsModule(); // 인스턴스 생성
+export default threadsmodule;

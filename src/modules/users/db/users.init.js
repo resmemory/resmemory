@@ -8,7 +8,7 @@ if (process.env.NODE_ENV == 'test') {
 }
 
 const sequelize = new Sequelize({
-  database: database,
+  database,
   username: process.env.USERS_MYSQL_USER_NAME,
   port: '3306',
   password: process.env.USERS_MYSQL_PASSWORD,

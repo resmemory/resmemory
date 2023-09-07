@@ -5,6 +5,7 @@ import { makePacket } from './utils/makePacket';
 import authmiddleware from './authmiddleware';
 import frontconnection from './frontconnection';
 import dotenv from 'dotenv';
+import formidable, { errors as formidableErrors } from 'formidable';
 
 dotenv.config();
 
@@ -17,7 +18,7 @@ let mapRR = {};
 let index = 0;
 
 export const server = http
-  .createServer((req, res) => {
+  .createServer(async (req, res) => {
     try {
       const method = req.method;
       const uri = url.parse(req.url, true);
@@ -40,9 +41,45 @@ export const server = http
         throw new Error('올바른 요청이 아닙니다.');
       }
 
-      if (method === 'POST') {
+      if (method === 'POST' && pathname == '/api/posts') {
+        let path = pathname.replace('/api', '');
+        const form = formidable({ allowEmptyFiles: true, minFileSize: 0 });
+        let fields;
+        let files;
+        try {
+          [fields, files] = await form.parse(req);
+        } catch (err) {
+          if (err.code === formidableErrors.maxFieldsExceeded) {
+          }
+          console.error(err);
+          res.writeHead(err.httpCode || 400, { 'Content-Type': 'text/plain' });
+          res.end(String(err));
+          return;
+        }
+
+        if (fields.authorization[0]) {
+          const authorization = fields.authorization[0];
+          const userId = authmiddleware(req, res, authorization);
+
+          params = { userId };
+        }
+
+        params.bodies = {};
+        params.bodies.annualCategory = fields.annualCategory[0];
+        params.bodies.title = fields.title[0];
+        params.bodies.content = fields.content[0];
+        if (files.img && files.img[0]) {
+          params.bodies.img = files.img[0];
+        }
+
+        req.on('end', function () {
+          onRequest(res, method, path, params);
+        });
+      }
+      if (method === 'POST' && pathname !== '/api/posts') {
         if (req.headers.authorization) {
-          const userId = authmiddleware(req, res, params);
+          const authorization = req.headers.authorization;
+          const userId = authmiddleware(req, res, authorization);
 
           params = { userId };
         }
@@ -61,8 +98,8 @@ export const server = http
         });
       } else if (method === 'PATCH') {
         let body = '';
-
-        const userId = authmiddleware(req, res, params);
+        const authorization = req.headers.authorization;
+        const userId = authmiddleware(req, res, authorization);
 
         let path = pathname.replace('/api', '');
         params = { userId };
@@ -85,7 +122,8 @@ export const server = http
           onRequest(res, method, path, params);
         });
       } else if (method === 'DELETE') {
-        const userId = authmiddleware(req, res, params);
+        const authorization = req.headers.authorization;
+        const userId = authmiddleware(req, res, authorization);
 
         params = { userId };
         let body = '';
@@ -113,7 +151,8 @@ export const server = http
         } else {
           let path = pathname.replace('/api', '');
           if (req.headers.authorization) {
-            const userId = authmiddleware(req, res, params);
+            const authorization = req.headers.authorization;
+            const userId = authmiddleware(req, res, authorization);
 
             params = { userId };
           }

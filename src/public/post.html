@@ -24,29 +24,38 @@
     </header>
 
     <main>
-      <div class="container">
-        <div>
-          <label>카테고리</label>
-          <select class="annualcategory">
-            <option selected></option>
-            <option>1970</option>
-            <option>1980</option>
-            <option>1990</option>
-            <option>2000</option>
-            <option>2010</option>
-            <option>2020</option>
-          </select>
+      <form
+        action="./api/posts"
+        method="POST"
+        enctype="multipart/form-data"
+        onsubmit="return false"
+        id="form"
+      >
+        <input type="hidden" name="authorization" class="Authorization" />
+        <div class="container">
+          <div>
+            <label>카테고리</label>
+            <select name="annualCategory">
+              <option selected></option>
+              <option>1970</option>
+              <option>1980</option>
+              <option>1990</option>
+              <option>2000</option>
+              <option>2010</option>
+              <option>2020</option>
+            </select>
+          </div>
+          <div class="write_box">
+            <input name="title" type="text" placeholder="제목을 입력해주세요." />
+            <input name="img" type="file" placeholder="이미지 url을 입력해주세요." />
+            <textarea name="content" type="text" placeholder="내용을 입력해주세요."></textarea>
+          </div>
+          <div class="post_buttons">
+            <button onclick="writingPost()">게시글 작성</button>
+            <button onclick="cancelPost()">취소</button>
+          </div>
         </div>
-        <div class="write_box">
-          <input class="post_title" type="text" placeholder="제목을 입력해주세요." />
-          <input class="post_img" type="text" placeholder="이미지 url을 입력해주세요." />
-          <textarea class="post_content" type="text" placeholder="내용을 입력해주세요."></textarea>
-        </div>
-        <div class="post_buttons">
-          <button onclick="writingPost()">게시글 작성</button>
-          <button onclick="cancelPost()">취소</button>
-        </div>
-      </div>
+      </form>
     </main>
 
     <footer>제작 - TEAM 1이3김 : 이다영 김주희 김민규 김지혜</footer>

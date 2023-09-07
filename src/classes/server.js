@@ -103,7 +103,7 @@ class TcpServer {
       }
     }, 3000);
   }
-  dataconnection(host, port, onNoti, query, params, bodies, userId, method, uri) {
+  async dataconnection(host, port, onNoti, query, params, bodies, userId, method, uri) {
     const context = {
       port,
       name: 'connection',
@@ -143,13 +143,8 @@ class TcpServer {
         isConnectedData = false;
       },
     );
-    const interval = setInterval(() => {
-      if (isConnectedData !== true) {
-        clientData.connect();
-      } else {
-        clearInterval(interval);
-      }
-    }, 1);
+
+    await clientData.connect();
   }
 }
 

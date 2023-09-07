@@ -14,7 +14,7 @@ export default class TcpClient {
   }
 
   /* * 접속 함수 */
-  connect() {
+  async connect() {
     this.client = net.connect(this.options, () => {
       if (this.onCreate) this.onCreate(this.options);
     });

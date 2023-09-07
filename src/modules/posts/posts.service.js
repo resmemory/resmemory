@@ -2,6 +2,7 @@ import Posts from './db/posts.db';
 import Comments from './db/comments.db';
 import postModule from './posts.module';
 import dotenv from 'dotenv';
+import { imageUpload, imageDelete } from './imageManager';
 
 dotenv.config();
 
@@ -14,6 +15,7 @@ const onRequest = async (res, method, pathname, params, key, cb) => {
       if (pathname === '/posts') {
         try {
           const { title, content, annualCategory, img } = params.bodies;
+          let result = null;
 
           if (!params.userId) {
             responseData = { code: 312 };
@@ -23,8 +25,16 @@ const onRequest = async (res, method, pathname, params, key, cb) => {
             responseData = { code: 314 };
           } else if (!annualCategory) {
             responseData = { code: 315 };
+          } else if (img) {
+            result = await imageUpload(img);
           } else {
-            await Posts.create({ title, content, annualCategory, img, userId: params.userId });
+            await Posts.create({
+              title,
+              content,
+              annualCategory,
+              img: result,
+              userId: params.userId,
+            });
             responseData = { code: 311 };
           }
         } catch (err) {
@@ -381,6 +391,16 @@ const onRequest = async (res, method, pathname, params, key, cb) => {
           } else {
             const { contentId } = params.bodies;
 
+            const findByImg = await Posts.findOne({
+              where: { postId: contentId },
+              attributes: ['img'],
+              raw: true,
+            });
+
+            if (findByImg.img !== null) {
+              const imgKey = findByImg.img.substring(findByImg.img.lastIndexOf('/') + 1);
+              await imageDelete(imgKey);
+            }
             const result = await Posts.destroy({ where: { postId: contentId }, force: true });
             responseData = { code: 371, result };
           }
