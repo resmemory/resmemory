@@ -34,6 +34,8 @@ async function oauth() {
     body: JSON.stringify({ kakaoId: authId }),
   });
 
+  location.href = 'http://resmemory.shop/oauth';
+
   const response = await fetch(`./kakaoLogin`, {
     method: 'POST',
     headers: {
@@ -52,6 +54,5 @@ async function oauth() {
   } else {
     alert(code[result.responseData.code]);
   }
-
-  location.href = '../';
+  location.href = './';
 }
