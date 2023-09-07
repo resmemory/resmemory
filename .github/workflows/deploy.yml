@@ -107,7 +107,7 @@ jobs:
           cd ./src/public/js
           touch config.js
           echo "const urlParams = new URL(location.href).searchParams;" >> config.js
-          echo "const kCode = urlParams.get('code');' ;" >> config.js
+          echo "const kCode = urlParams.get('code');" >> config.js
           echo "const config = {" >> config.js
           echo "client_id: '$client_id' ," >> config.js
           echo "client_secret: '$client_secret' , " >> config.js
