@@ -3,7 +3,7 @@ import mongoose from 'mongoose';
 // MongoDB 연결 설정
 
 const connect = () => {
-  mongoose.connect('mongodb://127.0.0.1:27017/chatapp', {
+  mongoose.connect('mongodb://43.201.26.213:27017/chatapp', {
     useNewUrlParser: true,
     useUnifiedTopology: true,
   });
