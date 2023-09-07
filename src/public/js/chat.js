@@ -8,7 +8,7 @@ const messageInput = document.getElementById('message-input');
 const sendButton = document.getElementById('send-button');
 
 // WebSocket 연결
-const socket = new WebSocket(`ws://localhost:3000/?nickname=${userNickname}`); // WebSocket 주소 설정
+const socket = new WebSocket(`ws://43.201.26.213:3000/?nickname=${userNickname}`); // WebSocket 주소 설정
 
 // 웹 소켓 연결 이벤트 핸들러
 socket.addEventListener('open', (event) => {
