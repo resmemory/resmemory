@@ -11,33 +11,36 @@ let s3 = new aws.S3({
   region: process.env.AWS_REGION,
 });
 
-async function imageUploade(img) {
-  const filename = `${Date.now()}_${img.originalFilename}`;
-  const resizedFilename = `resized+${filename}`;
+async function imageUpload(img) {
+  if (img.size == 0) {
+    return null;
+  } else {
+    const filename = `${Date.now()}_${img.originalFilename}`;
+    const resizedFilename = `resized+${filename}`;
 
-  await sharp(img.filepath)
-    .resize({
-      width: 600,
-      height: 600,
-      fit: 'contain',
-      background: { r: 255, g: 255, b: 255, alpha: 1 },
-    })
-    .toFile(`${resizedFilename}`);
+    await sharp(img.filepath)
+      .resize({
+        width: 600,
+        height: 600,
+        fit: 'contain',
+        background: { r: 255, g: 255, b: 255, alpha: 1 },
+      })
+      .toFile(`${resizedFilename}`);
 
-  let uploadParams = { Bucket: process.env.AWS_BUCKET_NAME, Key: filename, Body: '' };
-  let fileStream = fs.createReadStream(`${resizedFilename}`);
-  fileStream.on('error', function (err) {
-    console.log('File Error', err);
-  });
+    let uploadParams = { Bucket: process.env.AWS_BUCKET_NAME, Key: filename, Body: '' };
+    let fileStream = fs.createReadStream(`${resizedFilename}`);
+    fileStream.on('error', function (err) {
+      console.log('File Error', err);
+    });
 
-  uploadParams.Body = fileStream;
-  uploadParams.ContentType = img.mimetype;
-  const result = await s3.upload(uploadParams).promise();
-  fs.unlinkSync(`${resizedFilename}`);
+    uploadParams.Body = fileStream;
+    uploadParams.ContentType = img.mimetype;
+    const result = await s3.upload(uploadParams).promise();
+    fs.unlinkSync(`${resizedFilename}`);
 
-  return result.Location;
+    return result.Location;
+  }
 }
-
 async function imageDelete(key) {
   const params = {
     Bucket: process.env.AWS_BUCKET_NAME,
@@ -47,4 +50,4 @@ async function imageDelete(key) {
   await s3.deleteObject(params).promise();
 }
 
-export { imageUploade, imageDelete };
+export { imageUpload, imageDelete };

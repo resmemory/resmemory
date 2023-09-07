@@ -2,8 +2,6 @@ import TcpServer from '../../classes/server';
 import dotenv from 'dotenv';
 import onRequest from './users.service';
 import relationship from './db/relationship';
-import { makePacket } from '../../utils/makePacket';
-import TcpClient from '../../classes/client';
 dotenv.config();
 
 class UsersModule extends TcpServer {
