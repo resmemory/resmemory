@@ -1,5 +1,3 @@
-import frontconnection from './frontconnection';
-
 function loginResponse(res, packet) {
   if (packet.responseData.code == 121) {
     res.setHeader('Authorization', `Bearer ${packet.responseData.token}`);
@@ -20,8 +18,6 @@ function loginResponse(res, packet) {
     res.removeHeader('Set-Cookie');
     res.removeHeader('Authorization');
     res.end(JSON.stringify(packet));
-  } else if (packet.responseData.code == 1211) {
-    frontconnection('/oauth', res, packet.responseData.kakaocode);
   }
 }
 
