@@ -43,6 +43,13 @@ sendButton.addEventListener('click', () => {
   }
 });
 
+messageInput.addEventListener('keyup', (event) => {
+  if (event.keyCode === 13) {
+    event.preventDefault();
+    sendButton.click();
+  }
+});
+
 socket.addEventListener('message', async (event) => {
   const data = event.data;
   const dataParse = await JSON.parse(data);
