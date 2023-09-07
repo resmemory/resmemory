@@ -100,7 +100,7 @@ jobs:
           echo "client_secret: '$client_secret' , " >> config.js
           echo "grant_type: 'authorization_code' ," >> config.js
           echo "redirect_uri: '$redirect_uri' ," >> config.js
-          echo "code," >> config.js
+          echo "code: kCode," >> config.js
           echo "};" >> config.js
           echo "const kakaoJSkey = '$kakaoJSkey' ;" >> config.js
           cat config.js
