@@ -52,5 +52,5 @@ async function oauth() {
   } else {
     alert(code[result.responseData.code]);
   }
-  location.href = './';
+  location.href = '../';
 }
