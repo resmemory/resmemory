@@ -106,6 +106,8 @@ jobs:
 
           cd ./src/public/js
           touch config.js
+          echo "const urlParams = new URL(location.href).searchParams;" >> config.js
+          echo "const kCode = urlParams.get('code');' ;" >> config.js
           echo "const config = {" >> config.js
           echo "client_id: '$client_id' ," >> config.js
           echo "client_secret: '$client_secret' , " >> config.js
@@ -114,6 +116,7 @@ jobs:
           echo "code: kCode," >> config.js
           echo "};" >> config.js
           echo "const kakaoJSkey = '$kakaoJSkey' ;" >> config.js
+
           cat config.js
 
       - name: ✨ 패키지 설치
