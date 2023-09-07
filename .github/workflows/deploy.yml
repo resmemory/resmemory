@@ -63,6 +63,7 @@ jobs:
           S3_AWS_SECRET_ACCESS_KEY: ${{secrets.S3_AWS_SECRET_ACCESS_KEY}}
           S3_AWS_REGION: ${{secrets.S3_AWS_REGION}}
           S3_AWS_BUCKET_NAME: ${{secrets.S3_AWS_BUCKET_NAME}}
+          MONGO_DB: ${{secrets.MONGO_DB}}
         run: |
           pwd
           touch .env
@@ -100,6 +101,7 @@ jobs:
           echo "S3_AWS_SECRET_ACCESS_KEY=$S3_AWS_SECRET_ACCESS_KEY" >> .env
           echo "S3_AWS_REGION=$S3_AWS_REGION" >> .env
           echo "S3_AWS_BUCKET_NAME=$S3_AWS_BUCKET_NAME" >> .env
+          echo "MONGO_DB=$MONGO_DB" >> .env
           cat .env
 
           cd ./src/public/js

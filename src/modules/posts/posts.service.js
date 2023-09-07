@@ -26,8 +26,6 @@ const onRequest = async (res, method, pathname, params, key, cb) => {
             responseData = { code: 315 };
           } else {
             result = await imageUpload(img);
-
-            console.log('else문 통과=======');
             await Posts.create({
               title,
               content,
