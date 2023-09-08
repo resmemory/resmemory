@@ -6,7 +6,7 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
   countPosts(currentPage);
-  headerBtns();
+  buttons();
 });
 
 // 게시물 총 개수 파악 후 loadPosts 함수 실행
@@ -93,8 +93,8 @@ const setPageNum = (page) => {
   window.history.pushState({}, '', url);
 };
 
-// 헤더버튼들
-const headerBtns = () => {
+// 버튼들
+const buttons = () => {
   const login = document.querySelector('.login');
   const logout = document.querySelector('.logout');
   const mypage = document.querySelector('.mypage');
