@@ -25,7 +25,9 @@ async function profile() {
   } else {
     const chatHeader = document.querySelector('.chat-header');
     chatHeader.innerHTML = `<span id="nickname">${userNickname}</span>`;
+    const chatbox = document.querySelector('#message-input');
 
+    chatbox.placeholder = '잠시만 기다려 주세요! 채팅창을 불러오고 있습니다!';
     socket.addEventListener('message', async (event) => {
       const data = event.data;
       const dataParse = await JSON.parse(data);
@@ -34,6 +36,7 @@ async function profile() {
 
       // 채팅 데이터를 화면에 추가
       await displayMessage(message, nickname);
+      chatbox.placeholder = '당신이 대화하고 있는 사람은 누군가의 금지옥엽입니다.';
     });
   }
 }
