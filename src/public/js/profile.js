@@ -16,7 +16,7 @@ function modalClose(classname) {
 function headerBtns() {
   const login = document.querySelector('.login');
   const logout = document.querySelector('.logout');
-  if (localStorage.getItem('Authorization')) {
+  if (sessionStorage.getItem('Authorization')) {
     logout.style.display = 'block';
   } else {
     login.style.display = 'block';
@@ -27,14 +27,14 @@ async function logout() {
   const response = await fetch(`./api/logout`, {
     method: 'POST',
     headers: {
-      Authorization: localStorage.getItem('Authorization'),
+      Authorization: sessionStorage.getItem('Authorization'),
     },
   });
   const result = await response.json();
   console.log(result);
   alert(code[result.responseData.code]);
-  localStorage.removeItem('Authorization');
-  localStorage.removeItem('nickname');
+  sessionStorage.removeItem('Authorization');
+  sessionStorage.removeItem('nickname');
   location.reload();
 }
 
@@ -42,7 +42,7 @@ async function bookmarks() {
   const response = await fetch(`./api/bookmarks`, {
     method: 'GET',
     headers: {
-      Authorization: localStorage.getItem('Authorization'),
+      Authorization: sessionStorage.getItem('Authorization'),
     },
   });
   const result = await response.json();
@@ -70,7 +70,7 @@ async function removeBookmark(bookmarkId) {
   const response = await fetch(`./api/bookmarks/${bookmarkId}`, {
     method: 'DELETE',
     headers: {
-      Authorization: localStorage.getItem('Authorization'),
+      Authorization: sessionStorage.getItem('Authorization'),
     },
   });
   const result = await response.json();
@@ -83,7 +83,7 @@ async function editNickname() {
   const response = await fetch(`./api/users/nickname`, {
     method: 'PATCH',
     headers: {
-      Authorization: localStorage.getItem('Authorization'),
+      Authorization: sessionStorage.getItem('Authorization'),
       'Content-Type': 'application/json',
     },
     body: JSON.stringify({ nickname }),
@@ -99,7 +99,7 @@ async function editPassword() {
   const response = await fetch(`./api/users/password`, {
     method: 'PATCH',
     headers: {
-      Authorization: localStorage.getItem('Authorization'),
+      Authorization: sessionStorage.getItem('Authorization'),
       'Content-Type': 'application/json',
     },
     body: JSON.stringify({ password, confirm }),
@@ -114,7 +114,7 @@ async function signout() {
   const response = await fetch(`./api/users`, {
     method: 'DELETE',
     headers: {
-      Authorization: localStorage.getItem('Authorization'),
+      Authorization: sessionStorage.getItem('Authorization'),
       'Content-Type': 'application/json',
     },
     body: JSON.stringify({ message }),
@@ -128,7 +128,7 @@ async function profile() {
   const response = await fetch(`./api/users`, {
     method: 'GET',
     headers: {
-      Authorization: localStorage.getItem('Authorization'),
+      Authorization: sessionStorage.getItem('Authorization'),
     },
   });
   const result = await response.json();

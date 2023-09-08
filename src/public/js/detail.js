@@ -5,7 +5,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
 const urlParams = new URL(location.href).searchParams;
 const postId = urlParams.get('post');
-const userId = localStorage.getItem('Authorization');
+const userId = sessionStorage.getItem('Authorization');
 
 async function loadPostDetail() {
   const response = await fetch(`/api/posts?postId=${postId}`, {
@@ -196,7 +196,7 @@ function modalClose(classname) {
 async function updatePost() {
   const form = document.querySelector('#form');
   const authorization = document.querySelector('.Authorization');
-  authorization.value = localStorage.getItem('Authorization');
+  authorization.value = sessionStorage.getItem('Authorization');
   const formData = new FormData(form);
   const response = await fetch(`./api/posts/${postId}`, {
     method: 'PATCH',

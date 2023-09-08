@@ -21,7 +21,7 @@ async function login() {
   const result = await response.json();
   alert(code[result.responseData.code]);
   if (result.responseData.code == 121 || result.responseData.code == 123) {
-    localStorage.setItem('Authorization', response.headers.get('Authorization'));
+    sessionStorage.setItem('Authorization', response.headers.get('Authorization'));
     window.location.href = './';
   }
 }
