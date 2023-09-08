@@ -26,13 +26,16 @@ async function loadPostDetail() {
   const title = post_result.title;
   const content = post_result.content;
   const annualCategory = post_result.annualCategory;
-  const img = post_result.img;
+  let img = post_result.img;
+  if (!img) {
+    img = '';
+  }
 
   const postBox = document.querySelector('#post-box');
   postBox.innerHTML = '';
 
   const temp_html = `
- 
+
 <div class="post-title">${title}</div>
 <div class="post-info">
 <div class="post-nickname">${nickname}</div>
@@ -51,6 +54,8 @@ async function loadPostDetail() {
 </div>
 
 
+<form action="./api/posts" method="PATCH" enctype="multipart/form-data" onsubmit="return false" id="form">
+<input type="hidden" name="authorization" class="Authorization" />
 <div class="modal" id="edit-post-Modal" style="display: none">
 <div class="modalContent">
   <div class="edit-post-Box">
@@ -58,17 +63,17 @@ async function loadPostDetail() {
     <h2>글 수정하기</h2>
       <label>제목</label>
       <br />
-      <input class="post_title" type="text" value="${title}" />
+      <input name="title" class="post_title" type="text" value="${title}" />
     </div>
     <div>
       <label>내용</label>
       <br />
-      <textarea class="post_content" type="text" >${content}</textarea>
+      <textarea name="content" class="post_content" type="text" >${content}</textarea>
     </div>
     <div>
       <label>연도</label>
       <br />
-      <select class="post_annualCategory">
+      <select name="annualCategory" class="post_annualCategory">
         <option selected>${annualCategory}</option>
         <option>1970</option>
         <option>1980</option>
@@ -79,10 +84,12 @@ async function loadPostDetail() {
       </select>
     </div>
     <div>
-      <label>이미지</label>
+      <label>현재 이미지</label>
       <br />
-      <input class="post_img" type="text" value="${img}" />
-      <input class="post_img" type="file" />
+      <input name="previousImg" class="post_img" type="text" value="${img}" />
+      <label>변경할 이미지</label>
+      <br />
+      <input name="img" class="post_img" type="file" accept="image/*" />
     </div>
     <div class="edit-post-Box-btn">
         <button class="edit-post-btn" onclick="updatePost()">수정</button>
@@ -91,6 +98,7 @@ async function loadPostDetail() {
   </div>
 </div>
 </div>
+</form>
 
 
 <div class="modal" id="report-post-Modal" style="display: none">
@@ -186,25 +194,21 @@ function modalClose(classname) {
 }
 
 async function updatePost() {
-  const title = document.querySelector('.post_title').value;
-  const content = document.querySelector('.post_content').value;
-  const annualCategory = document.querySelector('.post_annualCategory').value;
-  const img = document.querySelector('.post_img').value;
-
-  const response = await fetch(`/api/posts/${postId}`, {
+  const form = document.querySelector('#form');
+  const authorization = document.querySelector('.Authorization');
+  authorization.value = localStorage.getItem('Authorization');
+  const formData = new FormData(form);
+  const response = await fetch(`./api/posts/${postId}`, {
     method: 'PATCH',
-    headers: {
-      'Content-Type': 'application/json',
-      Authorization: userId,
-    },
-    body: JSON.stringify({ title, content, annualCategory, img }),
+    body: formData,
   });
-  const result = await response.json();
-  if (result.responseData.code == 351) {
-    alert(code[result.responseData.code]);
-    return window.location.reload();
+
+  const data = await response.json();
+  alert(code[data.responseData.code]);
+
+  if (data.responseData.code === 351) {
+    location.reload();
   }
-  alert(code[result.responseData.code]);
 }
 
 async function deletePost() {

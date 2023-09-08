@@ -25,9 +25,9 @@ const onRequest = async (res, method, pathname, params, key, cb) => {
             responseData = { code: 314 };
           } else if (!annualCategory) {
             responseData = { code: 315 };
-          } else if (img) {
-            result = await imageUpload(img);
           } else {
+            result = await imageUpload(img);
+
             await Posts.create({
               title,
               content,
@@ -292,8 +292,9 @@ const onRequest = async (res, method, pathname, params, key, cb) => {
       // 게시글 수정
       if (pathname === '/posts') {
         try {
-          const { title, content, annualCategory, img } = params.bodies;
+          const { title, content, annualCategory, previousImg, img } = params.bodies;
           const postId = params.params;
+          let result = null;
 
           if (!params.userId) {
             responseData = { code: 352 };
@@ -303,16 +304,41 @@ const onRequest = async (res, method, pathname, params, key, cb) => {
             responseData = { code: 354 };
           } else if (!annualCategory) {
             responseData = { code: 355 };
-          } else {
-            const findPostData = await Posts.findByPk(postId);
-            if (!findPostData) {
-              responseData = { code: 356 };
-            } else if (params.userId !== findPostData.userId) {
-              responseData = { code: 357 };
-            } else {
-              await Posts.update({ title, content, annualCategory, img }, { where: { postId } });
-              responseData = { code: 351 };
+          }
+          if (!previousImg) {
+            const findPreviousImg = await Posts.findOne({
+              where: { postId },
+              attributes: ['img'],
+              raw: true,
+            });
+
+            if (findPreviousImg.img) {
+              const previousImgKey = findPreviousImg.img.substring(
+                findPreviousImg.img.lastIndexOf('/') + 1,
+              );
+              await imageDelete(previousImgKey);
             }
+          }
+
+          result = await imageUpload(img);
+          if (result && previousImg) {
+            const previousImgKey = previousImg.substring(previousImg.lastIndexOf('/') + 1);
+            await imageDelete(previousImgKey);
+          } else if (!result && previousImg) {
+            result = previousImg;
+          }
+
+          const findPostData = await Posts.findByPk(postId);
+          if (!findPostData) {
+            responseData = { code: 356 };
+          } else if (params.userId !== findPostData.userId) {
+            responseData = { code: 357 };
+          } else {
+            await Posts.update(
+              { title, content, annualCategory, img: result },
+              { where: { postId } },
+            );
+            responseData = { code: 351 };
           }
         } catch (err) {
           responseData = { code: 350 };
@@ -391,14 +417,14 @@ const onRequest = async (res, method, pathname, params, key, cb) => {
           } else {
             const { contentId } = params.bodies;
 
-            const findByImg = await Posts.findOne({
+            const findAnImg = await Posts.findOne({
               where: { postId: contentId },
               attributes: ['img'],
               raw: true,
             });
 
-            if (findByImg.img !== null) {
-              const imgKey = findByImg.img.substring(findByImg.img.lastIndexOf('/') + 1);
+            if (findAnImg.img) {
+              const imgKey = findAnImg.img.substring(findAnImg.img.lastIndexOf('/') + 1);
               await imageDelete(imgKey);
             }
             const result = await Posts.destroy({ where: { postId: contentId }, force: true });

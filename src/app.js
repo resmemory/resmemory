@@ -97,30 +97,71 @@ export const server = http
           onRequest(res, method, path, params);
         });
       } else if (method === 'PATCH') {
-        let body = '';
-        const authorization = req.headers.authorization;
-        const userId = authmiddleware(req, res, authorization);
-
-        let path = pathname.replace('/api', '');
-        params = { userId };
-
-        req.on('data', function (data) {
-          body += data;
-        });
-
-        req.on('end', function () {
-          if (req.headers['content-type'] === 'application/json') {
-            params.bodies = JSON.parse(body);
+        const newPathname = pathname.split('/').slice(0, 3).join('/');
+        if (newPathname === '/api/posts') {
+          let path = pathname.replace('/api', '');
+          const form = formidable({ allowEmptyFiles: true, minFileSize: 0 });
+          let fields;
+          let files;
+          try {
+            [fields, files] = await form.parse(req);
+          } catch (err) {
+            if (err.code === formidableErrors.maxFieldsExceeded) {
+            }
+            console.error(err);
+            res.writeHead(err.httpCode || 400, { 'Content-Type': 'text/plain' });
+            res.end(String(err));
+            return;
+          }
+          if (fields.authorization[0]) {
+            const authorization = fields.authorization[0];
+            const userId = authmiddleware(req, res, authorization);
+            params = { userId };
+          }
+          params.bodies = {};
+          params.bodies.annualCategory = fields.annualCategory[0];
+          params.bodies.title = fields.title[0];
+          params.bodies.content = fields.content[0];
+          if (files.img && files.img[0]) {
+            params.bodies.img = files.img[0];
+          }
+          if (fields.previousImg[0]) {
+            params.bodies.previousImg = fields.previousImg[0];
           }
 
           const pathArray = path.split('/');
-          if (pathArray.length > 2) {
-            path = path.substring(0, path.lastIndexOf('/'));
-            params.params = pathArray.pop();
-          }
 
+          path = path.substring(0, path.lastIndexOf('/'));
+          params.params = pathArray.pop();
           onRequest(res, method, path, params);
-        });
+
+          req.on('end', function () {});
+        } else {
+          let body = '';
+          const authorization = req.headers.authorization;
+          const userId = authmiddleware(req, res, authorization);
+
+          let path = pathname.replace('/api', '');
+          params = { userId };
+
+          req.on('data', function (data) {
+            body += data;
+          });
+
+          req.on('end', function () {
+            if (req.headers['content-type'] === 'application/json') {
+              params.bodies = JSON.parse(body);
+            }
+
+            const pathArray = path.split('/');
+            if (pathArray.length > 2) {
+              path = path.substring(0, path.lastIndexOf('/'));
+              params.params = pathArray.pop();
+            }
+
+            onRequest(res, method, path, params);
+          });
+        }
       } else if (method === 'DELETE') {
         const authorization = req.headers.authorization;
         const userId = authmiddleware(req, res, authorization);

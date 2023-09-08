@@ -15,13 +15,13 @@ async function imageUpload(img) {
   if (img.size == 0) {
     return null;
   } else {
-    const filename = `${Date.now()}_${img.originalFilename}`;
+    const filename = `${Date.now()}_${img.newFilename}`;
     const resizedFilename = `resized+${filename}`;
 
     await sharp(img.filepath)
       .resize({
         width: 600,
-        height: 600,
+        height: 500,
         fit: 'contain',
         background: { r: 255, g: 255, b: 255, alpha: 1 },
       })
@@ -41,13 +41,14 @@ async function imageUpload(img) {
     return result.Location;
   }
 }
+
 async function imageDelete(key) {
   const params = {
     Bucket: process.env.S3_AWS_BUCKET_NAME,
     Key: key,
   };
 
-  await s3.deleteObject(params).promise();
+  return await s3.deleteObject(params).promise();
 }
 
 export { imageUpload, imageDelete };
