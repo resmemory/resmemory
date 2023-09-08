@@ -39,7 +39,7 @@ async function profile() {
 }
 
 // WebSocket 연결
-const socket = new WebSocket(`ws://localhost:3000/?nickname=${userNickname}`); // WebSocket 주소 설정
+const socket = new WebSocket(`ws://3.37.61.137:3000/?nickname=${userNickname}`); // WebSocket 주소 설정
 
 // 웹 소켓 연결 이벤트 핸들러
 socket.addEventListener('open', (event) => {
