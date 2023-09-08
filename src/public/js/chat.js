@@ -24,7 +24,7 @@ async function profile() {
     location.href = './';
   } else {
     const chatHeader = document.querySelector('.chat-header');
-    chatHeader.innerHTML = `<span id="nickname">${userNickname} 님 채팅을 하면서 따뜻한 차를 드세요. 속도를 신경쓰지 않게 됩니다.</span>`;
+    chatHeader.innerHTML = `<span id="nickname">${userNickname} 님의 아름다운 채팅 문화 선도를 믿습니다.</span>`;
 
     socket.addEventListener('message', async (event) => {
       const data = event.data;
