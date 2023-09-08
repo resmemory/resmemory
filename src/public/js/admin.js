@@ -2,7 +2,7 @@ document.addEventListener('DOMContentLoaded', () => {
   getReportList();
 });
 
-const adminId = localStorage.getItem('Authorization');
+const adminId = sessionStorage.getItem('Authorization');
 async function getReportList() {
   const response = await fetch(`/api/reports`, {
     method: 'GET',

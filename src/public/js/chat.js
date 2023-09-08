@@ -11,7 +11,7 @@ async function profile() {
   const response = await fetch(`./api/users`, {
     method: 'GET',
     headers: {
-      Authorization: localStorage.getItem('Authorization'),
+      Authorization: sessionStorage.getItem('Authorization'),
     },
   });
   const result = await response.json();

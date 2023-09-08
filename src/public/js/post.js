@@ -5,7 +5,7 @@ document.addEventListener('DOMContentLoaded', () => {
 const writingPost = async () => {
   const form = document.querySelector('#form');
   const authorization = document.querySelector('.Authorization');
-  authorization.value = localStorage.getItem('Authorization');
+  authorization.value = sessionStorage.getItem('Authorization');
   const formData = new FormData(form);
   const response = await fetch(`./api/posts`, {
     method: 'POST',
@@ -26,7 +26,7 @@ const headerBtns = () => {
   const logout = document.querySelector('.logout');
   const mypage = document.querySelector('.mypage');
 
-  if (localStorage.getItem('Authorization')) {
+  if (sessionStorage.getItem('Authorization')) {
     logout.style.display = 'block';
     mypage.style.display = 'block';
   } else {
@@ -39,13 +39,13 @@ const logout = async () => {
   const response = await fetch(`./api/logout`, {
     method: 'POST',
     headers: {
-      Authorization: localStorage.getItem('Authorization'),
+      Authorization: sessionStorage.getItem('Authorization'),
     },
   });
   const result = await response.json();
 
   alert(code[result.responseData.code]);
-  localStorage.removeItem('Authorization');
+  sessionStorage.removeItem('Authorization');
   location.href = `./`;
 };
 

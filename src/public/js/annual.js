@@ -90,7 +90,7 @@ const headerBtns = () => {
   const mypage = document.querySelector('.mypage');
   const write = document.querySelector('.write');
 
-  if (localStorage.getItem('Authorization')) {
+  if (sessionStorage.getItem('Authorization')) {
     logout.style.display = 'block';
     mypage.style.display = 'block';
     write.style.display = 'block';
@@ -104,13 +104,13 @@ const logout = async () => {
   const response = await fetch(`./api/logout`, {
     method: 'POST',
     headers: {
-      Authorization: localStorage.getItem('Authorization'),
+      Authorization: sessionStorage.getItem('Authorization'),
     },
   });
   const result = await response.json();
 
   alert(code[result.responseData.code]);
-  localStorage.removeItem('Authorization');
+  sessionStorage.removeItem('Authorization');
   location.reload();
 };
 

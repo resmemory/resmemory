@@ -52,7 +52,7 @@ async function removeThread(threadId) {
   const response = await fetch(`./api/threads/${threadId}`, {
     method: 'DELETE',
     headers: {
-      Authorization: localStorage.getItem('Authorization'),
+      Authorization: sessionStorage.getItem('Authorization'),
     },
   });
   const result = await response.json();
@@ -82,7 +82,7 @@ async function report(contentId) {
   const response = await fetch(`./api/reports`, {
     method: 'POST',
     headers: {
-      Authorization: localStorage.getItem('Authorization'),
+      Authorization: sessionStorage.getItem('Authorization'),
       'Content-Type': 'application/json',
     },
     body: JSON.stringify({ content, reportType: 'thread', contentId }),
@@ -97,7 +97,7 @@ async function writeThread() {
   const response = await fetch(`./api/threads`, {
     method: 'POST',
     headers: {
-      Authorization: localStorage.getItem('Authorization'),
+      Authorization: sessionStorage.getItem('Authorization'),
       'Content-Type': 'application/json',
     },
     body: JSON.stringify({ content }),

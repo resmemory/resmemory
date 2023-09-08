@@ -89,7 +89,7 @@ const headerBtns = () => {
   const thread = document.querySelector('.thread_btn');
   const chat = document.querySelector('.chat_btn');
 
-  if (localStorage.getItem('Authorization')) {
+  if (sessionStorage.getItem('Authorization')) {
     logout.style.display = 'block';
     mypage.style.display = 'block';
     write.style.display = 'block';
@@ -105,14 +105,14 @@ const logout = async () => {
   const response = await fetch(`./api/logout`, {
     method: 'POST',
     headers: {
-      Authorization: localStorage.getItem('Authorization'),
+      Authorization: sessionStorage.getItem('Authorization'),
     },
   });
   const result = await response.json();
 
   alert(code[result.responseData.code]);
-  localStorage.removeItem('Authorization');
-  localStorage.removeItem('nickname');
+  sessionStorage.removeItem('Authorization');
+  sessionStorage.removeItem('nickname');
   location.reload();
 };
 
