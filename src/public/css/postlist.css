@@ -38,7 +38,7 @@
   }
 
   .post_pagination {
-    margin-left: 100px;
+    margin-left: 80px;
   }
 
   .postBox > td:nth-child(2) {
@@ -46,7 +46,7 @@
   }
 
   .box_button {
-    margin-right: 100px;
+    margin-right: 80px;
   }
 
   .thread_btn {
@@ -59,6 +59,10 @@ button:hover {
   transform: scale(1.1);
   transition-duration: 0.1s;
   cursor: pointer;
+}
+
+p {
+  font-size: 20px;
 }
 
 /* header */
@@ -113,6 +117,7 @@ th {
   padding: 15px;
   text-align: center;
   background-color: #e4e4e4;
+  font-size: 20px;
 }
 
 tr {
@@ -122,6 +127,7 @@ tr {
 td {
   padding: 10px;
   text-align: center;
+  font-size: 17px;
 }
 
 .postBox:hover {

@@ -35,7 +35,7 @@ async function logout() {
   alert(code[result.responseData.code]);
   sessionStorage.removeItem('Authorization');
   sessionStorage.removeItem('nickname');
-  location.reload();
+  location.href = `./`;
 }
 
 async function bookmarks() {

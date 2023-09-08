@@ -126,7 +126,7 @@ const logout = async () => {
   alert(code[result.responseData.code]);
   sessionStorage.removeItem('Authorization');
   sessionStorage.removeItem('nickname');
-  location.reload();
+  location.href = `./`;
 };
 
 // 연도별 조회로 이동
