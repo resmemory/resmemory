@@ -1,11 +1,16 @@
 document.addEventListener('DOMContentLoaded', () => {
-  countPosts();
+  let currentPage = 1;
+  const url = new URL(window.location.href);
+  if (url.search) {
+    currentPage = url.searchParams.get('page');
+  }
+
+  countPosts(currentPage);
   headerBtns();
 });
 
 // 게시물 총 개수 파악 후 loadPosts 함수 실행
-const countPosts = async () => {
-  let currentPage = 1;
+const countPosts = async (currentPage) => {
   let totalPosts = 0;
 
   const response = await fetch(`./api/posts/list`, {
@@ -70,6 +75,7 @@ const createPaginationButtons = (currentPage, totalPosts) => {
     button.innerText = i;
     button.addEventListener('click', () => {
       currentPage = i;
+      setPageNum(currentPage);
       loadPosts(currentPage);
     });
 
@@ -78,6 +84,13 @@ const createPaginationButtons = (currentPage, totalPosts) => {
     }
     paginationContainer.appendChild(button);
   }
+};
+
+// 페이지 버튼 누를시 현재 페이지 URL에 표기
+const setPageNum = (page) => {
+  const url = new URL(window.location.href);
+  url.searchParams.set('page', page);
+  window.history.pushState({}, '', url);
 };
 
 // 헤더버튼들

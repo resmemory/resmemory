@@ -1,12 +1,18 @@
 document.addEventListener('DOMContentLoaded', () => {
-  countPosts();
+  let currentPage = 1;
+
+  const url = new URL(window.location.href);
+  console.log(url);
+  const category = url.searchParams.get('category');
+  if (url.searchParams.size == 2) {
+    currentPage = url.searchParams.get('page');
+  }
+
+  countPosts(currentPage, category);
   headerBtns();
 });
 
-const countPosts = async () => {
-  const urlParams = new URLSearchParams(window.location.search);
-  const category = urlParams.get('category');
-  let currentPage = 1;
+const countPosts = async (currentPage, category) => {
   let totalPosts = 0;
 
   const response = await fetch(`./api/posts/list?annualCategory=${category}`, {
@@ -73,6 +79,7 @@ const createPaginationButtons = (currentPage, category, totalPosts) => {
     button.innerText = i;
     button.addEventListener('click', () => {
       currentPage = i;
+      setPageNum(currentPage);
       annualPosts(currentPage, category);
     });
 
@@ -81,6 +88,13 @@ const createPaginationButtons = (currentPage, category, totalPosts) => {
     }
     paginationContainer.appendChild(button);
   }
+};
+
+// 페이지 버튼 누를시 현재 페이지 URL에 표기
+const setPageNum = (page) => {
+  const url = new URL(window.location.href);
+  url.searchParams.set('page', page);
+  window.history.pushState({}, '', url);
 };
 
 // 헤더버튼들
