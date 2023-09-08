@@ -9,7 +9,7 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
   countPosts(currentPage, category);
-  headerBtns();
+  buttons();
 });
 
 const countPosts = async (currentPage, category) => {
@@ -97,17 +97,21 @@ const setPageNum = (page) => {
   window.history.pushState({}, '', url);
 };
 
-// 헤더버튼들
-const headerBtns = () => {
+// 버튼들
+const buttons = () => {
   const login = document.querySelector('.login');
   const logout = document.querySelector('.logout');
   const mypage = document.querySelector('.mypage');
   const write = document.querySelector('.write');
+  const thread = document.querySelector('.thread_btn');
+  const chat = document.querySelector('.chat_btn');
 
   if (sessionStorage.getItem('Authorization')) {
     logout.style.display = 'block';
     mypage.style.display = 'block';
     write.style.display = 'block';
+    thread.style.display = 'block';
+    chat.style.display = 'block';
   } else {
     login.style.display = 'block';
   }
