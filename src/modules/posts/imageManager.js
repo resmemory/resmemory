@@ -12,6 +12,7 @@ let s3 = new aws.S3({
 });
 
 async function imageUpload(img) {
+  console.log(img, '=========');
   if (img.size == 0) {
     return null;
   } else {

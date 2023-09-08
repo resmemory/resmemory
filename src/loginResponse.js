@@ -1,5 +1,4 @@
 import frontconnection from './frontconnection';
-
 function loginResponse(res, packet) {
   if (packet.responseData.code == 121) {
     res.setHeader('Authorization', `Bearer ${packet.responseData.token}`);

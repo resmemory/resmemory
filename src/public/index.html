@@ -51,8 +51,14 @@
             <p onclick="annualCategory(1980)">1980</p>
             <p onclick="annualCategory(1970)">1970</p>
           </div>
-          <button class="thread_btn" onclick="location.href = `./threads`">익명 스레드</button>
-          <button class="thread_btn" onclick="location.href = `./chat`">채팅방</button>
+          <div class="chat_thread_btns">
+            <button class="chat_btn" onclick="location.href = `./chat`" style="display: none">
+              채팅
+            </button>
+            <button class="thread_btn" onclick="location.href = `./threads`" style="display: none">
+              익명
+            </button>
+          </div>
         </div>
       </div>
     </main>

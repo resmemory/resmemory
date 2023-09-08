@@ -1,8 +1,7 @@
 document.addEventListener('DOMContentLoaded', () => {
   oauth();
 });
-const urlParams = new URL(location.href).searchParams;
-const code = urlParams.get('code');
+
 async function oauth() {
   const baseUrl = 'https://kauth.kakao.com/oauth/token';
 
@@ -47,5 +46,11 @@ async function oauth() {
   if (result.responseData.code == 121 || result.responseData.code == 123) {
     localStorage.setItem('Authorization', response.headers.get('Authorization'));
     localStorage.setItem('nickname', result.responseData.nickname);
+    alert(
+      '로그인을 환영합니다! 최초로 카카오 로그인을 진행할 경우 랜덤 닉네임이 부여됩니다! 닉네임은 로그인 이후 마이페이지에서 수정할 수 있습니다.',
+    );
+  } else {
+    alert(code[result.responseData.code]);
   }
+  location.href = '../';
 }

@@ -63,6 +63,7 @@ jobs:
           S3_AWS_SECRET_ACCESS_KEY: ${{secrets.S3_AWS_SECRET_ACCESS_KEY}}
           S3_AWS_REGION: ${{secrets.S3_AWS_REGION}}
           S3_AWS_BUCKET_NAME: ${{secrets.S3_AWS_BUCKET_NAME}}
+          MONGO_DB: ${{secrets.MONGO_DB}}
         run: |
           pwd
           touch .env
@@ -100,18 +101,22 @@ jobs:
           echo "S3_AWS_SECRET_ACCESS_KEY=$S3_AWS_SECRET_ACCESS_KEY" >> .env
           echo "S3_AWS_REGION=$S3_AWS_REGION" >> .env
           echo "S3_AWS_BUCKET_NAME=$S3_AWS_BUCKET_NAME" >> .env
+          echo "MONGO_DB=$MONGO_DB" >> .env
           cat .env
 
           cd ./src/public/js
           touch config.js
+          echo "const urlParams = new URL(location.href).searchParams;" >> config.js
+          echo "const kCode = urlParams.get('code');" >> config.js
           echo "const config = {" >> config.js
           echo "client_id: '$client_id' ," >> config.js
           echo "client_secret: '$client_secret' , " >> config.js
           echo "grant_type: 'authorization_code' ," >> config.js
           echo "redirect_uri: '$redirect_uri' ," >> config.js
-          echo "code," >> config.js
+          echo "code: kCode," >> config.js
           echo "};" >> config.js
           echo "const kakaoJSkey = '$kakaoJSkey' ;" >> config.js
+
           cat config.js
 
       - name: ✨ 패키지 설치

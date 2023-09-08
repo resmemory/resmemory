@@ -21,6 +21,7 @@
     "start:posts_build": "node dist/modules/posts/posts.module.js",
     "start:admin_build": "node dist/modules/admin/admin.module.js",
     "start:threads_build": "node dist/modules/threads/threads.module.js",
+    "start:chat_build": "node dist/modules/chat/chat.module.js",
     "start": "concurrently \"npm run start:gate\" \"npm run start:dis\" \"npm run start:users\" \"npm run start:posts\"  \"npm run start:admin\"  \"npm run start:threads\"  \"npm run start:chat\"",
     "build": " babel src --out-dir dist --copy-files "
   },
