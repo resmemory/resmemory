@@ -24,10 +24,8 @@ async function profile() {
     location.href = './';
   } else {
     const chatHeader = document.querySelector('.chat-header');
-    chatHeader.innerHTML = `<span id="nickname">${userNickname}</span>`;
-    const chatbox = document.querySelector('#message-input');
+    chatHeader.innerHTML = `<span id="nickname">${userNickname} 님 채팅을 하면서 따뜻한 차를 드세요. 속도를 신경쓰지 않게 됩니다.</span>`;
 
-    chatbox.placeholder = '잠시만 기다려 주세요! 채팅창을 불러오고 있습니다!';
     socket.addEventListener('message', async (event) => {
       const data = event.data;
       const dataParse = await JSON.parse(data);
@@ -36,13 +34,12 @@ async function profile() {
 
       // 채팅 데이터를 화면에 추가
       await displayMessage(message, nickname);
-      chatbox.placeholder = '당신이 대화하고 있는 사람은 누군가의 금지옥엽입니다.';
     });
   }
 }
 
 // WebSocket 연결
-const socket = new WebSocket(`ws://43.201.26.213:3000/?nickname=${userNickname}`); // WebSocket 주소 설정
+const socket = new WebSocket(`ws://localhost:3000/?nickname=${userNickname}`); // WebSocket 주소 설정
 
 // 웹 소켓 연결 이벤트 핸들러
 socket.addEventListener('open', (event) => {

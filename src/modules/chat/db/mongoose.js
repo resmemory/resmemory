@@ -95,7 +95,7 @@ async function getTimes(nickname) {
     });
 
     // ChatMessage 데이터 가져오기
-    const beforeMessages = [];
+    let beforeMessages = [];
     for (const { openTimestamp, closeTimestamp } of result) {
       const messages = await ChatMessage.find({
         timestamp: {
@@ -113,6 +113,10 @@ async function getTimes(nickname) {
         });
       });
     }
+
+    beforeMessages = beforeMessages.reverse().splice(0, 9);
+    beforeMessages = beforeMessages.reverse();
+
     // beforeMessages 배열을 반환
     return beforeMessages;
   } catch (err) {
