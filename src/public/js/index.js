@@ -86,11 +86,15 @@ const headerBtns = () => {
   const logout = document.querySelector('.logout');
   const mypage = document.querySelector('.mypage');
   const write = document.querySelector('.write');
+  const thread = document.querySelector('.thread_btn');
+  const chat = document.querySelector('.chat_btn');
 
   if (localStorage.getItem('Authorization')) {
     logout.style.display = 'block';
     mypage.style.display = 'block';
     write.style.display = 'block';
+    thread.style.display = 'block';
+    chat.style.display = 'block';
   } else {
     login.style.display = 'block';
   }
