@@ -22,7 +22,6 @@ async function login() {
   alert(code[result.responseData.code]);
   if (result.responseData.code == 121 || result.responseData.code == 123) {
     localStorage.setItem('Authorization', response.headers.get('Authorization'));
-    localStorage.setItem('nickname', result.responseData.nickname);
     window.location.href = './';
   }
 }

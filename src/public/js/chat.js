@@ -1,11 +1,42 @@
 document.addEventListener('DOMContentLoaded', () => {
-  const chatHeader = document.querySelector('.chat-header');
-  chatHeader.innerHTML = `<span id="nickname">${userNickname}</span>`;
+  profile();
 });
-const userNickname = localStorage.getItem('nickname');
+
+let userNickname;
 const chatMessages = document.getElementById('chat-messages');
 const messageInput = document.getElementById('message-input');
 const sendButton = document.getElementById('send-button');
+
+async function profile() {
+  const response = await fetch(`./api/users`, {
+    method: 'GET',
+    headers: {
+      Authorization: localStorage.getItem('Authorization'),
+    },
+  });
+  const result = await response.json();
+  console.log(result);
+
+  userNickname = result.responseData.bodies.nickname;
+
+  if (!userNickname) {
+    alert('로그인 이후 이용할 수 있습니다.');
+    location.href = './';
+  } else {
+    const chatHeader = document.querySelector('.chat-header');
+    chatHeader.innerHTML = `<span id="nickname">${userNickname}</span>`;
+
+    socket.addEventListener('message', async (event) => {
+      const data = event.data;
+      const dataParse = await JSON.parse(data);
+      const message = dataParse.message;
+      const nickname = dataParse.nickname;
+
+      // 채팅 데이터를 화면에 추가
+      await displayMessage(message, nickname);
+    });
+  }
+}
 
 // WebSocket 연결
 const socket = new WebSocket(`ws://43.201.26.213:3000/?nickname=${userNickname}`); // WebSocket 주소 설정
@@ -48,16 +79,6 @@ messageInput.addEventListener('keyup', (event) => {
     event.preventDefault();
     sendButton.click();
   }
-});
-
-socket.addEventListener('message', async (event) => {
-  const data = event.data;
-  const dataParse = await JSON.parse(data);
-  const message = dataParse.message;
-  const nickname = dataParse.nickname;
-
-  // 채팅 데이터를 화면에 추가
-  await displayMessage(message, nickname);
 });
 
 // 채팅 메시지 화면에 표시
