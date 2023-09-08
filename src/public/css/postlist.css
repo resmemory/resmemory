@@ -174,12 +174,28 @@ td {
 .thread_btn {
   border: none;
   border-radius: 5px;
-  font-size: 28px;
-  margin-top: 50px;
+  font-size: 25px;
+  margin: 50px 5px 0px 5px;
   position: relative;
-  background-color: black;
+  background-color: rgb(160, 111, 39);
   color: white;
-  padding: 30px 30px;
+  padding: 28px 28px;
+}
+
+.chat_btn {
+  border: none;
+  border-radius: 5px;
+  font-size: 25px;
+  margin: 50px 5px 0px 5px;
+  position: relative;
+  background-color: rgb(72, 53, 19);
+  color: white;
+  padding: 28px 28px;
+}
+
+.chat_thread_btns {
+  display: flex;
+  flex-direction: row;
 }
 
 /* footer */
