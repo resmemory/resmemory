@@ -1,6 +1,5 @@
 import sequelize from '../../modules/posts/db/posts.init';
 import postsmodule from '../../modules/posts/posts.module';
-import MockUsersModule from './mock.users.module';
 
 beforeAll(async () => {
   if (process.env.NODE_ENV === 'test') {

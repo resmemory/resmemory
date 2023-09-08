@@ -1,11 +1,13 @@
 import sequelize from '../../modules/threads/db/threads.init';
 import threadsmodule from '../../modules/threads/threads.module';
+import Threads from '../../modules/threads/db/threads.db';
 beforeAll(async () => {
   if (process.env.NODE_ENV === 'test') {
     await sequelize.sync();
   } else {
     throw new Error('NODE_ENV가 test 환경으로 설정되어 있지 않습니다.');
   }
+  Threads.create({ content: '테스트', userId: 1 });
 });
 
 describe('POST /api/threads', () => {
@@ -51,7 +53,7 @@ describe('GET /api/threads', () => {
         },
         null,
         null,
-        { result },
+        null,
         1,
         'GET',
         '/threads',
@@ -65,10 +67,16 @@ describe('GET /api/threads', () => {
       responseData: {
         result: [
           {
+            content: '테스트',
+            createdAt: expect.any(String),
+            deletedAt: null,
+            threadId: 1,
+          },
+          {
             content: 'New thread',
             createdAt: expect.any(String),
             deletedAt: null,
-            threadId: expect.any(Number),
+            threadId: 2,
           },
         ],
       },
@@ -88,8 +96,8 @@ describe('DELETE /api/threads', () => {
           resolve();
         },
         null,
+        1,
         null,
-        { result },
         1,
         'DELETE',
         '/threads',
@@ -101,38 +109,7 @@ describe('DELETE /api/threads', () => {
       errormessage: 'success',
       key: 0,
       responseData: {
-        result: expect.any(Number),
-      },
-    });
-  });
-});
-
-describe('DELETE /api/admin', () => {
-  test('/threads', async () => {
-    let result;
-    await new Promise((resolve, reject) => {
-      threadsmodule.dataconnection(
-        process.env.HOST,
-        process.env.THREADS_PORT,
-        (data) => {
-          result = data;
-          resolve();
-        },
-        null,
-        null,
-        { result },
-        1,
-        'DELETE',
-        '/threads',
-      );
-    });
-
-    expect(result).toEqual({
-      errorCode: 0,
-      errormessage: 'success',
-      key: 0,
-      responseData: {
-        code: 371,
+        code: 731,
       },
     });
   });
