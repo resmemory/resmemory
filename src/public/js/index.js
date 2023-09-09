@@ -1,16 +1,27 @@
 document.addEventListener('DOMContentLoaded', () => {
   let currentPage = 1;
+  let viewCountMode = sessionStorage.getItem('viewCountMode') === 'true' || false;
+  let viewCountPage = 1;
+
   const url = new URL(window.location.href);
   if (url.search) {
     currentPage = url.searchParams.get('page');
+    viewCountPage = url.searchParams.get('viewCountPage');
   }
 
-  countPosts(currentPage);
+  countPosts().then(() => {
+    if (viewCountMode) {
+      loadPostsByViewCountOrder(viewCountPage);
+    } else {
+      loadPosts(currentPage);
+    }
+  });
+
   buttons();
 });
 
-// 게시물 총 개수 파악 후 loadPosts 함수 실행
-const countPosts = async (currentPage) => {
+// 게시물 총 개수 파악
+const countPosts = async () => {
   let totalPosts = 0;
 
   const response = await fetch(`./api/posts/list`, {
@@ -30,11 +41,23 @@ const countPosts = async (currentPage) => {
     totalPosts = 100;
   }
 
-  loadPosts(currentPage, totalPosts);
+  return totalPosts;
 };
 
-// 게시글 목록 생성 함수
-const loadPosts = async (page, totalPosts) => {
+// 게시글 목록 - 최신순 정렬
+const loadPosts = async (page) => {
+  sessionStorage.removeItem('viewCountMode');
+  if (!page) {
+    page = 1;
+  }
+  totalPosts = await countPosts();
+
+  const paginationViewCount = document.querySelector('.pagination_viewcount');
+  if (paginationViewCount.childElementCount !== 0) {
+    paginationViewCount.innerHTML = '';
+  }
+
+  sessionStorage.removeItem('viewCountMode');
   const response = await fetch(`./api/posts?pageNum=${page}`, {
     method: 'GET',
     headers: {
@@ -65,9 +88,54 @@ const loadPosts = async (page, totalPosts) => {
   createPaginationButtons(page, totalPosts);
 };
 
+// 게시글 목록 - 조회순 정렬
+const loadPostsByViewCountOrder = async (page) => {
+  if (!page) {
+    page = 1;
+  }
+  totalPosts = await countPosts();
+
+  const paginationCreatedat = document.querySelector('.pagination_createdat');
+  if (paginationCreatedat.childElementCount !== 0) {
+    paginationCreatedat.innerHTML = '';
+  }
+
+  const response = await fetch(`./api/posts/view?pageNum=${page}`, {
+    method: 'GET',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+  });
+
+  const data = await response.json();
+  if (data.responseData.code) {
+    alert(code[data.responseData.code]);
+  }
+
+  const postlist = document.querySelector('.postlist');
+  const postsData = data.responseData
+    .map(
+      (post) =>
+        `<tr class="postBox">
+        <td>${post.annualCategory}</td>
+        <td class="post_title" onclick="clickPost(${post.postId})">${post.title}</td>
+        <td>${post.nickname}</td>
+        <td>${new Date(post.createdAt).toLocaleDateString('ko-KR', { timeZone: 'Asia/Seoul' })}</td>
+        <td>${post.viewCount}</td>
+        </tr>`,
+    )
+    .join('');
+  postlist.innerHTML = postsData;
+
+  createPaginationButtonsByViewCount(page, totalPosts);
+  viewCountMode = true;
+  sessionStorage.setItem('viewCountMode', viewCountMode);
+};
+
 // 페이지네이션 버튼 생성 함수
 const createPaginationButtons = (currentPage, totalPosts) => {
-  const paginationContainer = document.querySelector('.pagination');
+  const paginationCreatedat = document.querySelector('.pagination_createdat');
+  paginationCreatedat.innerHTML = '';
   const totalPages = Math.ceil(totalPosts / 10);
 
   for (let i = 1; i <= totalPages; i++) {
@@ -82,7 +150,27 @@ const createPaginationButtons = (currentPage, totalPosts) => {
     if (i === currentPage) {
       button.classList.add('active');
     }
-    paginationContainer.appendChild(button);
+    paginationCreatedat.appendChild(button);
+  }
+};
+
+const createPaginationButtonsByViewCount = (currentPage, totalPosts) => {
+  const paginationViewCount = document.querySelector('.pagination_viewcount');
+  paginationViewCount.innerHTML = '';
+  const totalPages = Math.ceil(totalPosts / 10);
+  for (let i = 1; i <= totalPages; i++) {
+    const button = document.createElement('button');
+    button.innerText = i;
+    button.addEventListener('click', () => {
+      currentPage = i;
+      setViewCountPageNum(currentPage);
+      loadPostsByViewCountOrder(currentPage);
+    });
+
+    if (i === currentPage) {
+      button.classList.add('active');
+    }
+    paginationViewCount.appendChild(button);
   }
 };
 
@@ -90,6 +178,12 @@ const createPaginationButtons = (currentPage, totalPosts) => {
 const setPageNum = (page) => {
   const url = new URL(window.location.href);
   url.searchParams.set('page', page);
+  window.history.pushState({}, '', url);
+};
+
+const setViewCountPageNum = (page) => {
+  const url = new URL(window.location.href);
+  url.searchParams.set('viewCountPage', page);
   window.history.pushState({}, '', url);
 };
 
@@ -142,4 +236,10 @@ const clickPost = (postId) => {
 // 글 작성 페이지로 이동
 const writingPost = () => {
   location.href = `./post`;
+};
+
+// 로고 클릭시
+const clickLoge = () => {
+  sessionStorage.removeItem('viewCountMode');
+  location.href = `./`;
 };

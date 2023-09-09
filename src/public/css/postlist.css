@@ -82,6 +82,25 @@ header {
   margin-top: 50px;
 }
 
+.order_posts {
+  display: flex;
+  align-items: center;
+  margin: 40px 0px 0px 100px;
+  gap: 30px;
+  cursor: pointer;
+}
+
+.order_posts > p {
+  font-size: 18px;
+  cursor: pointer;
+}
+
+.order_posts > p:hover {
+  text-decoration: underline;
+  transform: scale(1.2);
+  transition-duration: 0.1s;
+}
+
 /* main */
 
 /* 게시글(페이지버튼) + 연도별 카테고리 나란히 정렬 */
@@ -93,11 +112,13 @@ header {
 }
 
 /* 페이지네이션 버튼 */
-.pagination {
+.pagination_createdat,
+.pagination_viewcount {
   text-align: center;
 }
 
-.pagination > button {
+.pagination_createdat > button,
+.pagination_viewcount > button {
   margin: 20px 20px 0px 0px;
   background-color: black;
   color: white;
@@ -148,6 +169,10 @@ td {
   text-align: left;
 }
 
+.postBox > td:nth-child(4) {
+  width: 90px;
+}
+
 /* 연도별 카테고리 + 익명 스레드 버튼 */
 .box_button {
   display: flex;
@@ -162,6 +187,10 @@ td {
   box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.3);
   border-radius: 16px;
   padding: 30px 50px 30px 50px;
+}
+
+.annual_category_box > span {
+  font-size: 23px;
 }
 
 .annual_category_box > p {

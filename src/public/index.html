@@ -11,7 +11,7 @@
   </head>
   <body>
     <header>
-      <img class="logo" src="./assets/image/logo.png" onclick="location.href = `./`" />
+      <img class="logo" src="./assets/image/logo.png" onclick="clickLoge()" />
       <div class="headerBtns">
         <button class="logout" style="display: none" onclick="logout()">로그아웃</button>
         <button class="mypage" style="display: none" onclick="location.href=`./profile`">
@@ -22,6 +22,10 @@
         </button>
       </div>
       <button class="write" style="display: none" onclick="writingPost()">글 작성하기</button>
+      <div class="order_posts">
+        <p onclick="loadPosts()">최신순</p>
+        <p onclick="loadPostsByViewCountOrder()">조회순</p>
+      </div>
     </header>
 
     <main>
@@ -39,7 +43,8 @@
             </thead>
             <tbody class="postlist"></tbody>
           </table>
-          <div class="pagination"></div>
+          <div class="pagination_createdat"></div>
+          <div class="pagination_viewcount"></div>
         </div>
         <div class="box_button">
           <div class="annual_category_box">

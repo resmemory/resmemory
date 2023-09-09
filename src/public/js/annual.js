@@ -2,7 +2,6 @@ document.addEventListener('DOMContentLoaded', () => {
   let currentPage = 1;
 
   const url = new URL(window.location.href);
-  console.log(url);
   const category = url.searchParams.get('category');
   if (url.searchParams.size == 2) {
     currentPage = url.searchParams.get('page');
