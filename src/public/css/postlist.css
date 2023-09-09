@@ -13,32 +13,30 @@
   font-weight: 900px;
 }
 
-@media screen and (min-width: 769px) and (max-width: 1024px) {
+/* 태블릿 크기 */
+@media screen and (min-width: 769px) {
+  header {
+    padding-left: 3rem;
+    padding-right: 3rem;
+  }
+
   .container {
-    flex-direction: column;
+    display: flex;
+    padding-left: 3rem;
+    padding-right: 3rem;
   }
 
-  .post_pagination {
-    margin: 0px 100px 0px 100px;
-  }
-
-  .postBox > td:nth-child(2) {
-    width: 50%;
-  }
-
-  .annual_category_box {
-    margin-top: 50px;
+  .chatbox {
+    bottom: 3rem !important;
+    right: 3rem !important;
   }
 }
 
+/* PC 크기 */
 @media screen and (min-width: 1025px) {
   .container {
     flex-direction: row;
     justify-content: space-between;
-  }
-
-  .post_pagination {
-    margin-left: 100px;
   }
 
   .postBox > td:nth-child(2) {
@@ -62,29 +60,84 @@ button:hover {
 }
 
 /* header */
+body {
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+}
+
+article {
+  padding-left: 1rem;
+  padding-right: 1rem;
+  display: flex;
+  flex-direction: column;
+  flex-grow: 1;
+  max-width: 1024px;
+  position: relative;
+}
+
 header {
-  margin-top: 40px;
-  height: 120px;
+  display: flex;
+  justify-content: space-between;
+  padding-top: 1rem;
+  height: 245px;
+}
+
+.logoCon {
+  display: flex;
 }
 
 .logo {
-  height: 210px;
-  float: right;
+  object-fit: contain;
+  height: 120px;
+  width: 120px;
   cursor: pointer;
-  margin-right: 90px;
 }
 
-.write {
-  margin-top: 50px;
+.navControl {
+  padding-top: 1rem;
+  padding-bottom: 1rem;
+  display: flex;
+  flex-direction: column;
+}
+
+.navCon {
+  display: flex;
+  font-size: large;
+  font-weight: 700;
+  gap: 1rem;
+  flex-grow: 1;
+  align-items: end;
+}
+
+.logo:hover,
+button:hover,
+.navCon li:hover {
+  transform: scale(1.1);
+  transition-duration: 0.1s;
+  cursor: pointer;
+}
+
+.headerBtns {
+  display: flex;
+  flex-direction: row;
+}
+
+header button {
+  border: none;
+  border-radius: 5px;
+  background-color: black;
+  color: white;
+  padding: 10px 10px;
+  cursor: pointer;
+  font-size: 18px;
+  margin: 5px 5px;
 }
 
 /* main */
 
 /* 게시글(페이지버튼) + 연도별 카테고리 나란히 정렬 */
 .container {
-  margin-left: auto;
-  margin-right: auto;
-  width: 100%;
   display: flex;
 }
 
@@ -150,57 +203,36 @@ td {
   align-items: center;
 }
 
-/* 연도별 카테고리 */
-.annual_category_box {
-  border: 1px solid #ebeaec;
-  box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.3);
-  border-radius: 16px;
-  padding: 30px 50px 30px 50px;
-}
-
-.annual_category_box > p {
-  text-align: center;
-  margin: 30px;
-  cursor: pointer;
-}
-
-.annual_category_box > p:hover {
-  text-decoration: underline;
-  transform: scale(1.2);
-  transition-duration: 0.1s;
-}
-
 /* 익명 스레드 버튼 */
 .thread_btn {
-  border: none;
-  border-radius: 5px;
-  font-size: 25px;
-  margin: 50px 5px 0px 5px;
-  position: relative;
   background-color: rgb(160, 111, 39);
-  color: white;
-  padding: 28px 28px;
 }
 
 .chat_btn {
-  border: none;
-  border-radius: 5px;
-  font-size: 25px;
-  margin: 50px 5px 0px 5px;
-  position: relative;
   background-color: rgb(72, 53, 19);
-  color: white;
-  padding: 28px 28px;
-}
-
-.chat_thread_btns {
-  display: flex;
-  flex-direction: row;
 }
 
 /* footer */
 footer {
-  margin-top: 200px;
+  padding-top: 200px;
+  padding-bottom: 100px;
   text-align: center;
   font-family: Arial, Helvetica, sans-serif;
+}
+.chatbox {
+  display: flex;
+  flex-direction: row;
+  position: fixed;
+  bottom: 1rem;
+  right: 1rem;
+}
+
+.chatbox button {
+  border: none;
+  border-radius: 5px;
+  color: white;
+  padding: 15px 15px;
+  cursor: pointer;
+  font-size: 25px;
+  margin: 5px 5px;
 }
