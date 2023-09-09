@@ -34,7 +34,6 @@ async function logout() {
   console.log(result);
   alert(code[result.responseData.code]);
   sessionStorage.removeItem('Authorization');
-  sessionStorage.removeItem('nickname');
   location.reload();
 }
 
@@ -121,7 +120,10 @@ async function signout() {
   });
   const result = await response.json();
   alert(code[result.responseData.code]);
-  location.href = './';
+  if (result.responseData.code == 141) {
+    sessionStorage.removeItem('Authorization');
+    location.href = './';
+  }
 }
 
 async function profile() {
