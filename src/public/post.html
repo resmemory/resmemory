@@ -35,7 +35,7 @@
         <div class="container">
           <div>
             <label>카테고리</label>
-            <select name="annualCategory">
+            <select name="annualCategory" class="annual_category">
               <option selected></option>
               <option>1970</option>
               <option>1980</option>
@@ -46,9 +46,14 @@
             </select>
           </div>
           <div class="write_box">
-            <input name="title" type="text" placeholder="제목을 입력해주세요." />
+            <input name="title" class="post_title" type="text" placeholder="제목을 입력해주세요." />
             <input name="img" type="file" />
-            <textarea name="content" type="text" placeholder="내용을 입력해주세요."></textarea>
+            <textarea
+              name="content"
+              class="post_content"
+              type="text"
+              placeholder="내용을 입력해주세요."
+            ></textarea>
           </div>
           <div class="post_buttons">
             <button onclick="writingPost()">게시글 작성</button>

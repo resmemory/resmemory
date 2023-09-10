@@ -13,34 +13,7 @@
   font-weight: 900px;
 }
 
-@media screen and (min-width: 769px) and (max-width: 1024px) {
-  .container {
-    width: 90%;
-  }
-
-  .post_buttons {
-    gap: 80%;
-  }
-}
-
-@media screen and (min-width: 1025px) {
-  .container {
-    width: 870px;
-  }
-
-  .post_buttons {
-    gap: 710px;
-  }
-}
-
 /* 모든 버튼 */
-button {
-  background-color: black;
-  color: white;
-  padding: 5px 10px;
-  cursor: pointer;
-}
-
 button:hover {
   transform: scale(1.1);
   transition-duration: 0.1s;
@@ -53,7 +26,7 @@ header {
 }
 
 .logo {
-  height: 100px;
+  height: 130px;
   float: right;
   cursor: pointer;
   margin-right: 30px;
@@ -74,9 +47,10 @@ main {
   border-radius: 2px;
   text-align: left;
   border-color: #efefef;
+  width: 90%;
 }
 
-.annualcategory {
+.annual_category {
   font-size: 16px;
   cursor: pointer;
   padding: 5px;
@@ -102,10 +76,6 @@ main {
   font-size: 20px;
 }
 
-.post_img::placeholder {
-  font-size: 20px;
-}
-
 .post_content {
   height: 300px;
   font-size: 20px;
@@ -117,6 +87,17 @@ main {
 
 .post_buttons {
   display: flex;
+  justify-content: space-between;
+}
+
+.post_buttons > button {
+  border: none;
+  border-radius: 5px;
+  background-color: black;
+  color: white;
+  padding: 15px;
+  cursor: pointer;
+  font-size: 18px;
 }
 
 /* footer */

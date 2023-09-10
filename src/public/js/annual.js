@@ -2,7 +2,6 @@ document.addEventListener('DOMContentLoaded', () => {
   let currentPage = 1;
 
   const url = new URL(window.location.href);
-  console.log(url);
   const category = url.searchParams.get('category');
   if (url.searchParams.size == 2) {
     currentPage = url.searchParams.get('page');
@@ -129,7 +128,8 @@ const logout = async () => {
 
   alert(code[result.responseData.code]);
   sessionStorage.removeItem('Authorization');
-  location.reload();
+  sessionStorage.removeItem('nickname');
+  location.href = `./`;
 };
 
 // 다른 연도별 조회로 이동
