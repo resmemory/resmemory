@@ -49,8 +49,10 @@ async function bookmarks() {
   const bookmarks = result.responseData.bodies
     .map((bookmark) => {
       return `
-      <div class = "bookmarkInnerBox" onclick = "location.href='./detail?post=${bookmark.postId}'">
-      <h1 class = "title">${bookmark.title}</h1> 
+      <div class = "bookmarkInnerBox" >
+      <h1 class = "title" onclick = "location.href='./detail?post=${bookmark.postId}'">${
+        bookmark.title
+      }</h1> 
       <p>${bookmark.annualCategory} | ${new Date(bookmark.createdAt).toLocaleDateString('ko-KR', {
         timeZone: 'Asia/Seoul',
       })} | ${bookmark.nickname}</p>
