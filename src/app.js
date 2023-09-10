@@ -208,7 +208,6 @@ export const server = http
         }
       }
     } catch (error) {
-      console.log('---------------', error);
       res
         .writeHead(200, { 'Content-Type': 'application/json' })
         .end(JSON.stringify({ responseData: { code: 100 } }));

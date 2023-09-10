@@ -31,7 +31,7 @@ async function logout() {
     },
   });
   const result = await response.json();
-  console.log(result);
+
   alert(code[result.responseData.code]);
   sessionStorage.removeItem('Authorization');
   location.href = './';
@@ -45,7 +45,7 @@ async function bookmarks() {
     },
   });
   const result = await response.json();
-  console.log(result);
+
   const bookmarks = result.responseData.bodies
     .map((bookmark) => {
       return `
@@ -134,7 +134,7 @@ async function profile() {
     },
   });
   const result = await response.json();
-  console.log(result);
+
   if (result.responseData.bodies.userId == 1) {
     const adminBtn = document.querySelector('.admin');
     adminBtn.style.display = 'block';

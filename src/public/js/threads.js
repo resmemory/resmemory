@@ -56,7 +56,7 @@ async function removeThread(threadId) {
     },
   });
   const result = await response.json();
-  console.log(result);
+
   if (result.responseData.code == 731) {
     alert(code[result.responseData.code]);
     location.reload();
