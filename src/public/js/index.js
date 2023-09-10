@@ -113,23 +113,34 @@ const loadPostsByViewCountOrder = async (page) => {
   }
 
   const postlist = document.querySelector('.postlist');
-  const postsData = data.responseData
-    .map(
-      (post) =>
-        `<tr class="postBox">
+  if (totalPosts == 0) {
+    const tempHtml = `<tr class="postBox">
+      <td></td>
+      <td ></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      </tr>`;
+    postlist.innerHTML = tempHtml;
+  } else {
+    const postsData = data.responseData
+      .map(
+        (post) =>
+          `<tr class="postBox">
         <td>${post.annualCategory}</td>
         <td class="post_title" onclick="clickPost(${post.postId})">${post.title}</td>
         <td>${post.nickname}</td>
         <td>${new Date(post.createdAt).toLocaleDateString('ko-KR', { timeZone: 'Asia/Seoul' })}</td>
         <td>${post.viewCount}</td>
         </tr>`,
-    )
-    .join('');
-  postlist.innerHTML = postsData;
+      )
+      .join('');
+    postlist.innerHTML = postsData;
 
-  createPaginationButtonsByViewCount(page, totalPosts);
-  viewCountMode = true;
-  sessionStorage.setItem('viewCountMode', viewCountMode);
+    createPaginationButtonsByViewCount(page, totalPosts);
+    viewCountMode = true;
+    sessionStorage.setItem('viewCountMode', viewCountMode);
+  }
 };
 
 // 페이지네이션 버튼 생성 함수
