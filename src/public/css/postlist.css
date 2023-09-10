@@ -30,6 +30,9 @@
     bottom: 3rem !important;
     right: 3rem !important;
   }
+  .postBox > td:nth-child(2) {
+    width: 400px;
+  }
 }
 
 /* PC 크기 */
@@ -59,7 +62,6 @@ button:hover {
   cursor: pointer;
 }
 
-/* header */
 body {
   display: flex;
   align-items: center;
@@ -110,6 +112,10 @@ header {
   align-items: end;
 }
 
+.navCon li {
+  text-shadow: 1.5px 1.5px rgb(195, 195, 195);
+}
+
 .logo:hover,
 button:hover,
 .navCon li:hover {
@@ -124,6 +130,7 @@ button:hover,
 }
 
 header button {
+  box-shadow: 2px 2px rgb(195, 195, 195);
   border: none;
   border-radius: 5px;
   background-color: black;
@@ -147,6 +154,7 @@ header button {
 }
 
 .pagination > button {
+  box-shadow: 2px 2px rgb(195, 195, 195);
   margin: 20px 20px 0px 0px;
   background-color: black;
   color: white;
@@ -163,9 +171,9 @@ table {
 }
 
 th {
-  padding: 15px;
+  padding: 5px;
   text-align: center;
-  background-color: #e4e4e4;
+  background-color: #0000007b;
 }
 
 tr {
@@ -205,11 +213,13 @@ td {
 
 /* 익명 스레드 버튼 */
 .thread_btn {
-  background-color: rgb(160, 111, 39);
+  background-color: rgb(160, 99, 39);
+  box-shadow: 2px 2px rgba(252, 177, 85, 0.503);
 }
 
 .chat_btn {
   background-color: rgb(72, 53, 19);
+  box-shadow: 2px 2px rgba(43, 11, 0, 0.344);
 }
 
 /* footer */
@@ -217,7 +227,7 @@ footer {
   padding-top: 200px;
   padding-bottom: 100px;
   text-align: center;
-  font-family: Arial, Helvetica, sans-serif;
+  font-family: 'GangwonEdu_OTFBoldA';
 }
 .chatbox {
   display: flex;
@@ -231,8 +241,8 @@ footer {
   border: none;
   border-radius: 5px;
   color: white;
-  padding: 15px 15px;
+  padding: 15px 20px;
   cursor: pointer;
-  font-size: 25px;
+  font-size: 20px;
   margin: 5px 5px;
 }
