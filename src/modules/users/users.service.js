@@ -309,24 +309,25 @@ const onRequest = async (res, method, pathname, params, key, cb) => {
           const { userId } = params;
           if (!userId) {
             responseData = { code: 0 };
-          }
-          if (!nickname) {
+          } else if (!nickname) {
             responseData = { code: 153 };
-          }
-          const target = await Users.findOne({ where: { nickname } });
-          if (target) {
-            responseData = { code: 154 };
-          }
-          const result = await Users.update(
-            {
-              nickname,
-            },
-            { where: { userId } },
-          );
-          if (result) {
-            responseData = { code: 151 };
           } else {
-            responseData = { code: 152 };
+            const target = await Users.findOne({ where: { nickname } });
+            if (target) {
+              responseData = { code: 154 };
+            } else {
+              const result = await Users.update(
+                {
+                  nickname,
+                },
+                { where: { userId } },
+              );
+              if (result) {
+                responseData = { code: 151 };
+              } else {
+                responseData = { code: 152 };
+              }
+            }
           }
         } catch (err) {
           responseData = { code: 150 };
