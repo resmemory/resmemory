@@ -20,15 +20,6 @@
     padding-right: 3rem;
   }
 
-  article {
-    padding-left: 5.1rem !important;
-    padding-right: 5.1rem !important;
-  }
-
-  .chatbox {
-    bottom: 3rem !important;
-    right: 3rem !important;
-  }
   .container {
     padding: 0px 60px !important;
   }
@@ -36,6 +27,13 @@
 
 /* PC 크기 */
 @media screen and (min-width: 1025px) {
+  header {
+    padding-top: 1rem;
+  }
+  article {
+    padding-left: 10.6rem !important;
+    padding-right: 10.6rem !important;
+  }
   .container {
     padding: 0px 60px !important;
   }
@@ -52,6 +50,7 @@ article {
 }
 
 header {
+  padding-top: 1rem;
   display: flex;
   justify-content: space-between;
   height: 245px;
