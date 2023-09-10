@@ -240,7 +240,10 @@ const onRequest = async (res, method, pathname, params, key, cb) => {
           if (!userId) {
             responseData = { code: 0 };
           }
-          const bookmarks = await Bookmarks.findAll({ order: ['createdAt'], where: { userId } });
+          const bookmarks = await Bookmarks.findAll({
+            order: ['createdAt'],
+            where: { userId },
+          });
           const postIds = bookmarks.map((bookmark) => bookmark.postId);
 
           await new Promise((resolve, reject) => {
@@ -266,16 +269,19 @@ const onRequest = async (res, method, pathname, params, key, cb) => {
             attributes: ['userId', 'nickname'],
           });
 
-          bodies = bodies.map((post) => {
-            const bookmarkId = bookmarks.filter((bookmark) => post.postId == bookmark.postId);
-            const nickname = users.filter((user) => user.userId == post.userId);
+          bodies = bodies
+            .map((post) => {
+              const bookmark = bookmarks.filter((bookmark) => post.postId == bookmark.postId);
+              const nickname = users.filter((user) => user.userId == post.userId);
 
-            return {
-              ...post,
-              bookmarkId: bookmarkId[0].bookmarkId,
-              nickname: nickname[0].nickname,
-            };
-          });
+              return {
+                ...post,
+                bookmarkId: bookmark[0].bookmarkId,
+                nickname: nickname[0].nickname,
+                order: bookmark[0].createdAt,
+              };
+            })
+            .sort((prev, next) => next.order - prev.order);
 
           responseData = { code: 211, bodies };
         } catch (err) {
