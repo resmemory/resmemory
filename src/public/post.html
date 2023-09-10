@@ -6,63 +6,72 @@
     <script src="./js/post.js"></script>
     <script src="./js/code.js"></script>
     <link rel="stylesheet" href="./css/post.css" type="text/css" />
-    <link rel="stylesheet" href="./css/headerButtons.css" type="text/css" />
     <title>[ 응답하라 추억시대 ] - 글 작성하기</title>
   </head>
   <body>
-    <header>
-      <img class="logo" src="./assets/image/logo.png" onclick="location.href = `./`" />
-      <div class="headerBtns">
-        <button class="logout" style="display: none" onclick="logout()">로그아웃</button>
-        <button class="mypage" style="display: none" onclick="location.href=`./profile`">
-          마이페이지
-        </button>
-        <button class="login" style="display: none" onclick="location.href=`./login`">
-          회원가입/로그인
-        </button>
-      </div>
-    </header>
-
-    <main>
-      <form
-        action="./api/posts"
-        method="POST"
-        enctype="multipart/form-data"
-        onsubmit="return false"
-        id="form"
-      >
-        <input type="hidden" name="authorization" class="Authorization" />
-        <div class="container">
-          <div>
-            <label>카테고리</label>
-            <select name="annualCategory" class="annual_category">
-              <option selected></option>
-              <option>1970</option>
-              <option>1980</option>
-              <option>1990</option>
-              <option>2000</option>
-              <option>2010</option>
-              <option>2020</option>
-            </select>
+    <article>
+      <header>
+        <div class="navControl">
+          <div class="logoCon">
+            <img class="logo" src="./assets/image/logo.png" onclick="location.href = `./`" />
           </div>
-          <div class="write_box">
-            <input name="title" class="post_title" type="text" placeholder="제목을 입력해주세요." />
-            <input name="img" type="file" />
-            <textarea
-              name="content"
-              class="post_content"
-              type="text"
-              placeholder="내용을 입력해주세요."
-            ></textarea>
-          </div>
-          <div class="post_buttons">
-            <button onclick="writingPost()">게시글 작성</button>
-            <button onclick="cancelPost()">취소</button>
+          <div class="headerBtns">
+            <button class="logout" style="display: none" onclick="logout()">로그아웃</button>
+            <button class="mypage" style="display: none" onclick="location.href=`./profile`">
+              마이페이지
+            </button>
+            <button class="login" style="display: none" onclick="location.href=`./login`">
+              회원가입/로그인
+            </button>
           </div>
         </div>
-      </form>
-    </main>
+      </header>
 
+      <main>
+        <container>
+          <form
+            action="./api/posts"
+            method="POST"
+            enctype="multipart/form-data"
+            onsubmit="return false"
+            id="form"
+          >
+            <input type="hidden" name="authorization" class="Authorization" />
+            <div class="container">
+              <div>
+                <label>카테고리</label>
+                <select name="annualCategory">
+                  <option selected></option>
+                  <option>1970</option>
+                  <option>1980</option>
+                  <option>1990</option>
+                  <option>2000</option>
+                  <option>2010</option>
+                  <option>2020</option>
+                </select>
+              </div>
+              <div class="write_box">
+                <input name="title" type="text" placeholder="제목을 입력해주세요." />
+                <input name="img" type="file" />
+                <textarea name="content" type="text" placeholder="내용을 입력해주세요."></textarea>
+              </div>
+              <div class="post_buttons">
+                <button onclick="writingPost()">게시글 작성</button>
+                <button onclick="cancelPost()">취소</button>
+              </div>
+            </div>
+          </form>
+        </container>
+      </main>
+      <div class="chatbox">
+        <button class="chat_btn" onclick="location.href = `./chat`" style="display: none">
+          채팅
+        </button>
+        <button class="thread_btn" onclick="location.href = `./threads`" style="display: none">
+          익명
+        </button>
+      </div>
+    </article>
     <footer>제작 - TEAM 1이3김 : 이다영 김주희 김민규 김지혜</footer>
   </body>
 </html>

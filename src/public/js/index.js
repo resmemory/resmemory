@@ -206,7 +206,6 @@ const buttons = () => {
     login.style.display = 'block';
   }
 };
-
 // 로그아웃 버튼 누를시
 const logout = async () => {
   const response = await fetch(`./api/logout`, {
@@ -219,7 +218,6 @@ const logout = async () => {
 
   alert(code[result.responseData.code]);
   sessionStorage.removeItem('Authorization');
-  sessionStorage.removeItem('nickname');
   location.href = `./`;
 };
 
