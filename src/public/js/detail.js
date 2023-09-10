@@ -239,6 +239,9 @@ async function postBookmark() {
   });
   const result = await response.json();
   alert(code[result.responseData.code]);
+  if (result.responseData.code === 0) {
+    location.href = `./login`;
+  }
 }
 
 async function postComment() {
@@ -258,6 +261,9 @@ async function postComment() {
     return location.reload();
   }
   alert(code[result.responseData.code]);
+  if (result.responseData.code === 0) {
+    location.href = `./login`;
+  }
 }
 
 async function updateComment(commentId) {
@@ -277,6 +283,9 @@ async function updateComment(commentId) {
     return location.reload();
   }
   alert(code[result.responseData.code]);
+  if (result.responseData.code === 0) {
+    location.href = `./login`;
+  }
 }
 
 async function deleteComment(contentId) {
@@ -292,6 +301,9 @@ async function deleteComment(contentId) {
     return location.reload();
   }
   alert(code[result.responseData.code]);
+  if (result.responseData.code === 0) {
+    location.href = `./login`;
+  }
 }
 
 async function postReport(reportType, contentId) {
@@ -311,6 +323,9 @@ async function postReport(reportType, contentId) {
     return location.reload();
   }
   alert(code[result.responseData.code]);
+  if (result.responseData.code === 0) {
+    location.href = `./login`;
+  }
 }
 
 async function commentReport(reportType, contentId) {
@@ -330,4 +345,7 @@ async function commentReport(reportType, contentId) {
     return location.reload();
   }
   alert(code[result.responseData.code]);
+  if (result.responseData.code === 0) {
+    location.href = `./login`;
+  }
 }

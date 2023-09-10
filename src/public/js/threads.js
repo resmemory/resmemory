@@ -2,7 +2,6 @@ document.addEventListener('DOMContentLoaded', () => {
   viewThreads();
 });
 
-// 스레드 삭제 버튼 클릭 시 DELETE 요청
 async function viewThreads() {
   const threadList = document.getElementById('threadList');
   const response = await fetch('/api/threads', {
@@ -47,7 +46,6 @@ async function viewThreads() {
   }
 }
 
-// 스레드 삭제 버튼 클릭 시 DELETE 요청
 async function removeThread(threadId) {
   const response = await fetch(`./api/threads/${threadId}`, {
     method: 'DELETE',
@@ -62,6 +60,9 @@ async function removeThread(threadId) {
     location.reload();
   } else {
     alert(code[result.responseData.code]);
+    if (result.responseData.code === 0) {
+      location.href = `./login`;
+    }
   }
 }
 
@@ -89,7 +90,11 @@ async function report(contentId) {
   });
   const result = await response.json();
   alert(code[result.responseData.code]);
-  location.reload();
+  if (result.responseData.code === 0) {
+    location.href = `./login`;
+  } else {
+    location.reload();
+  }
 }
 
 async function writeThread() {
@@ -105,5 +110,9 @@ async function writeThread() {
 
   const result = await response.json();
   alert(code[result.responseData.code]);
-  location.reload();
+  if (result.responseData.code === 0) {
+    location.href = `./login`;
+  } else {
+    location.reload();
+  }
 }
