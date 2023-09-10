@@ -115,6 +115,7 @@ header {
 .navCon li {
   text-shadow: 1.5px 1.5px rgb(220, 218, 218);
   font-family: 'GangwonEdu_OTFBoldA';
+  font-size: 15px;
 }
 
 .logo:hover,
