@@ -129,11 +129,12 @@ async function loadComments() {
   const commentList = document.querySelector('.comment-list');
   commentList.innerHTML = '';
 
-  const temp_html = result_data.map((data) => {
-    const commentId = data.commentId;
-    const content = data.content;
-    const nickname = data.nickname;
-    return `
+  const temp_html = result_data
+    .map((data) => {
+      const commentId = data.commentId;
+      const content = data.content;
+      const nickname = data.nickname;
+      return `
     <div class="comment-item">
       <div class="comment-content">
         <span class="comment-nickname">${nickname} :</span>
@@ -172,13 +173,14 @@ async function loadComments() {
     </div>
     <div class="report-post-Box-btn">
         <button class="report-comment-btn" onclick="commentReport('comment',${commentId},)">신고</button>
-        <button class="report-comment-btn" onclick="modalClose('#report-comment-Modal')">닫기</button>
+        <button class="report-comment-btn" onclick="modalClose('#report-comment-Modal${commentId}')">닫기</button>
     </div>
   </div>
 </div>
 </div>
     `;
-  });
+    })
+    .join('');
 
   commentList.innerHTML = temp_html;
 }

@@ -34,7 +34,7 @@ async function logout() {
   console.log(result);
   alert(code[result.responseData.code]);
   sessionStorage.removeItem('Authorization');
-  location.reload();
+  location.href = './';
 }
 
 async function bookmarks() {
