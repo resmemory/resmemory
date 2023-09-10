@@ -14,7 +14,6 @@ const onRequest = async (res, method, pathname, params, key, cb) => {
           yesterday = new Date(yesterday);
 
           const result = await Threads.findAll({
-            attributes: { exclude: ['userId'] },
             where: { createdAt: { [Op.between]: [yesterday, today] } },
             order: [['createdAt', 'DESC']],
           });

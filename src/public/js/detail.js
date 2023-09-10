@@ -58,8 +58,8 @@ async function loadPostDetail() {
 <div class="post-date">${updatedAt}</div>
 </div>
 <div class="post-buttons">
-  <button class="button_edit-button" style="display:block" onclick="modalOn('#edit-post-Modal')">수정</button>
-  <button class="button_delete-button" style="display:block" onclick="deletePost()">삭제</button>
+  <button class="button_edit-button" style="display:none" onclick="modalOn('#edit-post-Modal')">수정</button>
+  <button class="button_delete-button" style="display:none" onclick="deletePost()">삭제</button>
   <button class="button_bookmark-button" onclick="postBookmark()">북마크</button>
   <button class="button_report-button" style="display:block" onclick="modalOn('#report-post-Modal')">신고</button>
 </div>
@@ -134,11 +134,11 @@ async function loadPostDetail() {
   postBox.innerHTML = temp_html;
   const editBtn = document.querySelector('.button_edit-button');
   const delBtn = document.querySelector('.button_delete-button');
-  const reportBtn = document.querySelector('button_report-button');
-  if (loginedUserId !== post_result.userId) {
-    editBtn.style.display = 'none';
-    delBtn.style.display = 'none';
-    reportBtn.style.display = 'block';
+  const reportBtn = document.querySelector('.button_report-button');
+  if (loginedUserId == post_result.userId) {
+    editBtn.style.display = 'block';
+    delBtn.style.display = 'block';
+    reportBtn.style.display = 'none';
   }
 }
 async function loadComments() {
@@ -192,7 +192,7 @@ async function loadComments() {
       <div class="comment-buttons">
         <button class="comment-edit-button" onclick="modalOn('#edit-comment-Modal${commentId}')">수정</button>
         <button class="comment-delete-button" onclick="deleteComment(${commentId})">삭제</button>
-        <button class="comment-report-button" onclick="modalOn('#report-comment-Modal${commentId}')">신고</button>
+       
       </div>
     </div>
     
@@ -212,21 +212,7 @@ async function loadComments() {
     </div>
   </div>
 
-  <div class="modal" id="report-comment-Modal${commentId}" style="display: none">
-<div class="modalContent">
-  <div class="report-comment-Box">
-    <div>
-      <label>신고 내용</label>
-      <br />
-      <input class="report_content" type="text" id="reportContentInput-${commentId}"/>
-    </div>
-    <div class="report-post-Box-btn">
-        <button class="report-comment-btn" onclick="commentReport('comment',${commentId},)">신고</button>
-        <button class="report-comment-btn" onclick="modalClose('#report-comment-Modal${commentId}')">닫기</button>
-    </div>
-  </div>
-</div>
-</div>
+
     `;
     })
     .join('');

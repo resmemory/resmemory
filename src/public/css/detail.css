@@ -118,7 +118,7 @@ main {
   color: rgb(255, 255, 255);
 }
 
-.button_comment-input {
+.comment-input {
   width: 92%;
   padding: 10px;
   margin: 10px 0px 10px 0px;
@@ -126,7 +126,7 @@ main {
   border-radius: 8px;
 }
 
-.button_comment-submit-button {
+.comment-submit-button {
   padding: 10px 20px;
   background-color: #000000;
   color: #ffffff;
