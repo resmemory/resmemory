@@ -102,23 +102,23 @@ main {
   color: rgb(255, 255, 255);
 }
 
-.post-buttons button {
+.post-buttons > button {
   padding: 5px 10px;
   border: none;
   border-radius: 4px;
   cursor: pointer;
 }
 
-.bookmark-button {
+.button_bookmark-button {
   background-color: yellow;
   color: black;
 }
-.report-button {
+.button_report-button {
   background-color: rgb(255, 145, 0);
   color: rgb(255, 255, 255);
 }
 
-.comment-input {
+.button_comment-input {
   width: 92%;
   padding: 10px;
   margin: 10px 0px 10px 0px;
@@ -126,7 +126,7 @@ main {
   border-radius: 8px;
 }
 
-.comment-submit-button {
+.button_comment-submit-button {
   padding: 10px 20px;
   background-color: #000000;
   color: #ffffff;

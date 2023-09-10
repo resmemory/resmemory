@@ -1,11 +1,26 @@
 document.addEventListener('DOMContentLoaded', () => {
   loadPostDetail();
   loadComments();
+  loginChecker();
 });
 
+let loginedUserId;
 const urlParams = new URL(location.href).searchParams;
 const postId = urlParams.get('post');
 const userId = sessionStorage.getItem('Authorization');
+
+async function loginChecker() {
+  if (sessionStorage.getItem('Authorization')) {
+    const profileresponse = await fetch(`./api/users`, {
+      method: 'GET',
+      headers: {
+        Authorization: sessionStorage.getItem('Authorization'),
+      },
+    });
+    const profileresult = await profileresponse.json();
+    loginedUserId = profileresult.responseData.bodies.userId;
+  }
+}
 
 async function loadPostDetail() {
   const response = await fetch(`/api/posts?postId=${postId}`, {
@@ -43,10 +58,10 @@ async function loadPostDetail() {
 <div class="post-date">${updatedAt}</div>
 </div>
 <div class="post-buttons">
-  <button class="button edit-button" onclick="modalOn('#edit-post-Modal')">수정</button>
-  <button class="button delete-button" onclick="deletePost()">삭제</button>
-  <button class="button bookmark-button" onclick="postBookmark()">북마크</button>
-  <button class="button report-button" onclick="modalOn('#report-post-Modal')">신고</button>
+  <button class="button_edit-button" style="display:block" onclick="modalOn('#edit-post-Modal')">수정</button>
+  <button class="button_delete-button" style="display:block" onclick="deletePost()">삭제</button>
+  <button class="button_bookmark-button" onclick="postBookmark()">북마크</button>
+  <button class="button_report-button" style="display:block" onclick="modalOn('#report-post-Modal')">신고</button>
 </div>
 <div class="post-content">
   <img src="${img}" alt="${img}" style="${img ? '' : 'display: none;'}">
@@ -116,8 +131,15 @@ async function loadPostDetail() {
 </div>
 </div>
 `;
-
   postBox.innerHTML = temp_html;
+  const editBtn = document.querySelector('.button_edit-button');
+  const delBtn = document.querySelector('.button_delete-button');
+  const reportBtn = document.querySelector('button_report-button');
+  if (loginedUserId !== post_result.userId) {
+    editBtn.style.display = 'none';
+    delBtn.style.display = 'none';
+    reportBtn.style.display = 'block';
+  }
 }
 async function loadComments() {
   const response = await fetch(`./api/comments?postId=${postId}`, {
@@ -134,7 +156,34 @@ async function loadComments() {
       const commentId = data.commentId;
       const content = data.content;
       const nickname = data.nickname;
-      return `
+      if (loginedUserId !== data.userId) {
+        return `
+    <div class="comment-item">
+      <div class="comment-content">
+        <span class="comment-nickname">${nickname} :</span>
+        ${content}
+      </div>
+      <div class="comment-buttons">
+        <button class="comment-report-button" onclick="modalOn('#report-comment-Modal${commentId}')">신고</button>
+      </div>
+      </div>
+      <div class="modal" id="report-comment-Modal${commentId}" style="display: none">
+        <div class="modalContent">
+          <div class="report-comment-Box">
+            <div>
+              <label>신고 내용</label>
+              <br />
+              <input class="report_content" type="text" id="reportContentInput-${commentId}"/>
+            </div>
+            <div class="report-post-Box-btn">
+                <button class="report-comment-btn" onclick="commentReport('comment',${commentId},)">신고</button>
+                <button class="report-comment-btn" onclick="modalClose('#report-comment-Modal${commentId}')">닫기</button>
+            </div>
+          </div>
+          </div>
+        </div>`;
+      } else
+        return `
     <div class="comment-item">
       <div class="comment-content">
         <span class="comment-nickname">${nickname} :</span>
