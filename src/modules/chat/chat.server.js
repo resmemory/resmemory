@@ -10,13 +10,14 @@ export default class ChatServer {
 
     this.server.on('connection', async (socket, request) => {
       const nickname = request.url.split('?')[1].split('=')[1];
+      if (nickname !== undefined) {
+        const chatOpenLog = new ChatOpenLog({
+          nickname: nickname,
+        });
+        await chatOpenLog.save();
+      }
       console.log('Client connected:', socket._socket.remoteAddress, socket._socket.remotePort);
-      const chatOpenLog = new ChatOpenLog({
-        nickname: nickname,
-      });
-
-      await chatOpenLog.save();
-      const arrMessage =await getTimes(nickname);
+      const arrMessage = await getTimes(nickname);
       for (const messageData of arrMessage) {
         socket.send(JSON.stringify(messageData));
       }
@@ -53,9 +54,12 @@ export default class ChatServer {
 
       socket.on('close', async () => {
         const nickname = request.url.split('?')[1].split('=')[1];
-        const chatCloseLog = new ChatCloseLog({
-          nickname: nickname,
-        });
+        if (nickname !== undefined) {
+          const chatCloseLog = new ChatCloseLog({
+            nickname: nickname,
+          });
+          await chatCloseLog.save();
+        }
 
         console.log(
           'Client disconnected:',
