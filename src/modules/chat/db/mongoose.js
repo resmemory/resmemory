@@ -28,6 +28,8 @@ const chatOpenLogSchema = new mongoose.Schema({
   timestamp: { type: Date, default: Date.now },
 });
 
+const maxLog = 20;
+
 chatOpenLogSchema.pre('save', async function (next) {
   if (!this.sequence) {
     // 새로운 닉네임인 경우에만 sequence 값을 설정
@@ -41,7 +43,15 @@ chatOpenLogSchema.pre('save', async function (next) {
       this.sequence = 1;
     }
   }
+  const logsToDelete = await ChatOpenLog.find({ nickname: this.nickname })
+    .sort({ sequence: -1 })
+    .skip(maxLog - 1) // 최대 20개 이상의 로그만큼 스킵
+    .exec();
 
+  if (logsToDelete.length > 0) {
+    // 삭제할 로그가 있는 경우 삭제
+    await ChatOpenLog.deleteMany({ _id: { $in: logsToDelete.map((log) => log._id) } });
+  }
   next();
 });
 
@@ -64,7 +74,15 @@ chatCloseLogSchema.pre('save', async function (next) {
       this.sequence = 1;
     }
   }
+  const logsToDelete = await ChatCloseLog.find({ nickname: this.nickname })
+    .sort({ sequence: -1 })
+    .skip(maxLog - 1) // 최대 20개 이상의 로그만큼 스킵
+    .exec();
 
+  if (logsToDelete.length > 0) {
+    // 삭제할 로그가 있는 경우 삭제
+    await ChatCloseLog.deleteMany({ _id: { $in: logsToDelete.map((log) => log._id) } });
+  }
   next();
 });
 
