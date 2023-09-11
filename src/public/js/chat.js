@@ -18,7 +18,7 @@ async function profile() {
   const result = await response.json();
 
   userNickname = result.responseData.bodies.nickname;
-  socket = new WebSocket(`ws://localhost:3000/?nickname=${userNickname}`);
+  socket = new WebSocket(`ws://3.37.61.137:3000/?nickname=${userNickname}`);
   if (!userNickname) {
     alert('로그인 이후 이용할 수 있습니다.');
     location.href = './';
@@ -37,9 +37,6 @@ async function profile() {
     });
   }
 }
-
-// WebSocket 연결
-socket = new WebSocket(`ws://3.37.61.137:3000/?nickname=${userNickname}`); // WebSocket 주소 설정
 
 // 웹 소켓 연결 이벤트 핸들러
 socket.addEventListener('open', (event) => {
