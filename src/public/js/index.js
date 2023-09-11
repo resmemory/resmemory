@@ -39,7 +39,7 @@ const loadPosts = async (currentPage) => {
   if (!currentPage) {
     currentPage = 1;
   }
-  totalPosts = await countPosts();
+  const totalPosts = await countPosts();
 
   const paginationViewCount = document.querySelector('.pagination_viewcount');
   if (paginationViewCount.childElementCount !== 0) {
@@ -81,7 +81,7 @@ const loadPostsByViewCountOrder = async (currentPage) => {
   if (!currentPage) {
     currentPage = 1;
   }
-  totalPosts = await countPosts();
+  const totalPosts = await countPosts();
 
   const paginationCreatedat = document.querySelector('.pagination_createdat');
   if (paginationCreatedat.childElementCount !== 0) {
