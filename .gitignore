@@ -1,6 +1,5 @@
 .env
 config.js
-.git
 dist/
 node_modules/
 .DS_Store
