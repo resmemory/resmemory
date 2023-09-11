@@ -11,10 +11,9 @@ export default class ChatServer {
     this.server.on('connection', async (socket, request) => {
       const nickname = request.url.split('?')[1].split('=')[1];
       if (nickname !== undefined) {
-        const chatOpenLog = new ChatOpenLog({
+        await ChatOpenLog.create({
           nickname: nickname,
         });
-        await chatOpenLog.save();
       }
       console.log('Client connected:', socket._socket.remoteAddress, socket._socket.remotePort);
       const arrMessage = await getTimes(nickname);
@@ -26,10 +25,9 @@ export default class ChatServer {
           const closeTime = JSON.parse(message);
           if (closeTime.type === 'nickname') {
             const nickname = messageObject.value;
-            const chatCloseLog = new ChatCloseLog({
+            await ChatCloseLog.create({
               nickname: nickname,
             });
-            await chatCloseLog.save();
           }
 
           const stringMessage = message.toString();
@@ -37,12 +35,10 @@ export default class ChatServer {
           console.log('Server Received:', stringMessage);
 
           // 채팅 메시지를 MongoDB에 저장
-          const chatMessage = new ChatMessage({
+          await ChatMessage.create({
             message: stringMessage,
             timestamp: Date.now(), // Date.now()를 사용하여 현재 시간을 저장
           });
-
-          await chatMessage.save(); // await를 사용하여 저장 작업을 기다림
 
           console.log('채팅 메시지가 성공적으로 저장되었습니다.');
 
@@ -55,10 +51,9 @@ export default class ChatServer {
       socket.on('close', async () => {
         const nickname = request.url.split('?')[1].split('=')[1];
         if (nickname !== undefined) {
-          const chatCloseLog = new ChatCloseLog({
+          await ChatCloseLog.create({
             nickname: nickname,
           });
-          await chatCloseLog.save();
         }
 
         console.log(
@@ -66,7 +61,6 @@ export default class ChatServer {
           socket._socket.remoteAddress,
           socket._socket.remotePort,
         );
-        await chatCloseLog.save();
       });
 
       socket.on('error', (err) => {

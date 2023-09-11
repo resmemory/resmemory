@@ -18,7 +18,9 @@ async function profile() {
   const result = await response.json();
 
   userNickname = result.responseData.bodies.nickname;
-  socket = new WebSocket(`ws://3.37.61.137:3000/?nickname=${userNickname}`);
+
+  socket = new WebSocket(`ws://localhost:3000/?nickname=${userNickname}`);
+
   if (!userNickname) {
     alert('로그인 이후 이용할 수 있습니다.');
     location.href = './';
