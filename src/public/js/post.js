@@ -1,8 +1,15 @@
+let isWritingPostInProgress = false;
+
 document.addEventListener('DOMContentLoaded', () => {
   headerBtns();
 });
 
 const writingPost = async () => {
+  if (isWritingPostInProgress) {
+    alert('잠시만 기다려주세요.');
+    return;
+  }
+
   const form = document.querySelector('#form');
   const authorization = document.querySelector('.Authorization');
   authorization.value = sessionStorage.getItem('Authorization');
@@ -16,6 +23,7 @@ const writingPost = async () => {
   alert(code[data.responseData.code]);
 
   if (data.responseData.code === 311) {
+    isWritingPostInProgress = true;
     location.href = `./`;
   } else if (data.responseData.code === 312) {
     location.href = `./login`;
