@@ -1,19 +1,19 @@
-document.addEventListener('DOMContentLoaded', () => {
-  let currentPage = 1;
-  let annualViewCountMode = sessionStorage.getItem('annualViewCountMode') === 'true' || false;
+const { ConnectParticipant } = require('aws-sdk');
 
-  countPosts().then(() => {
-    if (annualViewCountMode) {
-      annualPostsByViewCountOrder(currentPage);
-    } else {
-      annualPosts(currentPage);
-    }
-  });
+document.addEventListener('DOMContentLoaded', () => {
+  countPosts();
   buttons();
 });
+let currentPage = 1;
+let annualViewCountMode = sessionStorage.getItem('annualViewCountMode') === 'true' || false;
 
 // 게시물 총 개수 파악
 const countPosts = async () => {
+  if (annualViewCountMode) {
+    annualPostsByViewCountOrder(currentPage);
+  } else {
+    annualPosts(currentPage);
+  }
   let totalPosts = 0;
 
   const url = new URL(window.location.href);

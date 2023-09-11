@@ -1,19 +1,17 @@
 document.addEventListener('DOMContentLoaded', () => {
-  let currentPage = 1;
-  let viewCountMode = sessionStorage.getItem('viewCountMode') === 'true' || false;
-
-  countPosts().then(() => {
-    if (viewCountMode) {
-      loadPostsByViewCountOrder(currentPage);
-    } else {
-      loadPosts(currentPage);
-    }
-  });
+  countPosts();
   buttons();
 });
+let currentPage = 1;
+let viewCountMode = sessionStorage.getItem('viewCountMode') === 'true' || false;
 
 // 게시물 총 개수 파악
 const countPosts = async () => {
+  if (viewCountMode) {
+    loadPostsByViewCountOrder(currentPage);
+  } else {
+    loadPosts(currentPage);
+  }
   let totalPosts = 0;
 
   const response = await fetch(`./api/posts/list`, {
