@@ -46,7 +46,7 @@ const annualPosts = async (currentPage) => {
   const url = new URL(window.location.href);
   const category = url.searchParams.get('category');
 
-  totalPosts = await countPosts();
+  const totalPosts = await countPosts();
 
   const paginationViewCount = document.querySelector('.pagination_viewcount');
   if (paginationViewCount.childElementCount !== 0) {
@@ -105,7 +105,7 @@ const annualPostsByViewCountOrder = async (currentPage) => {
   const url = new URL(window.location.href);
   const category = url.searchParams.get('category');
 
-  totalPosts = await countPosts();
+  const totalPosts = await countPosts();
 
   const paginationCreatedat = document.querySelector('.pagination_createdat');
   if (paginationCreatedat.childElementCount !== 0) {
