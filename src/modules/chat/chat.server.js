@@ -23,15 +23,6 @@ export default class ChatServer {
       }
       socket.on('message', async (message) => {
         try {
-          const closeTime = JSON.parse(message);
-          if (closeTime.type === 'nickname') {
-            const nickname = messageObject.value;
-            const chatCloseLog = new ChatCloseLog({
-              nickname: nickname,
-            });
-            await chatCloseLog.save();
-          }
-
           const stringMessage = message.toString();
 
           console.log('Server Received:', stringMessage);
@@ -66,7 +57,6 @@ export default class ChatServer {
           socket._socket.remoteAddress,
           socket._socket.remotePort,
         );
-        await chatCloseLog.save();
       });
 
       socket.on('error', (err) => {

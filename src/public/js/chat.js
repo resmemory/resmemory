@@ -44,12 +44,14 @@ async function profile() {
 
   // 웹 소켓 연결 닫기 이벤트 핸들러
   socket.addEventListener('close', (event) => {
-    console.log('WebSocket 연결이 닫혔습니다.');
-    const nicknameMessage = {
-      type: 'nickname',
-      value: `${userNickname}`,
-    };
-    socket.send(JSON.stringify(nicknameMessage));
+    if (!isAttemptingToReconnect) {
+      isAttemptingToReconnect = true;
+      setTimeout(() => {
+        // 연결 재시도 시간 설정 후 다시 연결 시도
+        socket = new WebSocket(`ws://3.37.61.137/?nickname=${userNickname}`);
+        isAttemptingToReconnect = false;
+      }, 1000); // 1초 후 재시도
+    }
   });
 
   // 웹 소켓 에러 이벤트 핸들러
