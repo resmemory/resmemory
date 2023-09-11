@@ -3,6 +3,7 @@ document.addEventListener('DOMContentLoaded', () => {
 });
 
 let userNickname;
+let socket;
 const chatMessages = document.getElementById('chat-messages');
 const messageInput = document.getElementById('message-input');
 const sendButton = document.getElementById('send-button');
@@ -17,7 +18,7 @@ async function profile() {
   const result = await response.json();
 
   userNickname = result.responseData.bodies.nickname;
-
+  socket = new WebSocket(`ws://localhost:3000/?nickname=${userNickname}`);
   if (!userNickname) {
     alert('로그인 이후 이용할 수 있습니다.');
     location.href = './';
@@ -38,13 +39,16 @@ async function profile() {
 }
 
 // WebSocket 연결
-const socket = new WebSocket(`ws://3.37.61.137:3000/?nickname=${userNickname}`); // WebSocket 주소 설정
+socket = new WebSocket(`ws://3.37.61.137:3000/?nickname=${userNickname}`); // WebSocket 주소 설정
 
 // 웹 소켓 연결 이벤트 핸들러
-socket.addEventListener('open', (event) => {});
+socket.addEventListener('open', (event) => {
+  console.log('WebSocket 연결됨');
+});
 
 // 웹 소켓 연결 닫기 이벤트 핸들러
 socket.addEventListener('close', (event) => {
+  console.log('WebSocket 연결이 닫혔습니다.');
   const nicknameMessage = {
     type: 'nickname',
     value: `${userNickname}`,
@@ -65,6 +69,9 @@ sendButton.addEventListener('click', () => {
       message: message,
       nickname: userNickname,
     };
+    if (userNickname == undefined) {
+      return alert('로그인이 필요한 기능입니다.');
+    }
     socket.send(JSON.stringify(data)); // 서버로 메시지 전송
     messageInput.value = '';
   }
