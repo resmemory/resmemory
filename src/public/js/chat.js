@@ -15,7 +15,6 @@ async function profile() {
     },
   });
   const result = await response.json();
-  console.log(result);
 
   userNickname = result.responseData.bodies.nickname;
 
@@ -42,13 +41,10 @@ async function profile() {
 const socket = new WebSocket(`ws://3.37.61.137:3000/?nickname=${userNickname}`); // WebSocket 주소 설정
 
 // 웹 소켓 연결 이벤트 핸들러
-socket.addEventListener('open', (event) => {
-  console.log('WebSocket 연결됨');
-});
+socket.addEventListener('open', (event) => {});
 
 // 웹 소켓 연결 닫기 이벤트 핸들러
 socket.addEventListener('close', (event) => {
-  console.log('WebSocket 연결이 닫혔습니다.');
   const nicknameMessage = {
     type: 'nickname',
     value: `${userNickname}`,

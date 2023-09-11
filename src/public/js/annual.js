@@ -2,7 +2,6 @@ document.addEventListener('DOMContentLoaded', () => {
   let currentPage = 1;
 
   const url = new URL(window.location.href);
-  console.log(url);
   const category = url.searchParams.get('category');
   if (url.searchParams.size == 2) {
     currentPage = url.searchParams.get('page');
@@ -47,27 +46,33 @@ const annualPosts = async (page, category, totalPosts) => {
     alert(code[data.responseData.code]);
   }
 
-  const titleColumn = document.querySelector('.title_column');
-  if (totalPosts == 0) {
-    titleColumn.innerHTML = `<p style=color:gray;>${category}년대 카테고리에 아직 작성된 게시물이 없습니다. 첫 작성자가 되어주세요!✋</p>`;
-  }
-
   const postlist = document.querySelector('.postlist');
-  const postsData = data.responseData
-    .map(
-      (post) =>
-        `<tr class="postBox">
+  if (totalPosts == 0) {
+    const tempHtml = `<tr class="postBox">
+      <td></td>
+      <td ></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      </tr>`;
+    postlist.innerHTML = tempHtml;
+  } else {
+    const postsData = data.responseData
+      .map(
+        (post) =>
+          `<tr class="postBox">
       <td>${post.annualCategory}</td>
       <td onclick="clickPost(${post.postId})">${post.title}</td>
       <td>${post.nickname}</td>
       <td>${new Date(post.createdAt).toLocaleDateString('ko-KR', { timeZone: 'Asia/Seoul' })}</td>
       <td>${post.viewCount}</td>
       </tr>`,
-    )
-    .join('');
-  postlist.innerHTML = postsData;
+      )
+      .join('');
+    postlist.innerHTML = postsData;
 
-  createPaginationButtons(page, category, totalPosts);
+    createPaginationButtons(page, category, totalPosts);
+  }
 };
 
 const createPaginationButtons = (currentPage, category, totalPosts) => {
@@ -129,7 +134,8 @@ const logout = async () => {
 
   alert(code[result.responseData.code]);
   sessionStorage.removeItem('Authorization');
-  location.reload();
+  sessionStorage.removeItem('nickname');
+  location.href = `./`;
 };
 
 // 다른 연도별 조회로 이동
@@ -145,4 +151,59 @@ const clickPost = (postId) => {
 // 글 작성 페이지로 이동
 const writingPost = () => {
   location.href = `./post`;
+};
+
+// 게시글 목록 - 조회순 정렬
+const loadPostsByViewCountOrder = async (page) => {
+  if (!page) {
+    page = 1;
+  }
+  totalPosts = await countPosts();
+
+  const paginationCreatedat = document.querySelector('.pagination_createdat');
+  if (paginationCreatedat.childElementCount !== 0) {
+    paginationCreatedat.innerHTML = '';
+  }
+
+  const response = await fetch(`./api/posts/view?pageNum=${page}`, {
+    method: 'GET',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+  });
+
+  const data = await response.json();
+  if (data.responseData.code) {
+    alert(code[data.responseData.code]);
+  }
+
+  const postlist = document.querySelector('.postlist');
+  if (totalPosts == 0) {
+    const tempHtml = `<tr class="postBox">
+      <td></td>
+      <td ></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      </tr>`;
+    postlist.innerHTML = tempHtml;
+  } else {
+    const postsData = data.responseData
+      .map(
+        (post) =>
+          `<tr class="postBox">
+        <td>${post.annualCategory}</td>
+        <td class="post_title" onclick="clickPost(${post.postId})">${post.title}</td>
+        <td>${post.nickname}</td>
+        <td>${new Date(post.createdAt).toLocaleDateString('ko-KR', { timeZone: 'Asia/Seoul' })}</td>
+        <td>${post.viewCount}</td>
+        </tr>`,
+      )
+      .join('');
+    postlist.innerHTML = postsData;
+
+    createPaginationButtonsByViewCount(page, totalPosts);
+    viewCountMode = true;
+    sessionStorage.setItem('viewCountMode', viewCountMode);
+  }
 };

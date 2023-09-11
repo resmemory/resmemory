@@ -34,6 +34,25 @@ const headerBtns = () => {
   }
 };
 
+// 취소 버튼 누를시 이전 페이지로 이동
+const cancelPost = async () => {
+  window.history.back();
+};
+
+// 버튼들
+const buttons = () => {
+  const login = document.querySelector('.login');
+  const logout = document.querySelector('.logout');
+  const mypage = document.querySelector('.mypage');
+
+  if (sessionStorage.getItem('Authorization')) {
+    logout.style.display = 'block';
+    mypage.style.display = 'block';
+  } else {
+    login.style.display = 'block';
+  }
+};
+
 // 로그아웃 버튼 누를시
 const logout = async () => {
   const response = await fetch(`./api/logout`, {
@@ -47,9 +66,4 @@ const logout = async () => {
   alert(code[result.responseData.code]);
   sessionStorage.removeItem('Authorization');
   location.href = `./`;
-};
-
-// 취소 버튼 누를시 이전 페이지로 이동
-const cancelPost = async () => {
-  window.history.back();
 };

@@ -1,8 +1,22 @@
+let loginedUserId;
 document.addEventListener('DOMContentLoaded', () => {
+  loginChecker();
   viewThreads();
 });
 
-// 스레드 삭제 버튼 클릭 시 DELETE 요청
+async function loginChecker() {
+  if (sessionStorage.getItem('Authorization')) {
+    const profileresponse = await fetch(`./api/users`, {
+      method: 'GET',
+      headers: {
+        Authorization: sessionStorage.getItem('Authorization'),
+      },
+    });
+    const profileresult = await profileresponse.json();
+    loginedUserId = profileresult.responseData.bodies.userId;
+  }
+}
+
 async function viewThreads() {
   const threadList = document.getElementById('threadList');
   const response = await fetch('/api/threads', {
@@ -16,38 +30,58 @@ async function viewThreads() {
   if (data.responseData.result) {
     const threadsHTML = data.responseData.result
       .map((thread) => {
-        return `<div class="thread" >
-                  <h2> ${thread.content} </h2>
-                  <p>  ${new Date(thread.createdAt).toLocaleString('ko-KR', {
-                    timeZone: 'Asia/Seoul',
-                  })}
-                      <button class="report-button" onclick ="openReportModal(${
-                        thread.threadId
-                      })">신고</button>
-                      <button class="delete-button" onclick ="removeThread(${
-                        thread.threadId
-                      })">삭제</button>
-                      <div id="reportModal_${thread.threadId}" class="modal">
-                        <div class="modal-content">
-                          <span class="close-button" id="closeModal" onclick="closeReportModal(${
-                            thread.threadId
-                          })">&times;</span>
-                          <h2>스레드 신고</h2>
-                          <p>이 스레드를 신고하시겠습니까?</p>
-                          <textarea id="reportReason" placeholder="신고 이유를 입력하세요"></textarea>
-                          <button id="confirmReport" onclick ="report(${
-                            thread.threadId
-                          })">신고</button>
-                        </div>
-                      </div>
-                  </div>`;
+        if (loginedUserId == thread.userId) {
+          return `<div class="thread" >
+          <h2> ${thread.content} </h2>
+          <p>  ${new Date(thread.createdAt).toLocaleString('ko-KR', {
+            timeZone: 'Asia/Seoul',
+          })}
+       
+              <button class="delete-button" onclick ="removeThread(${
+                thread.threadId
+              })">삭제</button>
+              <div id="reportModal_${thread.threadId}" class="modal">
+                <div class="modal-content">
+                  <span class="close-button" id="closeModal" onclick="closeReportModal(${
+                    thread.threadId
+                  })">&times;</span>
+                  <h2>스레드 신고</h2>
+                  <p>이 스레드를 신고하시겠습니까?</p>
+                  <textarea id="reportReason" placeholder="신고 이유를 입력하세요"></textarea>
+                  <button id="confirmReport" onclick ="report(${thread.threadId})">신고</button>
+                </div>
+              </div>
+          </div>`;
+        } else {
+          return `<div class="thread" >
+          <h2> ${thread.content} </h2>
+          <p>  ${new Date(thread.createdAt).toLocaleString('ko-KR', {
+            timeZone: 'Asia/Seoul',
+          })}
+              <button class="report-button" onclick ="openReportModal(${
+                thread.threadId
+              })">신고</button>
+             
+              <div id="reportModal_${thread.threadId}" class="modal">
+                <div class="modal-content">
+                  <span class="close-button" id="closeModal" onclick="closeReportModal(${
+                    thread.threadId
+                  })">&times;</span>
+                  <h2>스레드 신고</h2>
+                  <p>이 스레드를 신고하시겠습니까?</p>
+                  <textarea id="reportReason" placeholder="신고 이유를 입력하세요"></textarea>
+                  <button id="confirmReport" onclick ="report(${thread.threadId})">신고</button>
+                </div>
+              </div>
+          </div>`;
+        }
       })
       .join('');
+
     threadList.innerHTML = threadsHTML;
   }
 }
 
-// 스레드 삭제 버튼 클릭 시 DELETE 요청
 async function removeThread(threadId) {
   const response = await fetch(`./api/threads/${threadId}`, {
     method: 'DELETE',
@@ -56,12 +90,15 @@ async function removeThread(threadId) {
     },
   });
   const result = await response.json();
-  console.log(result);
+
   if (result.responseData.code == 731) {
     alert(code[result.responseData.code]);
     location.reload();
   } else {
     alert(code[result.responseData.code]);
+    if (result.responseData.code === 0) {
+      location.href = `./login`;
+    }
   }
 }
 
@@ -89,7 +126,11 @@ async function report(contentId) {
   });
   const result = await response.json();
   alert(code[result.responseData.code]);
-  location.reload();
+  if (result.responseData.code === 0) {
+    location.href = `./login`;
+  } else {
+    location.reload();
+  }
 }
 
 async function writeThread() {
@@ -105,5 +146,9 @@ async function writeThread() {
 
   const result = await response.json();
   alert(code[result.responseData.code]);
-  location.reload();
+  if (result.responseData.code === 0) {
+    location.href = `./login`;
+  } else {
+    location.reload();
+  }
 }

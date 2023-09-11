@@ -79,15 +79,26 @@ const onRequest = async (res, method, pathname, params, key, cb) => {
 
     case 'GET':
       // 게시글 전체 조회
-      if (pathname === '/posts' && params.query.pageNum) {
+      if (pathname === '/posts' && params.query.pageNum && !params.query.annualCategory) {
         try {
+          let result;
           const { pageNum } = params.query;
-          const result = await Posts.findAll({
-            order: [['createdAt', 'DESC']],
-            limit: 10,
-            offset: (pageNum - 1) * 10,
-            raw: true,
-          });
+
+          if (params.params == 'view') {
+            result = await Posts.findAll({
+              order: [['viewCount', 'DESC']],
+              limit: 10,
+              offset: (pageNum - 1) * 10,
+              raw: true,
+            });
+          } else {
+            result = await Posts.findAll({
+              order: [['createdAt', 'DESC']],
+              limit: 10,
+              offset: (pageNum - 1) * 10,
+              raw: true,
+            });
+          }
 
           const userIds = result.map((post) => post.userId);
 
@@ -138,7 +149,7 @@ const onRequest = async (res, method, pathname, params, key, cb) => {
       }
 
       // 게시글 전체 조회(리스트 출력용)
-      if (pathname === '/posts' && params.params == 'list') {
+      if (pathname === '/posts' && params.params === 'list') {
         try {
           if (params.query.annualCategory) {
             const result = await Posts.count({
@@ -155,16 +166,28 @@ const onRequest = async (res, method, pathname, params, key, cb) => {
       }
 
       // 연도별 게시글 조회
-      if (pathname === '/posts' && params.query.annualCategory && !params.params) {
+      if (pathname === '/posts' && params.query.annualCategory && params.params !== 'list') {
         try {
+          let result;
           const { annualCategory, pageNum } = params.query;
-          const result = await Posts.findAll({
-            where: { annualCategory },
-            order: [['createdAt', 'DESC']],
-            limit: 10,
-            offset: (pageNum - 1) * 10,
-            raw: true,
-          });
+
+          if (params.params == 'view') {
+            result = await Posts.findAll({
+              where: { annualCategory },
+              order: [['viewCount', 'DESC']],
+              limit: 10,
+              offset: (pageNum - 1) * 10,
+              raw: true,
+            });
+          } else {
+            result = await Posts.findAll({
+              where: { annualCategory },
+              order: [['createdAt', 'DESC']],
+              limit: 10,
+              offset: (pageNum - 1) * 10,
+              raw: true,
+            });
+          }
 
           const userIds = result.map((post) => post.userId);
 

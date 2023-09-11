@@ -31,9 +31,14 @@ header {
   height: 120px;
 }
 
+button {
+  cursor: pointer;
+}
+
 .logo {
   height: 100px;
   float: right;
+  cursor: pointer;
 }
 
 .headerBtns > button {
