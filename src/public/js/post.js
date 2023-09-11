@@ -17,6 +17,8 @@ const writingPost = async () => {
 
   if (data.responseData.code === 311) {
     location.href = `./`;
+  } else if (data.responseData.code === 312) {
+    location.href = `./login`;
   }
 };
 
