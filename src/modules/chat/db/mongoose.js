@@ -28,7 +28,7 @@ const chatOpenLogSchema = new mongoose.Schema({
   timestamp: { type: Date, default: Date.now },
 });
 
-const maxLog = 20;
+const maxLog = 5;
 
 chatOpenLogSchema.pre('save', async function (next) {
   if (!this.sequence) {
@@ -45,7 +45,7 @@ chatOpenLogSchema.pre('save', async function (next) {
   }
   const logsToDelete = await ChatOpenLog.find({ nickname: this.nickname })
     .sort({ sequence: -1 })
-    .skip(maxLog - 1) // 최대 20개 이상의 로그만큼 스킵
+    .skip(maxLog - 1) // 최대 5개 이상의 로그만큼 스킵
     .exec();
 
   if (logsToDelete.length > 0) {
@@ -76,7 +76,7 @@ chatCloseLogSchema.pre('save', async function (next) {
   }
   const logsToDelete = await ChatCloseLog.find({ nickname: this.nickname })
     .sort({ sequence: -1 })
-    .skip(maxLog - 1) // 최대 20개 이상의 로그만큼 스킵
+    .skip(maxLog - 1) // 최대 5개 이상의 로그만큼 스킵
     .exec();
 
   if (logsToDelete.length > 0) {
