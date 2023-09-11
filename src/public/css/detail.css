@@ -69,7 +69,8 @@ main {
 
 .post-nickname,
 .post-view,
-.post-date {
+.post-date,
+.post-content {
   font-size: 20px;
 }
 
@@ -79,6 +80,7 @@ main {
   font-weight: 900;
   margin: 10px 0px 10px 0px;
 }
+
 .post-view {
   display: inline-block;
   margin-right: auto; /* 좌측 정렬 */
@@ -126,6 +128,10 @@ main {
   border-radius: 8px;
 }
 
+.comment-input::placeholder {
+  font-size: 16px;
+}
+
 .comment-submit-button {
   padding: 10px 20px;
   background-color: #000000;
@@ -149,7 +155,7 @@ main {
   color: white;
   border: 4px solid #000000;
   border-radius: 8px;
-  font-size: 14px;
+  font-size: 16px;
   line-height: 1.6;
   display: flex;
   align-items: center;
