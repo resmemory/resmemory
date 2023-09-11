@@ -1,19 +1,16 @@
-const { ConnectParticipant } = require('aws-sdk');
-
 document.addEventListener('DOMContentLoaded', () => {
-  countPosts();
   buttons();
+  if (annualViewCountMode) {
+    annualPostsByViewCountOrder(currentPage);
+  } else {
+    annualPosts(currentPage);
+  }
 });
 let currentPage = 1;
 let annualViewCountMode = sessionStorage.getItem('annualViewCountMode') === 'true' || false;
 
 // 게시물 총 개수 파악
 const countPosts = async () => {
-  if (annualViewCountMode) {
-    annualPostsByViewCountOrder(currentPage);
-  } else {
-    annualPosts(currentPage);
-  }
   let totalPosts = 0;
 
   const url = new URL(window.location.href);
