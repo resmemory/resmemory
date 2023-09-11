@@ -231,5 +231,6 @@ const writingPost = () => {
 // 로고 클릭시
 const clickLogo = () => {
   sessionStorage.removeItem('viewCountMode');
+  sessionStorage.removeItem('annualViewCountMode');
   location.href = `./`;
 };

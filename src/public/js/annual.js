@@ -1,18 +1,23 @@
 document.addEventListener('DOMContentLoaded', () => {
   let currentPage = 1;
+  let annualViewCountMode = sessionStorage.getItem('annualViewCountMode') === 'true' || false;
 
-  const url = new URL(window.location.href);
-  const category = url.searchParams.get('category');
-  if (url.searchParams.size == 2) {
-    currentPage = url.searchParams.get('page');
-  }
-
-  countPosts(currentPage, category);
+  countPosts().then(() => {
+    if (annualViewCountMode) {
+      annualPostsByViewCountOrder(currentPage);
+    } else {
+      annualPosts(currentPage);
+    }
+  });
   buttons();
 });
 
-const countPosts = async (currentPage, category) => {
+// 게시물 총 개수 파악
+const countPosts = async () => {
   let totalPosts = 0;
+
+  const url = new URL(window.location.href);
+  const category = url.searchParams.get('category');
 
   const response = await fetch(`./api/posts/list?annualCategory=${category}`, {
     method: 'GET',
@@ -31,16 +36,33 @@ const countPosts = async (currentPage, category) => {
     totalPosts = 100;
   }
 
-  annualPosts(currentPage, category, totalPosts);
+  return totalPosts;
 };
 
-const annualPosts = async (page, category, totalPosts) => {
-  const response = await fetch(`./api/posts?annualCategory=${category}&pageNum=${page}`, {
+// 게시글 목록 - 최신순 정렬
+const annualPosts = async (currentPage) => {
+  sessionStorage.removeItem('annualViewCountMode');
+  if (!currentPage) {
+    currentPage = 1;
+  }
+
+  const url = new URL(window.location.href);
+  const category = url.searchParams.get('category');
+
+  totalPosts = await countPosts();
+
+  const paginationViewCount = document.querySelector('.pagination_viewcount');
+  if (paginationViewCount.childElementCount !== 0) {
+    paginationViewCount.innerHTML = '';
+  }
+
+  const response = await fetch(`./api/posts?annualCategory=${category}&pageNum=${currentPage}`, {
     method: 'GET',
     headers: {
       'Content-Type': 'application/json',
     },
   });
+
   const data = await response.json();
   if (data.responseData.code) {
     alert(code[data.responseData.code]);
@@ -61,22 +83,90 @@ const annualPosts = async (page, category, totalPosts) => {
       .map(
         (post) =>
           `<tr class="postBox">
-      <td>${post.annualCategory}</td>
-      <td onclick="clickPost(${post.postId})">${post.title}</td>
-      <td>${post.nickname}</td>
-      <td>${new Date(post.createdAt).toLocaleDateString('ko-KR', { timeZone: 'Asia/Seoul' })}</td>
-      <td>${post.viewCount}</td>
-      </tr>`,
+          <td>${post.annualCategory}</td>
+          <td onclick="clickPost(${post.postId})">${post.title}</td>
+          <td>${post.nickname}</td>
+          <td>${new Date(post.createdAt).toLocaleDateString('ko-KR', {
+            timeZone: 'Asia/Seoul',
+          })}</td>
+          <td>${post.viewCount}</td>
+          </tr>`,
       )
       .join('');
     postlist.innerHTML = postsData;
 
-    createPaginationButtons(page, category, totalPosts);
+    createPaginationButtons(currentPage, totalPosts);
   }
 };
 
-const createPaginationButtons = (currentPage, category, totalPosts) => {
-  const paginationContainer = document.querySelector('.pagination');
+// 게시글 목록 - 조회순 정렬
+const annualPostsByViewCountOrder = async (currentPage) => {
+  if (!currentPage) {
+    currentPage = 1;
+  }
+
+  const url = new URL(window.location.href);
+  const category = url.searchParams.get('category');
+
+  totalPosts = await countPosts();
+
+  const paginationCreatedat = document.querySelector('.pagination_createdat');
+  if (paginationCreatedat.childElementCount !== 0) {
+    paginationCreatedat.innerHTML = '';
+  }
+
+  const response = await fetch(
+    `./api/posts/view?annualCategory=${category}&pageNum=${currentPage}`,
+    {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    },
+  );
+
+  const data = await response.json();
+  if (data.responseData.code) {
+    alert(code[data.responseData.code]);
+  }
+
+  const postlist = document.querySelector('.postlist');
+  if (totalPosts == 0) {
+    const tempHtml = `<tr class="postBox">
+      <td></td>
+      <td ></td>
+      <td></td>
+      <td></td>
+      <td></td>
+      </tr>`;
+    postlist.innerHTML = tempHtml;
+  } else {
+    const postsData = data.responseData
+      .map(
+        (post) =>
+          `<tr class="postBox">
+          <td>${post.annualCategory}</td>
+          <td class="post_title" onclick="clickPost(${post.postId})">${post.title}</td>
+          <td>${post.nickname}</td>
+          <td>${new Date(post.createdAt).toLocaleDateString('ko-KR', {
+            timeZone: 'Asia/Seoul',
+          })}</td>
+          <td>${post.viewCount}</td>
+          </tr>`,
+      )
+      .join('');
+    postlist.innerHTML = postsData;
+
+    annualViewCountMode = true;
+    sessionStorage.setItem('annualViewCountMode', annualViewCountMode);
+    createPaginationButtonsByViewCount(currentPage, totalPosts);
+  }
+};
+
+// 페이지네이션 버튼 생성 함수 - 최신순 정렬
+const createPaginationButtons = (currentPage, totalPosts) => {
+  const paginationCreatedat = document.querySelector('.pagination_createdat');
+  paginationCreatedat.innerHTML = '';
   const totalPages = Math.ceil(totalPosts / 10);
 
   for (let i = 1; i <= totalPages; i++) {
@@ -84,22 +174,35 @@ const createPaginationButtons = (currentPage, category, totalPosts) => {
     button.innerText = i;
     button.addEventListener('click', () => {
       currentPage = i;
-      setPageNum(currentPage);
-      annualPosts(currentPage, category);
+      annualPosts(currentPage);
     });
 
     if (i === currentPage) {
       button.classList.add('active');
     }
-    paginationContainer.appendChild(button);
+    paginationCreatedat.appendChild(button);
   }
 };
 
-// 페이지 버튼 누를시 현재 페이지 URL에 표기
-const setPageNum = (page) => {
-  const url = new URL(window.location.href);
-  url.searchParams.set('page', page);
-  window.history.pushState({}, '', url);
+// 페이지네이션 버튼 생성 함수 - 조회순 정렬
+const createPaginationButtonsByViewCount = (currentPage, totalPosts) => {
+  const paginationViewCount = document.querySelector('.pagination_viewcount');
+  paginationViewCount.innerHTML = '';
+  const totalPages = Math.ceil(totalPosts / 10);
+
+  for (let i = 1; i <= totalPages; i++) {
+    const button = document.createElement('button');
+    button.innerText = i;
+    button.addEventListener('click', () => {
+      currentPage = i;
+      annualPostsByViewCountOrder(currentPage);
+    });
+
+    if (i === currentPage) {
+      button.classList.add('active');
+    }
+    paginationViewCount.appendChild(button);
+  }
 };
 
 // 버튼들
@@ -134,7 +237,6 @@ const logout = async () => {
 
   alert(code[result.responseData.code]);
   sessionStorage.removeItem('Authorization');
-  sessionStorage.removeItem('nickname');
   location.href = `./`;
 };
 
@@ -153,57 +255,9 @@ const writingPost = () => {
   location.href = `./post`;
 };
 
-// 게시글 목록 - 조회순 정렬
-const loadPostsByViewCountOrder = async (page) => {
-  if (!page) {
-    page = 1;
-  }
-  totalPosts = await countPosts();
-
-  const paginationCreatedat = document.querySelector('.pagination_createdat');
-  if (paginationCreatedat.childElementCount !== 0) {
-    paginationCreatedat.innerHTML = '';
-  }
-
-  const response = await fetch(`./api/posts/view?pageNum=${page}`, {
-    method: 'GET',
-    headers: {
-      'Content-Type': 'application/json',
-    },
-  });
-
-  const data = await response.json();
-  if (data.responseData.code) {
-    alert(code[data.responseData.code]);
-  }
-
-  const postlist = document.querySelector('.postlist');
-  if (totalPosts == 0) {
-    const tempHtml = `<tr class="postBox">
-      <td></td>
-      <td ></td>
-      <td></td>
-      <td></td>
-      <td></td>
-      </tr>`;
-    postlist.innerHTML = tempHtml;
-  } else {
-    const postsData = data.responseData
-      .map(
-        (post) =>
-          `<tr class="postBox">
-        <td>${post.annualCategory}</td>
-        <td class="post_title" onclick="clickPost(${post.postId})">${post.title}</td>
-        <td>${post.nickname}</td>
-        <td>${new Date(post.createdAt).toLocaleDateString('ko-KR', { timeZone: 'Asia/Seoul' })}</td>
-        <td>${post.viewCount}</td>
-        </tr>`,
-      )
-      .join('');
-    postlist.innerHTML = postsData;
-
-    createPaginationButtonsByViewCount(page, totalPosts);
-    viewCountMode = true;
-    sessionStorage.setItem('viewCountMode', viewCountMode);
-  }
+// 로고 클릭시
+const clickLogo = () => {
+  sessionStorage.removeItem('viewCountMode');
+  sessionStorage.removeItem('annualViewCountMode');
+  location.href = `./`;
 };
