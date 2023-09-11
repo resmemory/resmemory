@@ -13,7 +13,7 @@
       <header>
         <div class="navControl">
           <div class="logoCon">
-            <img class="logo" src="./assets/image/logo.png" onclick="location.href = `./`" />
+            <img class="logo" src="./assets/image/logo.png" onclick="clickLogo()" />
           </div>
           <div class="headerBtns">
             <button class="logout" style="display: none" onclick="logout()">로그아웃</button>
@@ -32,7 +32,8 @@
             <li onclick="annualCategory(1990)">1990</li>
             <li onclick="annualCategory(1980)">1980</li>
             <li onclick="annualCategory(1970)">1970</li>
-            <li class="ordering" onclick="location.href ='./'">메인</li>
+            <li onclick="annualPosts()">최신순</li>
+            <li onclick="annualPostsByViewCountOrder()">조회순</li>
           </ul>
         </div>
       </header>
@@ -52,7 +53,8 @@
               </thead>
               <tbody class="postlist"></tbody>
             </table>
-            <div class="pagination"></div>
+            <div class="pagination_createdat"></div>
+            <div class="pagination_viewcount"></div>
           </div>
         </div>
       </main>

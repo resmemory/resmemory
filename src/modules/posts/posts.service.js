@@ -126,7 +126,6 @@ const onRequest = async (res, method, pathname, params, key, cb) => {
             return { ...post, nickname: nickname[0].nickname };
           });
         } catch (err) {
-          console.log(err);
           responseData = { code: 320 };
         }
       }

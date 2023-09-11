@@ -1,22 +1,14 @@
 document.addEventListener('DOMContentLoaded', () => {
   let currentPage = 1;
   let viewCountMode = sessionStorage.getItem('viewCountMode') === 'true' || false;
-  let viewCountPage = 1;
-
-  const url = new URL(window.location.href);
-  if (url.search) {
-    currentPage = url.searchParams.get('page');
-    viewCountPage = url.searchParams.get('viewCountPage');
-  }
 
   countPosts().then(() => {
     if (viewCountMode) {
-      loadPostsByViewCountOrder(viewCountPage);
+      loadPostsByViewCountOrder(currentPage);
     } else {
       loadPosts(currentPage);
     }
   });
-
   buttons();
 });
 
@@ -45,10 +37,10 @@ const countPosts = async () => {
 };
 
 // 게시글 목록 - 최신순 정렬
-const loadPosts = async (page) => {
+const loadPosts = async (currentPage) => {
   sessionStorage.removeItem('viewCountMode');
-  if (!page) {
-    page = 1;
+  if (!currentPage) {
+    currentPage = 1;
   }
   totalPosts = await countPosts();
 
@@ -57,8 +49,7 @@ const loadPosts = async (page) => {
     paginationViewCount.innerHTML = '';
   }
 
-  sessionStorage.removeItem('viewCountMode');
-  const response = await fetch(`./api/posts?pageNum=${page}`, {
+  const response = await fetch(`./api/posts?pageNum=${currentPage}`, {
     method: 'GET',
     headers: {
       'Content-Type': 'application/json',
@@ -85,13 +76,13 @@ const loadPosts = async (page) => {
     .join('');
   postlist.innerHTML = postsData;
 
-  createPaginationButtons(page, totalPosts);
+  createPaginationButtons(currentPage, totalPosts);
 };
 
 // 게시글 목록 - 조회순 정렬
-const loadPostsByViewCountOrder = async (page) => {
-  if (!page) {
-    page = 1;
+const loadPostsByViewCountOrder = async (currentPage) => {
+  if (!currentPage) {
+    currentPage = 1;
   }
   totalPosts = await countPosts();
 
@@ -100,7 +91,7 @@ const loadPostsByViewCountOrder = async (page) => {
     paginationCreatedat.innerHTML = '';
   }
 
-  const response = await fetch(`./api/posts/view?pageNum=${page}`, {
+  const response = await fetch(`./api/posts/view?pageNum=${currentPage}`, {
     method: 'GET',
     headers: {
       'Content-Type': 'application/json',
@@ -127,23 +118,25 @@ const loadPostsByViewCountOrder = async (page) => {
       .map(
         (post) =>
           `<tr class="postBox">
-        <td>${post.annualCategory}</td>
-        <td class="post_title" onclick="clickPost(${post.postId})">${post.title}</td>
-        <td>${post.nickname}</td>
-        <td>${new Date(post.createdAt).toLocaleDateString('ko-KR', { timeZone: 'Asia/Seoul' })}</td>
-        <td>${post.viewCount}</td>
-        </tr>`,
+          <td>${post.annualCategory}</td>
+          <td class="post_title" onclick="clickPost(${post.postId})">${post.title}</td>
+          <td>${post.nickname}</td>
+          <td>${new Date(post.createdAt).toLocaleDateString('ko-KR', {
+            timeZone: 'Asia/Seoul',
+          })}</td>
+          <td>${post.viewCount}</td>
+          </tr>`,
       )
       .join('');
     postlist.innerHTML = postsData;
 
-    createPaginationButtonsByViewCount(page, totalPosts);
     viewCountMode = true;
     sessionStorage.setItem('viewCountMode', viewCountMode);
+    createPaginationButtonsByViewCount(currentPage, totalPosts);
   }
 };
 
-// 페이지네이션 버튼 생성 함수
+// 페이지네이션 버튼 생성 함수 - 최신순 정렬
 const createPaginationButtons = (currentPage, totalPosts) => {
   const paginationCreatedat = document.querySelector('.pagination_createdat');
   paginationCreatedat.innerHTML = '';
@@ -154,7 +147,6 @@ const createPaginationButtons = (currentPage, totalPosts) => {
     button.innerText = i;
     button.addEventListener('click', () => {
       currentPage = i;
-      setPageNum(currentPage);
       loadPosts(currentPage);
     });
 
@@ -165,16 +157,17 @@ const createPaginationButtons = (currentPage, totalPosts) => {
   }
 };
 
+// 페이지네이션 버튼 생성 함수 - 조회순 정렬
 const createPaginationButtonsByViewCount = (currentPage, totalPosts) => {
   const paginationViewCount = document.querySelector('.pagination_viewcount');
   paginationViewCount.innerHTML = '';
   const totalPages = Math.ceil(totalPosts / 10);
+
   for (let i = 1; i <= totalPages; i++) {
     const button = document.createElement('button');
     button.innerText = i;
     button.addEventListener('click', () => {
       currentPage = i;
-      setViewCountPageNum(currentPage);
       loadPostsByViewCountOrder(currentPage);
     });
 
@@ -183,19 +176,6 @@ const createPaginationButtonsByViewCount = (currentPage, totalPosts) => {
     }
     paginationViewCount.appendChild(button);
   }
-};
-
-// 페이지 버튼 누를시 현재 페이지 URL에 표기
-const setPageNum = (page) => {
-  const url = new URL(window.location.href);
-  url.searchParams.set('page', page);
-  window.history.pushState({}, '', url);
-};
-
-const setViewCountPageNum = (page) => {
-  const url = new URL(window.location.href);
-  url.searchParams.set('viewCountPage', page);
-  window.history.pushState({}, '', url);
 };
 
 // 버튼들
@@ -217,6 +197,7 @@ const buttons = () => {
     login.style.display = 'block';
   }
 };
+
 // 로그아웃 버튼 누를시
 const logout = async () => {
   const response = await fetch(`./api/logout`, {
@@ -248,7 +229,8 @@ const writingPost = () => {
 };
 
 // 로고 클릭시
-const clickLoge = () => {
+const clickLogo = () => {
   sessionStorage.removeItem('viewCountMode');
+  sessionStorage.removeItem('annualViewCountMode');
   location.href = `./`;
 };

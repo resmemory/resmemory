@@ -151,13 +151,13 @@ header button {
 }
 
 /* 페이지네이션 버튼 */
-.pagination,
-.pagination_createdat {
+.pagination_createdat,
+.pagination_viewcount {
   text-align: center;
 }
 
-.pagination > button,
-.pagination_createdat > button {
+.pagination_createdat > button,
+.pagination_viewcount > button {
   box-shadow: 2px 2px rgb(195, 195, 195);
   margin: 20px 20px 0px 0px;
   background-color: black;
