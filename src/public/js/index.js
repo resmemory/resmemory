@@ -1,16 +1,13 @@
 document.addEventListener('DOMContentLoaded', () => {
-  let currentPage = 1;
-  let viewCountMode = sessionStorage.getItem('viewCountMode') === 'true' || false;
-
-  countPosts().then(() => {
-    if (viewCountMode) {
-      loadPostsByViewCountOrder(currentPage);
-    } else {
-      loadPosts(currentPage);
-    }
-  });
   buttons();
+  if (viewCountMode) {
+    loadPostsByViewCountOrder(currentPage);
+  } else {
+    loadPosts(currentPage);
+  }
 });
+let currentPage = 1;
+let viewCountMode = sessionStorage.getItem('viewCountMode') === 'true' || false;
 
 // 게시물 총 개수 파악
 const countPosts = async () => {
@@ -42,7 +39,7 @@ const loadPosts = async (currentPage) => {
   if (!currentPage) {
     currentPage = 1;
   }
-  totalPosts = await countPosts();
+  const totalPosts = await countPosts();
 
   const paginationViewCount = document.querySelector('.pagination_viewcount');
   if (paginationViewCount.childElementCount !== 0) {
@@ -84,7 +81,7 @@ const loadPostsByViewCountOrder = async (currentPage) => {
   if (!currentPage) {
     currentPage = 1;
   }
-  totalPosts = await countPosts();
+  const totalPosts = await countPosts();
 
   const paginationCreatedat = document.querySelector('.pagination_createdat');
   if (paginationCreatedat.childElementCount !== 0) {

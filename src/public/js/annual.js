@@ -1,16 +1,13 @@
 document.addEventListener('DOMContentLoaded', () => {
-  let currentPage = 1;
-  let annualViewCountMode = sessionStorage.getItem('annualViewCountMode') === 'true' || false;
-
-  countPosts().then(() => {
-    if (annualViewCountMode) {
-      annualPostsByViewCountOrder(currentPage);
-    } else {
-      annualPosts(currentPage);
-    }
-  });
   buttons();
+  if (annualViewCountMode) {
+    annualPostsByViewCountOrder(currentPage);
+  } else {
+    annualPosts(currentPage);
+  }
 });
+let currentPage = 1;
+let annualViewCountMode = sessionStorage.getItem('annualViewCountMode') === 'true' || false;
 
 // 게시물 총 개수 파악
 const countPosts = async () => {
@@ -49,7 +46,7 @@ const annualPosts = async (currentPage) => {
   const url = new URL(window.location.href);
   const category = url.searchParams.get('category');
 
-  totalPosts = await countPosts();
+  const totalPosts = await countPosts();
 
   const paginationViewCount = document.querySelector('.pagination_viewcount');
   if (paginationViewCount.childElementCount !== 0) {
@@ -108,7 +105,7 @@ const annualPostsByViewCountOrder = async (currentPage) => {
   const url = new URL(window.location.href);
   const category = url.searchParams.get('category');
 
-  totalPosts = await countPosts();
+  const totalPosts = await countPosts();
 
   const paginationCreatedat = document.querySelector('.pagination_createdat');
   if (paginationCreatedat.childElementCount !== 0) {
