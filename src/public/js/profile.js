@@ -141,6 +141,11 @@ async function profile() {
     const adminBtn = document.querySelector('.admin');
     adminBtn.style.display = 'block';
   }
+
+  if (result.responseData.bodies.email == 'kakaoId') {
+    const editPassword = document.querySelector('.editPassword');
+    editPassword.style.display = 'none';
+  }
   const tempHtml = `
   <div>
   <p>${result.responseData.bodies.nickname}</p>

@@ -1,6 +1,6 @@
 import ChatServer from './chat.server';
 import dotenv from 'dotenv';
-import {connect} from './db/mongoose'
+import { connect } from './db/mongoose';
 dotenv.config();
 connect();
 

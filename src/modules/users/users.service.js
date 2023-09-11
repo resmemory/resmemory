@@ -36,12 +36,11 @@ const onRequest = async (res, method, pathname, params, key, cb) => {
 
           const user = await Users.findOne({ where: { email } });
 
-          const nickname = user.nickname;
           if (!user) {
             responseData = { code: 122 };
           } else {
             const isValidPassword = await bcrypt.compare(password, user.password);
-
+            const nickname = user.nickname;
             if (!isValidPassword) {
               responseData = { code: 122 };
             } else {
