@@ -32,7 +32,6 @@ async function profile() {
       const dataParse = await JSON.parse(data);
       const message = dataParse.message;
       const nickname = dataParse.nickname;
-      console.log('-----', data);
 
       // 채팅 데이터를 화면에 추가
       await displayMessage(message, nickname);
@@ -40,9 +39,7 @@ async function profile() {
   }
 
   // 웹 소켓 연결 이벤트 핸들러
-  socket.addEventListener('open', (event) => {
-    console.log('WebSocket 연결됨');
-  });
+  socket.addEventListener('open', (event) => {});
 
   // 웹 소켓 연결 닫기 이벤트 핸들러
   socket.addEventListener('close', (event) => {
@@ -55,9 +52,7 @@ async function profile() {
   });
 
   // 웹 소켓 에러 이벤트 핸들러
-  socket.addEventListener('error', (error) => {
-    console.error('WebSocket 오류:', error);
-  });
+  socket.addEventListener('error', (error) => {});
 
   // 메시지 전송 버튼 클릭 이벤트
   sendButton.addEventListener('click', () => {
@@ -102,7 +97,6 @@ async function profile() {
   }
   // 웹 소켓 연결 닫기 이벤트 핸들러
   socket.addEventListener('close', (event) => {
-    console.log('WebSocket 연결이 닫혔습니다.');
     const nicknameMessage = {
       type: 'nickname',
       value: `${userNickname}`,
