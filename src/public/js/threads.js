@@ -2,6 +2,7 @@ let loginedUserId;
 document.addEventListener('DOMContentLoaded', () => {
   loginChecker();
   viewThreads();
+  buttons();
 });
 
 async function loginChecker() {
@@ -151,4 +152,36 @@ async function writeThread() {
   } else {
     location.reload();
   }
+}
+
+// 버튼들
+const buttons = () => {
+  const login = document.querySelector('.login');
+  const logout = document.querySelector('.logout');
+  const mypage = document.querySelector('.mypage');
+
+  const chat = document.querySelector('.chat_btn');
+
+  if (sessionStorage.getItem('Authorization')) {
+    logout.style.display = 'block';
+    mypage.style.display = 'block';
+
+    chat.style.display = 'block';
+  } else {
+    login.style.display = 'block';
+  }
+};
+
+async function logout() {
+  const response = await fetch(`./api/logout`, {
+    method: 'POST',
+    headers: {
+      Authorization: sessionStorage.getItem('Authorization'),
+    },
+  });
+  const result = await response.json();
+
+  alert(code[result.responseData.code]);
+  sessionStorage.removeItem('Authorization');
+  location.href = './';
 }

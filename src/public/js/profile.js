@@ -50,15 +50,20 @@ async function bookmarks() {
     .map((bookmark) => {
       return `
       <div class = "bookmarkInnerBox" >
-      <h1 class = "title" onclick = "location.href='./detail?post=${bookmark.postId}'">${
+      <h2 class = "title" onclick = "location.href='./detail?post=${bookmark.postId}'">${
         bookmark.title
-      }</h1> 
-      <p>${bookmark.annualCategory} | ${new Date(bookmark.createdAt).toLocaleDateString('ko-KR', {
-        timeZone: 'Asia/Seoul',
-      })} | ${bookmark.nickname}</p>
+      }</h2> 
+      
+      <p>
       <button class = "removeBookmark" onclick="removeBookmark(${
         bookmark.bookmarkId
-      })">삭제</button>
+      })">해제</button>
+      ${bookmark.annualCategory} | ${new Date(bookmark.createdAt).toLocaleDateString('ko-KR', {
+        timeZone: 'Asia/Seoul',
+      })} | ${bookmark.nickname}
+     
+      </p>
+     
       </div>
     `;
     })

@@ -17,14 +17,13 @@ async function profile() {
   });
   const result = await response.json();
 
-  userNickname = result.responseData.bodies.nickname;
-
-  socket = new WebSocket(`ws://3.37.61.137:3000/?nickname=${userNickname}`);
-
-  if (!userNickname) {
+  if (!sessionStorage.getItem('Authorization')) {
     alert('로그인 이후 이용할 수 있습니다.');
     location.href = './';
   } else {
+    userNickname = result.responseData.bodies.nickname;
+  
+    socket = new WebSocket(`ws://3.37.61.137:3000/?nickname=${userNickname}`);
     const chatHeader = document.querySelector('.chat-header');
     chatHeader.innerHTML = `<span id="nickname">${userNickname} 님의 아름다운 채팅 문화 선도를 믿습니다.</span>`;
 
@@ -33,7 +32,6 @@ async function profile() {
       const dataParse = await JSON.parse(data);
       const message = dataParse.message;
       const nickname = dataParse.nickname;
-      console.log('-----', data);
 
       // 채팅 데이터를 화면에 추가
       await displayMessage(message, nickname);
@@ -41,14 +39,20 @@ async function profile() {
   }
 
   // 웹 소켓 연결 이벤트 핸들러
-  socket.addEventListener('open', (event) => {
-    console.log('WebSocket 연결됨');
+  socket.addEventListener('open', (event) => {});
+
+  // 웹 소켓 연결 닫기 이벤트 핸들러
+  socket.addEventListener('close', (event) => {
+    console.log('WebSocket 연결이 닫혔습니다.');
+    const nicknameMessage = {
+      type: 'nickname',
+      value: `${userNickname}`,
+    };
+    socket.send(JSON.stringify(nicknameMessage));
   });
 
   // 웹 소켓 에러 이벤트 핸들러
-  socket.addEventListener('error', (error) => {
-    console.error('WebSocket 오류:', error);
-  });
+  socket.addEventListener('error', (error) => {});
 
   // 메시지 전송 버튼 클릭 이벤트
   sendButton.addEventListener('click', () => {
@@ -93,7 +97,6 @@ async function profile() {
   }
   // 웹 소켓 연결 닫기 이벤트 핸들러
   socket.addEventListener('close', (event) => {
-    console.log('WebSocket 연결이 닫혔습니다.');
     const nicknameMessage = {
       type: 'nickname',
       value: `${userNickname}`,
