@@ -17,14 +17,13 @@ async function profile() {
   });
   const result = await response.json();
 
-  userNickname = result.responseData.bodies.nickname;
-
-  socket = new WebSocket(`ws://3.37.61.137:3000/?nickname=${userNickname}`);
-
-  if (!userNickname) {
+  if (!sessionStorage.getItem('Authorization')) {
     alert('로그인 이후 이용할 수 있습니다.');
     location.href = './';
   } else {
+    userNickname = result.responseData.bodies.nickname;
+
+    socket = new WebSocket(`ws://3.37.61.137:3000/?nickname=${userNickname}`);
     const chatHeader = document.querySelector('.chat-header');
     chatHeader.innerHTML = `<span id="nickname">${userNickname} 님의 아름다운 채팅 문화 선도를 믿습니다.</span>`;
 
