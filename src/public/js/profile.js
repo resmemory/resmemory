@@ -55,14 +55,15 @@ async function bookmarks() {
       }</h2> 
       
       <p>
-      <button class = "removeBookmark" onclick="removeBookmark(${
-        bookmark.bookmarkId
-      })">해제</button>
+    
       ${bookmark.annualCategory} | ${new Date(bookmark.createdAt).toLocaleDateString('ko-KR', {
         timeZone: 'Asia/Seoul',
       })} | ${bookmark.nickname}
      
       </p>
+      <button class = "removeBookmark" onclick="removeBookmark(${
+        bookmark.bookmarkId
+      })">해제</button>
      
       </div>
     `;
