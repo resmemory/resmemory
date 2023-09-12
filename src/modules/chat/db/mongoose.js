@@ -19,7 +19,7 @@ const connect = () => {
 // MongoDB 스키마 정의
 const chatSchema = new mongoose.Schema({
   message: String,
-  timestamp: { type: Date, default: Date.now },
+  timestamp: { type: Date, default: Date.now, expires: '1d' },
 });
 
 const chatOpenLogSchema = new mongoose.Schema({
