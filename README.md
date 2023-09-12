@@ -14,29 +14,19 @@
   | 역할 | 이름 | Blog |
   | ------------------- | ------ | -------------------------------- |
   | 리더 | 이다영 | https://verdantjuly.tistory.com/ |
-  | 부리더, 회의록, Git | 김주희 | https://velog.io/@kinjoo |
-  | CS 스터디 관리 | 김민규 | https://minker.tistory.com/ |
-  | 기술 면접 관리 | 김지혜 | https://velog.io/@gajigaji04 |
+  | 부리더 | 김주희 | https://velog.io/@kinjoo |
+  | 팀원 | 김민규 | https://minker.tistory.com/ |
+  | 팀원 | 김지혜 | https://velog.io/@gajigaji04 |
 - 기능 역할 분담
   | 이름 | Backend | Frontend |
   | ------ | -------------------------- | -------------------------------- |
-  | 이다영 | Users 서비스, CI/CD, 로그전략 | 로그인 페이지, 프로필 페이지 |
-  | 김주희 | Posts 서비스, 로그전략 | 메인페이지, 연도별 게시판, 글 작성 페이지|
-  | 김민규 | Admin 서비스, 채팅 서비스 | 관리자 페이지, 글 상세페이지 |
+  | 이다영 | Users 서비스, CI/CD, 테스트코드 | 로그인, 글 상세 마이페이지 |
+  | 김주희 | Posts 서비스 | 메인페이지, 연도별 게시판, 글 작성 페이지|
+  | 김민규 | Admin 서비스, Chat 서비스 | 관리자 페이지 |
   | 김지혜 | Threads 서비스, 테스트코드 | 스레드 페이지 |
 
-- 기타 역할 분담
-  | 이름 | 기타 역할 |
-  | ------ | --------------------------------------- |
-  | 이다영 | 중간 발표, S.A. , 회의 진행 |
-  | 김주희 | 최종 시연 영상, 회의록 작성, Git 책임자 |
-  | 김민규 | 최종 발표, CS 스터디 관리 |
-  | 김지혜 | 기술면접 30제 관리 |
-- 팀 규칙 및 정규 일정
+- 팀 규칙
   - 회의 : 평일 아침 9시 15분(to-do, Q&A), 오후 9시 15분 (merge, code review, TIL)
-  - CS study : 수 오후 2시~
-  - 기술면접 : 목 오후 2시 ~ 3시
-  - 기술 멘토링 : 매주 금요일 오전 11시~ 11시 30분 - 조호영 튜터 님
   - Ground Rules
     ```jsx
     1. 마지막까지 `FULL POWER`로!!
@@ -51,11 +41,11 @@
 
   [최종 프로젝트 개발 일정](https://www.notion.so/d1ecaba5df66497ba1cec65b342b814c?pvs=21)
 
-  [3조 CS 팀노션 ](https://www.notion.so/3-CS-afe422624b0b42a0a5e7ecee542333d7?pvs=21)
-
-  [최종 프로젝트 회의록](https://www.notion.so/292995ec82cf49a1927783fcb4f10747?pvs=21)
+- 개발 과정
 
   [타임라인](https://docs.google.com/spreadsheets/d/1VS6DMNqZnL9hOqyVi8oYATI6MF64jqYQTbuQ6T2LZA0/edit?usp=sharing)
+
+  [최종 프로젝트 회의록](https://www.notion.so/292995ec82cf49a1927783fcb4f10747?pvs=21)
 
 # 📽️ Project
 
@@ -63,7 +53,7 @@
   응답하라 추억시대
 - 프로젝트 목적과 기능
   추억 공유 게시판 커뮤니티
-  게시글과 댓글을 통해 서로의 추억을 교환하며 추억을 쌓아나간다.
+  게시글과 댓글을 통해 서로의 추억을 교환하며 채팅과 익명을 통해 새로운 추억을 쌓아나간다.
 
 # ✒️ Coding Convention
 
@@ -105,11 +95,13 @@
     `develope` : 기능별 브랜치 집합  
     `release` : 배포 전 테스트  
     `master` : 배포  
+     **[프론트 엔드 브랜치]**  
+    `frontend` : 프론트엔드 집합 브랜치
+    `frontend_(각자 이니셜)` : 개인 프론트엔드 브랜치
     **[기타 브랜치]**  
     `hotfix` : 긴급 수정  
-    `readme`  
-    `frontend`
-  - Commit Message 내용은 한글로 작성
+    `readme`
+
   - Commit 전에 불필요한 주석 삭제
 
 - API 명세서 준수, 변경사항 있는 경우 모두에게 승인 받고 진행
@@ -143,10 +135,10 @@
 - Backend Language : Node.js (ver 18.17.0)
 - Frontend Language : Html5, Javascript
 - Server : Amazon EC2
-- Project Management : PM2
-- DB : mysql(ver.8.0.33)
+- DB : mysql(ver.8.0.33), MongoDB
 - Cache : Redis(ver.6.2.6)
 - CI/CD : Github Actions, Code Deploy
+- WebSocket, Nodemailer, S3
 
 # 📁 Directory Structure
 
@@ -155,7 +147,6 @@ resmemory
 ├─ .prettierrc
 ├─ README.md
 ├─ appspec.yml
-├─ babel.config.json
 ├─ package-lock.json
 ├─ package.json
 ├─ scripts
@@ -163,12 +154,18 @@ resmemory
 ├─ sql
 │  └─ database.sql
 └─ src
+   ├─ __tests__
+   │  └─ integeration
+   │     ├─ posts.integration.spec.js
+   │     ├─ threads.integration.spec.js
+   │     └─ users.integration.spec.js
    ├─ app.js
    ├─ authmiddleware.js
    ├─ classes
    │  ├─ client.js
    │  └─ server.js
    ├─ frontconnection.js
+   ├─ loginResponse.js
    ├─ mail.js
    ├─ modules
    │  ├─ admin
@@ -178,6 +175,11 @@ resmemory
    │  │  │  ├─ reports.db.js
    │  │  │  └─ reports.init.js
    │  │  └─ report.service.js
+   │  ├─ chat
+   │  │  ├─ chat.module.js
+   │  │  ├─ chat.server.js
+   │  │  └─ db
+   │  │     └─ mongoose.js
    │  ├─ distributor.js
    │  ├─ posts
    │  │  ├─ db
@@ -185,6 +187,7 @@ resmemory
    │  │  │  ├─ posts.db.js
    │  │  │  ├─ posts.init.js
    │  │  │  └─ relationship.js
+   │  │  ├─ imageManager.js
    │  │  ├─ posts.module.js
    │  │  └─ posts.service.js
    │  ├─ threads
@@ -207,16 +210,17 @@ resmemory
    │  ├─ annual.html
    │  ├─ assets
    │  │  └─ image
-   │  │     ├─ architecture1.png
+   │  │     ├─ Untitled.png
    │  │     ├─ architecture2.png
-   │  │     ├─ architecture3.png
    │  │     ├─ erd.png
+   │  │     ├─ kakao_login_large_narrow.png
    │  │     ├─ logo.png
    │  │     └─ thumbnail.png
+   │  ├─ chat.html
    │  ├─ css
    │  │  ├─ admin.css
+   │  │  ├─ chat.css
    │  │  ├─ detail.css
-   │  │  ├─ headerButtons.css
    │  │  ├─ login.css
    │  │  ├─ post.css
    │  │  ├─ postlist.css
@@ -228,15 +232,19 @@ resmemory
    │  ├─ js
    │  │  ├─ admin.js
    │  │  ├─ annual.js
+   │  │  ├─ chat.js
    │  │  ├─ code.js
    │  │  ├─ detail.js
    │  │  ├─ index.js
+   │  │  ├─ kakao.js
    │  │  ├─ login.js
+   │  │  ├─ oauth.js
    │  │  ├─ post.js
    │  │  ├─ profile.js
    │  │  └─ threads.js
    │  ├─ login.html
    │  ├─ notfound.html
+   │  ├─ oauth.html
    │  ├─ post.html
    │  ├─ profile.html
    │  └─ threads.html
