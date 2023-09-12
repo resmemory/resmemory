@@ -171,3 +171,17 @@ const buttons = () => {
     login.style.display = 'block';
   }
 };
+
+async function logout() {
+  const response = await fetch(`./api/logout`, {
+    method: 'POST',
+    headers: {
+      Authorization: sessionStorage.getItem('Authorization'),
+    },
+  });
+  const result = await response.json();
+
+  alert(code[result.responseData.code]);
+  sessionStorage.removeItem('Authorization');
+  location.href = './';
+}

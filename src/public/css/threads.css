@@ -206,7 +206,7 @@ footer {
 .writeThreadBox {
   display: flex;
   flex-direction: column;
-
+  text-align: right;
   padding: 20px;
 }
 .writeThread {
