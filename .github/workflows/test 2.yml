@@ -1,0 +1,102 @@
+name: Node.js CI
+
+on:
+  push:
+    branches: ['master']
+  pull_request:
+    branches: ['master']
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    strategy:
+      matrix:
+        node-version: [18.x]
+
+    steps:
+      - uses: actions/checkout@v3
+      - name: Use Node.js ${{ matrix.node-version }}
+        uses: actions/setup-node@v3
+        with:
+          node-version: ${{ matrix.node-version }}
+          cache: 'npm'
+
+        env:
+          HOST: ${{secrets.HOST}}
+          GATE_PORT: ${{secrets.GATE_PORT}}
+          DIS_PORT: ${{secrets.DIS_PORT}}
+          USERS_PORT: ${{secrets.USERS_PORT}}
+          POSTS_PORT: ${{secrets.POSTS_PORT}}
+          THREADS_PORT: ${{secrets.THREADS_PORT}}
+          ADMIN_PORT: ${{ secrets.ADMIN_PORT }}
+          USERS_MYSQL_USER_NAME: ${{secrets.USERS_MYSQL_USER_NAME}}
+          USERS_MYSQL_PASSWORD: ${{secrets.USERS_MYSQL_PASSWORD}}
+          USERS_MYSQL_HOST: ${{secrets.USERS_MYSQL_HOST}}
+          ADMIN_MYSQL_USER_NAME: ${{secrets.ADMIN_MYSQL_USER_NAME}}
+          ADMIN_MYSQL_PASSWORD: ${{secrets.ADMIN_MYSQL_PASSWORD}}
+          ADMIN_MYSQL_HOST: ${{secrets.ADMIN_MYSQL_HOST}}
+          THREADS_MYSQL_USER_NAME: ${{secrets.THREADS_MYSQL_USER_NAME}}
+          THREADS_MYSQL_PASSWORD: ${{secrets.THREADS_MYSQL_PASSWORD}}
+          THREADS_MYSQL_HOST: ${{secrets.THREADS_MYSQL_HOST}}
+          POSTS_MYSQL_USER_NAME: ${{secrets.POSTS_MYSQL_USER_NAME}}
+          POSTS_MYSQL_PASSWORD: ${{secrets.POSTS_MYSQL_PASSWORD}}
+          POSTS_MYSQL_HOST: ${{secrets.POSTS_MYSQL_HOST}}
+          JWT_SECRET_KEY: ${{secrets.JWT_SECRET_KEY}}
+          JWT_SECRET_KEY_REFRESH: ${{secrets.JWT_SECRET_KEY_REFRESH}}
+          JWT_EXPIRE_TIME: ${{secrets.JWT_EXPIRE_TIME}}
+          JWT_EXPIRE_TIME_REFRESH: ${{secrets.JWT_EXPIRE_TIME_REFRESH}}
+          REDIS_HOST: ${{secrets.REDIS_HOST}}
+          REDIS_PORT: ${{secrets.REDIS_PORT}}
+          REDIS_USERNAME: ${{secrets.REDIS_USERNAME}}
+          REDIS_PASSWORD: ${{secrets.REDIS_PASSWORD}}
+          NODEMAILER_EMAIL: ${{secrets.NODEMAILER_EMAIL}}
+          NODEMAILER_PASSWORD: ${{secrets.NODEMAILER_PASSWORD}}
+          DIRECTORY: ${{secrets.DIRECTORY}}
+          client_id: ${{secrets.client_id}}
+          client_secret: ${{secrets.client_secret}}
+          redirect_uri: ${{secrets.redirect_uri}}
+          kakaoJSkey: ${{secrets.kakaoJSkey}}
+          S3_AWS_ACCESS_KEY_ID: ${{secrets.S3_AWS_ACCESS_KEY_ID}}
+          S3_AWS_SECRET_ACCESS_KEY: ${{secrets.S3_AWS_SECRET_ACCESS_KEY}}
+          S3_AWS_REGION: ${{secrets.S3_AWS_REGION}}
+          S3_AWS_BUCKET_NAME: ${{secrets.S3_AWS_BUCKET_NAME}}
+          MONGO_DB: ${{secrets.MONGO_DB}}
+
+      - run: echo "HOST=$HOST" >> .env
+          echo "GATE_PORT=$GATE_PORT" >> .env
+          echo "DIS_PORT=$DIS_PORT" >> .env
+          echo "USERS_PORT=$USERS_PORT" >> .env
+          echo "POSTS_PORT=$POSTS_PORT" >> .env
+          echo "ADMIN_PORT=$ADMIN_PORT" >> .env
+          echo "THREADS_PORT=$THREADS_PORT" >> .env
+          echo "USERS_MYSQL_USER_NAME=$USERS_MYSQL_USER_NAME" >> .env
+          echo "USERS_MYSQL_PASSWORD=$USERS_MYSQL_PASSWORD" >> .env
+          echo "USERS_MYSQL_HOST=$USERS_MYSQL_HOST" >> .env
+          echo "ADMIN_MYSQL_USER_NAME=$ADMIN_MYSQL_USER_NAME" >> .env
+          echo "ADMIN_MYSQL_PASSWORD=$ADMIN_MYSQL_PASSWORD" >> .env
+          echo "ADMIN_MYSQL_HOST=$ADMIN_MYSQL_HOST" >> .env
+          echo "THREADS_MYSQL_USER_NAME=$THREADS_MYSQL_USER_NAME" >> .env
+          echo "THREADS_MYSQL_PASSWORD=$THREADS_MYSQL_PASSWORD" >> .env
+          echo "THREADS_MYSQL_HOST=$THREADS_MYSQL_HOST" >> .env
+          echo "POSTS_MYSQL_USER_NAME=$POSTS_MYSQL_USER_NAME" >> .env
+          echo "POSTS_MYSQL_PASSWORD=$POSTS_MYSQL_PASSWORD" >> .env
+          echo "POSTS_MYSQL_HOST=$POSTS_MYSQL_HOST" >> .env
+          echo "JWT_SECRET_KEY=$JWT_SECRET_KEY" >> .env
+          echo "JWT_SECRET_KEY_REFRESH=$JWT_SECRET_KEY_REFRESH" >> .env
+          echo "JWT_EXPIRE_TIME=$JWT_EXPIRE_TIME" >> .env
+          echo "JWT_EXPIRE_TIME_REFRESH=$JWT_EXPIRE_TIME_REFRESH" >> .env
+          echo "REDIS_HOST=$REDIS_HOST" >> .env
+          echo "REDIS_PORT=$REDIS_PORT" >> .env
+          echo "REDIS_USERNAME=$REDIS_USERNAME" >> .env
+          echo "REDIS_PASSWORD=$REDIS_PASSWORD" >> .env
+          echo "NODEMAILER_EMAIL=$NODEMAILER_EMAIL" >> .env
+          echo "NODEMAILER_PASSWORD=$NODEMAILER_PASSWORD" >> .env
+          echo "DIRECTORY=$DIRECTORY" >> .env
+          echo "S3_AWS_ACCESS_KEY_ID=$S3_AWS_ACCESS_KEY_ID" >> .env
+          echo "S3_AWS_SECRET_ACCESS_KEY=$S3_AWS_SECRET_ACCESS_KEY" >> .env
+          echo "S3_AWS_REGION=$S3_AWS_REGION" >> .env
+          echo "S3_AWS_BUCKET_NAME=$S3_AWS_BUCKET_NAME" >> .env
+          echo "MONGO_DB=$MONGO_DB" >> .env
+          npm ci
+          npm test
