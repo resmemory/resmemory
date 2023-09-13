@@ -3,6 +3,7 @@ import Comments from './db/comments.db';
 import postModule from './posts.module';
 import dotenv from 'dotenv';
 import { imageUpload, imageDelete } from './imageManager';
+import logger from '../../logger';
 
 dotenv.config();
 
@@ -50,8 +51,8 @@ const onRequest = async (res, method, pathname, params, key, cb, mock) => {
 
           if (!params.userId) {
             responseData = { code: 412 };
-          } else if (!content) {
-            responseData = { code: 413 };
+            // } else if (!content) {
+            //   responseData = { code: 413 };
           } else {
             const findPostData = await Posts.findByPk(postId);
             if (!findPostData) {
@@ -62,6 +63,7 @@ const onRequest = async (res, method, pathname, params, key, cb, mock) => {
             }
           }
         } catch (err) {
+          logger.error('댓글 작성 에러 발생: ' + err.message);
           responseData = { code: 410 };
         }
       }
