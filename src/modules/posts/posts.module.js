@@ -3,7 +3,11 @@ import dotenv from 'dotenv';
 import onRequest from './posts.service';
 import relationship from './db/relationship';
 
-dotenv.config();
+if (process.env.NODE_ENV == 'testpost') {
+  dotenv.config({ path: '.env.testpost', override: true });
+} else {
+  dotenv.config();
+}
 
 class PostsModule extends TcpServer {
   constructor() {
@@ -31,10 +35,18 @@ class PostsModule extends TcpServer {
   // 클라이언트 요청에 따른 비즈니스 로직 호출
   onRead(socket, data) {
     console.log('onRead', socket.remoteAddress, socket.remotePort, data);
-    onRequest(socket, data.method, data.uri, data.params, data.key, (s, packet) => {
-      console.log(packet);
-      socket.write(JSON.stringify(packet) + '¶');
-    });
+    onRequest(
+      socket,
+      data.method,
+      data.uri,
+      data.params,
+      data.key,
+      (s, packet) => {
+        console.log(packet);
+        socket.write(JSON.stringify(packet) + '¶');
+      },
+      data.mock,
+    );
   }
 }
 

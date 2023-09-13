@@ -27,6 +27,7 @@ jobs:
           GATE_PORT: ${{secrets.GATE_PORT}}
           DIS_PORT: ${{secrets.DIS_PORT}}
           USERS_PORT: ${{secrets.USERS_PORT}}
+          TEST_USERS_PORT: ${{secrets.TEST_USERS_PORT}}
           POSTS_PORT: ${{secrets.POSTS_PORT}}
           THREADS_PORT: ${{secrets.THREADS_PORT}}
           ADMIN_PORT: ${{ secrets.ADMIN_PORT }}
@@ -63,40 +64,41 @@ jobs:
           S3_AWS_BUCKET_NAME: ${{secrets.S3_AWS_BUCKET_NAME}}
           MONGO_DB: ${{secrets.MONGO_DB}}
 
-      - run: echo "HOST=$HOST" >> .env
-          echo "GATE_PORT=$GATE_PORT" >> .env
-          echo "DIS_PORT=$DIS_PORT" >> .env
-          echo "USERS_PORT=$USERS_PORT" >> .env
-          echo "POSTS_PORT=$POSTS_PORT" >> .env
-          echo "ADMIN_PORT=$ADMIN_PORT" >> .env
-          echo "THREADS_PORT=$THREADS_PORT" >> .env
-          echo "USERS_MYSQL_USER_NAME=$USERS_MYSQL_USER_NAME" >> .env
-          echo "USERS_MYSQL_PASSWORD=$USERS_MYSQL_PASSWORD" >> .env
-          echo "USERS_MYSQL_HOST=$USERS_MYSQL_HOST" >> .env
-          echo "ADMIN_MYSQL_USER_NAME=$ADMIN_MYSQL_USER_NAME" >> .env
-          echo "ADMIN_MYSQL_PASSWORD=$ADMIN_MYSQL_PASSWORD" >> .env
-          echo "ADMIN_MYSQL_HOST=$ADMIN_MYSQL_HOST" >> .env
-          echo "THREADS_MYSQL_USER_NAME=$THREADS_MYSQL_USER_NAME" >> .env
-          echo "THREADS_MYSQL_PASSWORD=$THREADS_MYSQL_PASSWORD" >> .env
-          echo "THREADS_MYSQL_HOST=$THREADS_MYSQL_HOST" >> .env
-          echo "POSTS_MYSQL_USER_NAME=$POSTS_MYSQL_USER_NAME" >> .env
-          echo "POSTS_MYSQL_PASSWORD=$POSTS_MYSQL_PASSWORD" >> .env
-          echo "POSTS_MYSQL_HOST=$POSTS_MYSQL_HOST" >> .env
-          echo "JWT_SECRET_KEY=$JWT_SECRET_KEY" >> .env
-          echo "JWT_SECRET_KEY_REFRESH=$JWT_SECRET_KEY_REFRESH" >> .env
-          echo "JWT_EXPIRE_TIME=$JWT_EXPIRE_TIME" >> .env
-          echo "JWT_EXPIRE_TIME_REFRESH=$JWT_EXPIRE_TIME_REFRESH" >> .env
-          echo "REDIS_HOST=$REDIS_HOST" >> .env
-          echo "REDIS_PORT=$REDIS_PORT" >> .env
-          echo "REDIS_USERNAME=$REDIS_USERNAME" >> .env
-          echo "REDIS_PASSWORD=$REDIS_PASSWORD" >> .env
-          echo "NODEMAILER_EMAIL=$NODEMAILER_EMAIL" >> .env
-          echo "NODEMAILER_PASSWORD=$NODEMAILER_PASSWORD" >> .env
-          echo "DIRECTORY=$DIRECTORY" >> .env
-          echo "S3_AWS_ACCESS_KEY_ID=$S3_AWS_ACCESS_KEY_ID" >> .env
-          echo "S3_AWS_SECRET_ACCESS_KEY=$S3_AWS_SECRET_ACCESS_KEY" >> .env
-          echo "S3_AWS_REGION=$S3_AWS_REGION" >> .env
-          echo "S3_AWS_BUCKET_NAME=$S3_AWS_BUCKET_NAME" >> .env
-          echo "MONGO_DB=$MONGO_DB" >> .env
+      - run: echo "HOST=$HOST" >>   .env.testpost
+          echo "GATE_PORT=$GATE_PORT" >>   .env.testpost
+          echo "DIS_PORT=$DIS_PORT" >>   .env.testpost
+          echo "USERS_PORT=$TEST_USERS_PORT" >>   .env.testpost
+          echo "POSTS_PORT=$POSTS_PORT" >>   .env.testpost
+          echo "ADMIN_PORT=$ADMIN_PORT" >>   .env.testpost
+          echo "THREADS_PORT=$THREADS_PORT" >>   .env.testpost
+          echo "USERS_MYSQL_USER_NAME=$USERS_MYSQL_USER_NAME" >>   .env.testpost
+          echo "USERS_MYSQL_PASSWORD=$USERS_MYSQL_PASSWORD" >>   .env.testpost
+          echo "USERS_MYSQL_HOST=$USERS_MYSQL_HOST" >>   .env.testpost
+          echo "ADMIN_MYSQL_USER_NAME=$ADMIN_MYSQL_USER_NAME" >>   .env.testpost
+          echo "ADMIN_MYSQL_PASSWORD=$ADMIN_MYSQL_PASSWORD" >>   .env.testpost
+          echo "ADMIN_MYSQL_HOST=$ADMIN_MYSQL_HOST" >>   .env.testpost
+          echo "THREADS_MYSQL_USER_NAME=$THREADS_MYSQL_USER_NAME" >>   .env.testpost
+          echo "THREADS_MYSQL_PASSWORD=$THREADS_MYSQL_PASSWORD" >>   .env.testpost
+          echo "THREADS_MYSQL_HOST=$THREADS_MYSQL_HOST" >>   .env.testpost
+          echo "POSTS_MYSQL_USER_NAME=$POSTS_MYSQL_USER_NAME" >>   .env.testpost
+          echo "POSTS_MYSQL_PASSWORD=$POSTS_MYSQL_PASSWORD" >>   .env.testpost
+          echo "POSTS_MYSQL_HOST=$POSTS_MYSQL_HOST" >>   .env.testpost
+          echo "JWT_SECRET_KEY=$JWT_SECRET_KEY" >>   .env.testpost
+          echo "JWT_SECRET_KEY_REFRESH=$JWT_SECRET_KEY_REFRESH" >>   .env.testpost
+          echo "JWT_EXPIRE_TIME=$JWT_EXPIRE_TIME" >>   .env.testpost
+          echo "JWT_EXPIRE_TIME_REFRESH=$JWT_EXPIRE_TIME_REFRESH" >>   .env.testpost
+          echo "REDIS_HOST=$REDIS_HOST" >>   .env.testpost
+          echo "REDIS_PORT=$REDIS_PORT" >>   .env.testpost
+          echo "REDIS_USERNAME=$REDIS_USERNAME" >>   .env.testpost
+          echo "REDIS_PASSWORD=$REDIS_PASSWORD" >>   .env.testpost
+          echo "NODEMAILER_EMAIL=$NODEMAILER_EMAIL" >>   .env.testpost
+          echo "NODEMAILER_PASSWORD=$NODEMAILER_PASSWORD" >>   .env.testpost
+          echo "DIRECTORY=$DIRECTORY" >>   .env.testpost
+          echo "S3_AWS_ACCESS_KEY_ID=$S3_AWS_ACCESS_KEY_ID" >>   .env.testpost
+          echo "S3_AWS_SECRET_ACCESS_KEY=$S3_AWS_SECRET_ACCESS_KEY" >>   .env.testpost
+          echo "S3_AWS_REGION=$S3_AWS_REGION" >>    .env.testpost
+          echo "S3_AWS_BUCKET_NAME=$S3_AWS_BUCKET_NAME" >>     .env.testpost
+          echo "MONGO_DB=$MONGO_DB" >>   .env.testpost
           npm ci
-          npm test
+          npm run test:posts
+          npm run test:users
