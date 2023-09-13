@@ -100,4 +100,5 @@ jobs:
           echo "S3_AWS_BUCKET_NAME=$S3_AWS_BUCKET_NAME" >>     .env.testpost
           echo "MONGO_DB=$MONGO_DB" >>   .env.testpost
           npm ci
-          npm test
+          npm run test:posts
+          npm run test:users
