@@ -1,5 +1,11 @@
+<<<<<<< Updated upstream:src/__tests__/integeration/threads.integration.spec.js
 import sequelize from '../../modules/threads/db/threads.init';
 import threadsmodule from '../../modules/threads/threads.module';
+=======
+import sequelize from '../../src/modules/threads/db/threads.init';
+import threadsmodule from '../../src/modules/threads/threads.module';
+import Threads from '../../src/modules/threads/db/threads.db';
+>>>>>>> Stashed changes:__tests__/integeration/threads.integration.spec.js
 beforeAll(async () => {
   if (process.env.NODE_ENV === 'test') {
     await sequelize.sync();
@@ -65,10 +71,25 @@ describe('GET /api/threads', () => {
       responseData: {
         result: [
           {
+<<<<<<< Updated upstream:src/__tests__/integeration/threads.integration.spec.js
             content: 'New thread',
             createdAt: expect.any(String),
             deletedAt: null,
             threadId: expect.any(Number),
+=======
+            content: '테스트',
+            createdAt: expect.any(String),
+            deletedAt: null,
+            threadId: 1,
+            userId: 1,
+          },
+          {
+            content: 'New thread',
+            createdAt: expect.any(String),
+            deletedAt: null,
+            threadId: 2,
+            userId: 1,
+>>>>>>> Stashed changes:__tests__/integeration/threads.integration.spec.js
           },
         ],
       },

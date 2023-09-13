@@ -6,7 +6,7 @@ import { imageUpload, imageDelete } from './imageManager';
 
 dotenv.config();
 
-const onRequest = async (res, method, pathname, params, key, cb) => {
+const onRequest = async (res, method, pathname, params, key, cb, mock) => {
   let responseData = {};
 
   switch (method) {
@@ -90,7 +90,7 @@ const onRequest = async (res, method, pathname, params, key, cb) => {
           });
 
           const userIds = result.map((post) => post.userId);
-
+          console.log(mock, '찾았다', process.env.USERS_PORT);
           await new Promise((resolve, reject) => {
             postModule.dataconnection(
               process.env.HOST,
@@ -105,6 +105,7 @@ const onRequest = async (res, method, pathname, params, key, cb) => {
               null,
               'GET',
               '/users',
+              mock,
             );
           });
 
@@ -117,6 +118,7 @@ const onRequest = async (res, method, pathname, params, key, cb) => {
         } catch (err) {
           console.log(err);
           responseData = { code: 320 };
+          console.log(err);
         }
       }
 

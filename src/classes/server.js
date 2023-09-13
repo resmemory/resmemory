@@ -103,7 +103,7 @@ class TcpServer {
       }
     }, 3000);
   }
-  async dataconnection(host, port, onNoti, query, params, bodies, userId, method, uri) {
+  async dataconnection(host, port, onNoti, query, params, bodies, userId, method, uri, mock) {
     const context = {
       port,
       name: 'connection',
@@ -121,7 +121,7 @@ class TcpServer {
       userId,
     };
 
-    const packet = makePacket(uri, method, 0, context);
+    const packet = makePacket(uri, method, 0, context, mock);
     let isConnectedData = false;
     const clientData = new TcpClient(
       host,

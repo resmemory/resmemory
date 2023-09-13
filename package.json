@@ -4,10 +4,8 @@
   "description": "template for microservice ",
   "main": "src/init.js",
   "scripts": {
-    "test": "cross-env NODE_ENV=test jest --forceExit",
-    "test:silent": "cross-env NODE_ENV=test jest --silent  --forceExit",
-    "test:coverage": "cross-env NODE_ENV=test jest --coverage  --forceExit",
-    "test:integration": "cross-env NODE_ENV=test jest __tests__/integration  --forceExit",
+    "test:post": "cross-env NODE_ENV=testpost jest posts.integration.spec.js   --forceExit",
+    "test:users": "cross-env NODE_ENV=test jest users.integration.spec.js   --forceExit",
     "start:gate": "babel-node src/app.js",
     "start:dis": " babel-node src/modules/distributor.js",
     "start:users": "babel-node src/modules/users/users.module.js",

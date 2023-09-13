@@ -1,8 +1,8 @@
-import sequelize from '../../modules/users/db/users.init';
-import usersmodule from '../../modules/users/users.module';
-import Users from '../../modules/users/db/users.db';
+import sequelize from '../../src/modules/users/db/users.init';
+import usersmodule from '../../src/modules/users/users.module';
+import Users from '../../src/modules/users/db/users.db';
 import bcrypt from 'bcrypt';
-import redisCli from '../../redis';
+import redisCli from '../../src/redis';
 
 beforeAll(async () => {
   if (process.env.NODE_ENV === 'test') {
