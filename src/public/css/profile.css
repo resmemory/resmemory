@@ -1,21 +1,17 @@
-@font-face {
-  font-family: 'jaram';
-  src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_2307-2@1.0/iceJaram-Rg.woff2')
-    format('woff2');
-  font-weight: normal;
-  font-style: normal;
-}
-@font-face {
-  font-family: 'jaemin';
-  src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_2307-1@1.1/Hangeuljaemin4-Regular.woff2')
-    format('woff2');
-  font-weight: normal;
-  font-style: normal;
-}
+@import 'reset.css';
+
 @font-face {
   font-family: 'GangwonEdu_OTFBoldA';
   src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_2201-2@1.0/GangwonEdu_OTFBoldA.woff')
     format('woff');
+  font-weight: normal;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'jaram';
+  src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_2307-2@1.0/iceJaram-Rg.woff2')
+    format('woff2');
   font-weight: normal;
   font-style: normal;
 }
@@ -25,40 +21,129 @@
   font-weight: 900px;
 }
 
-/* header */
+/* 태블릿 크기 */
+@media screen and (min-width: 769px) {
+  header {
+    padding-left: 3rem;
+    padding-right: 3rem;
+  }
+
+  .container {
+    padding: 0px 60px !important;
+  }
+
+  .profileSidebar {
+    margin-right: 20px;
+  }
+
+  h1 {
+    font-size: 35px !important;
+  }
+  h2 {
+    font-size: 30px !important;
+  }
+}
+
+/* PC 크기 */
+@media screen and (min-width: 1025px) {
+  header {
+    padding-top: 1rem;
+  }
+  article {
+    padding-left: 10.6rem !important;
+    padding-right: 10.6rem !important;
+  }
+  .container {
+    padding: 0px 60px !important;
+  }
+  .profileSidebar {
+    margin-right: 40px !important;
+  }
+}
+
+article {
+  padding-left: 1rem;
+  padding-right: 1rem;
+  display: flex;
+  flex-direction: column;
+  flex-grow: 1;
+  max-width: 1024px;
+  position: relative;
+}
 
 header {
-  height: 120px;
+  padding-top: 1rem;
+  display: flex;
+  justify-content: space-between;
+  height: 245px;
+}
+
+.logoCon {
+  display: flex;
 }
 
 .logo {
-  height: 100px;
-  float: right;
+  object-fit: contain;
+  height: 120px;
+  width: 120px;
+  cursor: pointer;
 }
 
-.headerBtns > button {
-  width: 80px;
-  height: 30px;
-  font-size: 15px;
+.navControl {
+  padding-top: 1rem;
+  padding-bottom: 1rem;
+  display: flex;
+  flex-direction: column;
+}
+
+.navCon {
+  display: flex;
+  font-size: large;
+  font-weight: 700;
+  gap: 1rem;
+  flex-grow: 1;
+  align-items: end;
+}
+
+.logo:hover,
+button:hover,
+.navCon li:hover {
+  transform: scale(1.1);
+  transition-duration: 0.1s;
+  cursor: pointer;
+}
+
+.headerBtns {
+  display: flex;
+  flex-direction: row;
+}
+
+button {
+  box-shadow: 2px 2px rgb(195, 195, 195);
+  border: none;
+  border-radius: 5px;
   background-color: black;
   color: white;
-  border-radius: 5px;
+  padding: 10px 10px;
+  cursor: pointer;
+  font-size: 18px;
+  margin: 5px 5px;
 }
 
-.headerBtns > button:hover {
-  width: 80px;
-  height: 30px;
-  font-size: 15px;
-  background-color: white;
-  color: black;
-  border-radius: 5px;
-}
+/* main */
 
-/* footer */
-footer {
-  margin-top: 200px;
+main {
   text-align: center;
-  font-family: Arial, Helvetica, sans-serif;
+}
+
+.container {
+  font-size: 20px;
+  padding: 0px;
+  box-sizing: border-box;
+  border-radius: 2px;
+  text-align: left;
+  border-color: #efefef;
+  width: 90%;
 }
 
 /* 모달 스타일 */
@@ -89,43 +174,17 @@ footer {
   overflow: auto;
 }
 
-button {
-  background-color: black;
-  color: white;
-  border-radius: 5px;
-}
-
 .profileSidebar {
   display: flex;
   flex-direction: column;
   align-items: flex-start;
-  margin: 0px 100px 0px 0px;
+  text-align: left;
+  padding: 20px;
 }
 
 .profileSidebar > button {
-  width: 180px;
-  height: 50px;
-  font-size: 20px;
-  padding: 10px;
-  background-color: white;
-  color: black;
-  margin: 10px 0px 10px 0px;
-  border: 1px solid #ebeaec;
-  box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.3);
-  border-radius: 16px;
-}
-
-.profileSidebar > button:hover {
-  width: 180px;
-  height: 50px;
-  font-size: 20px;
-  padding: 10px;
-  background-color: black;
-  color: white;
-  margin: 10px 0px 10px 0px;
-  border: 1px solid #ebeaec;
-  box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.3);
-  border-radius: 16px;
+  width: 150px;
+  background-color: rgb(81, 80, 80);
 }
 
 .profileBox {
@@ -139,43 +198,32 @@ button {
 
 .bookmarkInnerBox {
   margin: 40px 40px 40px 0px;
+  text-align: left;
 }
 
 .title {
   font-family: 'jaram';
-  font-size: 40px;
+  font-size: 23px;
   border-bottom: 2px solid black;
+  text-align: left;
 }
 
-.headtitle {
+h1 {
   font-family: 'jaram';
-  font-size: 40px;
   background-color: black;
   color: white;
-  padding: 0px 20px 0px 20px;
-}
-.removeBookmark {
-  background-color: white;
-  color: black;
-  margin: 10px 0px 10px 0px;
-  border: 1px solid #ebeaec;
-  box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.3);
-  border-radius: 5px;
-  padding: 5px 10px 5px 10px;
-}
-
-.removeBookmark:hover {
-  background-color: black;
-  color: white;
-  margin: 10px 0px 10px 0px;
-  border: 1px solid #ebeaec;
-  box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.3);
-  border-radius: 5px;
-  padding: 5px 10px 5px 10px;
+  font-size: 23px;
 }
 
 input {
   font-size: 20px;
   width: 90%;
   margin: 10px 0px 10px 0px;
+}
+/* footer */
+footer {
+  padding-top: 200px;
+  padding-bottom: 100px;
+  text-align: center;
+  font-family: 'GangwonEdu_OTFBoldA';
 }

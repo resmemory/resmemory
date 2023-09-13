@@ -1,11 +1,26 @@
 document.addEventListener('DOMContentLoaded', () => {
   loadPostDetail();
   loadComments();
+  loginChecker();
 });
 
+let loginedUserId;
 const urlParams = new URL(location.href).searchParams;
 const postId = urlParams.get('post');
-const userId = localStorage.getItem('Authorization');
+const userId = sessionStorage.getItem('Authorization');
+
+async function loginChecker() {
+  if (sessionStorage.getItem('Authorization')) {
+    const profileresponse = await fetch(`./api/users`, {
+      method: 'GET',
+      headers: {
+        Authorization: sessionStorage.getItem('Authorization'),
+      },
+    });
+    const profileresult = await profileresponse.json();
+    loginedUserId = profileresult.responseData.bodies.userId;
+  }
+}
 
 async function loadPostDetail() {
   const response = await fetch(`/api/posts?postId=${postId}`, {
@@ -26,13 +41,16 @@ async function loadPostDetail() {
   const title = post_result.title;
   const content = post_result.content;
   const annualCategory = post_result.annualCategory;
-  const img = post_result.img;
+  let img = post_result.img;
+  if (!img) {
+    img = '';
+  }
 
   const postBox = document.querySelector('#post-box');
   postBox.innerHTML = '';
 
   const temp_html = `
- 
+
 <div class="post-title">${title}</div>
 <div class="post-info">
 <div class="post-nickname">${nickname}</div>
@@ -40,10 +58,10 @@ async function loadPostDetail() {
 <div class="post-date">${updatedAt}</div>
 </div>
 <div class="post-buttons">
-  <button class="button edit-button" onclick="modalOn('#edit-post-Modal')">수정</button>
-  <button class="button delete-button" onclick="deletePost()">삭제</button>
-  <button class="button bookmark-button" onclick="postBookmark()">북마크</button>
-  <button class="button report-button" onclick="modalOn('#report-post-Modal')">신고</button>
+  <button class="button_edit-button" style="display:none" onclick="modalOn('#edit-post-Modal')">수정</button>
+  <button class="button_delete-button" style="display:none" onclick="deletePost()">삭제</button>
+  <button class="button_bookmark-button" onclick="postBookmark()">북마크</button>
+  <button class="button_report-button" style="display:block" onclick="modalOn('#report-post-Modal')">신고</button>
 </div>
 <div class="post-content">
   <img src="${img}" alt="${img}" style="${img ? '' : 'display: none;'}">
@@ -51,6 +69,8 @@ async function loadPostDetail() {
 </div>
 
 
+<form action="./api/posts" method="PATCH" enctype="multipart/form-data" onsubmit="return false" id="form">
+<input type="hidden" name="authorization" class="Authorization" />
 <div class="modal" id="edit-post-Modal" style="display: none">
 <div class="modalContent">
   <div class="edit-post-Box">
@@ -58,17 +78,17 @@ async function loadPostDetail() {
     <h2>글 수정하기</h2>
       <label>제목</label>
       <br />
-      <input class="post_title" type="text" value="${title}" />
+      <input name="title" class="post_title" type="text" value="${title}" />
     </div>
     <div>
       <label>내용</label>
       <br />
-      <textarea class="post_content" type="text" >${content}</textarea>
+      <textarea name="content" class="post_content" type="text" >${content}</textarea>
     </div>
     <div>
       <label>연도</label>
       <br />
-      <select class="post_annualCategory">
+      <select name="annualCategory" class="post_annualCategory">
         <option selected>${annualCategory}</option>
         <option>1970</option>
         <option>1980</option>
@@ -79,10 +99,12 @@ async function loadPostDetail() {
       </select>
     </div>
     <div>
-      <label>이미지</label>
+      <label>현재 이미지</label>
       <br />
-      <input class="post_img" type="text" value="${img}" />
-      <input class="post_img" type="file" />
+      <input name="previousImg" class="post_img" type="text" value="${img}" />
+      <label>변경할 이미지</label>
+      <br />
+      <input name="img" class="post_img" type="file" accept="image/*" />
     </div>
     <div class="edit-post-Box-btn">
         <button class="edit-post-btn" onclick="updatePost()">수정</button>
@@ -91,6 +113,7 @@ async function loadPostDetail() {
   </div>
 </div>
 </div>
+</form>
 
 
 <div class="modal" id="report-post-Modal" style="display: none">
@@ -108,8 +131,15 @@ async function loadPostDetail() {
 </div>
 </div>
 `;
-
   postBox.innerHTML = temp_html;
+  const editBtn = document.querySelector('.button_edit-button');
+  const delBtn = document.querySelector('.button_delete-button');
+  const reportBtn = document.querySelector('.button_report-button');
+  if (loginedUserId == post_result.userId) {
+    editBtn.style.display = 'block';
+    delBtn.style.display = 'block';
+    reportBtn.style.display = 'none';
+  }
 }
 async function loadComments() {
   const response = await fetch(`./api/comments?postId=${postId}`, {
@@ -121,11 +151,39 @@ async function loadComments() {
   const commentList = document.querySelector('.comment-list');
   commentList.innerHTML = '';
 
-  const temp_html = result_data.map((data) => {
-    const commentId = data.commentId;
-    const content = data.content;
-    const nickname = data.nickname;
-    return `
+  const temp_html = result_data
+    .map((data) => {
+      const commentId = data.commentId;
+      const content = data.content;
+      const nickname = data.nickname;
+      if (loginedUserId !== data.userId) {
+        return `
+    <div class="comment-item">
+      <div class="comment-content">
+        <span class="comment-nickname">${nickname} :</span>
+        ${content}
+      </div>
+      <div class="comment-buttons">
+        <button class="comment-report-button" onclick="modalOn('#report-comment-Modal${commentId}')">신고</button>
+      </div>
+      </div>
+      <div class="modal" id="report-comment-Modal${commentId}" style="display: none">
+        <div class="modalContent">
+          <div class="report-comment-Box">
+            <div>
+              <label>신고 내용</label>
+              <br />
+              <input class="report_content" type="text" id="reportContentInput-${commentId}"/>
+            </div>
+            <div class="report-post-Box-btn">
+                <button class="report-comment-btn" onclick="commentReport('comment',${commentId},)">신고</button>
+                <button class="report-comment-btn" onclick="modalClose('#report-comment-Modal${commentId}')">닫기</button>
+            </div>
+          </div>
+          </div>
+        </div>`;
+      } else
+        return `
     <div class="comment-item">
       <div class="comment-content">
         <span class="comment-nickname">${nickname} :</span>
@@ -134,7 +192,7 @@ async function loadComments() {
       <div class="comment-buttons">
         <button class="comment-edit-button" onclick="modalOn('#edit-comment-Modal${commentId}')">수정</button>
         <button class="comment-delete-button" onclick="deleteComment(${commentId})">삭제</button>
-        <button class="comment-report-button" onclick="modalOn('#report-comment-Modal${commentId}')">신고</button>
+       
       </div>
     </div>
     
@@ -154,23 +212,10 @@ async function loadComments() {
     </div>
   </div>
 
-  <div class="modal" id="report-comment-Modal${commentId}" style="display: none">
-<div class="modalContent">
-  <div class="report-comment-Box">
-    <div>
-      <label>신고 내용</label>
-      <br />
-      <input class="report_content" type="text" id="reportContentInput-${commentId}"/>
-    </div>
-    <div class="report-post-Box-btn">
-        <button class="report-comment-btn" onclick="commentReport('comment',${commentId},)">신고</button>
-        <button class="report-comment-btn" onclick="modalClose('#report-comment-Modal')">닫기</button>
-    </div>
-  </div>
-</div>
-</div>
+
     `;
-  });
+    })
+    .join('');
 
   commentList.innerHTML = temp_html;
 }
@@ -186,25 +231,21 @@ function modalClose(classname) {
 }
 
 async function updatePost() {
-  const title = document.querySelector('.post_title').value;
-  const content = document.querySelector('.post_content').value;
-  const annualCategory = document.querySelector('.post_annualCategory').value;
-  const img = document.querySelector('.post_img').value;
-
-  const response = await fetch(`/api/posts/${postId}`, {
+  const form = document.querySelector('#form');
+  const authorization = document.querySelector('.Authorization');
+  authorization.value = sessionStorage.getItem('Authorization');
+  const formData = new FormData(form);
+  const response = await fetch(`./api/posts/${postId}`, {
     method: 'PATCH',
-    headers: {
-      'Content-Type': 'application/json',
-      Authorization: userId,
-    },
-    body: JSON.stringify({ title, content, annualCategory, img }),
+    body: formData,
   });
-  const result = await response.json();
-  if (result.responseData.code == 351) {
-    alert(code[result.responseData.code]);
-    return window.location.reload();
+
+  const data = await response.json();
+  alert(code[data.responseData.code]);
+
+  if (data.responseData.code === 351) {
+    location.reload();
   }
-  alert(code[result.responseData.code]);
 }
 
 async function deletePost() {
@@ -233,6 +274,9 @@ async function postBookmark() {
   });
   const result = await response.json();
   alert(code[result.responseData.code]);
+  if (result.responseData.code === 0) {
+    location.href = `./login`;
+  }
 }
 
 async function postComment() {
@@ -252,6 +296,9 @@ async function postComment() {
     return location.reload();
   }
   alert(code[result.responseData.code]);
+  if (result.responseData.code === 0) {
+    location.href = `./login`;
+  }
 }
 
 async function updateComment(commentId) {
@@ -271,6 +318,9 @@ async function updateComment(commentId) {
     return location.reload();
   }
   alert(code[result.responseData.code]);
+  if (result.responseData.code === 0) {
+    location.href = `./login`;
+  }
 }
 
 async function deleteComment(contentId) {
@@ -286,6 +336,9 @@ async function deleteComment(contentId) {
     return location.reload();
   }
   alert(code[result.responseData.code]);
+  if (result.responseData.code === 0) {
+    location.href = `./login`;
+  }
 }
 
 async function postReport(reportType, contentId) {
@@ -305,6 +358,9 @@ async function postReport(reportType, contentId) {
     return location.reload();
   }
   alert(code[result.responseData.code]);
+  if (result.responseData.code === 0) {
+    location.href = `./login`;
+  }
 }
 
 async function commentReport(reportType, contentId) {
@@ -324,4 +380,7 @@ async function commentReport(reportType, contentId) {
     return location.reload();
   }
   alert(code[result.responseData.code]);
+  if (result.responseData.code === 0) {
+    location.href = `./login`;
+  }
 }

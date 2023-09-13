@@ -1,29 +1,27 @@
-name: deploy
+name: Node.js CI
 
 on:
   push:
-    branches: [master]
+    branches: ['master']
+  pull_request:
+    branches: ['master']
 
 jobs:
-  build-and-deploy:
-    runs-on: ubuntu-22.04
+  build:
+    runs-on: ubuntu-latest
 
     strategy:
       matrix:
-        node-version: [18.17.0]
-        # See supported Node.js release schedule at https://nodejs.org/en/about/releases/
+        node-version: [18.x]
 
     steps:
-      - name: ✅ 체크아웃 source code.
-        uses: actions/checkout@v3
-
-      - name: ⚙️ ${{ matrix.node-version }} 버전의 노드로 세팅합니다.
+      - uses: actions/checkout@v3
+      - name: Use Node.js ${{ matrix.node-version }}
         uses: actions/setup-node@v3
         with:
           node-version: ${{ matrix.node-version }}
+          cache: 'npm'
 
-      - name: ⚙️ 환경변수를 설정합니다.
-        working-directory: ./
         env:
           HOST: ${{secrets.HOST}}
           GATE_PORT: ${{secrets.GATE_PORT}}
@@ -64,10 +62,8 @@ jobs:
           S3_AWS_REGION: ${{secrets.S3_AWS_REGION}}
           S3_AWS_BUCKET_NAME: ${{secrets.S3_AWS_BUCKET_NAME}}
           MONGO_DB: ${{secrets.MONGO_DB}}
-        run: |
-          pwd
-          touch .env
-          echo "HOST=$HOST" >> .env
+
+      - run: echo "HOST=$HOST" >> .env
           echo "GATE_PORT=$GATE_PORT" >> .env
           echo "DIS_PORT=$DIS_PORT" >> .env
           echo "USERS_PORT=$USERS_PORT" >> .env
@@ -102,48 +98,5 @@ jobs:
           echo "S3_AWS_REGION=$S3_AWS_REGION" >> .env
           echo "S3_AWS_BUCKET_NAME=$S3_AWS_BUCKET_NAME" >> .env
           echo "MONGO_DB=$MONGO_DB" >> .env
-          cat .env
-
-          cd ./src/public/js
-          touch config.js
-          echo "const urlParams = new URL(location.href).searchParams;" >> config.js
-          echo "const kCode = urlParams.get('code');" >> config.js
-          echo "const config = {" >> config.js
-          echo "client_id: '$client_id' ," >> config.js
-          echo "client_secret: '$client_secret' , " >> config.js
-          echo "grant_type: 'authorization_code' ," >> config.js
-          echo "redirect_uri: '$redirect_uri' ," >> config.js
-          echo "code: kCode," >> config.js
-          echo "};" >> config.js
-          echo "const kakaoJSkey = '$kakaoJSkey' ;" >> config.js
-
-          cat config.js
-
-      - name: ✨ 패키지 설치
-        working-directory: ./
-        run: npm install
-
-      - name: ✨ 빌드 과정을 시작
-        working-directory: ./
-        run: npm run build
-
-      - name: 📦 빌드한 코드를 압축
-        run: zip -r verdantjuly.zip ./dist ./scripts ./appspec.yml ./.env ./package.json
-
-      - name: 🌎 AWS에 접속
-        uses: aws-actions/configure-aws-credentials@v1
-        with:
-          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
-          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-          aws-region: ap-northeast-2
-
-      - name: 🦖 S3에 압축된 서버 코드를 업로드
-        run: aws s3 cp --region ap-northeast-2 ./verdantjuly.zip s3://verdantjuly
-
-      - name: 🚀 AWS codeDeploy로 배포를 시작
-        run: aws deploy create-deployment
-          --ignore-application-stop-failures
-          --application-name verdantjuly
-          --deployment-config-name CodeDeployDefault.OneAtATime
-          --deployment-group-name dev
-          --s3-location bucket=verdantjuly,bundleType=zip,key=verdantjuly.zip
+          npm ci
+          npm test

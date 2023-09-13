@@ -17,7 +17,11 @@
       <div class="loginPageBtns">
         <button class="signupModalBtn" onclick="modalOn('#signupModal')">회원 가입</button>
         <button class="loginModalBtn" onclick="modalOn('#loginModal')">로그인</button>
-        <img onclick="kakaoLogin()" src="./assets/image/kakao_login_large_narrow.png" />
+        <img
+          class="kakaoLogin"
+          onclick="kakaoLogin()"
+          src="./assets/image/kakao_login_large_narrow.png"
+        />
       </div>
       <div class="modal" id="loginModal" style="display: none">
         <div class="modalContent">
@@ -25,13 +29,14 @@
             <div>
               <label>이메일</label>
               <br />
-              <input class="email" type="text" />
+              <input class="email" type="text" name="email" />
             </div>
             <div>
               <label>비밀번호</label>
               <br />
               <input class="password" type="password" />
             </div>
+
             <div class="loginBoxBtns">
               <button class="login" onclick="login()">로그인</button>
               <button class=".close" onclick="modalClose('#loginModal')">닫기</button>

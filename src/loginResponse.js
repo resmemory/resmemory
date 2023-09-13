@@ -1,5 +1,4 @@
 import frontconnection from './frontconnection';
-
 function loginResponse(res, packet) {
   if (packet.responseData.code == 121) {
     res.setHeader('Authorization', `Bearer ${packet.responseData.token}`);
@@ -7,7 +6,6 @@ function loginResponse(res, packet) {
     res.end(JSON.stringify(packet));
   } else if (packet.responseData.code == 111) {
     const today = new Date();
-
     res.setHeader('Set-Cookie', [`refresh=${packet.responseData.refresh}; expires=7d`]);
     res.end(JSON.stringify(packet));
     delete packet.responseData.refresh;

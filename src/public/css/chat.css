@@ -1,0 +1,83 @@
+body {
+  font-family: Arial, sans-serif;
+  margin: 0;
+  padding: 0;
+  background-color: #f0f0f0;
+}
+#nickname {
+  float: right;
+  font-weight: bold;
+  margin-right: 10px;
+  margin-top: 5px;
+}
+
+.chat-container {
+  max-width: 600px;
+  margin: 0 auto;
+  background-color: #fff;
+  border-radius: 5px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  padding: 20px;
+  box-sizing: border-box;
+  margin-top: 20px;
+  display: flex;
+  flex-direction: column;
+  height: 80vh;
+}
+
+.chat-messages {
+  flex-grow: 1;
+  overflow-y: scroll;
+  padding: 10px;
+}
+
+.chat-message {
+  margin: 5px 0;
+  padding: 8px;
+  border-radius: 8px;
+  max-width: 70%;
+}
+
+/* 왼쪽 정렬 */
+.chat-message.left-align {
+  background-color: rgb(137, 90, 1);
+  color: white;
+  float: left;
+  clear: both;
+}
+
+/* 오른쪽 정렬 */
+.chat-message.right-align {
+  background-color: rgb(62, 46, 1);
+  color: white;
+  float: right;
+  clear: both;
+}
+
+/* 사용자 닉네임 스타일 */
+#nickname {
+  font-weight: bold;
+}
+
+.chat-input {
+  display: flex;
+  align-items: center;
+}
+
+.chat-input input[type='text'] {
+  flex-grow: 1;
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  margin-right: 10px;
+  outline: #694a07;
+}
+
+.chat-input button {
+  padding: 10px 20px;
+  background-color: #694a07;
+  color: #fff;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}

@@ -13,36 +13,37 @@
   font-weight: 900px;
 }
 
-@media screen and (min-width: 769px) and (max-width: 1024px) {
+/* 태블릿 크기 */
+@media screen and (min-width: 769px) {
+  header {
+    padding-left: 3rem;
+    padding-right: 3rem;
+  }
+
   .container {
-    flex-direction: column;
+    display: flex;
+    padding-left: 3rem;
+    padding-right: 3rem;
   }
 
-  .post_pagination {
-    margin: 0px 100px 0px 100px;
+  .chatbox {
+    bottom: 3rem !important;
+    right: 3rem !important;
   }
-
   .postBox > td:nth-child(2) {
-    width: 50%;
-  }
-
-  .annual_category_box {
-    margin-top: 50px;
+    width: 400px;
   }
 }
 
+/* PC 크기 */
 @media screen and (min-width: 1025px) {
   .container {
     flex-direction: row;
     justify-content: space-between;
   }
 
-  .post_pagination {
-    margin-left: 100px;
-  }
-
   .postBox > td:nth-child(2) {
-    width: 530px;
+    width: 1000px;
   }
 
   .box_button {
@@ -61,39 +62,103 @@ button:hover {
   cursor: pointer;
 }
 
-/* header */
+body {
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+}
+
+article {
+  padding-left: 1rem;
+  padding-right: 1rem;
+  display: flex;
+  flex-direction: column;
+  flex-grow: 1;
+  max-width: 1024px;
+  position: relative;
+}
+
 header {
-  margin-top: 40px;
-  height: 120px;
+  display: flex;
+  justify-content: space-between;
+  padding-top: 1rem;
+  height: 245px;
+}
+
+.logoCon {
+  display: flex;
 }
 
 .logo {
-  height: 210px;
-  float: right;
+  object-fit: contain;
+  height: 120px;
+  width: 120px;
   cursor: pointer;
-  margin-right: 90px;
 }
 
-.write {
-  margin-top: 50px;
+.navControl {
+  padding-top: 1rem;
+  padding-bottom: 1rem;
+  display: flex;
+  flex-direction: column;
+}
+
+.navCon {
+  display: flex;
+  font-size: large;
+  font-weight: 700;
+  gap: 1rem;
+  flex-grow: 1;
+  align-items: end;
+}
+
+.navCon li {
+  text-shadow: 1.5px 1.5px rgb(220, 218, 218);
+  font-family: 'GangwonEdu_OTFBoldA';
+  font-size: 15px;
+}
+
+.logo:hover,
+button:hover,
+.navCon li:hover {
+  transform: scale(1.1);
+  transition-duration: 0.1s;
+  cursor: pointer;
+}
+
+.headerBtns {
+  display: flex;
+  flex-direction: row;
+}
+
+header button {
+  box-shadow: 2px 2px rgb(195, 195, 195);
+  border: none;
+  border-radius: 5px;
+  background-color: black;
+  color: white;
+  padding: 10px 10px;
+  cursor: pointer;
+  font-size: 18px;
+  margin: 5px 5px;
 }
 
 /* main */
 
 /* 게시글(페이지버튼) + 연도별 카테고리 나란히 정렬 */
 .container {
-  margin-left: auto;
-  margin-right: auto;
-  width: 100%;
   display: flex;
 }
 
 /* 페이지네이션 버튼 */
-.pagination {
+.pagination_createdat,
+.pagination_viewcount {
   text-align: center;
 }
 
-.pagination > button {
+.pagination_createdat > button,
+.pagination_viewcount > button {
+  box-shadow: 2px 2px rgb(195, 195, 195);
   margin: 20px 20px 0px 0px;
   background-color: black;
   color: white;
@@ -110,9 +175,10 @@ table {
 }
 
 th {
-  padding: 15px;
+  padding: 5px;
   text-align: center;
-  background-color: #e4e4e4;
+  background-color: #0000007b;
+  width: 180px;
 }
 
 tr {
@@ -150,41 +216,42 @@ td {
   align-items: center;
 }
 
-/* 연도별 카테고리 */
-.annual_category_box {
-  border: 1px solid #ebeaec;
-  box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.3);
-  border-radius: 16px;
-  padding: 30px 50px 30px 50px;
-}
-
-.annual_category_box > p {
-  text-align: center;
-  margin: 30px;
-  cursor: pointer;
-}
-
-.annual_category_box > p:hover {
-  text-decoration: underline;
-  transform: scale(1.2);
-  transition-duration: 0.1s;
-}
-
 /* 익명 스레드 버튼 */
 .thread_btn {
-  border: none;
-  border-radius: 5px;
-  font-size: 28px;
-  margin-top: 50px;
-  position: relative;
-  background-color: black;
-  color: white;
-  padding: 30px 30px;
+  background-color: rgb(160, 99, 39);
+  box-shadow: 2px 2px rgba(252, 177, 85, 0.503);
+}
+
+.chat_btn {
+  background-color: rgb(72, 53, 19);
+  box-shadow: 2px 2px rgba(43, 11, 0, 0.344);
 }
 
 /* footer */
 footer {
-  margin-top: 200px;
+  padding-top: 200px;
+  padding-bottom: 100px;
   text-align: center;
-  font-family: Arial, Helvetica, sans-serif;
+  font-family: 'GangwonEdu_OTFBoldA';
+}
+.chatbox {
+  display: flex;
+  flex-direction: row;
+  position: fixed;
+  bottom: 1rem;
+  right: 1rem;
+}
+
+.chatbox button {
+  border: none;
+  border-radius: 5px;
+  color: white;
+  padding: 15px 20px;
+  cursor: pointer;
+  font-size: 20px;
+  margin: 5px 5px;
+}
+
+.writeThread {
+  display: flex;
 }

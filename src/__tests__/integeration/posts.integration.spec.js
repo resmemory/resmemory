@@ -1,6 +1,5 @@
 import sequelize from '../../modules/posts/db/posts.init';
 import postsmodule from '../../modules/posts/posts.module';
-import MockUsersModule from './mock.users.module';
 
 beforeAll(async () => {
   if (process.env.NODE_ENV === 'test') {
@@ -24,6 +23,7 @@ describe('POST /api/posts', () => {
           title: '테스트',
           content: '테스트',
           annualCategory: '1990',
+          img: { size: 0 },
         },
         1,
         'POST',

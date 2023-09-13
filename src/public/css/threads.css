@@ -1,10 +1,5 @@
-@font-face {
-  font-family: 'jaram';
-  src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_2307-2@1.0/iceJaram-Rg.woff2')
-    format('woff2');
-  font-weight: normal;
-  font-style: normal;
-}
+@import 'reset.css';
+
 @font-face {
   font-family: 'GangwonEdu_OTFBoldA';
   src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_2201-2@1.0/GangwonEdu_OTFBoldA.woff')
@@ -13,35 +8,138 @@
   font-style: normal;
 }
 
-* {
-  font-family: 'GangwonEdu_OTFBoldA';
+@font-face {
+  font-family: 'jaram';
+  src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_2307-2@1.0/iceJaram-Rg.woff2')
+    format('woff2');
+  font-weight: normal;
+  font-style: normal;
 }
 
-img {
-  position: absolute;
-  top: 0;
-  right: 0;
-  width: 100px;
-  height: 100px;
+* {
+  font-family: 'GangwonEdu_OTFBoldA';
+  font-weight: 900px;
+}
+
+/* 태블릿 크기 */
+@media screen and (min-width: 769px) {
+  header {
+    padding-left: 3rem;
+    padding-right: 3rem;
+  }
+
+  article {
+    padding-left: 3em !important;
+    padding-right: 3rem !important;
+  }
+
+  .container {
+    padding: 0px 60px !important;
+    width: auto;
+  }
+}
+
+/* PC 크기 */
+@media screen and (min-width: 1025px) {
+  header {
+    padding-top: 1rem;
+  }
+  article {
+    padding-left: 12.7em !important;
+    padding-right: 12.7rem !important;
+  }
 }
 
 h1 {
-  padding-left: 20px;
+  font-size: 40px;
   font-family: 'jaram';
-  font-size: 50px;
+  font-weight: 900;
 }
 
-/* threadbox */
-.threadbox {
-  padding: 20px;
-  width: 100%;
-  overflow: auto;
+article {
+  padding-right: 1rem;
+  display: flex;
+  flex-direction: column;
+  flex-grow: 1;
+  max-width: 1024px;
+  position: relative;
+}
+
+header {
+  padding-top: 1rem;
+  padding-left: 1rem;
+  display: flex;
+  justify-content: space-between;
+  height: 245px;
+}
+
+.logoCon {
+  display: flex;
+}
+
+.logo {
+  object-fit: contain;
+  height: 120px;
+  width: 120px;
+  cursor: pointer;
+}
+
+.navControl {
+  padding-top: 1rem;
+  padding-bottom: 1rem;
   display: flex;
   flex-direction: column;
 }
 
-.threadList {
-  overflow: auto;
+.navCon {
+  display: flex;
+  font-size: large;
+  font-weight: 700;
+  gap: 1rem;
+  flex-grow: 1;
+  align-items: end;
+}
+
+.logo:hover,
+button:hover,
+.navCon li:hover {
+  transform: scale(1.1);
+  transition-duration: 0.1s;
+  cursor: pointer;
+}
+
+.headerBtns {
+  display: flex;
+  flex-direction: row;
+}
+
+button {
+  box-shadow: 2px 2px rgb(195, 195, 195);
+  border: none;
+  border-radius: 5px;
+  background-color: black;
+  color: white;
+  padding: 10px 10px;
+  cursor: pointer;
+  font-size: 18px;
+  margin: 5px 5px;
+}
+
+/* main */
+
+main {
+  display: flex;
+  text-align: center;
+}
+
+.container {
+  font-size: 20px;
+  padding: 0px 20px 0px 20px;
+  box-sizing: border-box;
+  border-radius: 2px;
+  text-align: left;
+  border-color: #efefef;
+  width: 90%;
 }
 
 /* 모달 스타일 */
@@ -69,55 +167,51 @@ h1 {
   margin: 10% auto;
 }
 
-textarea {
-  width: 94%;
-  padding: 10px;
-  border: 1px solid #ccc;
-  border-radius: 4px;
-  resize: vertical;
-  min-height: 60px;
-  max-height: 200px;
+/* footer */
+footer {
+  padding-top: 200px;
+  padding-bottom: 100px;
+  text-align: center;
+  font-family: 'GangwonEdu_OTFBoldA';
+}
+.chatbox {
+  display: flex;
+  flex-direction: row;
+  position: fixed;
+  bottom: 1rem;
+  right: 1rem;
 }
 
-#confirmReport {
-  display: block;
-  margin: 0 auto;
-}
-
-.writeThreadBox {
-  margin-bottom: 40px;
-}
-.close-button {
-  float: right;
-}
-
-button {
-  background-color: black;
+.chatbox button {
+  border: none;
+  border-radius: 5px;
   color: white;
-  border-radius: 5px;
-  border: 1px solid white;
-  padding: 5px 10px 5px 10px;
-}
-
-button:hover {
-  background-color: white;
-  color: black;
-  border-radius: 5px;
-  border: 1px solid black;
-  padding: 5px 10px 5px 10px;
-}
-
-.writeThread {
-  width: 700px;
-  height: 30px;
+  padding: 15px 20px;
+  cursor: pointer;
   font-size: 20px;
+  margin: 5px 5px;
+}
+.chat_btn {
+  background-color: rgb(72, 53, 19);
+  box-shadow: 2px 2px rgba(43, 11, 0, 0.344);
+}
+.threadbox {
+  display: flex;
+  flex-direction: column;
 }
 
-.writeThreadBox > button {
+.writeThreadBtn {
   width: 60px;
-  height: 45px;
-  font-size: 18px;
+}
+.writeThreadBox {
+  display: flex;
+  flex-direction: column;
+  text-align: right;
+  padding: 20px;
+}
+.writeThread {
+  padding: 10px;
 }
 .thread {
-  margin: 10px 0px 10px 0px;
+  padding: 20px;
 }

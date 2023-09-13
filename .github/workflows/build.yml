@@ -57,6 +57,11 @@ jobs:
           echo NODEMAILER_EMAIL=${{ secrets.NODEMAILER_EMAIL }} >> .env
           echo NODEMAILER_PASSWORD=${{ secrets.NODEMAILER_PASSWORD }} >> .env
           echo DIRECTORY=${{ secrets.DIRECTORY }} >> .env
+          echo S3_AWS_ACCESS_KEY_ID=${{ secrets.S3_AWS_ACCESS_KEY_ID }} >> .env
+          echo S3_AWS_SECRET_ACCESS_KEY=${{ secrets.S3_AWS_SECRET_ACCESS_KEY }} >> .env
+          echo S3_AWS_REGION=${{ secrets.S3_AWS_REGION }} >> .env
+          echo S3_AWS_BUCKET_NAME=${{ secrets.S3_AWS_BUCKET_NAME }} >> .env
+          echo MONGO_DB=${{ secrets.MONGO_DB }} >> .env
 
           cat .env
 

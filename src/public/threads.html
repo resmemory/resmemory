@@ -2,26 +2,56 @@
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
-    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <script src="./js/threads.js"></script>
     <script src="./js/code.js"></script>
     <link rel="stylesheet" href="./css/threads.css" type="text/css" />
-    <title>[ 응답하라 추억시대 ] - 익명 스레드 페이지</title>
+    <title>[ 응답하라 추억시대 ]</title>
   </head>
   <body>
-    <header>
-      <img src="assets/image/logo.png" alt="logo" onclick="location.href=`./`" />
-      <h1>소통하라 익명시대</h1>
-    </header>
+    <article>
+      <header>
+        <div class="navControl">
+          <div class="logoCon">
+            <img class="logo" src="./assets/image/logo.png" onclick="location.href='./'" />
+          </div>
+          <div class="headerBtns">
+            <button class="logout" style="display: none" onclick="logout()">로그아웃</button>
+            <button class="mypage" style="display: none" onclick="location.href=`./profile`">
+              마이페이지
+            </button>
+            <button class="login" style="display: none" onclick="location.href=`./login`">
+              회원가입/로그인
+            </button>
+            <button class="write" style="display: none" onclick="writingPost()">글 작성하기</button>
+          </div>
+        </div>
+      </header>
 
-    <!-- 스레드 -->
-    <div class="threadbox">
-      <div class="writeThreadBox">
-        <input class="writeThread" type="text" placeholder="예쁜말 고운 말을 사용해 주세요!" />
-        <button class="writeThreadBtn" onclick="writeThread()">작성</button>
+      <main>
+        <div class="container">
+          <div class="threadbox">
+            <h1>소통하라 익명시대</h1>
+            <div class="writeThreadBox">
+              <input
+                class="writeThread"
+                type="text"
+                placeholder="예쁜말 고운 말을 사용해 주세요!"
+              />
+              <div>
+                <button class="writeThreadBtn" onclick="writeThread()">작성</button>
+              </div>
+            </div>
+            <div id="threadList"></div>
+          </div>
+        </div>
+      </main>
+
+      <div class="chatbox">
+        <button class="chat_btn" onclick="window.open(`./chat`)" style="display: none">채팅</button>
       </div>
-      <div id="threadList"></div>
-    </div>
+    </article>
+
+    <footer>제작 - TEAM 1이3김 : 이다영 김주희 김민규 김지혜</footer>
   </body>
 </html>

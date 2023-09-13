@@ -5,56 +5,68 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <script src="./js/index.js"></script>
     <script src="./js/code.js"></script>
-    <link rel="stylesheet" href="./css/headerButtons.css" type="text/css" />
     <link rel="stylesheet" href="./css/postlist.css" type="text/css" />
     <title>[ 응답하라 추억시대 ]</title>
   </head>
   <body>
-    <header>
-      <img class="logo" src="./assets/image/logo.png" onclick="window.location.reload()" />
-      <div class="headerBtns">
-        <button class="logout" style="display: none" onclick="logout()">로그아웃</button>
-        <button class="mypage" style="display: none" onclick="location.href=`./profile`">
-          마이페이지
-        </button>
-        <button class="login" style="display: none" onclick="location.href=`./login`">
-          회원가입/로그인
-        </button>
-      </div>
-      <button class="write" style="display: none" onclick="writingPost()">글 작성하기</button>
-    </header>
-
-    <main>
-      <div class="container">
-        <div class="post_pagination">
-          <table>
-            <thead>
-              <tr>
-                <th scope="col">카테고리</th>
-                <th scope="col">제목</th>
-                <th scope="col">닉네임</th>
-                <th scope="col">작성일</th>
-                <th scope="col">조회수</th>
-              </tr>
-            </thead>
-            <tbody class="postlist"></tbody>
-          </table>
-          <div class="pagination"></div>
-        </div>
-        <div class="box_button">
-          <div class="annual_category_box">
-            <h4>연도별 카테고리</h4>
-            <p onclick="annualCategory(2020)">2020</p>
-            <p onclick="annualCategory(2010)">2010</p>
-            <p onclick="annualCategory(2000)">2000</p>
-            <p onclick="annualCategory(1990)">1990</p>
-            <p onclick="annualCategory(1980)">1980</p>
-            <p onclick="annualCategory(1970)">1970</p>
+    <article>
+      <header>
+        <div class="navControl">
+          <div class="logoCon">
+            <img class="logo" src="./assets/image/logo.png" onclick="clickLogo()" />
           </div>
-          <button class="thread_btn" onclick="location.href = `./threads`">익명 스레드</button>
+          <div class="headerBtns">
+            <button class="logout" style="display: none" onclick="logout()">로그아웃</button>
+            <button class="mypage" style="display: none" onclick="location.href=`./profile`">
+              마이페이지
+            </button>
+            <button class="login" style="display: none" onclick="location.href=`./login`">
+              회원가입/로그인
+            </button>
+            <button class="write" style="display: none" onclick="writingPost()">글 작성하기</button>
+          </div>
+
+          <ul class="navCon">
+            <li onclick="annualCategory(2020)">2020</li>
+            <li onclick="annualCategory(2010)">2010</li>
+            <li onclick="annualCategory(2000)">2000</li>
+            <li onclick="annualCategory(1990)">1990</li>
+            <li onclick="annualCategory(1980)">1980</li>
+            <li onclick="annualCategory(1970)">1970</li>
+            <li onclick="loadPosts()">전체 최신순</li>
+            <li onclick="loadPostsByViewCountOrder()">전체 조회순</li>
+          </ul>
         </div>
+      </header>
+
+      <main>
+        <div class="container">
+          <div class="post_pagination">
+            <table>
+              <thead>
+                <tr>
+                  <th scope="col">연도</th>
+                  <th scope="col">제목</th>
+                  <th scope="col">닉네임</th>
+                  <th scope="col">작성일</th>
+                  <th scope="col">Ꙭ̮</th>
+                </tr>
+              </thead>
+              <tbody class="postlist"></tbody>
+            </table>
+            <div class="pagination_createdat"></div>
+            <div class="pagination_viewcount"></div>
+          </div>
+        </div>
+      </main>
+
+      <div class="chatbox">
+        <button class="chat_btn" onclick="window.open(`./chat`)" style="display: none">채팅</button>
+        <button class="thread_btn" onclick="location.href = `./threads`" style="display: none">
+          익명
+        </button>
       </div>
-    </main>
+    </article>
 
     <footer>제작 - TEAM 1이3김 : 이다영 김주희 김민규 김지혜</footer>
   </body>

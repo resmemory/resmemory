@@ -1,11 +1,18 @@
+let isWritingPostInProgress = false;
+
 document.addEventListener('DOMContentLoaded', () => {
   headerBtns();
 });
 
 const writingPost = async () => {
+  if (isWritingPostInProgress) {
+    alert('잠시만 기다려주세요.');
+    return;
+  }
+
   const form = document.querySelector('#form');
   const authorization = document.querySelector('.Authorization');
-  authorization.value = localStorage.getItem('Authorization');
+  authorization.value = sessionStorage.getItem('Authorization');
   const formData = new FormData(form);
   const response = await fetch(`./api/posts`, {
     method: 'POST',
@@ -16,7 +23,10 @@ const writingPost = async () => {
   alert(code[data.responseData.code]);
 
   if (data.responseData.code === 311) {
+    isWritingPostInProgress = true;
     location.href = `./`;
+  } else if (data.responseData.code === 312) {
+    location.href = `./login`;
   }
 };
 
@@ -26,7 +36,26 @@ const headerBtns = () => {
   const logout = document.querySelector('.logout');
   const mypage = document.querySelector('.mypage');
 
-  if (localStorage.getItem('Authorization')) {
+  if (sessionStorage.getItem('Authorization')) {
+    logout.style.display = 'block';
+    mypage.style.display = 'block';
+  } else {
+    login.style.display = 'block';
+  }
+};
+
+// 취소 버튼 누를시 이전 페이지로 이동
+const cancelPost = async () => {
+  window.history.back();
+};
+
+// 버튼들
+const buttons = () => {
+  const login = document.querySelector('.login');
+  const logout = document.querySelector('.logout');
+  const mypage = document.querySelector('.mypage');
+
+  if (sessionStorage.getItem('Authorization')) {
     logout.style.display = 'block';
     mypage.style.display = 'block';
   } else {
@@ -39,17 +68,12 @@ const logout = async () => {
   const response = await fetch(`./api/logout`, {
     method: 'POST',
     headers: {
-      Authorization: localStorage.getItem('Authorization'),
+      Authorization: sessionStorage.getItem('Authorization'),
     },
   });
   const result = await response.json();
 
   alert(code[result.responseData.code]);
-  localStorage.removeItem('Authorization');
+  sessionStorage.removeItem('Authorization');
   location.href = `./`;
-};
-
-// 취소 버튼 누를시 이전 페이지로 이동
-const cancelPost = async () => {
-  window.history.back();
 };

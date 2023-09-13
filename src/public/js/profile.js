@@ -16,7 +16,7 @@ function modalClose(classname) {
 function headerBtns() {
   const login = document.querySelector('.login');
   const logout = document.querySelector('.logout');
-  if (localStorage.getItem('Authorization')) {
+  if (sessionStorage.getItem('Authorization')) {
     logout.style.display = 'block';
   } else {
     login.style.display = 'block';
@@ -27,37 +27,44 @@ async function logout() {
   const response = await fetch(`./api/logout`, {
     method: 'POST',
     headers: {
-      Authorization: localStorage.getItem('Authorization'),
+      Authorization: sessionStorage.getItem('Authorization'),
     },
   });
   const result = await response.json();
-  console.log(result);
+
   alert(code[result.responseData.code]);
-  localStorage.removeItem('Authorization');
-  localStorage.removeItem('nickname');
-  location.reload();
+  sessionStorage.removeItem('Authorization');
+  location.href = './';
 }
 
 async function bookmarks() {
   const response = await fetch(`./api/bookmarks`, {
     method: 'GET',
     headers: {
-      Authorization: localStorage.getItem('Authorization'),
+      Authorization: sessionStorage.getItem('Authorization'),
     },
   });
   const result = await response.json();
-  console.log(result);
+
   const bookmarks = result.responseData.bodies
     .map((bookmark) => {
       return `
-      <div class = "bookmarkInnerBox" onclick = "location.href='./detail?post=${bookmark.postId}'">
-      <h1 class = "title">${bookmark.title}</h1> 
-      <p>${bookmark.annualCategory} | ${new Date(bookmark.createdAt).toLocaleDateString('ko-KR', {
+      <div class = "bookmarkInnerBox" >
+      <h2 class = "title" onclick = "location.href='./detail?post=${bookmark.postId}'">${
+        bookmark.title
+      }</h2> 
+      
+      <p>
+    
+      ${bookmark.annualCategory} | ${new Date(bookmark.createdAt).toLocaleDateString('ko-KR', {
         timeZone: 'Asia/Seoul',
-      })} | ${bookmark.nickname}</p>
+      })} | ${bookmark.nickname}
+     
+      </p>
       <button class = "removeBookmark" onclick="removeBookmark(${
         bookmark.bookmarkId
-      })">삭제</button>
+      })">해제</button>
+     
       </div>
     `;
     })
@@ -70,7 +77,7 @@ async function removeBookmark(bookmarkId) {
   const response = await fetch(`./api/bookmarks/${bookmarkId}`, {
     method: 'DELETE',
     headers: {
-      Authorization: localStorage.getItem('Authorization'),
+      Authorization: sessionStorage.getItem('Authorization'),
     },
   });
   const result = await response.json();
@@ -83,7 +90,7 @@ async function editNickname() {
   const response = await fetch(`./api/users/nickname`, {
     method: 'PATCH',
     headers: {
-      Authorization: localStorage.getItem('Authorization'),
+      Authorization: sessionStorage.getItem('Authorization'),
       'Content-Type': 'application/json',
     },
     body: JSON.stringify({ nickname }),
@@ -99,7 +106,7 @@ async function editPassword() {
   const response = await fetch(`./api/users/password`, {
     method: 'PATCH',
     headers: {
-      Authorization: localStorage.getItem('Authorization'),
+      Authorization: sessionStorage.getItem('Authorization'),
       'Content-Type': 'application/json',
     },
     body: JSON.stringify({ password, confirm }),
@@ -114,28 +121,36 @@ async function signout() {
   const response = await fetch(`./api/users`, {
     method: 'DELETE',
     headers: {
-      Authorization: localStorage.getItem('Authorization'),
+      Authorization: sessionStorage.getItem('Authorization'),
       'Content-Type': 'application/json',
     },
     body: JSON.stringify({ message }),
   });
   const result = await response.json();
   alert(code[result.responseData.code]);
-  location.href = './';
+  if (result.responseData.code == 141) {
+    sessionStorage.removeItem('Authorization');
+    location.href = './';
+  }
 }
 
 async function profile() {
   const response = await fetch(`./api/users`, {
     method: 'GET',
     headers: {
-      Authorization: localStorage.getItem('Authorization'),
+      Authorization: sessionStorage.getItem('Authorization'),
     },
   });
   const result = await response.json();
-  console.log(result);
+
   if (result.responseData.bodies.userId == 1) {
     const adminBtn = document.querySelector('.admin');
     adminBtn.style.display = 'block';
+  }
+
+  if (result.responseData.bodies.email == 'kakaoId') {
+    const editPassword = document.querySelector('.editPassword');
+    editPassword.style.display = 'none';
   }
   const tempHtml = `
   <div>
