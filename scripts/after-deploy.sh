@@ -3,7 +3,7 @@
 cd /home/ubuntu/build
 
 sudo npm install
-sudo mkcert resmemory.shop localhost 127.0.0.1 ::1
+sudo mkcert resmemory.shop 3.37.61.137
 sudo pm2 kill
 sudo pm2 start "npm run start:gate_build"
 sudo pm2 start "npm run start:dis_build"
