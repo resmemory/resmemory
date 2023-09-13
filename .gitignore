@@ -1,5 +1,7 @@
 .env
 .env.testpost
+cert.pem
+key.pem
 config.js
 dist/
 node_modules/
