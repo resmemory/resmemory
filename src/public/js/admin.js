@@ -56,19 +56,3 @@ async function deleteContent(reportId, contentId, reportType) {
 
   return window.location.reload();
 }
-async function makeError() {
-  const reportId = 'error';
-
-  await fetch(`/api/makeerror`, {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json',
-      Authorization: adminId,
-    },
-    body: JSON.stringify({ reportId }),
-  });
-
-  alert('에러를 발생시켰습니다.');
-
-  return window.location.reload();
-}

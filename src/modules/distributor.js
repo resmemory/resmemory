@@ -1,5 +1,6 @@
 import TcpServer from '../classes/server';
 import { makePacket } from '../utils/makePacket.js';
+import logger from '../logger';
 import dotenv from 'dotenv';
 dotenv.config();
 
@@ -24,6 +25,7 @@ class distributor extends TcpServer {
     console.log('onClose', socket.remoteAddress, socket.remotePort);
     delete this.map[key];
     this.sendInfo();
+    logger.error(`서버 종료: onClose ${socket.remoteAddress} ${socket.remotePort}`);
   }
 
   // 노드 등록 처리
