@@ -61,6 +61,7 @@ export default class ChatServer {
 
       socket.on('error', (err) => {
         console.error('Client error:', err);
+        logger.error('채팅 에러 발생: ' + err.message);
       });
     });
   }

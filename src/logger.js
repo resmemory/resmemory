@@ -15,12 +15,12 @@ const logFormat = printf((info) => {
 
   const slackParam = {
     toEmail: 'error-aaaakv5c7reyo6f4bjksjherta@w1694593718-xrd689339.slack.com',
-    subject: '[응답하라 추억시대] 오류가 발생하였습니다.',
+    subject: '[응답하라 추억시대] 서버가 종료되었습니다.',
     text: log,
   };
   const emailParam = {
     toEmail: process.env.NODEMAILER_EMAIL,
-    subject: '[응답하라 추억시대] 오류가 발생하였습니다.',
+    subject: '[응답하라 추억시대] 서버가 종료되었습니다.',
     text: log,
   };
 

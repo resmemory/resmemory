@@ -158,13 +158,6 @@ const onRequest = async (res, method, pathname, params, key, cb) => {
         responseData,
       );
     case 'POST':
-      if (pathname == '/makeerror') {
-        try {
-          throw new Error('Error');
-        } catch (error) {
-          logger.error('에러 발생: ' + error.message);
-        }
-      }
       if (pathname == '/reports') {
         responseData = await reports(method, params, responseData);
       }
