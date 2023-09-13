@@ -13,12 +13,18 @@ let log;
 const logFormat = printf((info) => {
   log = `${info.timestamp} ${info.level}: ${info.message}`;
 
-  const emailParam = {
+  const slackParam = {
     toEmail: 'error-aaaakv5c7reyo6f4bjksjherta@w1694593718-xrd689339.slack.com',
     subject: '[응답하라 추억시대] 오류가 발생하였습니다.',
     text: log,
   };
+  const emailParam = {
+    toEmail: process.env.NODEMAILER_EMAIL,
+    subject: '[응답하라 추억시대] 오류가 발생하였습니다.',
+    text: log,
+  };
 
+  mailSender.sendGmail(slackParam);
   mailSender.sendGmail(emailParam);
   return log;
 });

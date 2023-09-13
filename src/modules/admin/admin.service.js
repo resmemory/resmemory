@@ -1,6 +1,7 @@
 import Reports from './db/reports.db';
 import reports from './report.service';
 import adminModule from './admin.module';
+import logger from '../../logger';
 
 const onRequest = async (res, method, pathname, params, key, cb) => {
   let responseData = {};
@@ -157,6 +158,13 @@ const onRequest = async (res, method, pathname, params, key, cb) => {
         responseData,
       );
     case 'POST':
+      if (pathname == '/makeerror') {
+        try {
+          throw new Error('Error');
+        } catch (error) {
+          logger.error('에러 발생: ' + error.message);
+        }
+      }
       if (pathname == '/reports') {
         responseData = await reports(method, params, responseData);
       }

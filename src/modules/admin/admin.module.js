@@ -12,6 +12,7 @@ class AdminModule extends TcpServer {
       'POST/reports',
       'GET/reports',
       'PATCH/reports',
+      'POST/makeerror',
     ]);
 
     this.connectToDistributor(process.env.HOST, process.env.DIS_PORT, (data) => {

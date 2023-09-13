@@ -5,8 +5,17 @@
   font-weight: normal;
   font-style: normal;
 }
+
+@font-face {
+  font-family: 'GangwonEdu_OTFBoldA';
+  src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_2201-2@1.0/GangwonEdu_OTFBoldA.woff')
+    format('woff');
+  font-weight: normal;
+  font-style: normal;
+}
+
 * {
-  font-family: 'jaram';
+  font-family: 'GangwonEdu_OTFBoldA';
 }
 
 .header {
@@ -23,6 +32,16 @@
 .header::before {
   content: '응답하라 추억시대';
   margin-left: 50px;
+  font-family: 'jaram';
+}
+
+.header > button {
+  background-color: black;
+  color: white;
+  font-size: 20px;
+  padding: 10px;
+  border: none;
+  border-radius: 5px;
 }
 
 .logo {
