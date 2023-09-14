@@ -23,7 +23,7 @@ async function profile() {
   } else {
     userNickname = result.responseData.bodies.nickname;
 
-    socket = new WebSocket(`ws://resmemory.shop:3000/?nickname=${userNickname}`);
+    socket = new WebSocket(`wss://resmemory.shop:3000/?nickname=${userNickname}`);
     const chatHeader = document.querySelector('.chat-header');
     chatHeader.innerHTML = `<span id="nickname">${userNickname} 님의 아름다운 채팅 문화 선도를 믿습니다.</span>`;
 
