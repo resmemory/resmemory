@@ -22,8 +22,8 @@ async function profile() {
     location.href = './';
   } else {
     userNickname = result.responseData.bodies.nickname;
-  
-    socket = new WebSocket(`ws://3.37.61.137:3000/?nickname=${userNickname}`);
+    socket = new WebSocket(`ws://localhost:3000/?nickname=${userNickname}`);
+    // socket = new WebSocket(`ws://3.37.61.137:3000/?nickname=${userNickname}`);
     const chatHeader = document.querySelector('.chat-header');
     chatHeader.innerHTML = `<span id="nickname">${userNickname} 님의 아름다운 채팅 문화 선도를 믿습니다.</span>`;
 
