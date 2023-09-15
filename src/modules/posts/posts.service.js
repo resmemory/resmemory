@@ -3,7 +3,6 @@ import Comments from './db/comments.db';
 import postModule from './posts.module';
 import dotenv from 'dotenv';
 import { imageUpload, imageDelete } from './imageManager';
-import logger from '../../logger';
 
 dotenv.config();
 
@@ -51,8 +50,8 @@ const onRequest = async (res, method, pathname, params, key, cb, mock) => {
 
           if (!params.userId) {
             responseData = { code: 412 };
-            // } else if (!content) {
-            //   responseData = { code: 413 };
+          } else if (!content) {
+            responseData = { code: 413 };
           } else {
             const findPostData = await Posts.findByPk(postId);
             if (!findPostData) {
