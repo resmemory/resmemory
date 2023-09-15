@@ -1,21 +1,24 @@
 import WebSocket from 'ws';
-import { ChatMessage, ChatOpenLog, ChatCloseLog, getTimes } from './db/mongoose';
+import { ChatMessage, ChatLog, getTimes } from './db/mongoose';
 
 export default class ChatServer {
   constructor(port, onMessage) {
     this.port = port;
     this.onMessage = onMessage;
+    this.clients = new Set(); // 연결된 클라이언트를 추적하기 위한 Set
 
     this.server = new WebSocket.Server({ port });
 
     this.server.on('connection', async (socket, request) => {
       const nickname = request.url.split('?')[1].split('=')[1];
       if (nickname !== undefined) {
-        const chatOpenLog = new ChatOpenLog({
+        const chatLog = new ChatLog({
           nickname: nickname,
         });
-        await chatOpenLog.save();
+        await chatLog.save();
       }
+      this.clients.add(socket); // 클라이언트 추가
+
       console.log('Client connected:', socket._socket.remoteAddress, socket._socket.remotePort);
       const arrMessage = await getTimes(nickname);
       for (const messageData of arrMessage) {
@@ -32,11 +35,8 @@ export default class ChatServer {
             message: stringMessage,
             timestamp: Date.now(), // Date.now()를 사용하여 현재 시간을 저장
           });
-
           await chatMessage.save(); // await를 사용하여 저장 작업을 기다림
-
           console.log('채팅 메시지가 성공적으로 저장되었습니다.');
-
           this.onMessage(socket, stringMessage);
         } catch (err) {
           console.error('채팅 메시지 저장 오류:', err);
@@ -44,28 +44,20 @@ export default class ChatServer {
       });
 
       socket.on('close', async () => {
-        const nickname = request.url.split('?')[1].split('=')[1];
-        if (nickname !== undefined) {
-          const chatCloseLog = new ChatCloseLog({
-            nickname: nickname,
-          });
-          await chatCloseLog.save();
-        }
-
         console.log(
           'Client disconnected:',
           socket._socket.remoteAddress,
           socket._socket.remotePort,
         );
+
+        this.clients.delete(socket); // 클라이언트 제거
       });
 
       socket.on('error', (err) => {
         console.error('Client error:', err);
-        logger.error('채팅 에러 발생: ' + err.message);
       });
     });
   }
-
   broadcastMessage(message) {
     this.server.clients.forEach((client) => {
       if (client.readyState === WebSocket.OPEN) {
