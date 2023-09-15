@@ -24,6 +24,7 @@ const onRequest = async (res, method, pathname, params, key, cb) => {
           }
         } catch (error) {
           responseData = { code: 713 };
+          logger.error(`스레드 에러 발생:${error}}`);
         }
 
         return get(
@@ -53,6 +54,7 @@ const onRequest = async (res, method, pathname, params, key, cb) => {
             responseData = { code: 722 };
           }
         } catch (error) {
+          logger.error(`스레드 에러 발생:${error}}`);
           responseData = { code: 720, error };
         }
         return post(
@@ -93,6 +95,7 @@ const onRequest = async (res, method, pathname, params, key, cb) => {
             responseData = { code: 734 };
           }
         } catch (error) {
+          logger.error(`스레드 에러 발생:${error}}`);
           responseData = { code: 730 };
           console.log(error);
         }
