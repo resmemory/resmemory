@@ -1,6 +1,6 @@
 import Threads from './db/threads.db';
 import { Op } from 'sequelize';
-
+import logger from '../../logger';
 const onRequest = async (res, method, pathname, params, key, cb) => {
   let responseData = {};
 
