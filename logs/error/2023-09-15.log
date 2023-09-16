@@ -1,4 +1,0 @@
-2023-09-15 11:50:46 error: 서버 종료: onClose ::ffff:127.0.0.1 55332
-2023-09-15 11:52:01 error: 스레드 에러 발생:SequelizeAccessDeniedError: Access denied for user 'root'@'58.226.161.199' (using password: YES)}
-2023-09-15 11:52:04 error: 스레드 에러 발생:SequelizeAccessDeniedError: Access denied for user 'root'@'58.226.161.199' (using password: YES)}
-2023-09-15 11:52:05 error: 스레드 에러 발생:SequelizeAccessDeniedError: Access denied for user 'root'@'58.226.161.199' (using password: YES)}
