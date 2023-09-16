@@ -23,9 +23,9 @@ class distributor extends TcpServer {
   onClose(socket) {
     const key = socket.remoteAddress + ':' + socket.remotePort;
     console.log('onClose', socket.remoteAddress, socket.remotePort);
+    logger.error(`서버 종료: ${this.map[key].info.name} ${this.map[key].info.port}`);
     delete this.map[key];
     this.sendInfo();
-    logger.error(`서버 종료: onClose ${socket.remoteAddress} ${socket.remotePort}`);
   }
 
   // 노드 등록 처리
