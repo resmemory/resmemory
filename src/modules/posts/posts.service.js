@@ -172,23 +172,13 @@ const onRequest = async (res, method, pathname, params, key, cb, mock) => {
           let result;
           const { annualCategory, pageNum } = params.query;
 
-          if (params.params == 'view') {
-            result = await Posts.findAll({
-              where: { annualCategory },
-              order: [['viewCount', 'DESC']],
-              limit: 10,
-              offset: (pageNum - 1) * 10,
-              raw: true,
-            });
-          } else {
-            result = await Posts.findAll({
-              where: { annualCategory },
-              order: [['createdAt', 'DESC']],
-              limit: 10,
-              offset: (pageNum - 1) * 10,
-              raw: true,
-            });
-          }
+          result = await Posts.findAll({
+            where: { annualCategory },
+            order: [['createdAt', 'DESC']],
+            limit: 10,
+            offset: (pageNum - 1) * 10,
+            raw: true,
+          });
 
           const userIds = result.map((post) => post.userId);
 
