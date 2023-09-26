@@ -100,8 +100,8 @@ const onRequest = async (res, method, pathname, params, key, cb) => {
             let refresh = params.bodies.refresh;
             const today = Date.now();
             if (refresh) {
-              const verified = jwt.verify(refresh, process.env.JWT_SECRET_KEY_REFRESH);
               if (today - jwt.decode(refresh).exp > 0) {
+                const verified = jwt.verify(refresh, process.env.JWT_SECRET_KEY_REFRESH);
                 if (verified && redisCli.get(`refresh_${user.userId}`) == refresh) {
                   token = jwt.sign({ user }, process.env.JWT_SECRET_KEY, {
                     expiresIn: process.env.JWT_EXPIRE_TIME,
@@ -111,7 +111,7 @@ const onRequest = async (res, method, pathname, params, key, cb) => {
                   responseData = { code: 122 };
                 }
               } else {
-                if (verified) {
+                if (redisCli.get(`refresh_${user.userId}`) == refresh) {
                   refresh = jwt.sign({ ok: 'ok' }, process.env.JWT_SECRET_KEY_REFRESH, {
                     expiresIn: process.env.JWT_EXPIRE_TIME_REFRESH,
                   });
@@ -119,6 +119,8 @@ const onRequest = async (res, method, pathname, params, key, cb) => {
                     expiresIn: process.env.JWT_EXPIRE_TIME,
                   });
                   responseData = { code: 123, refresh, token, nickname };
+                } else {
+                  responseData = { code: 122 };
                 }
               }
             } else {
