@@ -10,7 +10,6 @@ describe('POST /api/posts', () => {
   test('게시글 작성', async () => {
     let result;
     await new Promise((resolve, reject) => {
-      usersmodule;
       postsmodule.dataconnection(
         process.env.HOST,
         process.env.POSTS_PORT,
