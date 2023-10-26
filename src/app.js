@@ -20,86 +20,29 @@ let index = 0;
 
 export const server = http
   .createServer(async (req, res) => {
-    // try {
-    const method = req.method;
-    const uri = url.parse(req.url, true);
-    const pathname = uri.pathname;
-    let params = {};
-    let refresh;
+    try {
+      const method = req.method;
+      const uri = url.parse(req.url, true);
+      const pathname = uri.pathname;
+      let params = {};
+      let refresh;
 
-    if (req.headers.cookie) {
-      refresh = req.headers.cookie.refresh;
+      if (req.headers.cookie) {
+        refresh = req.headers.cookie.refresh;
 
-      if (refresh) {
-        params.refresh = refresh;
-      }
-    }
-
-    if (
-      (method == 'POST' || method == 'PATCH' || method == 'DELETE') &&
-      !pathname.startsWith('/api')
-    ) {
-      throw new Error('올바른 요청이 아닙니다.');
-    }
-
-    if (method === 'POST' && pathname == '/api/posts') {
-      let path = pathname.replace('/api', '');
-      const form = formidable({ allowEmptyFiles: true, minFileSize: 0 });
-      let fields;
-      let files;
-      try {
-        [fields, files] = await form.parse(req);
-      } catch (err) {
-        if (err.code === formidableErrors.maxFieldsExceeded) {
+        if (refresh) {
+          params.refresh = refresh;
         }
-        console.error(err);
-        res.writeHead(err.httpCode || 400, { 'Content-Type': 'text/plain' });
-        res.end(String(err));
-        return;
       }
 
-      if (fields.authorization[0]) {
-        const authorization = fields.authorization[0];
-        const userId = authmiddleware(req, res, authorization);
-
-        params = { userId };
+      if (
+        (method == 'POST' || method == 'PATCH' || method == 'DELETE') &&
+        !pathname.startsWith('/api')
+      ) {
+        throw new Error('올바른 요청이 아닙니다.');
       }
 
-      params.bodies = {};
-      params.bodies.annualCategory = fields.annualCategory[0];
-      params.bodies.title = fields.title[0];
-      params.bodies.content = fields.content[0];
-      if (files.img && files.img[0]) {
-        params.bodies.img = files.img[0];
-      }
-
-      req.on('end', function () {
-        onRequest(res, method, path, params);
-      });
-    }
-    if (method === 'POST' && pathname !== '/api/posts') {
-      if (req.headers.authorization) {
-        const authorization = req.headers.authorization;
-        const userId = authmiddleware(req, res, authorization);
-
-        params = { userId };
-      }
-      let body = '';
-      let path = pathname.replace('/api', '');
-
-      req.on('data', function (data) {
-        body += data;
-      });
-
-      req.on('end', function () {
-        if (req.headers['content-type'] === 'application/json') {
-          params.bodies = JSON.parse(body);
-        }
-        onRequest(res, method, path, params);
-      });
-    } else if (method === 'PATCH') {
-      const newPathname = pathname.split('/').slice(0, 3).join('/');
-      if (newPathname === '/api/posts') {
+      if (method === 'POST' && pathname == '/api/posts') {
         let path = pathname.replace('/api', '');
         const form = formidable({ allowEmptyFiles: true, minFileSize: 0 });
         let fields;
@@ -114,11 +57,14 @@ export const server = http
           res.end(String(err));
           return;
         }
+
         if (fields.authorization[0]) {
           const authorization = fields.authorization[0];
           const userId = authmiddleware(req, res, authorization);
+
           params = { userId };
         }
+
         params.bodies = {};
         params.bodies.annualCategory = fields.annualCategory[0];
         params.bodies.title = fields.title[0];
@@ -126,24 +72,20 @@ export const server = http
         if (files.img && files.img[0]) {
           params.bodies.img = files.img[0];
         }
-        if (fields.previousImg[0]) {
-          params.bodies.previousImg = fields.previousImg[0];
+
+        req.on('end', function () {
+          onRequest(res, method, path, params);
+        });
+      }
+      if (method === 'POST' && pathname !== '/api/posts') {
+        if (req.headers.authorization) {
+          const authorization = req.headers.authorization;
+          const userId = authmiddleware(req, res, authorization);
+
+          params = { userId };
         }
-
-        const pathArray = path.split('/');
-
-        path = path.substring(0, path.lastIndexOf('/'));
-        params.params = pathArray.pop();
-        onRequest(res, method, path, params);
-
-        req.on('end', function () {});
-      } else {
         let body = '';
-        const authorization = req.headers.authorization;
-        const userId = authmiddleware(req, res, authorization);
-
         let path = pathname.replace('/api', '');
-        params = { userId };
 
         req.on('data', function (data) {
           body += data;
@@ -153,7 +95,90 @@ export const server = http
           if (req.headers['content-type'] === 'application/json') {
             params.bodies = JSON.parse(body);
           }
+          onRequest(res, method, path, params);
+        });
+      } else if (method === 'PATCH') {
+        const newPathname = pathname.split('/').slice(0, 3).join('/');
+        if (newPathname === '/api/posts') {
+          let path = pathname.replace('/api', '');
+          const form = formidable({ allowEmptyFiles: true, minFileSize: 0 });
+          let fields;
+          let files;
+          try {
+            [fields, files] = await form.parse(req);
+          } catch (err) {
+            if (err.code === formidableErrors.maxFieldsExceeded) {
+            }
+            console.error(err);
+            res.writeHead(err.httpCode || 400, { 'Content-Type': 'text/plain' });
+            res.end(String(err));
+            return;
+          }
+          if (fields.authorization[0]) {
+            const authorization = fields.authorization[0];
+            const userId = authmiddleware(req, res, authorization);
+            params = { userId };
+          }
+          params.bodies = {};
+          params.bodies.annualCategory = fields.annualCategory[0];
+          params.bodies.title = fields.title[0];
+          params.bodies.content = fields.content[0];
+          if (files.img && files.img[0]) {
+            params.bodies.img = files.img[0];
+          }
+          if (fields.previousImg[0]) {
+            params.bodies.previousImg = fields.previousImg[0];
+          }
 
+          const pathArray = path.split('/');
+
+          path = path.substring(0, path.lastIndexOf('/'));
+          params.params = pathArray.pop();
+          onRequest(res, method, path, params);
+
+          req.on('end', function () {});
+        } else {
+          let body = '';
+          const authorization = req.headers.authorization;
+          const userId = authmiddleware(req, res, authorization);
+
+          let path = pathname.replace('/api', '');
+          params = { userId };
+
+          req.on('data', function (data) {
+            body += data;
+          });
+
+          req.on('end', function () {
+            if (req.headers['content-type'] === 'application/json') {
+              params.bodies = JSON.parse(body);
+            }
+
+            const pathArray = path.split('/');
+            if (pathArray.length > 2) {
+              path = path.substring(0, path.lastIndexOf('/'));
+              params.params = pathArray.pop();
+            }
+
+            onRequest(res, method, path, params);
+          });
+        }
+      } else if (method === 'DELETE') {
+        const authorization = req.headers.authorization;
+        const userId = authmiddleware(req, res, authorization);
+
+        params = { userId };
+        let body = '';
+        let path = pathname.replace('/api', '');
+
+        req.on('data', function (data) {
+          body += data;
+        });
+
+        req.on('end', function () {
+          if (req.headers['content-type'] === 'application/json') {
+            params.bodies = JSON.parse(body);
+          }
           const pathArray = path.split('/');
           if (pathArray.length > 2) {
             path = path.substring(0, path.lastIndexOf('/'));
@@ -162,56 +187,31 @@ export const server = http
 
           onRequest(res, method, path, params);
         });
-      }
-    } else if (method === 'DELETE') {
-      const authorization = req.headers.authorization;
-      const userId = authmiddleware(req, res, authorization);
-
-      params = { userId };
-      let body = '';
-      let path = pathname.replace('/api', '');
-
-      req.on('data', function (data) {
-        body += data;
-      });
-
-      req.on('end', function () {
-        if (req.headers['content-type'] === 'application/json') {
-          params.bodies = JSON.parse(body);
-        }
-        const pathArray = path.split('/');
-        if (pathArray.length > 2) {
-          path = path.substring(0, path.lastIndexOf('/'));
-          params.params = pathArray.pop();
-        }
-
-        onRequest(res, method, path, params);
-      });
-    } else {
-      if (!pathname.startsWith('/api')) {
-        frontconnection(pathname, res);
       } else {
-        let path = pathname.replace('/api', '');
-        if (req.headers.authorization) {
-          const authorization = req.headers.authorization;
-          const userId = authmiddleware(req, res, authorization);
+        if (!pathname.startsWith('/api')) {
+          frontconnection(pathname, res);
+        } else {
+          let path = pathname.replace('/api', '');
+          if (req.headers.authorization) {
+            const authorization = req.headers.authorization;
+            const userId = authmiddleware(req, res, authorization);
 
-          params = { userId };
+            params = { userId };
+          }
+          const pathArray = path.split('/');
+          if (pathArray.length > 2) {
+            path = path.substring(0, path.lastIndexOf('/'));
+            params.params = pathArray.pop();
+          }
+          params.query = uri.query;
+          onRequest(res, method, path, params);
         }
-        const pathArray = path.split('/');
-        if (pathArray.length > 2) {
-          path = path.substring(0, path.lastIndexOf('/'));
-          params.params = pathArray.pop();
-        }
-        params.query = uri.query;
-        onRequest(res, method, path, params);
       }
+    } catch (error) {
+      res
+        .writeHead(200, { 'Content-Type': 'application/json' })
+        .end(JSON.stringify({ responseData: { code: 100 } }));
     }
-    // } catch (error) {
-    //   res
-    //     .writeHead(200, { 'Content-Type': 'application/json' })
-    //     .end(JSON.stringify({ responseData: { code: 100 } }));
-    // }
   })
   .listen(port, () => {
     console.log(`Example app listening on port ${port}`);
