@@ -42,6 +42,37 @@ async function imageUpload(img) {
   }
 }
 
+async function imageThumbnail(img) {
+  if (img.size == 0) {
+    return null;
+  } else {
+    const filename = `${Date.now()}_${img.newFilename}`;
+    const thumbnailFilename = `thumbnail+${filename}`;
+
+    await sharp(img.filepath)
+      .resize({
+        width: 60,
+        height: 50,
+        fit: 'contain',
+        background: { r: 255, g: 255, b: 255, alpha: 1 },
+      })
+      .toFile(`${thumbnailFilename}`);
+
+    let uploadParams = { Bucket: process.env.S3_AWS_BUCKET_NAME, Key: filename, Body: '' };
+    let thumbnailStream = fs.createReadStream(`${thumbnailFilename}`);
+    thumbnailStream.on('error', function (err) {
+      console.log('Thumbnail Uploading Error', err);
+    });
+
+    uploadParams.Body = thumbnailStream;
+    uploadParams.ContentType = img.mimetype;
+    const thumbnail = await s3.upload(uploadParams).promise();
+    fs.unlinkSync(`${thumbnailFilename}`);
+
+    return thumbnail.Location;
+  }
+}
+
 async function imageDelete(key) {
   const params = {
     Bucket: process.env.S3_AWS_BUCKET_NAME,
@@ -51,4 +82,4 @@ async function imageDelete(key) {
   return await s3.deleteObject(params).promise();
 }
 
-export { imageUpload, imageDelete };
+export { imageUpload, imageDelete, imageThumbnail };

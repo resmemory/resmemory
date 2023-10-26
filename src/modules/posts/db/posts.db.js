@@ -25,6 +25,14 @@ Posts.init(
       type: DataTypes.STRING,
       defaultValue: null,
     },
+    thumbnail: {
+      type: DataTypes.STRING,
+      defaultValue: false,
+    },
+    notice: {
+      type: DataTypes.BOOLEAN,
+      defaultValue: null,
+    },
     viewCount: {
       type: DataTypes.BIGINT,
       defaultValue: 0,

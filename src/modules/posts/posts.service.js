@@ -2,7 +2,7 @@ import Posts from './db/posts.db';
 import Comments from './db/comments.db';
 import postModule from './posts.module';
 import dotenv from 'dotenv';
-import { imageUpload, imageDelete } from './imageManager';
+import { imageUpload, imageDelete, imageThumbnail } from './imageManager';
 
 dotenv.config();
 
@@ -13,33 +13,37 @@ const onRequest = async (res, method, pathname, params, key, cb, mock) => {
     case 'POST':
       // 게시글 작성
       if (pathname === '/posts') {
-        try {
-          const { title, content, annualCategory, img } = params.bodies;
-          let result = null;
+        // try {
+        const { title, content, annualCategory, img } = params.bodies;
+        let result = null;
+        let thumbnail = null;
+        // if (!params.userId) {
+        //   responseData = { code: 312 };
+        // } else
 
-          if (!params.userId) {
-            responseData = { code: 312 };
-          } else if (!title) {
-            responseData = { code: 313 };
-          } else if (!content) {
-            responseData = { code: 314 };
-          } else if (!annualCategory) {
-            responseData = { code: 315 };
-          } else {
-            result = await imageUpload(img);
+        if (!title) {
+          responseData = { code: 313 };
+        } else if (!content) {
+          responseData = { code: 314 };
+        } else if (!annualCategory) {
+          responseData = { code: 315 };
+        } else {
+          result = await imageUpload(img);
+          thumbnail = await imageThumbnail(img);
 
-            await Posts.create({
-              title,
-              content,
-              annualCategory,
-              img: result,
-              userId: params.userId,
-            });
-            responseData = { code: 311 };
-          }
-        } catch (err) {
-          responseData = { code: 310 };
+          await Posts.create({
+            title,
+            content,
+            thumbnail,
+            annualCategory,
+            img: result,
+            userId: params.userId,
+          });
+          responseData = { code: 311 };
         }
+        // } catch (err) {
+        //   responseData = { code: 310 };
+        // }
       }
 
       // 댓글 작성
@@ -101,7 +105,6 @@ const onRequest = async (res, method, pathname, params, key, cb, mock) => {
           }
 
           const userIds = result.map((post) => post.userId);
-          console.log(mock, '찾았다', process.env.USERS_PORT);
           await new Promise((resolve, reject) => {
             postModule.dataconnection(
               process.env.HOST,
