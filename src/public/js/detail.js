@@ -45,6 +45,10 @@ async function loadPostDetail() {
   if (!img) {
     img = '';
   }
+  let thumbnail = post_result.thumbnail;
+  if (!thumbnail) {
+    thumbnail = '';
+  }
 
   const postBox = document.querySelector('#post-box');
   postBox.innerHTML = '';
@@ -65,6 +69,9 @@ async function loadPostDetail() {
 </div>
 <div class="post-content">
   <img src="${img}" alt="${img}" style="${img ? '' : 'display: none;'}">
+
+  thumbnail below (testing)
+  <img src="${thumbnail}" alt="${thumbnail}" style="${thumbnail ? '' : 'display: none;'}">
   <p>${content}</p>
 </div>
 
