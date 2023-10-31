@@ -127,6 +127,10 @@ jobs:
         working-directory: ./
         run: npm run build
 
+      - name: ✨ 웹팩
+        working-directory: ./
+        run: npx webpack
+
       - name: 📦 빌드한 코드를 압축
         run: zip -r verdantjuly.zip ./dist ./scripts ./appspec.yml ./.env ./package.json
 
