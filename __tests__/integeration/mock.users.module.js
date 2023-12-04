@@ -9,7 +9,9 @@ class MockUsersModule extends TcpServer {
   constructor() {
     // 부모 클래스 생성자 호출
     relationship();
-    super('users', process.env.USERS_PORT ? Number(process.env.USERS_PORT) : 9010, ['GET/users']);
+    super('users', process.env.MOCK_USERS_PORT ? Number(process.env.MOCK_USERS_PORT) : 9011, [
+      'GET/users',
+    ]);
 
     this.posts;
   }
