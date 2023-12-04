@@ -1,18 +1,21 @@
 import sequelize from '../../src/modules/posts/db/posts.init';
-import postsmodule from '../../src/modules/posts/posts.module';
-import usersmodule from '../../src/modules/users/users.module';
+import mockPostModule from './mock.posts.module';
+import Users from '../../src/modules/users/db/users.db';
+import bcrypt from 'bcrypt';
 beforeAll(async () => {
-  if (process.env.NODE_ENV === 'testpost') {
+  if (process.env.NODE_ENV === 'test') {
     await sequelize.sync();
   } else throw new Error('NODE_ENV가 test 환경으로 설정되어 있지 않습니다.');
+  const hashedPassword = await bcrypt.hash('testtest1234', 10);
+  await Users.create({ email: 'test@test.com', password: hashedPassword, nickname: 'test' });
 });
 describe('POST /api/posts', () => {
   test('게시글 작성', async () => {
     let result;
     await new Promise((resolve, reject) => {
-      postsmodule.dataconnection(
+      mockPostModule.dataconnection(
         process.env.HOST,
-        process.env.POSTS_PORT,
+        process.env.MOCK_POSTS_PORT,
         (data) => {
           result = data;
           resolve();
@@ -46,9 +49,9 @@ describe('GET /api/posts', () => {
   test('게시글 조회', async () => {
     let result;
     await new Promise((resolve, reject) => {
-      postsmodule.dataconnection(
+      mockPostModule.dataconnection(
         process.env.HOST,
-        process.env.POSTS_PORT,
+        process.env.MOCK_POSTS_PORT,
         (data) => {
           result = data;
           resolve();
@@ -74,8 +77,10 @@ describe('GET /api/posts', () => {
           createdAt: expect.any(String),
           deletedAt: null,
           img: null,
-          nickname: '테스트',
+          nickname: 'test',
+          notice: null,
           postId: 1,
+          thumbnail: null,
           title: '테스트',
           updatedAt: expect.any(String),
           userId: 1,
@@ -87,6 +92,6 @@ describe('GET /api/posts', () => {
 });
 
 afterAll(async () => {
-  if (process.env.NODE_ENV === 'testpost') await sequelize.sync({ force: true });
+  if (process.env.NODE_ENV === 'test') await sequelize.sync({ force: true });
   else throw new Error('NODE_ENV가 test 환경으로 설정되어 있지 않습니다.');
 });

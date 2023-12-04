@@ -1,5 +1,5 @@
 import sequelize from '../../src/modules/users/db/users.init';
-import usersmodule from '../../src/modules/users/users.module';
+import mockUsersModule from './mock.users.module';
 import Users from '../../src/modules/users/db/users.db';
 import bcrypt from 'bcrypt';
 import redisCli from '../../src/redis';
@@ -17,9 +17,9 @@ describe('GET /api/users', () => {
   test('내 정보 조회', async () => {
     let result;
     await new Promise((resolve, reject) => {
-      usersmodule.dataconnection(
+      mockUsersModule.dataconnection(
         process.env.HOST,
-        process.env.USERS_PORT,
+        process.env.MOCK_USERS_PORT,
         (data) => {
           result = data;
           resolve();
@@ -52,9 +52,9 @@ describe('GET /api/users', () => {
   test('내 정보 조회 실패 : userId 없음', async () => {
     let result;
     await new Promise((resolve, reject) => {
-      usersmodule.dataconnection(
+      mockUsersModule.dataconnection(
         process.env.HOST,
-        process.env.USERS_PORT,
+        process.env.MOCK_USERS_PORT,
         (data) => {
           result = data;
           resolve();
@@ -83,9 +83,9 @@ describe('POST /api/mail', () => {
   test('메일 전송 실패 : 이메일 형식', async () => {
     let result;
     await new Promise((resolve, reject) => {
-      usersmodule.dataconnection(
+      mockUsersModule.dataconnection(
         process.env.HOST,
-        process.env.USERS_PORT,
+        process.env.MOCK_USERS_PORT,
         (data) => {
           result = data;
           resolve();
@@ -111,9 +111,9 @@ describe('POST /api/mail', () => {
   test('메일 전송 실패 : 중복 이메일', async () => {
     let result;
     await new Promise((resolve, reject) => {
-      usersmodule.dataconnection(
+      mockUsersModule.dataconnection(
         process.env.HOST,
-        process.env.USERS_PORT,
+        process.env.MOCK_USERS_PORT,
         (data) => {
           result = data;
           resolve();
@@ -140,9 +140,9 @@ describe('POST /api/mail', () => {
   test('메일 전송 성공', async () => {
     let result;
     await new Promise((resolve, reject) => {
-      usersmodule.dataconnection(
+      mockUsersModule.dataconnection(
         process.env.HOST,
-        process.env.USERS_PORT,
+        process.env.MOCK_USERS_PORT,
         (data) => {
           result = data;
           resolve();
@@ -172,9 +172,9 @@ describe('POST /api/verified', () => {
     let result;
     const receiveNumber = await redisCli.get('verifyNumber_teamresmemory@gmail.com');
     await new Promise((resolve, reject) => {
-      usersmodule.dataconnection(
+      mockUsersModule.dataconnection(
         process.env.HOST,
-        process.env.USERS_PORT,
+        process.env.MOCK_USERS_PORT,
         (data) => {
           result = data;
           resolve();
@@ -204,9 +204,9 @@ describe('POST /api/verified', () => {
     let result;
     const receiveNumber = await redisCli.get('verifyNumber_teamresmemory@gmail.com');
     await new Promise((resolve, reject) => {
-      usersmodule.dataconnection(
+      mockUsersModule.dataconnection(
         process.env.HOST,
-        process.env.USERS_PORT,
+        process.env.MOCK_USERS_PORT,
         (data) => {
           result = data;
           resolve();

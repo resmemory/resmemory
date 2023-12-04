@@ -2,13 +2,8 @@ import TcpServer from '../../classes/server';
 import dotenv from 'dotenv';
 import onRequest from './users.service';
 import relationship from './db/relationship';
-import onMockRequest from './mock.users.service';
 
-if (process.env.NODE_ENV == 'testpost') {
-  dotenv.config({ path: '.env.testpost', override: true });
-} else {
-  dotenv.config();
-}
+dotenv.config();
 
 class UsersModule extends TcpServer {
   map = {};
@@ -42,17 +37,10 @@ class UsersModule extends TcpServer {
 
   // 클라이언트 요청에 따른 비즈니스 로직 호출
   onRead(socket, data) {
-    if (data.mock == 'true') {
-      onMockRequest(socket, data.method, data.uri, data.params, data.key, (s, packet) => {
-        console.log(packet);
-        socket.write(JSON.stringify(packet) + '¶');
-      });
-    } else {
-      onRequest(socket, data.method, data.uri, data.params, data.key, (s, packet) => {
-        console.log(packet);
-        socket.write(JSON.stringify(packet) + '¶');
-      });
-    }
+    onRequest(socket, data.method, data.uri, data.params, data.key, (s, packet) => {
+      console.log(packet);
+      socket.write(JSON.stringify(packet) + '¶');
+    });
   }
 }
 const usersmodule = new UsersModule(); // 인스턴스 생성

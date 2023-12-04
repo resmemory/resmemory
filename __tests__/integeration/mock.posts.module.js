@@ -1,15 +1,15 @@
-import TcpServer from '../../classes/server';
+import TcpServer from '../../src/classes/server.js';
 import dotenv from 'dotenv';
-import onRequest from './posts.service';
-import relationship from './db/relationship';
+import onRequest from '../../src/modules/posts/posts.service.js';
+import relationship from '../../src/modules/posts/db/relationship';
 
 dotenv.config();
 
-class PostsModule extends TcpServer {
+class MockPostsModule extends TcpServer {
   constructor() {
     // 부모 클래스 생성자 호출
     relationship();
-    super('posts', process.env.POSTS_PORT ? Number(process.env.POSTS_PORT) : 3001, [
+    super('posts', process.env.MOCK_POSTS_PORT ? Number(process.env.MOCK_POSTS_PORT) : 3011, [
       'POST/posts',
       'GET/posts',
       'PATCH/posts',
@@ -20,9 +20,6 @@ class PostsModule extends TcpServer {
       'DELETE/comments',
       'DELETE/signout',
     ]);
-    this.connectToDistributor(process.env.HOST, process.env.DIS_PORT, (data) => {
-      console.log('Users Notification', data);
-    });
 
     this.nickname;
     this.dataconnection;
@@ -38,5 +35,5 @@ class PostsModule extends TcpServer {
   }
 }
 
-const postModule = new PostsModule();
-export default postModule;
+const mockPostModule = new MockPostsModule();
+export default mockPostModule;

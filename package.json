@@ -4,7 +4,7 @@
   "description": "template for microservice ",
   "private": true,
   "scripts": {
-    "test": "concurrently \"babel-node __tests__/integration/mock.users.module.js\" \"cross-env NODE_ENV=testpost jest users.integration.spec.js   --forceExit\"",
+    "test": "cross-env NODE_ENV=test jest   --forceExit ",
     "start:gate": "babel-node src/app.js",
     "start:dis": " babel-node src/modules/distributor.js",
     "start:users": "babel-node src/modules/users/users.module.js",

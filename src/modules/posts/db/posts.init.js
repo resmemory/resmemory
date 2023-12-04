@@ -4,7 +4,7 @@ import dotenv from 'dotenv';
 dotenv.config();
 
 let database = 'resmemory';
-if (process.env.NODE_ENV == 'testpost') {
+if (process.env.NODE_ENV == 'test') {
   database = 'resmemory_test';
 }
 

@@ -4,6 +4,5 @@ export const makePacket = (uri, method, key, params, mock) => {
     method,
     key,
     params,
-    mock,
   };
 };
