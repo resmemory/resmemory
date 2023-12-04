@@ -1,11 +1,10 @@
 import winston from 'winston';
-import winstonDaily from 'winston-daily-rotate-file';
 import mailSender from './mail';
 import dotenv from 'dotenv';
+import winstonElasticsearch from 'winston-elasticsearch';
 
 dotenv.config();
 
-const logDir = 'logs';
 const { combine, timestamp, printf } = winston.format;
 
 let log;
@@ -29,18 +28,34 @@ const logFormat = printf((info) => {
   return log;
 });
 
+const esTransportOpts = {
+  level: 'error',
+  index: 'error',
+  indexPrefix: 'logging-api',
+  indexSuffixPattern: 'YYYY-MM-DD',
+  clientOpts: {
+    node: process.env.ES_ADDON_URI,
+    maxRetries: 5,
+    requestTimeout: 10000,
+    sniffOnStart: false,
+    auth: {
+      username: process.env.ES_ADDON_USER,
+      password: process.env.ES_ADDON_PASSWORD,
+    },
+  },
+  source: process.env.LOG_SOURCE || 'api',
+};
+
+const esTransport = new winstonElasticsearch.ElasticsearchTransport(esTransportOpts);
+
 const logger = winston.createLogger({
   format: combine(timestamp({ format: 'YYYY-MM-DD HH:mm:ss' }), logFormat),
   transports: [
-    // 'error' level logs
-    new winstonDaily({
+    new winston.transports.Console({
       level: 'error',
-      datePattern: 'YYYY-MM-DD',
-      dirname: logDir + '/error',
-      filename: `%DATE%.log`,
-      maxFiles: 30,
-      zippedArchive: true,
+      json: true,
     }),
+    esTransport,
   ],
 });
 
