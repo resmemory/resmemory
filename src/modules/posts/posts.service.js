@@ -312,7 +312,7 @@ const onRequest = async (res, method, pathname, params, key, cb, mock) => {
           const { title, content, annualCategory, previousImg, img } = params.bodies;
           const postId = params.params;
           let result = null;
-
+          let thumbnail = null;
           if (!params.userId) {
             responseData = { code: 352 };
           } else if (!title) {
