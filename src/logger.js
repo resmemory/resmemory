@@ -46,6 +46,7 @@ const esTransportOpts = {
   source: process.env.LOG_SOURCE || 'api',
 };
 
+// 엘라스틱 서치 연결
 const esTransport = new winstonElasticsearch.ElasticsearchTransport(esTransportOpts);
 
 const logger = winston.createLogger({
