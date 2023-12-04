@@ -62,6 +62,12 @@ jobs:
           echo S3_AWS_REGION=${{ secrets.S3_AWS_REGION }} >> .env
           echo S3_AWS_BUCKET_NAME=${{ secrets.S3_AWS_BUCKET_NAME }} >> .env
           echo MONGO_DB=${{ secrets.MONGO_DB }} >> .env
+          echo ES_ADDON_PASSWORD=${{ secrets.ES_ADDON_PASSWORD }} >> .env
+          echo ES_ADDON_URI=${{ secrets.ES_ADDON_URI }} >> .env
+          echo ES_ADDON_USER=${{ secrets.ES_ADDON_USER }} >> .env
+          echo LOG_SOURCE=${{ secrets.LOG_SOURCE }} >> .env
+
+
 
           cat .env
 
