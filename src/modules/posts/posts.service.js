@@ -312,7 +312,7 @@ const onRequest = async (res, method, pathname, params, key, cb, mock) => {
           const { title, content, annualCategory, previousImg, img } = params.bodies;
           const postId = params.params;
           let result = null;
-
+          let thumbnail = null;
           if (!params.userId) {
             responseData = { code: 352 };
           } else if (!title) {
@@ -338,6 +338,8 @@ const onRequest = async (res, method, pathname, params, key, cb, mock) => {
           }
 
           result = await imageUpload(img);
+          thumbnail = await imageThumbnail(img);
+
           if (result && previousImg) {
             const previousImgKey = previousImg.substring(previousImg.lastIndexOf('/') + 1);
             await imageDelete(previousImgKey);
@@ -352,7 +354,7 @@ const onRequest = async (res, method, pathname, params, key, cb, mock) => {
             responseData = { code: 357 };
           } else {
             await Posts.update(
-              { title, content, annualCategory, img: result },
+              { title, content, annualCategory, img: result, thumbnail },
               { where: { postId } },
             );
             responseData = { code: 351 };

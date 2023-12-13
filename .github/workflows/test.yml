@@ -63,6 +63,10 @@ jobs:
           S3_AWS_REGION: ${{secrets.S3_AWS_REGION}}
           S3_AWS_BUCKET_NAME: ${{secrets.S3_AWS_BUCKET_NAME}}
           MONGO_DB: ${{secrets.MONGO_DB}}
+          ES_ADDON_PASSWORD: ${{secrets.ES_ADDON_PASSWORD}}
+          ES_ADDON_URI: ${{secrets.ES_ADDON_URI}}
+          ES_ADDON_USER: ${{secrets.ES_ADDON_USER}}
+          LOG_SOURCE: ${{secrets.LOG_SOURCE}}
 
       - run: echo "HOST=$HOST" >>   .env.testpost
           echo "GATE_PORT=$GATE_PORT" >>   .env.testpost
@@ -99,6 +103,10 @@ jobs:
           echo "S3_AWS_REGION=$S3_AWS_REGION" >>    .env.testpost
           echo "S3_AWS_BUCKET_NAME=$S3_AWS_BUCKET_NAME" >>     .env.testpost
           echo "MONGO_DB=$MONGO_DB" >>   .env.testpost
+          echo "ES_ADDON_PASSWORD=$ES_ADDON_PASSWORD" >> .env
+          echo "ES_ADDON_URI=$ES_ADDON_URI" >> .env
+          echo "ES_ADDON_USER=$ES_ADDON_USER" >> .env
+          echo "LOG_SOURCE=$LOG_SOURCE" >> .env
           npm ci
           npm run test:posts
           npm run test:users
