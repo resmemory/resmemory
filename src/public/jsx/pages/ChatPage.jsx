@@ -1,120 +1,116 @@
-import React, { useEffect } from 'react';
-
+import React, { useEffect, useState } from 'react';
+import '../../css/Chat.css';
 function ChatPage() {
+  const [userNickname, setUserNickname] = useState('');
+  const [socket, setSocket] = useState(null);
+  const [messageInput, setMessageInput] = useState('');
+  const [chatMessages, setChatMessages] = useState([]);
+
   useEffect(() => {
-    profile();
+    async function initializeChat() {
+      const response = await fetch(`./api/users`, {
+        method: 'GET',
+        headers: {
+          Authorization: sessionStorage.getItem('Authorization'),
+        },
+      });
+
+      const result = await response.json();
+
+      if (!sessionStorage.getItem('Authorization')) {
+        alert('로그인 이후 이용할 수 있습니다.');
+        location.href = './';
+      } else {
+        const nickname = result.responseData.bodies.nickname;
+        setUserNickname(nickname);
+
+        const newSocket = new WebSocket(`ws://127.0.0.1:8001/?nickname=${nickname}`);
+        setSocket(newSocket);
+
+        newSocket.addEventListener('message', async (event) => {
+          const data = event.data;
+          const dataParse = await JSON.parse(data);
+          const message = dataParse.message;
+          const senderNickname = dataParse.nickname;
+
+          // 채팅 데이터를 화면에 추가
+          displayMessage(message, senderNickname);
+        });
+
+        newSocket.addEventListener('close', (event) => {
+          console.log('WebSocket 연결이 닫혔습니다.');
+          const nicknameMessage = {
+            type: 'nickname',
+            value: `${nickname}`,
+          };
+          newSocket.send(JSON.stringify(nicknameMessage));
+        });
+      }
+    }
+
+    initializeChat();
   }, []);
 
-  async function profile() {
-    let userNickname;
-    let socket;
-    const chatMessages = document.getElementById('chat-messages');
-    const messageInput = document.getElementById('message-input');
-    const sendButton = document.getElementById('send-button');
+  const displayMessage = (message, senderNickname) => {
+    setChatMessages((prevMessages) => [...prevMessages, { message, senderNickname }]);
+  };
 
-    const response = await fetch(`./api/users`, {
-      method: 'GET',
-      headers: {
-        Authorization: sessionStorage.getItem('Authorization'),
-      },
-    });
-    const result = await response.json();
-
-    if (!sessionStorage.getItem('Authorization')) {
-      alert('로그인 이후 이용할 수 있습니다.');
-      location.href = './';
-    } else {
-      userNickname = result.responseData.bodies.nickname;
-
-      socket = new WebSocket(`ws://127.0.0.1:8001/?nickname=${userNickname}`);
-
-      const chatHeader = `<span id="nickname">${userNickname} 님의 아름다운 채팅 문화 선도를 믿습니다.</span>`;
-      document.getElementById('chat-header').innerHTML = chatHeader;
-      socket.addEventListener('message', async (event) => {
-        const data = event.data;
-        const dataParse = await JSON.parse(data);
-        const message = dataParse.message;
-        const nickname = dataParse.nickname;
-
-        // 채팅 데이터를 화면에 추가
-        await displayMessage(message, nickname);
-      });
-    }
-
-    // 웹 소켓 연결 이벤트 핸들러
-    socket.addEventListener('open', (event) => {});
-
-    // 웹 소켓 연결 닫기 이벤트 핸들러
-    socket.addEventListener('close', (event) => {
-      console.log('WebSocket 연결이 닫혔습니다.');
-      const nicknameMessage = {
-        type: 'nickname',
-        value: `${userNickname}`,
+  const sendMessage = () => {
+    if (messageInput) {
+      const data = {
+        message: messageInput,
+        nickname: userNickname,
       };
-      socket.send(JSON.stringify(nicknameMessage));
-    });
 
-    // 웹 소켓 에러 이벤트 핸들러
-    socket.addEventListener('error', (error) => {});
-
-    // 메시지 전송 버튼 클릭 이벤트
-    sendButton.addEventListener('click', () => {
-      const message = messageInput.value;
-      if (message) {
-        const data = {
-          message: message,
-          nickname: userNickname,
-        };
-        if (userNickname == undefined) {
-          return alert('로그인이 필요한 기능입니다.');
-        }
-        socket.send(JSON.stringify(data)); // 서버로 메시지 전송
-        messageInput.value = '';
+      if (userNickname == null) {
+        return alert('로그인이 필요한 기능입니다.');
       }
-    });
 
-    messageInput.addEventListener('keyup', (event) => {
-      if (event.keyCode === 13) {
-        event.preventDefault();
-        sendButton.click();
-      }
-    });
-
-    // 채팅 메시지 화면에 표시
-    async function displayMessage(message, nickname) {
-      const messageElement = document.createElement('div');
-      messageElement.textContent = `${nickname}: ${message}`;
-
-      // 클래스 이름을 동적으로 설정
-      messageElement.classList.add('chat-message');
-
-      if (nickname === userNickname) {
-        // 사용자 닉네임과 채팅 메시지의 닉네임이 같으면 오른쪽 정렬
-        messageElement.classList.add('right-align');
-      } else {
-        // 다르면 왼쪽 정렬
-        messageElement.classList.add('left-align');
-      }
-      chatMessages.appendChild(messageElement);
-      chatMessages.scrollTop = chatMessages.scrollHeight; // 스크롤 아래로 이동
+      socket.send(JSON.stringify(data)); // 서버로 메시지 전송
+      setMessageInput('');
     }
-    // 웹 소켓 연결 닫기 이벤트 핸들러
-    socket.addEventListener('close', (event) => {
-      const nicknameMessage = {
-        type: 'nickname',
-        value: `${userNickname}`,
-      };
-      socket.send(JSON.stringify(nicknameMessage));
-    });
-  }
+  };
+
+  const handleInputKeyPress = (event) => {
+    if (event.key === 'Enter') {
+      event.preventDefault();
+      sendMessage();
+    }
+  };
 
   return (
     <div>
-      <h1>그땐 채팅</h1>
-      <div id="chat-header"></div>
-      <div id="chat-messages"></div>
-      <input id="message-input"></input>
-      <button id="send-button">전송</button>
+      <img src="../../assets/image/header.png" />
+      <div id="chat-container">
+        <h1>그땐 채팅</h1>
+        <div id="chat-header">
+          <span>{userNickname} 님의 아름다운 채팅 문화 선도를 믿습니다.</span>
+        </div>
+        <div id="chat-messages">
+          {chatMessages.map((msg, index) => (
+            <div
+              key={index}
+              className={`chat-message ${
+                msg.senderNickname === userNickname ? 'right-align' : 'left-align'
+              }`}
+            >
+              {`${msg.senderNickname} : ${msg.message}`}
+            </div>
+          ))}
+        </div>
+        <div id="chat-input">
+          <input
+            type="text"
+            id="message-input"
+            value={messageInput}
+            onChange={(e) => setMessageInput(e.target.value)}
+            onKeyPress={handleInputKeyPress}
+          />
+          <button id="send-button" onClick={sendMessage}>
+            전송
+          </button>
+        </div>
+      </div>
     </div>
   );
 }
