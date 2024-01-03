@@ -75,5 +75,5 @@ const logout = async () => {
 
   alert(code[result.responseData.code]);
   sessionStorage.removeItem('Authorization');
-  location.href = `./`;
+  location.href = `./main.html`;
 };

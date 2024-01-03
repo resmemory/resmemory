@@ -212,17 +212,17 @@ const logout = async () => {
 
 // 연도별 조회로 이동
 const annualCategory = (category) => {
-  location.href = `./annual?category=${category}`;
+  location.href = `./annual.html?category=${category}`;
 };
 
 // 상세 페이지로 이동
 const clickPost = (postId) => {
-  location.href = `./detail?post=${postId}`;
+  location.href = `./detail.html?post=${postId}`;
 };
 
 // 글 작성 페이지로 이동
 const writingPost = () => {
-  location.href = `./post`;
+  location.href = `./post.html`;
 };
 
 // 로고 클릭시
