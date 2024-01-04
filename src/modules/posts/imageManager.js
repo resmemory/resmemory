@@ -21,9 +21,8 @@ async function imageUpload(img) {
     await sharp(img.filepath)
       .resize({
         width: 600,
-        height: 500,
-        fit: 'contain',
-        background: { r: 255, g: 255, b: 255, alpha: 1 },
+        height: null,
+        fit: 'inside',
       })
       .toFile(`${resizedFilename}`);
 
@@ -51,10 +50,9 @@ async function imageThumbnail(img) {
 
     await sharp(img.filepath)
       .resize({
-        width: 60,
-        height: 50,
-        fit: 'contain',
-        background: { r: 255, g: 255, b: 255, alpha: 1 },
+        width: 220,
+        height: null,
+        fit: 'inside',
       })
       .toFile(`${thumbnailFilename}`);
 
