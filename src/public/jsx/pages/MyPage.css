@@ -1,0 +1,15 @@
+.my-page-container {
+  background-color: white;
+}
+
+.my-page-container header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 1rem;
+  border-bottom: 1px solid #ccc;
+}
+
+.my-page-container main {
+  padding: 1rem;
+}
