@@ -11,7 +11,7 @@ const countPosts = async () => {
   const url = new URL(window.location.href);
   const category = url.searchParams.get('category');
 
-  const response = await fetch(`./api/posts/list?annualCategory=${category}`, {
+  const response = await fetch(`./api/posts/list?category=${category}`, {
     method: 'GET',
     headers: {
       'Content-Type': 'application/json',
@@ -33,7 +33,7 @@ const countPosts = async () => {
 
 // 게시글 목록
 const annualPosts = async (currentPage, totalPosts, category) => {
-  const response = await fetch(`./api/posts?annualCategory=${category}&pageNum=${currentPage}`, {
+  const response = await fetch(`./api/posts?category=${category}&pageNum=${currentPage}`, {
     method: 'GET',
     headers: {
       'Content-Type': 'application/json',
@@ -60,7 +60,7 @@ const annualPosts = async (currentPage, totalPosts, category) => {
       .map(
         (post) =>
           `<tr class="postBox">
-          <td>${post.annualCategory}</td>
+          <td>${post.category}</td>
           <td onclick="clickPost(${post.postId})">${post.title}</td>
           <td>${post.nickname}</td>
           <td>${new Date(post.createdAt).toLocaleDateString('ko-KR', {
@@ -133,7 +133,7 @@ const logout = async () => {
 };
 
 // 다른 연도별 조회로 이동
-const annualCategory = (category) => {
+const category = (category) => {
   location.href = `./annual?category=${category}`;
 };
 

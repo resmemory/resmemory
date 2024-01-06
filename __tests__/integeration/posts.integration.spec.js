@@ -25,7 +25,7 @@ describe('POST /api/posts', () => {
         {
           title: '테스트',
           content: '테스트',
-          annualCategory: '1990',
+          category: '1990',
           img: { size: 0 },
         },
         1,
@@ -72,7 +72,7 @@ describe('GET /api/posts', () => {
       key: 0,
       responseData: [
         {
-          annualCategory: '1990',
+          category: '1990',
           content: '테스트',
           createdAt: expect.any(String),
           deletedAt: null,

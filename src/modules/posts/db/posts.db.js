@@ -37,7 +37,7 @@ Posts.init(
       type: DataTypes.BIGINT,
       defaultValue: 0,
     },
-    annualCategory: {
+    category: {
       type: DataTypes.ENUM,
       allowNull: false,
       values: ['1970', '1980', '1990', '2000', '2010', '2020'],
