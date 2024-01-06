@@ -51,7 +51,7 @@
 //       } else {
 //         const postsData = data.responseData.map((post) => (
 //           <tr key={post.postId} className="postBox">
-//             <td>{post.annualCategory}</td>
+//             <td>{post.category}</td>
 //             <td
 //               className="post_title"
 //               onClick={() => clickPost(post.postId)}
@@ -72,7 +72,7 @@
 //         viewCountMode = true;
 //         sessionStorage.setItem('viewCountMode', viewCountMode);
 //         createPaginationButtonsByViewCount(currentPage, totalPostsCount);
-        
+
 //       }
 //     } catch (error) {
 //       setError(error);
@@ -115,7 +115,6 @@
 //   );
 // };
 
-
 import React, { useState, useEffect } from 'react';
 import PaginationButtonsByViewCount from '../pagenation/pageMostPOP';
 
@@ -138,17 +137,17 @@ const PostsListByViewCount = () => {
         'Content-Type': 'application/json',
       },
     });
-  
+
     const data = await response.json();
     if (data.responseData.code) {
       alert(code[data.responseData.code]);
     }
-  
+
     totalPosts = data.responseData.bodies;
     if (totalPosts > 100) {
       totalPosts = 100;
     }
-  
+
     return totalPosts;
   };
 
@@ -187,11 +186,8 @@ const PostsListByViewCount = () => {
       } else {
         const postsData = data.responseData.map((post) => (
           <tr key={post.postId} className="postBox">
-            <td>{post.annualCategory}</td>
-            <td
-              className="post_title"
-              onClick={() => clickPost(post.postId)}
-            >
+            <td>{post.category}</td>
+            <td className="post_title" onClick={() => clickPost(post.postId)}>
               {post.title}
             </td>
             <td>{post.nickname}</td>
@@ -216,10 +212,10 @@ const PostsListByViewCount = () => {
 
   const clickPost = (postId) => {
     const postsData = data.responseData
-    .map(
-      (post) =>
-        `<tr class="postBox">
-        <td>${post.annualCategory}</td>
+      .map(
+        (post) =>
+          `<tr class="postBox">
+        <td>${post.category}</td>
         <td class="post_title" onclick="clickPost(${post.postId})">${post.title}</td>
         <td>${post.nickname}</td>
         <td>${new Date(post.createdAt).toLocaleDateString('ko-KR', {
@@ -227,9 +223,9 @@ const PostsListByViewCount = () => {
         })}</td>
         <td>${post.viewCount}</td>
         </tr>`,
-    )
-    .join('');
-  postlist.innerHTML = postsData;
+      )
+      .join('');
+    postlist.innerHTML = postsData;
   };
 
   const createPaginationButtonsByViewCount = (currentPage, totalPosts) => {

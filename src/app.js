@@ -66,7 +66,7 @@ export const server = http
         }
 
         params.bodies = {};
-        params.bodies.annualCategory = fields.annualCategory[0];
+        params.bodies.category = fields.category[0];
         params.bodies.title = fields.title[0];
         params.bodies.content = fields.content[0];
         if (files.img && files.img[0]) {
@@ -120,7 +120,7 @@ export const server = http
             params = { userId };
           }
           params.bodies = {};
-          params.bodies.annualCategory = fields.annualCategory[0];
+          params.bodies.category = fields.category[0];
           params.bodies.title = fields.title[0];
           params.bodies.content = fields.content[0];
           if (files.img && files.img[0]) {

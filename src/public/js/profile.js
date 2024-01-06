@@ -56,7 +56,7 @@ async function bookmarks() {
       
       <p>
     
-      ${bookmark.annualCategory} | ${new Date(bookmark.createdAt).toLocaleDateString('ko-KR', {
+      ${bookmark.category} | ${new Date(bookmark.createdAt).toLocaleDateString('ko-KR', {
         timeZone: 'Asia/Seoul',
       })} | ${bookmark.nickname}
      

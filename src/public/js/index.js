@@ -63,7 +63,7 @@ const loadPosts = async (currentPage) => {
     .map(
       (post) =>
         `<tr class="postBox">
-        <td>${post.annualCategory}</td>
+        <td>${post.category}</td>
         <td class="post_title" onclick="clickPost(${post.postId})">${post.title}</td>
         <td>${post.nickname}</td>
         <td>${new Date(post.createdAt).toLocaleDateString('ko-KR', { timeZone: 'Asia/Seoul' })}</td>
@@ -115,7 +115,7 @@ const loadPostsByViewCountOrder = async (currentPage) => {
       .map(
         (post) =>
           `<tr class="postBox">
-          <td>${post.annualCategory}</td>
+          <td>${post.category}</td>
           <td class="post_title" onclick="clickPost(${post.postId})">${post.title}</td>
           <td>${post.nickname}</td>
           <td>${new Date(post.createdAt).toLocaleDateString('ko-KR', {
@@ -211,7 +211,7 @@ const logout = async () => {
 };
 
 // 연도별 조회로 이동
-const annualCategory = (category) => {
+const category = (category) => {
   location.href = `./annual.html?category=${category}`;
 };
 

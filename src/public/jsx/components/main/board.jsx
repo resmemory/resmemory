@@ -48,7 +48,7 @@ const Board = () => {
   const handlePostClick = (postId) => {
     const postUrl = `./detail.html?post=${postId}`;
     console.log(`ID가 ${postId}인 게시물이 클릭되었습니다. URL: ${postUrl}`);
-  
+
     window.location.href = postUrl;
   };
 
@@ -59,12 +59,15 @@ const Board = () => {
           <li key={post.id}>
             <div className="post">
               <div className="post-body">
-                <p>{post.annualCategory}</p>
+                <p>{post.category}</p>
                 <h5 className="post-title" onClick={() => handlePostClick(post.postId)}>
                   {post.title}
                 </h5>
                 <p className="card-text">{post.content}</p>
-                <td>${new Date(post.createdAt).toLocaleDateString('ko-KR', { timeZone: 'Asia/Seoul' })}</td>
+                <td>
+                  $
+                  {new Date(post.createdAt).toLocaleDateString('ko-KR', { timeZone: 'Asia/Seoul' })}
+                </td>
                 <td>${post.viewCount}</td>
               </div>
             </div>
