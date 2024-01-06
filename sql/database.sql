@@ -49,7 +49,7 @@ CREATE TABLE `Threads` (
   `content` VARCHAR(500) NOT NULL, 
   `img` VARCHAR(255) DEFAULT NULL, 
   `viewCount` BIGINT DEFAULT 0, 
-  `category` ENUM('1970', '1980', '1990', '2000', '2010', '2020') NOT NULL, 
+  `category` ENUM('1970', '1980', '1990', '2000', '2010', '2020', "notice") NOT NULL, 
   `createdAt` DATETIME, 
   `updatedAt` DATETIME, 
   `deletedAt` DATETIME DEFAULT NULL, 
