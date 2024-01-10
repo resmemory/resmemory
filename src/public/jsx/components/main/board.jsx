@@ -1,5 +1,4 @@
 import React, { useEffect, useState, useRef } from 'react';
-import axios from 'axios';
 
 const Board = () => {
   const [board, setBoard] = useState([]);
@@ -29,7 +28,7 @@ const Board = () => {
   const boardData = async () => {
     try {
       setLoading(true);
-      const response = await axios.get(`./api/posts/list?page=${currentPage}`);
+      const response = await fetch(`./api/posts/list?page=${currentPage}`);
       setBoard((prevBoard) => [...prevBoard, ...response.data]);
       setCurrentPage((prevPage) => prevPage + 1);
     } catch (error) {
