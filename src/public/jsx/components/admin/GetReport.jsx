@@ -22,7 +22,7 @@ const style = {
 };
 
 function GetReport(props) {
-  const [data, setData] = useState({ content: '', reportType: '' });
+  const [data, setData] = useState('');
 
   const fetchData = async () => {
     try {
@@ -56,7 +56,7 @@ function GetReport(props) {
             <p>reportType : {item.reportType}</p>
             <p>userId : {item.userId}</p>
             <p>contentId : {item.contentId}</p>
-            <DeleteButton />
+            <DeleteButton data={item} />
           </div>
         ))
       ) : (
