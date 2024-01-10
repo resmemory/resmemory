@@ -13,3 +13,23 @@
 .my-page-container main {
   padding: 1rem;
 }
+
+.MainSection {
+  display: flex;
+  justify-content: space-between;
+  background: #f9f9f9;
+}
+
+.flex-container {
+  display: flex;
+  gap: 1rem;
+}
+
+.MyInformation {
+  flex: 1;
+}
+
+.MyCard {
+  flex: 1;
+  margin-left: 16px;
+}
