@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from 'react';
-import Code from '../../code.jsx';
 const adminId = sessionStorage.getItem('Authorization');
 
 const style = {
@@ -55,7 +54,6 @@ function DeleteButton(props) {
 
   return (
     <div style={style.div}>
-      <Code />
       <button style={{ ...style.button, backgroundColor: buttonColor }} onClick={handleDelete}>
         {'삭제'}
       </button>
