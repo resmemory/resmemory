@@ -1,11 +1,15 @@
 import React, { useEffect, useState } from 'react';
+
+// CSS 불러오기
 import '../../css/Chat.css';
+
 function ChatPage() {
   const [userNickname, setUserNickname] = useState('');
   const [socket, setSocket] = useState(null);
   const [messageInput, setMessageInput] = useState('');
   const [chatMessages, setChatMessages] = useState([]);
 
+  // 컴포넌트가 렌더링 될
   useEffect(() => {
     async function initializeChat() {
       const response = await fetch(`./api/users`, {
@@ -22,9 +26,13 @@ function ChatPage() {
         location.href = './';
       } else {
         const nickname = result.responseData.bodies.nickname;
+
+        // 닉네임 설정
         setUserNickname(nickname);
 
         const newSocket = new WebSocket(`ws://127.0.0.1:8001/?nickname=${nickname}`);
+
+        // 소켓 설정
         setSocket(newSocket);
 
         newSocket.addEventListener('message', async (event) => {
@@ -52,6 +60,7 @@ function ChatPage() {
   }, []);
 
   const displayMessage = (message, senderNickname) => {
+    // 채팅 메시지 배열에 담기
     setChatMessages((prevMessages) => [...prevMessages, { message, senderNickname }]);
   };
 
@@ -67,6 +76,8 @@ function ChatPage() {
       }
 
       socket.send(JSON.stringify(data)); // 서버로 메시지 전송
+
+      // 들어온 메시지 담기
       setMessageInput('');
     }
   };
