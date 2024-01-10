@@ -1,5 +1,4 @@
-// import React, { useEffect, useState, useRef } from 'react';
-// import axios from 'axios';
+import React, { useEffect, useState, useRef } from 'react';
 
 // const Board = () => {
 //   const [board, setBoard] = useState([]);
@@ -26,18 +25,18 @@
 //     }
 //   };
 
-//   const boardData = async () => {
-//     try {
-//       setLoading(true);
-//       const response = await axios.get(`./api/posts/list?page=${currentPage}`);
-//       setBoard((prevBoard) => [...prevBoard, ...response.data]);
-//       setCurrentPage((prevPage) => prevPage + 1);
-//     } catch (error) {
-//       console.error('게시판 데이터를 불러오는 중 오류 발생:', error);
-//     } finally {
-//       setLoading(false);
-//     }
-//   };
+  const boardData = async () => {
+    try {
+      setLoading(true);
+      const response = await fetch(`./api/posts/list?page=${currentPage}`);
+      setBoard((prevBoard) => [...prevBoard, ...response.data]);
+      setCurrentPage((prevPage) => prevPage + 1);
+    } catch (error) {
+      console.error('게시판 데이터를 불러오는 중 오류 발생:', error);
+    } finally {
+      setLoading(false);
+    }
+  };
 
 //   const loadMoreData = () => {
 //     if (!loading) {
