@@ -66,3 +66,36 @@
   color: #ffffff;
   text-align: center;
 }
+
+.CardSection {
+  padding: 20px;
+}
+
+.button-container {
+  margin-bottom: 10px;
+}
+
+.action-button1,
+.action-button2 {
+  padding: 8px 16px;
+  font-size: 16px;
+}
+
+.content-container {
+  text-align: center;
+}
+
+.card {
+  border: 1px solid #ccc;
+  padding: 10px;
+  margin-bottom: 10px;
+}
+
+.no-posts-message {
+  font-size: 18px;
+}
+
+.write-button {
+  padding: 10px 20px;
+  font-size: 16px;
+}
