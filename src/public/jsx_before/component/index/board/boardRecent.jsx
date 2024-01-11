@@ -70,7 +70,7 @@
 //         <tbody>
 //           {postData.map((post) => (
 //             <tr key={post.postId} className="postBox">
-//               <td>{post.annualCategory}</td>
+//               <td>{post.category}</td>
 //               <td className="post_title" onClick={() => clickPost(post.postId)}>{post.title}</td>
 //               <td>{post.nickname}</td>
 //               <td>{new Date(post.createdAt).toLocaleDateString('ko-KR', { timeZone: 'Asia/Seoul' })}</td>
@@ -109,17 +109,17 @@ const PostsList = () => {
         'Content-Type': 'application/json',
       },
     });
-  
+
     const data = await response.json();
     if (data.responseData.code) {
       alert(code[data.responseData.code]);
     }
-  
+
     totalPosts = data.responseData.bodies;
     if (totalPosts > 100) {
       totalPosts = 100;
     }
-  
+
     return totalPosts;
   };
 
@@ -160,16 +160,16 @@ const PostsList = () => {
           'Content-Type': 'application/json',
         },
       });
-  
+
       const detailedPostData = await detailedPostResponse.json();
-  
+
       // 상세 정보를 어떻게 화면에 표시할지에 따라 수정
       console.log('Clicked Post Details:', detailedPostData.responseData);
       // 여기에서 모달 또는 다른 방법으로 상세 정보를 화면에 표시할 수 있습니다.
     } catch (error) {
       console.error('Error loading post details:', error);
     }
-  }
+  };
 
   const createPaginationButtons = () => {
     return (
@@ -200,10 +200,14 @@ const PostsList = () => {
         <tbody>
           {postData.map((post) => (
             <tr key={post.postId} className="postBox">
-              <td>{post.annualCategory}</td>
-              <td className="post_title" onClick={() => clickPost(post.postId)}>{post.title}</td>
+              <td>{post.category}</td>
+              <td className="post_title" onClick={() => clickPost(post.postId)}>
+                {post.title}
+              </td>
               <td>{post.nickname}</td>
-              <td>{new Date(post.createdAt).toLocaleDateString('ko-KR', { timeZone: 'Asia/Seoul' })}</td>
+              <td>
+                {new Date(post.createdAt).toLocaleDateString('ko-KR', { timeZone: 'Asia/Seoul' })}
+              </td>
               <td>{post.viewCount}</td>
             </tr>
           ))}

@@ -40,7 +40,7 @@ async function loadPostDetail() {
   const nickname = post_result.nickname;
   const title = post_result.title;
   const content = post_result.content;
-  const annualCategory = post_result.annualCategory;
+  const category = post_result.category;
   let img = post_result.img;
   if (!img) {
     img = '';
@@ -95,8 +95,8 @@ async function loadPostDetail() {
     <div>
       <label>연도</label>
       <br />
-      <select name="annualCategory" class="post_annualCategory">
-        <option selected>${annualCategory}</option>
+      <select name="category" class="post_category">
+        <option selected>${category}</option>
         <option>1970</option>
         <option>1980</option>
         <option>1990</option>
