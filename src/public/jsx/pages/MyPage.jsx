@@ -3,11 +3,14 @@ import MyInfo from '../../jsx/components/mypage/myinfo.jsx';
 // import Card from '../components/mypage/card.jsx';
 import '../pages/MyPage.css';
 import CardSection from '../components/mypage/cardsection.jsx';
+import Header from '../components/main/header.jsx';
 
 function MyPage() {
   return (
     <div className="#">
-      <header className="#">{/* 헤더 부분 */}</header>
+      <header className="#">
+        <Header />
+      </header>
       <main className="MainSection">
         <div className="flex-container">
           <section className="MyInformation">
