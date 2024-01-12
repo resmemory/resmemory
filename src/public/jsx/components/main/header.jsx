@@ -74,28 +74,26 @@ const Header = () => {
           </a>
         </div>
         <ul className="Header_ul">
-          <li className="thread_btn">스레드</li>
-          <li className="chat_btn">채팅</li>
-          <li className="mypage" onClick={handleMyPageClick}>
-            마이페이지
-          </li>
-          {isLoggedIn ? (
+          {isLoggedIn && (
             <>
+              <li className="thread_btn">스레드</li>
+              <li className="chat_btn">채팅</li>
+              <li className="mypage" onClick={handleMyPageClick}>
+                마이페이지
+              </li>
               <li className="logout" onClick={logout}>
                 로그아웃
               </li>
             </>
-          ) : (
-            <>
-              <li className="login" onClick={handleLoginClick}>
-                로그인
-              </li>
-            </>
+          )}
+          {!isLoggedIn && (
+            <li className="login" onClick={handleLoginClick}>
+              로그인
+            </li>
           )}
         </ul>
       </div>
     </section>
   );
 };
-
 export default Header;
