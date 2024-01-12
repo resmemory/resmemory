@@ -1,5 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import DeleteButton from './DeleteButton.jsx';
+import FilterReport from './FilterReport.jsx';
+import ShowContent from './ShowContent.jsx';
 
 const adminId = sessionStorage.getItem('Authorization');
 
@@ -19,10 +21,23 @@ const style = {
     padding: '10px 10px 10px 10px',
     marginBottom: '10px',
   },
+  flexItem: {
+    display: 'flex',
+    flexDirection: 'row',
+    gap: '30px',
+    marginLeft: '20px',
+  },
+  ContentBox: {
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center',
+    marginBottom: '10px',
+  },
 };
 
 function GetReport(props) {
   const [data, setData] = useState('');
+  const [filteredData, setFilteredData] = useState([]);
 
   const fetchData = async () => {
     try {
@@ -45,18 +60,39 @@ function GetReport(props) {
 
   useEffect(() => {
     fetchData();
-  }, []);
+  }, [filteredData]); // 의존성 배열에 filter 추가
+
+  const handleFilterChange = (filter) => {
+    // 선택된 필터에 따라 데이터를 필터링합니다.
+    if (filter === 'all') {
+      setFilteredData(data);
+    } else if (filter === 'incomplete') {
+      const incompleteData = data.filter((item) => item.isReport === false);
+      setFilteredData(incompleteData);
+    } else if (filter === 'complete') {
+      const completeData = data.filter((item) => item.isReport === true);
+      setFilteredData(completeData);
+    }
+  };
 
   return (
     <div style={style.container}>
-      {data.length > 0 ? (
-        data.map((item) => (
+      <FilterReport onFilterChange={handleFilterChange} />
+      {filteredData.length > 0 ? (
+        filteredData.map((item) => (
           <div key={item.reportId} style={style.div}>
-            <p>신고내용 : {item.content}</p>
-            <p>reportType : {item.reportType}</p>
-            <p>userId : {item.userId}</p>
-            <p>contentId : {item.contentId}</p>
-            <DeleteButton data={item} />
+            <div style={style.flexItem}>
+              <p>신고내용 : {item.content}</p>
+              <p>유형 : {item.reportType}</p>
+              <p>userId : {item.userId}</p>
+              <p>contentId : {item.contentId}</p>
+            </div>
+            <div style={style.ContentBox}>
+              <ShowContent data={item} />
+            </div>
+            <div style={style.flexItem}>
+              <DeleteButton data={item} />
+            </div>
           </div>
         ))
       ) : (

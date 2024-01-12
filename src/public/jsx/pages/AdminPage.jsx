@@ -1,6 +1,6 @@
 import React from 'react';
 import ReportContainer from '../components/admin/ReportContainer.jsx';
-
+import Header from '../components/main/header.jsx';
 const styles = {
   header: {
     width: '100%',
@@ -16,9 +16,7 @@ const styles = {
 function AdminPage() {
   return (
     <div>
-      <header style={styles.header}>
-        <h1>관리자 페이지</h1>
-      </header>
+      <Header />
       <ReportContainer style={styles.ReportContainer} />
     </div>
   );
