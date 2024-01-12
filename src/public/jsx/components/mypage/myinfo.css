@@ -1,3 +1,9 @@
+.nicknamebox {
+  justify-content: space-between;
+  display: flex;
+  height: 80px;
+}
+
 .myinfo_first {
   background-color: #ffffff;
   border-radius: 36px;
@@ -19,6 +25,17 @@
   line-height: 30px;
   letter-spacing: 0.02em;
   text-align: left;
+  color: #979797;
+}
+
+.nickname {
+  outline: none;
+  border-bottom: 1px solid #000;
+  border-top: none;
+  border-left: none;
+  border-right: none;
+  width: 200px;
+  height: 50px;
 }
 
 .myinfo_edit {
@@ -33,6 +50,11 @@
   color: #427dee;
   background: none;
   inline-size: none;
+  cursor: pointer;
+}
+
+.myinfo_edit:hover {
+  color: #000;
 }
 
 .myinfo_mynickname {
@@ -49,7 +71,7 @@
 
 .myinfo_sign {
   display: flex;
-  width: 300px;
+  width: 364px;
   height: 32px;
   justify-content: space-between;
 }
@@ -74,12 +96,23 @@
   gap: 4px;
   background-color: #323232;
   color: #ffffff;
-  width: 52.18px;
-  height: 16px;
+  font-family: Poppins;
+  font-size: 20px;
+  letter-spacing: 0.02em;
   text-align: center;
+  justify-content: center;
+  align-items: center;
+  display: flex;
 }
 
 .myinfo_signout {
-  margin-left: 150px;
+  text-align: center;
+  margin-top: 45px;
   color: red;
+  font-family: Poppins;
+  font-size: 20px;
+  font-weight: 400;
+  line-height: 30px;
+  letter-spacing: 0.02em;
+  cursor: pointer;
 }
