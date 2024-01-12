@@ -37,8 +37,8 @@ const ImageUpload = ({ onImageChange, onDeleteImage }) => {
         <button
           onClick={handleButtonAction}
           style={{
-            borderRadius :"6px",
-            color : 'white',
+            borderRadius: '6px',
+            color: 'white',
             backgroundColor: selectedImage ? '#FF6E4E' : '#323232',
             height: '42px', // 높이 조절
             width: '120px', // 너비 조절
@@ -58,14 +58,13 @@ const ImageUpload = ({ onImageChange, onDeleteImage }) => {
           borderRadius: '8px',
           padding: '5px',
           resize: 'none',
-          fontSize:'20px',
+          fontSize: '20px',
           textAlign: 'left',
         }}
       />
     </div>
   );
 };
-
 
 const CategorySelect = ({ onCategoryChange }) => {
   const handleCategoryChange = (e) => {
@@ -74,9 +73,11 @@ const CategorySelect = ({ onCategoryChange }) => {
   };
 
   return (
-    <div className='annual'>
+    <div className="annual">
       <select className="annual-select" onChange={handleCategoryChange}>
-        <option value="" disabled hidden>카테고리 선택</option>
+        <option value="" disabled hidden>
+          카테고리 선택
+        </option>
         <option value="2020">2020's</option>
         <option value="2010">2010's</option>
         <option value="2000">2000's</option>
@@ -87,12 +88,18 @@ const CategorySelect = ({ onCategoryChange }) => {
       </select>
     </div>
   );
-}
+};
 
 const TitleInput = ({ title, onChange }) => {
   return (
     <div>
-      <input type="text" class="title" placeholder="제목을 입력하세요" value={title} onChange={onChange} />
+      <input
+        type="text"
+        class="title"
+        placeholder="제목을 입력하세요"
+        value={title}
+        onChange={onChange}
+      />
     </div>
   );
 };
@@ -113,7 +120,7 @@ const Post = () => {
     content: '',
     image: null,
   });
-  
+
   const handleImageChange = (image) => {
     setPostData((prevData) => ({ ...prevData, image }));
   };
@@ -137,8 +144,7 @@ const Post = () => {
   const handleWritePost = async () => {
     try {
       const form = new FormData();
-      const authorization = document.querySelector('.Authorization');
-      authorization.value = sessionStorage.getItem('Authorization');
+      form.append('authorization', sessionStorage.getItem('Authorization'));
       form.append('category', postData.category);
       form.append('title', postData.title);
       form.append('content', postData.content);
@@ -146,20 +152,9 @@ const Post = () => {
 
       const response = await fetch('./api/posts', {
         method: 'POST',
-        headers: {
-          Authorization: sessionStorage.getItem('Authorization'),
-        },
         body: form,
       });
-      const data = await response.json();
-      console.log(form.title)
-      console.log(postData)
-      console.log(postData.title)
-      if (data.response.ok) {
-        console.log('글이 성공적으로 작성되었습니다.');
-      } else {
-        console.error('글 작성 중 오류가 발생했습니다.');
-      }
+      const result = await response.json();
     } catch (error) {
       console.error('네트워크 오류 또는 예외가 발생했습니다.', error);
     }
@@ -175,23 +170,26 @@ const Post = () => {
 
   return (
     <div className="post-container">
-      <input type="hidden" name="authorization" class="Authorization" />
       <CategorySelect onCategoryChange={handleCategoryChange} />
       <TitleInput title={postData.title} onChange={handleTitleChange} />
       <ImageUpload onImageChange={handleImageChange} onDeleteImage={handleDeleteImage} />
-      <div className='content'>
-      <ContentInput content={postData.content} onChange={handleContentChange} />
+      <div className="content">
+        <ContentInput content={postData.content} onChange={handleContentChange} />
       </div>
       <div className="button-container">
         {postData.id ? (
           <>
-            <button className='cancel'>취소</button>
-            <button className='edit' onClick={handleEditPost}>수정</button>
+            <button className="cancel">취소</button>
+            <button className="edit" onClick={handleEditPost}>
+              수정
+            </button>
           </>
         ) : (
           <>
-            <button className='cancel'>취소</button>
-            <button className='write' onClick={handleWritePost}>작성</button>
+            <button className="cancel">취소</button>
+            <button className="write" onClick={handleWritePost}>
+              작성
+            </button>
           </>
         )}
       </div>
