@@ -34,4 +34,10 @@
   line-height: 24px;
   letter-spacing: 0em;
   text-align: left;
+  margin-left: 50px;
+  cursor: pointer;
+}
+
+.logout {
+  color: red !important;
 }
