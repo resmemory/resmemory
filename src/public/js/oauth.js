@@ -3,6 +3,20 @@ document.addEventListener('DOMContentLoaded', () => {
 });
 
 async function oauth() {
+  const urlParams = new URL(location.href).searchParams;
+  const code = urlParams.get('code');
+  const responseConfig = await fetch(`./kakaokey`, {
+    method: 'POST',
+  });
+  const resultConfig = await responseConfig.json();
+  const config = {
+    client_id: resultConfig.responseData.kakaoClientId,
+    client_secret: resultConfig.responseData.kakaoSecretKey,
+    grant_type: resultConfig.responseData.grantType,
+    redirect_uri: resultConfig.responseData.kakaoRedirectURI,
+    code: code,
+  };
+
   const baseUrl = 'https://kauth.kakao.com/oauth/token';
 
   const params = new URLSearchParams(config).toString();
