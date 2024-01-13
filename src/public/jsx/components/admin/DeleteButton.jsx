@@ -36,6 +36,9 @@ function DeleteButton(props) {
         console.log(error);
       }
     }
+    if (isReport === 'true' || isReport === '2') {
+      await deleteContent(props.data.reportId, props.data.contentId, props.data.reportType);
+    }
   };
 
   async function deleteContent(reportId, contentId, reportType) {
