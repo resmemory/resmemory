@@ -12,7 +12,7 @@ let s3 = new aws.S3({
 });
 
 async function imageUpload(img) {
-  if (!img) {
+  if (img.size == 0) {
     return null;
   } else {
     const filename = `${Date.now()}_${img.newFilename}`;
@@ -42,7 +42,7 @@ async function imageUpload(img) {
 }
 
 async function imageThumbnail(img) {
-  if (!img) {
+  if (img.size == 0) {
     return null;
   } else {
     const filename = `${Date.now()}_${img.newFilename}`;
