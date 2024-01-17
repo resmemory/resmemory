@@ -22,8 +22,11 @@ function frontconnection(pathname, res, data) {
       res.writeHead(200, { 'Content-Type': 'text/css' });
     } else if (pathname.endsWith('.png')) {
       res.writeHead(200, { 'Content-Type': 'image/png' });
+    } else if (pathname.endsWith('.html')) {
+      res.writeHead(200, { 'Content-Type': 'text/html' });
     } else {
-      filePath = `./${directory}/public${pathname}.html`;
+      // filePath = `./${directory}/public${pathname}.html`;
+      filePath = `./${directory}/public/index.html`;
       res.writeHead(200, { 'Content-Type': 'text/html' });
     }
   }

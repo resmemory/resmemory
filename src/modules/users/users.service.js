@@ -5,6 +5,9 @@ import redisCli from '../../redis';
 import jwt from 'jsonwebtoken';
 import signup from './signup.service';
 import usersmodule from './users.module';
+import dotenv from 'dotenv';
+
+dotenv.config();
 
 const onRequest = async (res, method, pathname, params, key, cb) => {
   let token;
@@ -87,6 +90,18 @@ const onRequest = async (res, method, pathname, params, key, cb) => {
           responseData = { code: 120 };
         }
       }
+
+      // 카카오 JS key
+      if (pathname == '/kakaokey') {
+        responseData = {
+          kakaoJSkey: process.env.KAKAO_JS_KEY,
+          grantType: process.env.KAKAO_GRANT_TYPE,
+          kakaoClientId: process.env.KAKAO_CLIENT_ID,
+          kakaoSecretKey: process.env.KAKAO_CLIENT_SECRET,
+          kakaoRedirectURI: process.env.KAKAO_REDIRECT_URI,
+        };
+      }
+
       // 카카오 로그인
       if (pathname == '/kakaoLogin') {
         try {

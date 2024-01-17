@@ -16,6 +16,7 @@ class UsersModule extends TcpServer {
       'POST/signup',
       'POST/login',
       'POST/logout',
+      'POST/kakaokey',
       'GET/users',
       'PATCH/users',
       'DELETE/users',

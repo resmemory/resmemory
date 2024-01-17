@@ -13,37 +13,35 @@ const onRequest = async (res, method, pathname, params, key, cb, mock) => {
     case 'POST':
       // 게시글 작성
       if (pathname === '/posts') {
-        // try {
-        const { title, content, annualCategory, img } = params.bodies;
-        let result = null;
-        let thumbnail = null;
-        // if (!params.userId) {
-        //   responseData = { code: 312 };
-        // } else
+        try {
+          const { title, content, category, img } = params.bodies;
+          let result = null;
+          let thumbnail = null;
+          if (!params.userId) {
+            responseData = { code: 312 };
+          } else if (!title) {
+            responseData = { code: 313 };
+          } else if (!content) {
+            responseData = { code: 314 };
+          } else if (!category) {
+            responseData = { code: 315 };
+          } else {
+            result = await imageUpload(img);
+            thumbnail = await imageThumbnail(img);
 
-        if (!title) {
-          responseData = { code: 313 };
-        } else if (!content) {
-          responseData = { code: 314 };
-        } else if (!annualCategory) {
-          responseData = { code: 315 };
-        } else {
-          result = await imageUpload(img);
-          thumbnail = await imageThumbnail(img);
-
-          await Posts.create({
-            title,
-            content,
-            thumbnail,
-            annualCategory,
-            img: result,
-            userId: params.userId,
-          });
-          responseData = { code: 311 };
+            await Posts.create({
+              title,
+              content,
+              thumbnail,
+              category,
+              img: result,
+              userId: params.userId,
+            });
+            responseData = { code: 311 };
+          }
+        } catch (err) {
+          responseData = { code: 310 };
         }
-        // } catch (err) {
-        //   responseData = { code: 310 };
-        // }
       }
 
       // 댓글 작성
@@ -83,7 +81,7 @@ const onRequest = async (res, method, pathname, params, key, cb, mock) => {
 
     case 'GET':
       // 게시글 전체 조회
-      if (pathname === '/posts' && params.query.pageNum && !params.query.annualCategory) {
+      if (pathname === '/posts' && params.query.pageNum && !params.query.category) {
         try {
           let result;
           const { pageNum } = params.query;
@@ -155,9 +153,9 @@ const onRequest = async (res, method, pathname, params, key, cb, mock) => {
       // 게시글 전체 조회(리스트 출력용)
       if (pathname === '/posts' && params.params === 'list') {
         try {
-          if (params.query.annualCategory) {
+          if (params.query.category) {
             const result = await Posts.count({
-              where: { annualCategory: params.query.annualCategory },
+              where: { category: params.query.category },
             });
             responseData = { bodies: result };
           } else {
@@ -170,13 +168,13 @@ const onRequest = async (res, method, pathname, params, key, cb, mock) => {
       }
 
       // 연도별 게시글 조회
-      if (pathname === '/posts' && params.query.annualCategory && params.params !== 'list') {
+      if (pathname === '/posts' && params.query.category && params.params !== 'list') {
         try {
           let result;
-          const { annualCategory, pageNum } = params.query;
+          const { category, pageNum } = params.query;
 
           result = await Posts.findAll({
-            where: { annualCategory },
+            where: { category },
             order: [['createdAt', 'DESC']],
             limit: 10,
             offset: (pageNum - 1) * 10,
@@ -249,6 +247,21 @@ const onRequest = async (res, method, pathname, params, key, cb, mock) => {
         }
       }
 
+      // 내가 쓴 글 조회
+      if (pathname === '/myposts') {
+        try {
+          const { userId } = params;
+          const result = await Posts.findAll({
+            where: { userId },
+            order: [['createdAt', 'DESC']],
+            raw: true,
+          });
+          responseData = { result };
+        } catch (err) {
+          responseData = { code: 340 };
+        }
+      }
+
       // 댓글 조회
       if (pathname === '/comments') {
         try {
@@ -309,7 +322,7 @@ const onRequest = async (res, method, pathname, params, key, cb, mock) => {
       // 게시글 수정
       if (pathname === '/posts') {
         try {
-          const { title, content, annualCategory, previousImg, img } = params.bodies;
+          const { title, content, category, previousImg, img } = params.bodies;
           const postId = params.params;
           let result = null;
           let thumbnail = null;
@@ -319,7 +332,7 @@ const onRequest = async (res, method, pathname, params, key, cb, mock) => {
             responseData = { code: 353 };
           } else if (!content) {
             responseData = { code: 354 };
-          } else if (!annualCategory) {
+          } else if (!category) {
             responseData = { code: 355 };
           }
           if (!previousImg) {
@@ -354,7 +367,7 @@ const onRequest = async (res, method, pathname, params, key, cb, mock) => {
             responseData = { code: 357 };
           } else {
             await Posts.update(
-              { title, content, annualCategory, img: result, thumbnail },
+              { title, content, category, img: result, thumbnail },
               { where: { postId } },
             );
             responseData = { code: 351 };
