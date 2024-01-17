@@ -17,11 +17,9 @@ const onRequest = async (res, method, pathname, params, key, cb, mock) => {
         const { title, content, category, img } = params.bodies;
         let result = null;
         let thumbnail = null;
-        // if (!params.userId) {
-        //   responseData = { code: 312 };
-        // } else
-
-        if (!title) {
+        if (!params.userId) {
+          responseData = { code: 312 };
+        } else if (!title) {
           responseData = { code: 313 };
         } else if (!content) {
           responseData = { code: 314 };

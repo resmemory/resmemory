@@ -9,7 +9,7 @@ function WritePostPage() {
       <header>
         <Header />
       </header>
-      <Post/>
+      <Post />
     </div>
   );
 }
