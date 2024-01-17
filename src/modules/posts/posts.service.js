@@ -14,20 +14,20 @@ const onRequest = async (res, method, pathname, params, key, cb, mock) => {
       // 게시글 작성
       if (pathname === '/posts') {
         try {
-          const { title, content, category, img } = params.bodies;
-          let result = null;
-          let thumbnail = null;
-          if (!params.userId) {
-            responseData = { code: 312 };
-          } else if (!title) {
-            responseData = { code: 313 };
-          } else if (!content) {
-            responseData = { code: 314 };
-          } else if (!category) {
-            responseData = { code: 315 };
-          } else {
-            result = await imageUpload(img);
-            thumbnail = await imageThumbnail(img);
+        const { title, content, category, img } = params.bodies;
+        let result = null;
+        let thumbnail = null;
+        if (!params.userId) {
+          responseData = { code: 312 };
+        } else if (!title) {
+          responseData = { code: 313 };
+        } else if (!content) {
+          responseData = { code: 314 };
+        } else if (!category) {
+          responseData = { code: 315 };
+        } else {
+          result = await imageUpload(img);
+          thumbnail = await imageThumbnail(img);
 
             await Posts.create({
               title,
