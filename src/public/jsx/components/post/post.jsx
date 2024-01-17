@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
 import '../css/post.css';
 
-// 이미지가 없을때 null x
 const ImageUpload = ({ onImageChange, onDeleteImage }) => {
   const [selectedImage, setSelectedImage] = useState(null);
   const [imageDescription, setImageDescription] = useState('');
@@ -76,7 +75,7 @@ const CategorySelect = ({ onCategoryChange }) => {
   return (
     <div className="annual">
       <select className="annual-select" onChange={handleCategoryChange}>
-        <option value="" hidden>
+        <option value="" disabled hidden>
           카테고리 선택
         </option>
         <option value="2020">2020's</option>
@@ -86,6 +85,7 @@ const CategorySelect = ({ onCategoryChange }) => {
         <option value="1980">1980's</option>
         <option value="1970">1970's</option>
         <option value="1960">1960's</option>
+        <option value="notice">notice</option>
       </select>
     </div>
   );
@@ -149,80 +149,66 @@ const Post = () => {
       form.append('category', postData.category);
       form.append('title', postData.title);
       form.append('content', postData.content);
+  
       // 이미지가 있을 경우에만 추가
       if (postData.image && postData.image instanceof File) {
         form.append('img', postData.image);
       } else {
+        // 이미지가 없는 경우 빈 파일 추가
         form.append('img', new Blob(), 'placeholder.txt');
       }
+  
       // FormData 내용을 각 항목 별로 출력
       form.forEach((value, key) => {
         console.log(`${key}: ${value}`);
       });
+  
       const response = await fetch('./api/posts', {
         method: 'POST',
-        body: formData,
+        body: form,
       });
-
-      const data = await response.json();
-      alert(code[data.responseData.code]);
-
-      if (data.responseData.code === 311) {
-        setWritingPostInProgress(true);
-        window.location.href = `./`;
-      } else if (data.responseData.code === 312) {
-        window.location.href = `./login`;
-      }
+  
+      const result = await response.json();
     } catch (error) {
-      console.error(error);
-      // 처리 중 오류 발생 시에 대한 처리 추가
-      // 예: alert('게시글 작성 중 오류가 발생했습니다.');
+      console.error('네트워크 오류 또는 예외가 발생했습니다.', error);
     }
   };
-  
 
-  const cancelPost = async () => {
-    window.history.back();
+  const handleEditPost = async () => {
+    try {
+      // 게시물 수정 로직
+    } catch (error) {
+      console.error('게시물 수정 중 오류가 발생했습니다.', error);
+    }
   };
 
   return (
-    <>
-      <div>
-        <form
-          action="./api/posts"
-          method="POST"
-          encType="multipart/form-data"
-          onSubmit={(e) => e.preventDefault()} // 기본 form submit 방지
-          id="form"
-        >
-          <input type="hidden" name="authorization" className="Authorization" />
-          <div className="container">
-            <div>
-              <label>카테고리</label>
-              <select name="category">
-                <option value="" selected></option>
-                <option value="1970">1970</option>
-                <option value="1980">1980</option>
-                <option value="1990">1990</option>
-                <option value="2000">2000</option>
-                <option value="2010">2010</option>
-                <option value="2020">2020</option>
-              </select>
-            </div>
-            <div className="write_box">
-              <input name="title" type="text" placeholder="제목을 입력해주세요." />
-              <input name="img" type="file" />
-              <textarea name="content" type="text" placeholder="내용을 입력해주세요."></textarea>
-            </div>
-            <div className="post_buttons">
-              <button onClick={writingPost}>게시글 작성</button>
-              <button onClick={cancelPost}>취소</button>
-            </div>
-          </div>
-        </form>
+    <div className="post-container">
+      <CategorySelect onCategoryChange={handleCategoryChange} />
+      <TitleInput title={postData.title} onChange={handleTitleChange} />
+      <ImageUpload onImageChange={handleImageChange} onDeleteImage={handleDeleteImage} />
+      <div className="content">
+        <ContentInput content={postData.content} onChange={handleContentChange} />
       </div>
-    </>
+      <div className="button-container">
+        {postData.id ? (
+          <>
+            <button className="cancel">취소</button>
+            <button className="edit" onClick={handleEditPost}>
+              수정
+            </button>
+          </>
+        ) : (
+          <>
+            <button className="cancel">취소</button>
+            <button className="write" onClick={handleWritePost}>
+              작성
+            </button>
+          </>
+        )}
+      </div>
+    </div>
   );
-}
+};
 
 export default Post;
