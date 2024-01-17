@@ -21,8 +21,13 @@ function ShowContent(props) {
     console.log(props.data.reportType);
     if (props.data.isReport === 'false') {
       let RequestURL;
-      if (props.data.reportType === 'thread') {
+      if (props.data.reportType === 'post') {
+        RequestURL = `/api/${props.data.reportType}s?postId=${props.data.contentId}`;
+      } else if (props.data.reportType === 'comment') {
+        RequestURL = `/api/${props.data.reportType}s?postId=${props.data.contentId}`;
+      } else if (props.data.reportType === 'thread') {
         RequestURL = `/api/${props.data.reportType}s?threadId=${props.data.contentId}`;
+        console.log(props.data.contentId, 'props.data.contentId');
       }
       try {
         const response = await fetch(RequestURL, {
@@ -36,11 +41,11 @@ function ShowContent(props) {
         const result = await response.json();
         const data = result.responseData.result;
         const commentData = result.responseData;
-        console.log(result.responseData, 'aaaaa');
+        console.log(data, 'aaaaa');
         console.log(commentData);
         setData(data);
         setCommentData(commentData);
-        setTreadData(treadData);
+        setTreadData(data);
       } catch (error) {
         console.log(error);
       }
@@ -86,7 +91,11 @@ function ShowContent(props) {
           })
         ) : props.data.reportType === 'thread' ? (
           treadData.map((item) => {
-            <div></div>;
+            return (
+              <div key={item}>
+                <p>내용 :{item.content}</p>
+              </div>
+            );
           })
         ) : (
           <div></div>
