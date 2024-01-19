@@ -13,7 +13,7 @@ const onRequest = async (res, method, pathname, params, key, cb, mock) => {
     case 'POST':
       // 게시글 작성
       if (pathname === '/posts') {
-        // try {
+        try {
         const { title, content, category, img } = params.bodies;
         let result = null;
         let thumbnail = null;
@@ -44,10 +44,9 @@ const onRequest = async (res, method, pathname, params, key, cb, mock) => {
           responseData = { code: 311 };
         }
       }
-        // }
-        // } catch (err) {
-        //   responseData = { code: 310 };
-        // }
+        } catch (err) {
+          responseData = { code: 310 };
+        }
       }
 
       // 댓글 작성
@@ -253,6 +252,21 @@ const onRequest = async (res, method, pathname, params, key, cb, mock) => {
         }
       }
 
+      // 내가 쓴 글 조회
+      if (pathname === '/myposts') {
+        try {
+          const { userId } = params;
+          const result = await Posts.findAll({
+            where: { userId },
+            order: [['createdAt', 'DESC']],
+            raw: true,
+          });
+          responseData = { result };
+        } catch (err) {
+          responseData = { code: 340 };
+        }
+      }
+              
       // 댓글 조회
       if (pathname === '/comments') {
         try {
