@@ -149,25 +149,15 @@ const Post = () => {
       form.append('category', postData.category);
       form.append('title', postData.title);
       form.append('content', postData.content);
-  
-      // 이미지가 있을 경우에만 추가
       if (postData.image && postData.image instanceof File) {
         form.append('img', postData.image);
       } else {
-        // 이미지가 없는 경우 빈 파일 추가
         form.append('img', new Blob(), 'placeholder.txt');
       }
-  
-      // FormData 내용을 각 항목 별로 출력
-      form.forEach((value, key) => {
-        console.log(`${key}: ${value}`);
-      });
-  
       const response = await fetch('./api/posts', {
         method: 'POST',
         body: form,
       });
-  
       const result = await response.json();
     } catch (error) {
       console.error('네트워크 오류 또는 예외가 발생했습니다.', error);

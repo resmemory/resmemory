@@ -26,6 +26,10 @@ const onRequest = async (res, method, pathname, params, key, cb, mock) => {
         } else if (!category) {
           responseData = { code: 315 };
         } else {
+          if (category === 'notice' && params.userId !== 1){
+            responseData = { code: 316 };
+          }
+        else {
           result = await imageUpload(img);
           thumbnail = await imageThumbnail(img);
 
@@ -89,15 +93,15 @@ const onRequest = async (res, method, pathname, params, key, cb, mock) => {
           if (params.params == 'view') {
             result = await Posts.findAll({
               order: [['viewCount', 'DESC']],
-              limit: 10,
-              offset: (pageNum - 1) * 10,
+              limit: 12,
+              offset: (pageNum - 1) * 12,
               raw: true,
             });
           } else {
             result = await Posts.findAll({
               order: [['createdAt', 'DESC']],
-              limit: 10,
-              offset: (pageNum - 1) * 10,
+              limit: 12,
+              offset: (pageNum - 1) * 12,
               raw: true,
             });
           }
