@@ -1,5 +1,5 @@
 {
   "watch": ["src"],
   "ext": "js,html,jsx",
-  "exec": "concurrently 'babel src --out-dir dist --copy-files' 'npx webpack'"
+  "exec": "concurrently \"babel src --out-dir dist --copy-files\" \"npx webpack\""
 }

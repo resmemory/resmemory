@@ -2,12 +2,26 @@ import React from 'react';
 
 // 연도별 카테고리
 const Annual = () => {
-  const categories = category(2020, 2010, 2000, 1990, 1980, 1970, 1960);
+  const categories = category(2020, 2010, 2000, 1990, 1980, 1970);
 
   const handleCategoryClick = (category) => {
     window.location.href = `./annual.html?category=${category}`;
   };
 
+  const handleSort = (e) => {
+    if (e===view){
+
+    }
+    else if (e===like){
+
+    }
+    else if (e===board){
+
+    }
+    else {
+      throw new Error
+    }
+  };
   return (
     <div>
       <h1>Annual Categories</h1>
@@ -17,6 +31,12 @@ const Annual = () => {
             {category}
           </li>
         ))}
+        <div className="sort"></div>
+        <select className='sort-select' onChange={handleSort}>
+          <option value='view'>조회순</option>
+          <option value='like'>좋아요순</option>
+          <option value='board'>최신순</option>
+        </select>
       </ul>
     </div>
   );

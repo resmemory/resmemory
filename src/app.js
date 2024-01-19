@@ -71,6 +71,8 @@ export const server = http
         params.bodies.content = fields.content[0];
         if (files.img && files.img[0]) {
           params.bodies.img = files.img[0];
+        } else {
+          params.bodies.img = null;
         }
 
         req.on('end', function () {

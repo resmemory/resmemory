@@ -14,31 +14,36 @@ const onRequest = async (res, method, pathname, params, key, cb, mock) => {
       // 게시글 작성
       if (pathname === '/posts') {
         try {
-          const { title, content, category, img } = params.bodies;
-          let result = null;
-          let thumbnail = null;
-          if (!params.userId) {
-            responseData = { code: 312 };
-          } else if (!title) {
-            responseData = { code: 313 };
-          } else if (!content) {
-            responseData = { code: 314 };
-          } else if (!category) {
-            responseData = { code: 315 };
-          } else {
-            result = await imageUpload(img);
-            thumbnail = await imageThumbnail(img);
-
-            await Posts.create({
-              title,
-              content,
-              thumbnail,
-              category,
-              img: result,
-              userId: params.userId,
-            });
-            responseData = { code: 311 };
+        const { title, content, category, img } = params.bodies;
+        let result = null;
+        let thumbnail = null;
+        if (!params.userId) {
+          responseData = { code: 312 };
+        } else if (!title) {
+          responseData = { code: 313 };
+        } else if (!content) {
+          responseData = { code: 314 };
+        } else if (!category) {
+          responseData = { code: 315 };
+        } else {
+          if (category === 'notice' && params.userId !== 1){
+            responseData = { code: 316 };
           }
+        else {
+          result = await imageUpload(img);
+          thumbnail = await imageThumbnail(img);
+
+          await Posts.create({
+            title,
+            content,
+            thumbnail,
+            category,
+            img: result,
+            userId: params.userId,
+          });
+          responseData = { code: 311 };
+        }
+      }
         } catch (err) {
           responseData = { code: 310 };
         }
@@ -89,15 +94,15 @@ const onRequest = async (res, method, pathname, params, key, cb, mock) => {
           if (params.params == 'view') {
             result = await Posts.findAll({
               order: [['viewCount', 'DESC']],
-              limit: 10,
-              offset: (pageNum - 1) * 10,
+              limit: 12,
+              offset: (pageNum - 1) * 12,
               raw: true,
             });
           } else {
             result = await Posts.findAll({
               order: [['createdAt', 'DESC']],
-              limit: 10,
-              offset: (pageNum - 1) * 10,
+              limit: 12,
+              offset: (pageNum - 1) * 12,
               raw: true,
             });
           }
@@ -261,7 +266,7 @@ const onRequest = async (res, method, pathname, params, key, cb, mock) => {
           responseData = { code: 340 };
         }
       }
-
+              
       // 댓글 조회
       if (pathname === '/comments') {
         try {
