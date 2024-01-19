@@ -1,0 +1,47 @@
+/* board.css */
+
+.my-masonry-grid {
+    display: flex;
+    margin-left: -16px; /* 여백 보정 */
+    width: auto;
+}
+
+.my-masonry-grid_column {
+    background-clip: padding-box;
+    padding: 16px; /* 여백 설정 */
+    flex-grow: 1;
+}
+
+.post {
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    padding: 16px;
+    cursor: pointer;
+    margin-bottom: 16px; /* 아이템 간 간격 설정 */
+}
+
+.post img {
+    max-width: 100%;
+    height: auto;
+}
+
+.post-title {
+    font-size: 18px;
+    margin-top: 8px;
+}
+
+.post-content {
+    margin-top: 8px;
+}
+
+/* 브라우저 크기가 700px 이하일 때 post의 크기를 조절 */
+@media (max-width: 700px) {
+    .post {
+        padding: 8px;
+        border-radius: 4px;
+    }
+
+    .post-title {
+        font-size: 16px;
+    }
+}
