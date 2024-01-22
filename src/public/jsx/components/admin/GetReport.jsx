@@ -37,7 +37,7 @@ const style = {
 
 function GetReport(props) {
   const [data, setData] = useState('');
-  const [filteredData, setFilteredData] = useState([]);
+  const [filteredData, setFilteredData] = useState('');
 
   const fetchData = async () => {
     try {
@@ -51,8 +51,8 @@ function GetReport(props) {
 
       const result = await response.json();
       const data = result.responseData.result;
-      console.log(data, 'datadatadatadatadata');
       setData(data);
+      setFilteredData(data);
     } catch (error) {
       console.log(error);
     }
@@ -60,17 +60,17 @@ function GetReport(props) {
 
   useEffect(() => {
     fetchData();
-  }, [filteredData]); // 의존성 배열에 filter 추가
+  }, []);
 
   const handleFilterChange = (filter) => {
-    // 선택된 필터에 따라 데이터를 필터링합니다.
     if (filter === 'all') {
       setFilteredData(data);
     } else if (filter === 'incomplete') {
-      const incompleteData = data.filter((item) => item.isReport === false);
+      const incompleteData = data.filter((item) => item.isReport === 'false');
+
       setFilteredData(incompleteData);
     } else if (filter === 'complete') {
-      const completeData = data.filter((item) => item.isReport === true);
+      const completeData = data.filter((item) => item.isReport === 'true');
       setFilteredData(completeData);
     }
   };
@@ -80,18 +80,28 @@ function GetReport(props) {
       <FilterReport onFilterChange={handleFilterChange} />
       {filteredData.length > 0 ? (
         filteredData.map((item) => (
-          <div key={item.reportId} style={style.div}>
-            <div style={style.flexItem}>
-              <p>신고내용 : {item.content}</p>
-              <p>유형 : {item.reportType}</p>
-              <p>userId : {item.userId}</p>
-              <p>contentId : {item.contentId}</p>
-            </div>
-            <div style={style.ContentBox}>
-              <ShowContent data={item} />
-            </div>
-            <div style={style.flexItem}>
-              <DeleteButton data={item} />
+          <div style={style.TopContetn}>
+            <div key={item.reportId} style={style.div}>
+              <div>
+                <div style={style.flexItem}>
+                  <div style={{ width: '90%' }}>
+                    <div style={{ display: 'flex', flexDirection: 'row', gap: '30px' }}>
+                      <p>유형 : {item.reportType}</p>
+                      <p>userId : {item.userId}</p>
+                      <p>contentId : {item.contentId}</p>
+                    </div>
+                    <p>신고내용 : {item.content}</p>
+                  </div>
+                  <div style={{ width: '10%' }}>
+                    <div style={{ marginTop: '10px' }}>
+                      <DeleteButton data={item} />
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div style={style.ContentBox}>
+                <ShowContent data={item} />
+              </div>
             </div>
           </div>
         ))

@@ -3,6 +3,9 @@ import React, { useEffect, useState } from 'react';
 const adminId = sessionStorage.getItem('Authorization');
 function ShowContent(props) {
   const [data, setData] = useState([]);
+  const [commentData, setCommentData] = useState([]);
+  const [treadData, setTreadData] = useState([]);
+
   const styles = {
     div: {
       width: '900px',
@@ -15,42 +18,49 @@ function ShowContent(props) {
     },
   };
   const fetchData = async () => {
-    console.log(props.data.reportType + 's');
-    let RequestURL;
-    if (props.data.reportType === 'post') {
-      RequestURL = `/api/${props.data.reportType}s?postId=${props.data.contentId}`;
-    } else if (props.data.reportType === 'comment') {
-      RequestURL = `./api/${props.data.reportType}s?postId=${postId}`;
-    }
-    try {
-      const response = await fetch(RequestURL, {
-        method: 'GET',
-        headers: {
-          'Content-Type': 'application/json',
-          Authorization: adminId,
-        },
-      });
+    console.log(props.data.reportType);
+    if (props.data.isReport === 'false') {
+      let RequestURL;
+      if (props.data.reportType === 'post') {
+        RequestURL = `/api/${props.data.reportType}s?postId=${props.data.contentId}`;
+      } else if (props.data.reportType === 'comment') {
+        RequestURL = `/api/${props.data.reportType}s?postId=${props.data.contentId}`;
+      } else if (props.data.reportType === 'thread') {
+        RequestURL = `/api/${props.data.reportType}s?threadId=${props.data.contentId}`;
+        console.log(props.data.contentId, 'props.data.contentId');
+      }
+      try {
+        const response = await fetch(RequestURL, {
+          method: 'GET',
+          headers: {
+            'Content-Type': 'application/json',
+            Authorization: adminId,
+          },
+        });
 
-      const result = await response.json();
-      const data = result.responseData.result;
-      console.log(result.responseData, 'aaaaa');
-      setData(data);
-    } catch (error) {
-      console.log(error);
+        const result = await response.json();
+        const data = result.responseData.result;
+        const commentData = result.responseData;
+        console.log(data, 'aaaaa');
+        console.log(commentData);
+        setData(data);
+        setCommentData(commentData);
+        setTreadData(data);
+      } catch (error) {
+        console.log(error);
+      }
     }
   };
-
   useEffect(() => {
     fetchData();
-    console.log('히히 출력!');
   }, [props.data.contentId, props.data.reportType]);
 
   return (
     <div>
       상세내용
       <div style={styles.div}>
-        {['nickname', 'title', 'content'].map((key) => {
-          if (key === 'nickname' || key === 'title' || key === 'content') {
+        {props.data.reportType === 'post' ? (
+          ['nickname', 'title', 'content'].map((key) => {
             let mappedKey = key;
 
             // 특정 키 이름을 변경하거나 매핑하는 조건을 추가
@@ -69,11 +79,29 @@ function ShowContent(props) {
                 </p>
               </div>
             );
-          }
-        })}
+          })
+        ) : props.data.reportType === 'comment' ? (
+          commentData.map((item, idx) => {
+            return (
+              <div key={idx}>
+                <p>닉네임 : {item.nickname}</p>
+                <p>내용 : {item.content}</p>
+              </div>
+            );
+          })
+        ) : props.data.reportType === 'thread' ? (
+          treadData.map((item) => {
+            return (
+              <div key={item}>
+                <p>내용 :{item.content}</p>
+              </div>
+            );
+          })
+        ) : (
+          <div></div>
+        )}
       </div>
     </div>
   );
 }
-
 export default ShowContent;
