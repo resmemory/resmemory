@@ -62,7 +62,7 @@ const Header = () => {
   };
 
   const handleLoginClick = () => {
-    navigate('/login.html');
+    navigate('/login');
   };
 
   return (
