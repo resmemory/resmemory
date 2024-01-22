@@ -1,217 +1,97 @@
-@import 'reset.css';
-
-@font-face {
-  font-family: 'GangwonEdu_OTFBoldA';
-  src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_2201-2@1.0/GangwonEdu_OTFBoldA.woff')
-    format('woff');
-  font-weight: normal;
-  font-style: normal;
-}
-
-@font-face {
-  font-family: 'jaram';
-  src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_2307-2@1.0/iceJaram-Rg.woff2')
-    format('woff2');
-  font-weight: normal;
-  font-style: normal;
-}
-
-* {
-  font-family: 'GangwonEdu_OTFBoldA';
-  font-weight: 900px;
-}
-
-/* 태블릿 크기 */
-@media screen and (min-width: 769px) {
-  header {
-    padding-left: 3rem;
-    padding-right: 3rem;
-  }
-
-  article {
-    padding-left: 3em !important;
-    padding-right: 3rem !important;
-  }
-
-  .container {
-    padding: 0px 60px !important;
-    width: auto;
-  }
-}
-
-/* PC 크기 */
-@media screen and (min-width: 1025px) {
-  header {
-    padding-top: 1rem;
-  }
-  article {
-    padding-left: 12.7em !important;
-    padding-right: 12.7rem !important;
-  }
-}
-
-h1 {
-  font-size: 40px;
-  font-family: 'jaram';
-  font-weight: 900;
-}
-
-article {
-  padding-right: 1rem;
+/* Style for the report modal */
+.report-modal {
   display: flex;
-  flex-direction: column;
-  flex-grow: 1;
-  max-width: 1024px;
+  align-items: center;
+  justify-content: center;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5); /* Semi-transparent background */
+}
+
+/* Style for the content inside the report modal */
+.report-modal-content {
   position: relative;
+  background-color: #fff; /* White background for the modal content */
+  padding: 20px;
+  border-radius: 10px;
+  width: 50%; /* Adjust the width as needed */
 }
 
-header {
-  padding-top: 1rem;
-  padding-left: 1rem;
-  display: flex;
-  justify-content: space-between;
-  height: 245px;
-}
-
-.logoCon {
-  display: flex;
-}
-
-.logo {
-  object-fit: contain;
-  height: 120px;
-  width: 120px;
+/* Style for the close button in the modal */
+.report-modal-content .close {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  font-size: 20px;
   cursor: pointer;
 }
 
-.navControl {
-  padding-top: 1rem;
-  padding-bottom: 1rem;
-  display: flex;
-  flex-direction: column;
+/* Style for the textarea and submit button in the modal */
+.report-modal-content textarea {
+  width: 100%;
+  margin-bottom: 10px;
 }
 
-.navCon {
-  display: flex;
-  font-size: large;
-  font-weight: 700;
-  gap: 1rem;
-  flex-grow: 1;
-  align-items: end;
-}
-
-.logo:hover,
-button:hover,
-.navCon li:hover {
-  transform: scale(1.1);
-  transition-duration: 0.1s;
-  cursor: pointer;
-}
-
-.headerBtns {
-  display: flex;
-  flex-direction: row;
-}
-
-button {
-  box-shadow: 2px 2px rgb(195, 195, 195);
+.report-modal-content button {
+  padding: 10px;
+  background-color: #323232; /* Green color for the submit button */
+  color: #fff;
   border: none;
   border-radius: 5px;
-  background-color: black;
-  color: white;
-  padding: 10px 10px;
   cursor: pointer;
-  font-size: 18px;
-  margin: 5px 5px;
 }
 
-/* main */
+.report-modal-content button:hover {
+  background-color: black; /* Darker green color on hover */
+}
 
-main {
-  display: flex;
-  text-align: center;
+.writeThread {
+  width: 100%;
+  height: 10rem;
+  padding: 1rem;
+  font-size: 15px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
 }
 
 .container {
-  font-size: 20px;
-  padding: 0px 20px 0px 20px;
-  box-sizing: border-box;
-  border-radius: 2px;
-  text-align: left;
-  border-color: #efefef;
-  width: 90%;
-}
-
-/* 모달 스타일 */
-.modal {
-  display: none;
-  position: fixed;
-  z-index: 1;
-  left: 0;
-  top: 0;
-  width: 100%;
-  height: 100%;
-  background-color: rgba(0, 0, 0, 0.7);
-}
-
-.modal-content {
-  background-color: #fefefe;
-  margin: 10% auto;
-  padding: 20px;
-  border: 1px solid #888;
-  width: 60%;
-  border-radius: 8px;
-  box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.2);
-
-  max-width: 400px;
-  margin: 10% auto;
-}
-
-/* footer */
-footer {
-  padding-top: 200px;
-  padding-bottom: 100px;
-  text-align: center;
-  font-family: 'GangwonEdu_OTFBoldA';
-}
-.chatbox {
-  display: flex;
-  flex-direction: row;
-  position: fixed;
-  bottom: 1rem;
-  right: 1rem;
-}
-
-.chatbox button {
-  border: none;
-  border-radius: 5px;
-  color: white;
-  padding: 15px 20px;
-  cursor: pointer;
-  font-size: 20px;
-  margin: 5px 5px;
-}
-.chat_btn {
-  background-color: rgb(72, 53, 19);
-  box-shadow: 2px 2px rgba(43, 11, 0, 0.344);
-}
-.threadbox {
-  display: flex;
-  flex-direction: column;
+  width: 70%;
+  margin: 10rem;
 }
 
 .writeThreadBtn {
-  width: 60px;
+  background-color: #323232;
+  padding: 0.7rem 1rem;
+  color: white;
+  border-radius: 5px;
+  margin: 1rem -2rem 0 0;
+  float: right;
 }
-.writeThreadBox {
-  display: flex;
-  flex-direction: column;
-  text-align: right;
-  padding: 20px;
-}
-.writeThread {
-  padding: 10px;
+
+#threadList {
+  margin-top: 8rem;
 }
 .thread {
-  padding: 20px;
+  width: 95%;
+  padding: 2rem;
+  font-size: 12px;
+  background-color: #ffffff;
+  box-shadow: 1px 1px 1px #d5d5d5;
+  color: #323232;
+  border-radius: 5px;
+  margin: 2rem 0rem;
+}
+
+.delete-button,
+.report-button {
+  font-size: 12px;
+  float: right;
+  padding: 0.5rem;
+  margin: 0.5rem 0.5rem 3rem 0.5rem;
+  background-color: #ffffff;
+  border: 1px solid #d5d5d5;
+  color: #323232;
 }
