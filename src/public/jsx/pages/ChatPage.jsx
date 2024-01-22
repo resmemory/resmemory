@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import Header from '../components/main/header.jsx';
 
 // CSS 불러오기
 import '../../css/Chat.css';
@@ -91,7 +92,7 @@ function ChatPage() {
 
   return (
     <div>
-      <img src="../../assets/image/header.png" />
+      <Header />
       <div id="chat-container">
         <h1>그땐 채팅</h1>
         <div id="chat-header">
