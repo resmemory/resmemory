@@ -5,6 +5,7 @@ import AdminPage from './AdminPage.jsx';
 import ChatPage from './ChatPage.jsx';
 import HomePage from './HomePage.jsx';
 import LoginPage from './LoginPage.jsx';
+import Login from './Login.jsx';
 import MyPage from './MyPage.jsx';
 import ThreadsPage from './ThreadsPage.jsx';
 import WritePostPage from './WritePostPage.jsx';
@@ -16,6 +17,7 @@ function App() {
       <Routes>
         <Route path="/" element={<HomePage />} />
         <Route path="/login" element={<LoginPage />} />
+        <Route path="/general_login" element={<Login />} />
         <Route path="/admin" element={<AdminPage />} />
         <Route path="/chat" element={<ChatPage />} />
         <Route path="/threads" element={<ThreadsPage />} />

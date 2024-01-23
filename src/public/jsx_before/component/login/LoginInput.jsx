@@ -1,9 +1,11 @@
 import React, { useState } from 'react';
+import { Link } from 'react-router-dom';
 
 const LoginInput = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
 
+  function loginInput() {}
   const handleLogin = () => {
     // 로그인 로직 작성
     console.log('Logging in with:', email, password);
@@ -23,10 +25,8 @@ const LoginInput = () => {
         <input type="password" value={password} onChange={(e) => setPassword(e.target.value)} />
         <br />
         <Link to="/passwordFind">비밀번호를 잊으셨나요?</Link>
-        <button type="로그인" onClick={handleLogin}>
-          <p>
-            그땐이 처음이시라면? <Link to="/passwordFind">비밀번호를 잊으셨나요?</Link>
-          </p>
+        <button type="button" onClick={handleLogin}>
+          그땐이 처음이시라면? <Link to="/passwordFind">비밀번호를 잊으셨나요?</Link>
         </button>
       </form>
     </div>
