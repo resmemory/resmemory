@@ -1,0 +1,214 @@
+/* loginpage */
+.pageContainer {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.contentContainer {
+  max-width: 528px;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 60px 0 100px 0;
+}
+/* loginpage */
+
+/* loginmain */
+.containerStyle {
+  position: relative;
+  width: 400px;
+  height: 200px;
+  gap: 8px;
+  margin-bottom: 60px;
+}
+
+.logoStyle {
+  position: absolute;
+  top: 10px;
+  right: 0;
+  width: 80px;
+  height: 112px;
+}
+
+.textContainerStyle {
+  position: absolute;
+  bottom: 10px;
+  left: 10px;
+}
+
+.textContainerStyle h2 {
+  margin: 0;
+  width: 132px;
+  height: 42px;
+  font-family: Poppins;
+  font-size: 28px;
+  font-weight: 700;
+  line-height: 42px;
+  letter-spacing: 0.02em;
+  text-align: left;
+  color: #000;
+}
+
+.textContainerStyle p {
+  margin: 0;
+  width: 221px;
+  height: 30px;
+  font-family: Poppins;
+  font-size: 20px;
+  font-weight: 500;
+  line-height: 30px;
+  letter-spacing: 0.02em;
+  text-align: left;
+  color: #000;
+}
+/* loginmain */
+
+/* loginbtn */
+
+.button-link {
+  text-decoration: none;
+}
+
+.button {
+  width: 400px;
+  height: 60px;
+  display: block;
+  margin-bottom: 10px;
+  border-radius: 10px;
+  text-align: center;
+  text-decoration: none;
+  cursor: pointer;
+  font-size: 16px;
+  font-weight: bold;
+  outline: none;
+  border: none;
+}
+
+.button-kakao {
+  background-color: #ffeb00;
+  color: #3c1e1e;
+}
+
+.button-login {
+  background-color: #333333;
+  color: #ffffff;
+}
+
+.signuptext {
+  display: flex;
+  width: 217px;
+  height: 24px;
+  font-family: Poppins;
+  font-size: 16px;
+  font-weight: 600;
+  line-height: 24px;
+  letter-spacing: 0.02em;
+  text-align: left;
+}
+
+.signupbtn {
+  margin-left: 5px;
+  color: #427dee;
+  cursor: pointer;
+}
+
+.signupbtn:hover {
+  color: red;
+}
+/* loginbtn */
+
+/* general_login */
+.General_LoginInput {
+  position: relative;
+  margin-top: 30px;
+  width: 536px;
+  height: 160px;
+  gap: 16px;
+}
+
+.General_LoginInput input {
+  width: 536px;
+  height: 20px;
+  padding: 24px;
+  border-radius: 12px;
+  gap: 4px;
+  justify-content: space-between;
+  border: solid 1px #d2d2d2;
+  margin-bottom: 20px;
+  font-family: Poppins;
+  font-size: 16px;
+  font-weight: 400;
+  line-height: 24px;
+  letter-spacing: 0.02em;
+  text-align: left;
+  color: #000;
+}
+
+.General_LoginInput input::placeholder {
+  color: #979797;
+}
+
+.logoStyle2 {
+  position: absolute;
+  top: 10px;
+  right: -175px;
+  width: 80px;
+  height: 112px;
+}
+
+.passwordContainer button {
+  position: absolute;
+  height: 24px;
+  right: -25px;
+  bottom: 22px;
+  font-family: Poppins;
+  font-size: 16px;
+  font-weight: 600;
+  line-height: 24px;
+  letter-spacing: 0.02em;
+  text-align: left;
+  border: none;
+  background: none;
+  color: #427dee;
+  cursor: pointer;
+}
+
+.missingPW {
+  color: #427dee;
+  font-family: Poppins;
+  font-size: 16px;
+  font-weight: 600;
+  line-height: 24px;
+  letter-spacing: 0.02em;
+  text-align: left;
+  position: absolute;
+  bottom: -50px;
+  left: 10px;
+}
+
+.loginBtn {
+  width: 583px;
+  height: 72px;
+  border-radius: 12px;
+  padding: 8px 24px 8px 24px;
+  gap: 4px;
+  background-color: #323232;
+  color: #ffffff;
+  margin-top: 50px;
+  border: none;
+  cursor: pointer;
+  font-family: Poppins;
+  font-size: 24px;
+  font-weight: 700;
+  line-height: 36px;
+  letter-spacing: 0.02em;
+  text-align: center;
+}
+
+.signuptext1 {
+  justify-content: center;
+  display: flex;
+  width: 583px;
+}
