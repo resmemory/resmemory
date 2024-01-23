@@ -8,9 +8,9 @@ import LoginPage from './LoginPage.jsx';
 import MyPage from './MyPage.jsx';
 import ThreadsPage from './ThreadsPage.jsx';
 import WritePostPage from './WritePostPage.jsx';
+import PostPage from './PostPage.jsx';
 
 function App() {
-  console.log('app');
   return (
     <Router>
       <Routes>
@@ -20,7 +20,8 @@ function App() {
         <Route path="/chat" element={<ChatPage />} />
         <Route path="/threads" element={<ThreadsPage />} />
         <Route path="/mypage" element={<MyPage />} />
-        <Route path="/post" element={<WritePostPage />} />
+        <Route path="/write" element={<WritePostPage />} />
+        <Route path="/post" element={<PostPage />} />
       </Routes>
     </Router>
   );
