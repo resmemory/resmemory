@@ -71,7 +71,7 @@ const Annual = ({ updateBoardData }) => {
 };
 
 const category = (...years) => {
-  const categories = ['전체', ...years.map((year) => `${year}년`)];
+  const categories = ['전체', ...years.map((year) => `${year}s`)];
   return categories;
 };
 
