@@ -1,30 +1,58 @@
-import React from 'react';
+import React, { useState, useCallback } from 'react';
 
-// 연도별 카테고리
-const Annual = () => {
+const Annual = ({ updateBoardData }) => {
+  const [currentPage, setCurrentPage] = useState(1);
+  const [selectedCategory, setSelectedCategory] = useState(null);
+  const [loading, setLoading] = useState(false);
   const categories = category(2020, 2010, 2000, 1990, 1980, 1970);
 
-  const handleCategoryClick = (category) => {
-    window.location.href = `./annual.html?category=${category}`;
+  const handleCategoryClick = useCallback(async (category) => {
+    try {
+      setSelectedCategory(category);
+      setCurrentPage(1);
+
+      if (category === '전체') {
+        window.location.href = '/'; 
+        return;
+      }
+
+      let apiUrl = `./api/posts/view?pageNum=${currentPage}`;
+
+      if (category) {
+        apiUrl += `&category=${extractYear(category)}`;
+      }
+
+      setLoading(true);
+
+      const response = await fetch(apiUrl, {
+        method: 'GET',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      });
+
+      const data = await response.json();
+
+      if (!data.responseData || data.responseData.length === 0) {
+        console.warn('반환된 데이터가 없습니다.');
+        return;
+      }
+
+      updateBoardData(data.responseData);
+    } catch (error) {
+      console.error('데이터를 불러오는 도중 에러 발생:', error);
+    } finally {
+      setLoading(false);
+    }
+  }, [currentPage, updateBoardData]);
+
+  const extractYear = (category) => {
+    return category.replace('년', '');
   };
 
-  const handleSort = (e) => {
-    if (e===view){
-
-    }
-    else if (e===like){
-
-    }
-    else if (e===board){
-
-    }
-    else {
-      throw new Error
-    }
-  };
   return (
     <div>
-      <h1>Annual Categories</h1>
+      <h1>연간 카테고리</h1>
       <ul>
         {categories.map((category) => (
           <li key={category} onClick={() => handleCategoryClick(category)}>
@@ -32,7 +60,7 @@ const Annual = () => {
           </li>
         ))}
         <div className="sort"></div>
-        <select className='sort-select' onChange={handleSort}>
+        <select className='sort-select'>
           <option value='view'>조회순</option>
           <option value='like'>좋아요순</option>
           <option value='board'>최신순</option>
@@ -42,9 +70,8 @@ const Annual = () => {
   );
 };
 
-// 연도 범위 내의 카테고리 생성
 const category = (...years) => {
-  const categories = years.map((year) => `${year}'s`);
+  const categories = ['전체', ...years.map((year) => `${year}년`)];
   return categories;
 };
 
