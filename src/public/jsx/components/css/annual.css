@@ -1,0 +1,33 @@
+
+.category {
+    display: flex;
+    justify-content: flex-start;
+    list-style: none;
+    padding: 0;
+    flex-direction: row; /* 가로 방향으로 나열하도록 설정 */
+}
+
+.category li {
+    margin-right: 10px;
+}
+
+.category-button {
+    padding: 10px 18px; /* 버튼에 여백을 추가 */
+    cursor: pointer;
+    border: 1px solid #ccc;
+    background-color: #f8f8f8;
+    border-radius: 30px;
+    margin : 10px
+}
+
+.sort-select {
+    margin-left: auto;
+    display: flex;
+    justify-content: flex-start;
+    border-radius: 10px;
+    font-size : 0.8rem;
+    border: 1px solid #ccc;
+    background-color: #f8f8f8;
+    height: 43px;
+    margin-top : 10px;
+}

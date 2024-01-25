@@ -1,4 +1,5 @@
 import React, { useState, useCallback } from 'react';
+import '../css/annual.css';
 
 const Annual = ({ updateBoardData }) => {
   const [currentPage, setCurrentPage] = useState(1);
@@ -52,18 +53,17 @@ const Annual = ({ updateBoardData }) => {
 
   return (
     <div>
-      <h1>연간 카테고리</h1>
-      <ul>
+      <ul className="category">
         {categories.map((category) => (
-          <li key={category} onClick={() => handleCategoryClick(category)}>
+          <button className="category-button" onClick={() => handleCategoryClick(category)}>
             {category}
-          </li>
+            </button>
         ))}
         <div className="sort"></div>
         <select className='sort-select'>
+        <option value='board'>최신순</option>
           <option value='view'>조회순</option>
           <option value='like'>좋아요순</option>
-          <option value='board'>최신순</option>
         </select>
       </ul>
     </div>
@@ -71,7 +71,7 @@ const Annual = ({ updateBoardData }) => {
 };
 
 const category = (...years) => {
-  const categories = ['전체', ...years.map((year) => `${year}s`)];
+  const categories = ['전체', ...years.map((year) => `${year}'s`)];
   return categories;
 };
 
