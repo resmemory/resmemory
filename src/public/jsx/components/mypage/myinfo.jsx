@@ -70,7 +70,43 @@ const MyInfo = () => {
   };
 
   const handleSignout = async () => {
-    // 이전 코드와 동일
+    // 사용자로부터 입력받은 메시지
+    const userConfirmation = prompt(
+      '회원탈퇴를 진행하려면 "회원 탈퇴를 희망합니다."를 입력하세요.',
+    );
+
+    // 확인 메시지
+    if (userConfirmation === '회원 탈퇴를 희망합니다.') {
+      try {
+        // 서버로 회원탈퇴 요청 전송
+        const response = await fetch(`./api/users`, {
+          method: 'DELETE',
+          headers: {
+            Authorization: sessionStorage.getItem('Authorization'),
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({ message: userConfirmation }),
+        });
+
+        if (!response.ok) {
+          console.error('서버로부터 응답이 실패했습니다.');
+          return;
+        }
+
+        const result = await response.json();
+        alert(code[result.responseData.code]);
+
+        if (result.responseData.code === 141) {
+          // 탈퇴 성공 시 세션 제거 및 페이지 이동
+          sessionStorage.removeItem('Authorization');
+          location.href = './';
+        }
+      } catch (error) {
+        console.error('API 호출 중 오류가 발생했습니다.', error);
+      }
+    } else {
+      alert('회원탈퇴를 취소하셨습니다.');
+    }
   };
 
   if (!userData) {
@@ -107,7 +143,7 @@ const MyInfo = () => {
         <p className="myinfo_signmenu">{isKakaoUser ? '카카오톡' : '로컬'}</p>
       </div>
       <p className="myinfo_signout" onClick={handleSignout}>
-        회원가입
+        회원탈퇴
       </p>
     </div>
   );
