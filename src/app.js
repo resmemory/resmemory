@@ -8,6 +8,7 @@ import dotenv from 'dotenv';
 import formidable, { errors as formidableErrors } from 'formidable';
 import loginResponse from './loginResponse';
 
+
 dotenv.config();
 
 const port = process.env.GATE_PORT;
@@ -71,6 +72,8 @@ export const server = http
         params.bodies.content = fields.content[0];
         if (files.img && files.img[0]) {
           params.bodies.img = files.img[0];
+        } else {
+          params.bodies.img = null;
         }
 
         req.on('end', function () {

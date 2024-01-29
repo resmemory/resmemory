@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
-import EmailVerificationModal from './components/EmailVerificationModal';
-import SuccessModal from './components/SuccessModal';
+import EmailVerificationModal from '../../components/EmailVerificationModal';
+import SuccessModal from '../../components/SuccessModal';
 
 const RegisterInput = () => {
   // 상태 변수들
