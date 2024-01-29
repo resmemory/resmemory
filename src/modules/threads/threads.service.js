@@ -7,7 +7,23 @@ const onRequest = async (res, method, pathname, params, key, cb) => {
   switch (method) {
     // 스레드 조회 함수
     case 'GET':
-      if (pathname === '/threads') {
+      // 스레드 개별조회 함수
+      if (pathname === '/threads' && params.query) {
+        try {
+          const { threadId } = params.query;
+          const findThreadData = await Threads.findByPk(threadId, {});
+
+          if (findThreadData) {
+            responseData = { result: findThreadData };
+            console.log('여기가 첫번째');
+          } else {
+            responseData = { code: 711 };
+          }
+        } catch (error) {
+          responseData = { code: 713 };
+          logger.error(`스레드 에러 발생:${error}`);
+        }
+      } else if (pathname === '/threads' && !params.query) {
         try {
           const today = new Date();
           let yesterday = Date.now(today) - 86400000;
@@ -19,6 +35,7 @@ const onRequest = async (res, method, pathname, params, key, cb) => {
           });
           if (result) {
             responseData = { result };
+            console.log('여기가 두번째');
           } else {
             responseData = { code: 711 };
           }
@@ -26,19 +43,17 @@ const onRequest = async (res, method, pathname, params, key, cb) => {
           responseData = { code: 713 };
           logger.error(`스레드 에러 발생:${error}}`);
         }
-
-        return get(
-          method,
-          pathname,
-          params,
-          key,
-          (response) => {
-            process.nextTick(cb, res, response);
-          },
-          responseData,
-        );
       }
-
+      return get(
+        method,
+        pathname,
+        params,
+        key,
+        (response) => {
+          process.nextTick(cb, res, response);
+        },
+        responseData,
+      );
     // 스레드 생성 함수
     case 'POST':
       if (pathname === '/threads') {

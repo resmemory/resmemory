@@ -17,7 +17,7 @@ const Button = ({ label, type }) => {
       break;
   }
 
-  const path = type === 'login' ? '/general_login' : `/${type}.js`;
+  const path = type === 'login' ? '/general_login' : `/kakao_login`;
 
   return (
     <Link to={path} className="button-link">

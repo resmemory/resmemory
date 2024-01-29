@@ -2,18 +2,16 @@ import React, { useEffect, useState, useRef } from 'react';
 import Masonry from 'react-masonry-css';
 import '../css/board.css';
 
-// 남은 것
-// 연도별로 보여주기 만들기
-// 조회, 좋아요 만들기
-
-const Board = () => {
+const Board = ({ initialData }) => {
   const [board, setBoard] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
   const [loading, setLoading] = useState(false);
+  const [hasMoreData, setHasMoreData] = useState(true);
+  const [observeSentinel, setObserveSentinel] = useState(true); // 새로운 상태 추가
   const containerRef = useRef(null);
   const sentinelRef = useRef(null);
-  const itemsPerPage = 10;
-  const itemsPerRow = 4;
+  const itemsPerPage = 12;
+  const itemsPerRow = 5;
 
   const fetchData = async (page, perPage) => {
     try {
@@ -25,6 +23,7 @@ const Board = () => {
         },
       });
       const responseData = await response.json();
+      console.log("Fetched data:", responseData);
       return responseData.responseData;
     } catch (error) {
       console.error('게시판 데이터를 불러오는 중 오류 발생:', error);
@@ -41,55 +40,86 @@ const Board = () => {
   };
 
   const loadMoreData = async () => {
-    if (!loading) {
+    if (!loading && hasMoreData) {
+      setLoading(true);
+  
       const data = await fetchData(currentPage, itemsPerPage);
+  
+      setLoading(false); // 데이터를 받아온 후에 로딩 비활성화
+  
       if (data.length > 0) {
         setBoard((prevBoard) => [...prevBoard, ...data]);
         setCurrentPage((prevPage) => prevPage + 1);
+        setHasMoreData(data.length >= itemsPerPage);
+      } else {
+        setHasMoreData(false);
+        setObserveSentinel(false); // 데이터가 없으면 스크롤 감시 중지
       }
     }
   };
-
-  const handleIntersection = (entries) => {
+  
+  const handleIntersection = (entries, observer) => {
     const { current: sentinel } = sentinelRef;
-
+  
     entries.forEach((entry) => {
-      if (entry.isIntersecting) {
-        loadMoreData();
+      console.log("Intersection observed:", entry.isIntersecting);
+      if (entry.isIntersecting && !loading && observeSentinel) {
+        observer.unobserve(sentinel);
+  
+        // 이미 로딩 중이거나 observeSentinel이 false일 때는 추가 호출을 막음
+        if (!loading && observeSentinel) {
+          setLoading(true);
+          setTimeout(() => {
+            console.log("Load more data...");
+            loadMoreData();
+            setLoading(false);
+            // observeSentinel이 여전히 true일 때만 다시 observe를 시작
+            if (observeSentinel) {
+              observer.observe(sentinel);
+            }
+          }, 0);
+        }
       }
     });
   };
+  
 
   useEffect(() => {
-    const { current: container } = containerRef;
-    const { current: sentinel } = sentinelRef;
+    setBoard(initialData || []);
+    setHasMoreData(initialData && initialData.length >= itemsPerPage);
+    setCurrentPage(1);
+    setObserveSentinel(true); // 초기화시 감시 활성화
+  }, [initialData]);
 
-    const observer = new IntersectionObserver(handleIntersection, {
-      root: null,
-      rootMargin: '0px',
-      threshold: 1.0,
-    });
-
-    if (sentinel) {
+  useEffect(() => {
+    if (hasMoreData && observeSentinel) {
+      const { current: sentinel } = sentinelRef;
+      const observer = new IntersectionObserver(handleIntersection, {
+        root: null,
+        rootMargin: '0px',
+        threshold: 1.0,
+      });
+  
       observer.observe(sentinel);
+  
+      return () => {
+        observer.disconnect();
+      };
     }
-
-    return () => {
-      if (sentinel) {
-        observer.unobserve(sentinel);
-      }
-    };
-  }, [sentinelRef, loading]);
+  }, [hasMoreData, sentinelRef, handleIntersection, observeSentinel]);
 
   useEffect(() => {
-    loadMoreData();
-  }, []);
+    // 초기 로딩 시 한 번만 데이터를 불러옴
+    if (hasMoreData && observeSentinel) {
+      loadMoreData();
+    }
+  }, [observeSentinel]); 
 
   const breakpointColumnsObj = {
     default: itemsPerRow,
     1100: 3,
     700: 2,
-    500: 1
+    500: 1,
   };
 
   return (
@@ -111,7 +141,7 @@ const Board = () => {
           </div>
         </div>
       ))}
-      <div ref={sentinelRef}></div>
+      {hasMoreData && <div ref={sentinelRef}></div>}
       {loading && <p>Loading...</p>}
     </Masonry>
   );
