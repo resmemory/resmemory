@@ -11,10 +11,9 @@ const style = {
     flexDirection: 'column',
     alignItems: 'center',
   },
-
   div: {
     width: '952px',
-    minHeight: '100px',
+    minHeight: '10px',
     backgroundColor: '#FFFFFF',
     borderRadius: '12px',
     boxShadow: '0px 4px 8px rgba(0, 0, 0, 0.06)',
@@ -25,7 +24,7 @@ const style = {
     display: 'flex',
     flexDirection: 'row',
     gap: '30px',
-    marginLeft: '20px',
+    marginLeft: '10px',
   },
   ContentBox: {
     display: 'flex',
@@ -38,6 +37,7 @@ const style = {
 function GetReport(props) {
   const [data, setData] = useState('');
   const [filteredData, setFilteredData] = useState('');
+  const [login, setlogin] = useState(null);
 
   const fetchData = async () => {
     try {
@@ -55,6 +55,7 @@ function GetReport(props) {
       setFilteredData(data);
     } catch (error) {
       console.log(error);
+      setError(error);
     }
   };
 
@@ -77,36 +78,55 @@ function GetReport(props) {
 
   return (
     <div style={style.container}>
-      <FilterReport onFilterChange={handleFilterChange} />
-      {filteredData.length > 0 ? (
-        filteredData.map((item) => (
-          <div style={style.TopContetn}>
-            <div key={item.reportId} style={style.div}>
-              <div>
-                <div style={style.flexItem}>
-                  <div style={{ width: '90%' }}>
-                    <div style={{ display: 'flex', flexDirection: 'row', gap: '30px' }}>
-                      <p>유형 : {item.reportType}</p>
-                      <p>userId : {item.userId}</p>
-                      <p>contentId : {item.contentId}</p>
+      {adminId ? (
+        <>
+          <FilterReport onFilterChange={handleFilterChange} />
+          {filteredData && filteredData.length > 0 ? (
+            filteredData.map((item) => (
+              <div style={style.TopContetn}>
+                <div key={item.reportId} style={style.div}>
+                  <div>
+                    <div style={style.flexItem}>
+                      <div style={{ width: '88%' }}>
+                        <div
+                          className="ItemDiv"
+                          style={{
+                            display: 'flex',
+                            flexDirection: 'row',
+                            gap: '10px',
+                            marginBottom: '5px',
+                          }}
+                        >
+                          <p style={{ margin: '3px' }}>신고자 : {item.userId}</p>
+                          <p style={{ margin: '3px' }}>유형 : {item.reportType}</p>
+                          <p style={{ margin: '3px' }}>contentId : {item.contentId}</p>
+                        </div>
+                        <p style={{ marginTop: '3px', marginBottom: '15px' }}>
+                          신고내용 : {item.content}
+                        </p>
+                      </div>
+                      <div style={{ width: '12%' }}>
+                        <div style={{ marginTop: '10px' }}>
+                          <DeleteButton data={item} />
+                        </div>
+                      </div>
                     </div>
-                    <p>신고내용 : {item.content}</p>
                   </div>
-                  <div style={{ width: '10%' }}>
-                    <div style={{ marginTop: '10px' }}>
-                      <DeleteButton data={item} />
-                    </div>
+                  <div style={style.ContentBox}>
+                    <ShowContent data={item} />
                   </div>
                 </div>
               </div>
-              <div style={style.ContentBox}>
-                <ShowContent data={item} />
-              </div>
-            </div>
-          </div>
-        ))
+            ))
+          ) : (
+            <div>신고 내역이 없습니다.</div>
+          )}
+        </>
       ) : (
-        <div>신고 내역이 없습니다.</div>
+        <div>
+          <div>로그인이 필요합니다.</div>
+          {alert('세션이 만료되어 로그인페이지로 이동합니다.')}
+        </div>
       )}
     </div>
   );

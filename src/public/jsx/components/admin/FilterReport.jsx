@@ -4,7 +4,7 @@ const style = {
   FilterButton: {
     display: 'flex',
     flexDirection: 'row',
-    marginBottom: '10px',
+    marginBottom: '20px',
   },
   botton: {
     width: '100px',

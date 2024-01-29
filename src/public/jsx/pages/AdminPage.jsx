@@ -1,6 +1,9 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import ReportContainer from '../components/admin/ReportContainer.jsx';
 import Header from '../components/main/header.jsx';
+
+const adminId = sessionStorage.getItem('Authorization');
+
 const styles = {
   header: {
     width: '100%',
