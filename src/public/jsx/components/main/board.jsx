@@ -6,6 +6,7 @@ const Board = ({ initialData }) => {
   const [board, setBoard] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
   const [loading, setLoading] = useState(false);
+  const [loadingMore, setLoadingMore] = useState(false);
   const [hasMoreData, setHasMoreData] = useState(true);
   const [observeSentinel, setObserveSentinel] = useState(true); // 새로운 상태 추가
   const containerRef = useRef(null);
@@ -40,12 +41,10 @@ const Board = ({ initialData }) => {
   };
 
   const loadMoreData = async () => {
-    if (!loading && hasMoreData) {
-      setLoading(true);
+    if (!loadingMore && hasMoreData) {
+      setLoadingMore(true); // 로딩 상태로 변경
   
       const data = await fetchData(currentPage, itemsPerPage);
-  
-      setLoading(false); // 데이터를 받아온 후에 로딩 비활성화
   
       if (data.length > 0) {
         setBoard((prevBoard) => [...prevBoard, ...data]);
@@ -53,8 +52,10 @@ const Board = ({ initialData }) => {
         setHasMoreData(data.length >= itemsPerPage);
       } else {
         setHasMoreData(false);
-        setObserveSentinel(false); // 데이터가 없으면 스크롤 감시 중지
+        setObserveSentinel(false);
       }
+  
+      setLoadingMore(false); // 로딩 상태 해제
     }
   };
   
@@ -69,28 +70,18 @@ const Board = ({ initialData }) => {
         // 이미 로딩 중이거나 observeSentinel이 false일 때는 추가 호출을 막음
         if (!loading && observeSentinel) {
           setLoading(true);
-          setTimeout(() => {
-            console.log("Load more data...");
-            loadMoreData();
-            setLoading(false);
-            // observeSentinel이 여전히 true일 때만 다시 observe를 시작
-            if (observeSentinel) {
-              observer.observe(sentinel);
-            }
-          }, 0);
+          console.log("Load more data...");
+          loadMoreData();
+          setLoading(false);
+          // observeSentinel이 여전히 true일 때만 다시 observe를 시작
+          if (observeSentinel) {
+            observer.observe(sentinel);
+          }
         }
       }
     });
   };
   
-
-  useEffect(() => {
-    setBoard(initialData || []);
-    setHasMoreData(initialData && initialData.length >= itemsPerPage);
-    setCurrentPage(1);
-    setObserveSentinel(true); // 초기화시 감시 활성화
-  }, [initialData]);
-
   useEffect(() => {
     if (hasMoreData && observeSentinel) {
       const { current: sentinel } = sentinelRef;
@@ -107,14 +98,13 @@ const Board = ({ initialData }) => {
       };
     }
   }, [hasMoreData, sentinelRef, handleIntersection, observeSentinel]);
-
+  
   useEffect(() => {
     // 초기 로딩 시 한 번만 데이터를 불러옴
     if (hasMoreData && observeSentinel) {
       loadMoreData();
     }
-  }, [observeSentinel]); 
-
+  }, [observeSentinel]);
   const breakpointColumnsObj = {
     default: itemsPerRow,
     1100: 3,
