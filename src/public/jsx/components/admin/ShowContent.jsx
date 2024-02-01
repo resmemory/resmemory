@@ -1,36 +1,39 @@
 import React, { useEffect, useState } from 'react';
 
 const adminId = sessionStorage.getItem('Authorization');
+
 function ShowContent(props) {
   const [data, setData] = useState([]);
   const [commentData, setCommentData] = useState([]);
-  const [treadData, setTreadData] = useState([]);
+  const [threadData, setThreadData] = useState([]);
 
   const styles = {
     div: {
-      width: '900px',
-      minHeight: '100px',
+      border: '1px solid black',
+    },
+    DetailDiv: {
+      width: '850px',
+      minHeight: '10px',
       backgroundColor: '#FFFFFF',
       borderRadius: '12px',
-      boxShadow: '0px 4px 8px rgba(0, 0, 0, 0.06)',
       padding: '10px 10px 10px 10px',
       marginBottom: '10px',
     },
   };
+
   const fetchData = async () => {
-    console.log(props.data.reportType);
-    if (props.data.isReport === 'false') {
-      let RequestURL;
-      if (props.data.reportType === 'post') {
-        RequestURL = `/api/${props.data.reportType}s?postId=${props.data.contentId}`;
-      } else if (props.data.reportType === 'comment') {
-        RequestURL = `/api/${props.data.reportType}s?postId=${props.data.contentId}`;
-      } else if (props.data.reportType === 'thread') {
-        RequestURL = `/api/${props.data.reportType}s?threadId=${props.data.contentId}`;
-        console.log(props.data.contentId, 'props.data.contentId');
+    if (props.data && props.data.isReport === 'false') {
+      let requestUrl;
+      const { reportType, contentId } = props.data;
+
+      if (reportType === 'post' || reportType === 'comment') {
+        requestUrl = `./api/${reportType}s?postId=${contentId}`;
+      } else if (reportType === 'thread') {
+        requestUrl = `./api/${reportType}s?threadId=${contentId}`;
       }
+
       try {
-        const response = await fetch(RequestURL, {
+        const response = await fetch(requestUrl, {
           method: 'GET',
           headers: {
             'Content-Type': 'application/json',
@@ -39,69 +42,53 @@ function ShowContent(props) {
         });
 
         const result = await response.json();
-        const data = result.responseData.result;
-        const commentData = result.responseData;
-        console.log(data, 'aaaaa');
-        console.log(commentData);
-        setData(data);
-        setCommentData(commentData);
-        setTreadData(data);
+        setData(result.responseData.result || []);
+        setCommentData(result.responseData || []);
+        setThreadData(result.responseData.result || []);
       } catch (error) {
-        console.log(error);
+        console.error(error);
       }
     }
   };
+
   useEffect(() => {
     fetchData();
   }, [props.data.contentId, props.data.reportType]);
 
+  const renderContent = () => {
+    switch (props.data.reportType) {
+      case 'post':
+        return ['nickname', 'title', 'content'].map((key) => (
+          <div key={key}>
+            <p>
+              {key === 'nickname' ? '닉네임' : key === 'title' ? '제목' : '내용'}: {data[key]}
+            </p>
+          </div>
+        ));
+      case 'comment':
+        return commentData.map((item, idx) => (
+          <div key={idx}>
+            <p>닉네임: {item.nickname}</p>
+            <p>내용: {item.content}</p>
+          </div>
+        ));
+      case 'thread':
+        return threadData.map((item, idx) => (
+          <div key={idx}>
+            <p>내용: {item.content}</p>
+          </div>
+        ));
+      default:
+        return <div>삭제된 컨텐츠 입니다.</div>;
+    }
+  };
+
   return (
-    <div>
+    <div style={styles.div}>
       상세내용
-      <div style={styles.div}>
-        {props.data.reportType === 'post' ? (
-          ['nickname', 'title', 'content'].map((key) => {
-            let mappedKey = key;
-
-            // 특정 키 이름을 변경하거나 매핑하는 조건을 추가
-            if (key === 'title') {
-              mappedKey = '제목';
-            } else if (key === 'content') {
-              mappedKey = '내용';
-            } else if (key === 'nickname') {
-              mappedKey = '닉네임';
-            }
-
-            return (
-              <div key={key}>
-                <p>
-                  {mappedKey}: {data[key]}
-                </p>
-              </div>
-            );
-          })
-        ) : props.data.reportType === 'comment' ? (
-          commentData.map((item, idx) => {
-            return (
-              <div key={idx}>
-                <p>닉네임 : {item.nickname}</p>
-                <p>내용 : {item.content}</p>
-              </div>
-            );
-          })
-        ) : props.data.reportType === 'thread' ? (
-          treadData.map((item) => {
-            return (
-              <div key={item}>
-                <p>내용 :{item.content}</p>
-              </div>
-            );
-          })
-        ) : (
-          <div></div>
-        )}
-      </div>
+      <div style={styles.DetailDiv}>{renderContent()}</div>
     </div>
   );
 }
+
 export default ShowContent;

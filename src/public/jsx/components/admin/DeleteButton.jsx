@@ -6,6 +6,7 @@ const style = {
     alignItems: 'right',
   },
   button: {
+    width: '100px',
     color: 'white',
     borderRadius: '5px',
     border: 'none',
@@ -16,14 +17,18 @@ const style = {
 function DeleteButton(props) {
   const isReport = props.data.isReport;
   const [buttonColor, setButtonColor] = useState('');
+  const [button, setButton] = useState('');
 
   useEffect(() => {
     if (isReport === 'true') {
       setButtonColor('blue');
+      setButton('삭제 완료');
     } else if (isReport === '2') {
       setButtonColor('gray');
+      setButton('삭제 완료');
     } else if (isReport === 'false') {
       setButtonColor('black');
+      setButton('삭제 하기');
     }
   }, [isReport]);
 
@@ -51,14 +56,13 @@ function DeleteButton(props) {
       body: JSON.stringify({ reportId, contentId }),
     });
     const result = await response.json();
-    console.log(result);
     alert(code[result.responseData.code]);
   }
 
   return (
     <div style={style.div}>
       <button style={{ ...style.button, backgroundColor: buttonColor }} onClick={handleDelete}>
-        {'삭제'}
+        {button}
       </button>
     </div>
   );
