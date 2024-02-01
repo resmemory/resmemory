@@ -4,7 +4,6 @@
 
 누군가의 기억을 가치있게 생각하는 공간, “ 응답하라 추억시대 “ 입니다.
 
-- 배포 주소 : http://resmemory.store
 - 브로셔 : https://gleaming-harp-2af.notion.site/f6539553476e4602bce58d1cd8bceeda
 
 # 🎞️ TEAM

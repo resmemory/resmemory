@@ -1,5 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { useLocation } from 'react-router-dom';
+import Header from '../components/main/header.jsx';
+
+import '../../css/detail.css';
 
 const PostPage = () => {
   const location = useLocation();
@@ -252,263 +255,115 @@ const PostPage = () => {
   };
   return (
     <div>
-      <header className="header">
-        <div className="headerBtns"></div>
-        <img
-          className="logo"
-          src="./assets/image/logo.png"
-          alt="로고"
-          onClick={() => (window.location.href = './')}
-        />
-      </header>
-      <main>
-        <div className="post-box" id="post-box">
-          {postDetails && (
-            <>
-              <div className="post-title">{postDetails.title}</div>
-              <div className="post-info">
-                <div className="post-nickname">{postDetails.nickname}</div>
-                <div className="post-view">조회수: {postDetails.viewCount}</div>
-                <div className="post-date">{postDetails.updatedAt}</div>
-              </div>
-              <div className="post-buttons">
-                {isPostOwner ? (
-                  <>
-                    <button
-                      className="button_edit-button"
-                      onClick={() => modalOn('#edit-post-Modal')}
-                    >
-                      수정
-                    </button>
-                    <button className="button_delete-button" onClick={() => deletePost()}>
-                      삭제
-                    </button>
-                    <button className="button_bookmark-button" onClick={() => postBookmark()}>
-                      북마크
-                    </button>
+      <Header />
+      <div className="post-box" id="post-box">
+        {postDetails && (
+          <>
+            <div className="post-category">{postDetails.category + "'s"}</div>
+            <div className="post-title">{postDetails.title}</div>
+            <div className="post-nickname">
+              작성자 <p id="post-writter"> {'ㅤ' + postDetails.nickname}</p>
+            </div>
 
-                    <button
-                      className="button_report-button"
-                      onClick={() => modalOn('#report-post-Modal')}
-                    >
-                      신고
-                    </button>
-                  </>
-                ) : (
-                  <></>
-                )}
-              </div>
-              <div className="post-content">
-                <img
-                  src={postDetails.img}
-                  alt={postDetails.img}
-                  style={{ display: postDetails.img ? '' : 'none' }}
-                />
+            <div className="post-buttons">
+              {isPostOwner ? (
+                <>
+                  <button
+                    className="button_edit-button"
+                    onClick={() => modalOn('#edit-post-Modal')}
+                  >
+                    수정하기
+                  </button>
+                  <button className="button_delete-button" onClick={() => deletePost()}>
+                    삭제하기
+                  </button>
+                  <button className="button_bookmark-button" onClick={() => postBookmark()}>
+                    북마크
+                  </button>
 
-                {/* Thumbnail */}
-                <img
-                  src={postDetails.thumbnail}
-                  alt={postDetails.thumbnail}
-                  style={{ display: postDetails.thumbnail ? '' : 'none' }}
-                />
-                <p>{postDetails.content}</p>
-              </div>
-              {/* Add your other modals and forms here (edit-post-Modal, report-post-Modal, etc.) */}
-              <form
-                action="./api/posts"
-                method="PATCH"
-                enctype="multipart/form-data"
-                onSubmit={(e) => e.preventDefault()}
-                id="form"
-              >
-                <input type="hidden" name="authorization" className="Authorization" />
-                <div className="modal" id="edit-post-Modal" style={{ display: 'none' }}>
-                  <div className="modalContent">
-                    <div className="edit-post-Box">
-                      {/* Edit Post Modal Content */}
-                      <div>
-                        <h2>글 수정하기</h2>
-                        <label>제목</label>
-                        <br />
-                        <textarea name="title" className="post_title" type="text">
-                          {postDetails.title}
-                        </textarea>
-                      </div>
-                      <div>
-                        <label>내용</label>
-                        <br />
-                        <textarea name="content" className="post_content" type="text">
-                          {postDetails.content}
-                        </textarea>
-                      </div>
-                      <div>
-                        <label>연도</label>
-                        <br />
-                        <select name="category" className="post_category">
-                          <option selected>{postDetails.category}</option>
-                          <option>1970</option>
-                          <option>1980</option>
-                          <option>1990</option>
-                          <option>2000</option>
-                          <option>2010</option>
-                          <option>2020</option>
-                        </select>
-                      </div>
-                      <div>
-                        <label>현재 이미지</label>
-                        <br />
-                        <input
-                          name="previousImg"
-                          className="post_img"
-                          type="text"
-                          value={postDetails.img}
-                        />
-                        <label>변경할 이미지</label>
-                        <br />
-                        <input name="img" className="post_img" type="file" accept="image/*" />
-                      </div>
-                      <div className="edit-post-Box-btn">
-                        <button className="edit-post-btn" onClick={() => updatePost()}>
-                          수정
-                        </button>
-                        <button
-                          className="edit-close-btn"
-                          onClick={() => modalClose('#edit-post-Modal')}
-                        >
-                          닫기
-                        </button>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </form>
-              <div className="modal" id="report-post-Modal" style={{ display: 'none' }}>
+                  <button
+                    className="button_report-button"
+                    onClick={() => modalOn('#report-post-Modal')}
+                  >
+                    신고하기
+                  </button>
+                </>
+              ) : (
+                <></>
+              )}
+            </div>
+            <div className="post-content">
+              <img
+                src={postDetails.img}
+                alt={postDetails.img}
+                style={{ display: postDetails.img ? '' : 'none' }}
+              />
+
+              <p>{postDetails.content}</p>
+            </div>
+
+            <form
+              action="./api/posts"
+              method="PATCH"
+              enctype="multipart/form-data"
+              onSubmit={(e) => e.preventDefault()}
+              id="form"
+            >
+              <input type="hidden" name="authorization" className="Authorization" />
+              <div className="modal" id="edit-post-Modal" style={{ display: 'none' }}>
                 <div className="modalContent">
-                  {/* Report Post Modal Content */}
-                  <label>신고 내용</label>
-                  <br />
-                  <input className="report_content" type="text" id="reportContentInput" />
-                  <div className="report-post-Box-btn">
-                    <button className="report-post-btn" onClick={() => postReport('post', postId)}>
-                      신고
-                    </button>
-                    <button
-                      className="report-post-btn"
-                      onClick={() => modalClose('#report-post-Modal')}
-                    >
-                      닫기
-                    </button>
-                  </div>
-                </div>
-              </div>
-            </>
-          )}
-        </div>
-        <div className="comment-box">
-          <h3>상대방의 마음이 좋아지는 댓글을 남겨요!</h3>
-          <input type="text" className="comment-input" placeholder="댓글을 작성하세요" />
-          <button className="comment-submit-button" onClick={() => postComment()}>
-            작성
-          </button>
-          <div className="comment-list" id="comment-list">
-            {comments.map((comment) => (
-              <div key={comment.commentId} className="comment-item">
-                <div className="comment-info">
-                  <div className="comment-nickname">{comment.nickname}</div>
-                  <div className="comment-date">
-                    {new Date(comment.createdAt).toLocaleDateString('ko-KR', {
-                      timeZone: 'Asia/Seoul',
-                    })}
-                  </div>
-                </div>
-                <div className="comment-content">{comment.content}</div>
-                <div className="comment-buttons">
-                  {comment.isCommentOwner ? (
-                    <>
-                      <button
-                        className="button_edit-comment-button"
-                        onClick={() => modalOn(`#edit-comment-Modal-${comment.commentId}`)}
-                      >
+                  <div className="edit-post-Box">
+                    {/* Edit Post Modal Content */}
+                    <div>
+                      <h3>글 수정하기</h3>
+                      <label>제목</label>
+                      <br />
+                      <textarea name="title" className="post_title" type="text">
+                        {postDetails.title}
+                      </textarea>
+                    </div>
+                    <div>
+                      <label>내용</label>
+                      <br />
+                      <textarea name="content" className="post_content" type="text">
+                        {postDetails.content}
+                      </textarea>
+                    </div>
+                    <div>
+                      <label>연도</label>
+                      <br />
+                      <select name="category" className="post_category">
+                        <option selected>{postDetails.category}</option>
+                        <option>1970</option>
+                        <option>1980</option>
+                        <option>1990</option>
+                        <option>2000</option>
+                        <option>2010</option>
+                        <option>2020</option>
+                      </select>
+                    </div>
+                    <br />
+                    <div>
+                      <label>현재 이미지</label>
+                      <br />
+                      <input
+                        name="previousImg"
+                        className="post_img"
+                        type="text"
+                        value={postDetails.img}
+                      />
+                      <br />
+                      <label>변경할 이미지</label>
+                      <br />
+                      <input name="img" className="post_img" type="file" accept="image/*" />
+                    </div>
+                    <div className="edit-post-Box-btn">
+                      <button className="edit-post-btn" onClick={() => updatePost()}>
                         수정
                       </button>
                       <button
-                        className="button_delete-comment-button"
-                        onClick={() => deleteComment(comment.commentId)}
-                      >
-                        삭제
-                      </button>
-                      <button
-                        className="button_report-comment-button"
-                        onClick={() => modalOn(`#report-comment-Modal-${comment.commentId}`)}
-                      >
-                        신고
-                      </button>
-                    </>
-                  ) : (
-                    <></>
-                  )}
-                </div>
-                {/* Edit Comment Modal */}
-                <div
-                  className="modal"
-                  id={`edit-comment-Modal-${comment.commentId}`}
-                  style={{ display: 'none' }}
-                >
-                  <div className="modalContent">
-                    <div className="edit-comment-Box">
-                      {/* Edit Comment Modal Content */}
-                      <div>
-                        <h2>댓글 수정하기</h2>
-                        <label>내용</label>
-                        <br />
-                        <textarea
-                          name={`comment_content-${comment.commentId}`}
-                          className={`comment_content${comment.commentId}`}
-                          type="text"
-                          defaultValue={comment.content}
-                        />
-                      </div>
-                      <div className="edit-comment-Box-btn">
-                        <button
-                          className="edit-comment-btn"
-                          onClick={() => updateComment(comment.commentId)}
-                        >
-                          수정
-                        </button>
-                        <button
-                          className="edit-close-btn"
-                          onClick={() => modalClose(`#edit-comment-Modal-${comment.commentId}`)}
-                        >
-                          닫기
-                        </button>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-                {/* Report Comment Modal */}
-                <div
-                  className="modal"
-                  id={`report-comment-Modal-${comment.commentId}`}
-                  style={{ display: 'none' }}
-                >
-                  <div className="modalContent">
-                    <label>신고 내용</label>
-                    <br />
-                    <input
-                      className="report_content"
-                      type="text"
-                      id={`reportContentInput-${comment.commentId}`}
-                    />
-                    <div className="report-comment-Box-btn">
-                      <button
-                        className="report-comment-btn"
-                        onClick={() => commentReport('comment', comment.commentId)}
-                      >
-                        신고
-                      </button>
-                      <button
-                        className="report-comment-btn"
-                        onClick={() => modalClose(`#report-comment-Modal-${comment.commentId}`)}
+                        className="edit-close-btn"
+                        onClick={() => modalClose('#edit-post-Modal')}
                       >
                         닫기
                       </button>
@@ -516,11 +371,147 @@ const PostPage = () => {
                   </div>
                 </div>
               </div>
-            ))}
-          </div>
+            </form>
+            <div className="modal" id="report-post-Modal" style={{ display: 'none' }}>
+              <div className="modalContent">
+                {/* Report Post Modal Content */}
+                <label>신고 내용</label>
+                <br />
+                <input className="report_content" type="text" id="reportContentInput" />
+                <div className="report-post-Box-btn">
+                  <button className="report-post-btn" onClick={() => postReport('post', postId)}>
+                    신고
+                  </button>
+                  <button
+                    className="report-post-close-btn"
+                    onClick={() => modalClose('#report-post-Modal')}
+                  >
+                    닫기
+                  </button>
+                </div>
+              </div>
+            </div>
+          </>
+        )}
+      </div>
+      <div className="comment-box">
+        <h3>댓글</h3>
+        <input type="text" className="comment-input" placeholder="댓글을 작성하세요" />
+        <button className="comment-submit-button" onClick={() => postComment()}>
+          작성하기
+        </button>
+        <div className="comment-list" id="comment-list">
+          {comments.map((comment) => (
+            <div key={comment.commentId} className="comment-item">
+              <div className="comment-info">
+                <div className="comment-nickname">
+                  댓글 작성자 <p id="comment-writter"> {'ㅤ' + comment.nickname} </p>
+                </div>
+                <div className="comment-content">{comment.content}</div>
+                <div className="comment-date">
+                  {new Date(comment.createdAt).toLocaleDateString('ko-KR', {
+                    timeZone: 'Asia/Seoul',
+                  })}
+                </div>
+
+                <div className="comment-buttons">
+                  {comment.isCommentOwner ? (
+                    <>
+                      <button
+                        className="button_edit-comment-button"
+                        onClick={() => modalOn(`#edit-comment-Modal-${comment.commentId}`)}
+                      >
+                        수정하기
+                      </button>
+                      <button
+                        className="button_delete-comment-button"
+                        onClick={() => deleteComment(comment.commentId)}
+                      >
+                        삭제하기
+                      </button>
+                      <button
+                        className="button_report-comment-button"
+                        onClick={() => modalOn(`#report-comment-Modal-${comment.commentId}`)}
+                      >
+                        신고하기
+                      </button>
+                    </>
+                  ) : (
+                    <></>
+                  )}
+                </div>
+              </div>
+              {/* Edit Comment Modal */}
+              <div
+                className="modal"
+                id={`edit-comment-Modal-${comment.commentId}`}
+                style={{ display: 'none' }}
+              >
+                <div className="modalContent">
+                  <div className="edit-comment-Box">
+                    {/* Edit Comment Modal Content */}
+                    <div>
+                      <label>댓글 수정하기</label>
+                      <br />
+                      <textarea
+                        id="comment-edit-textarea"
+                        name={`comment_content-${comment.commentId}`}
+                        className={`comment_content${comment.commentId}`}
+                        type="text"
+                        defaultValue={comment.content}
+                      />
+                    </div>
+                    <div className="edit-comment-Box-btn">
+                      <button
+                        className="edit-comment-btn"
+                        onClick={() => updateComment(comment.commentId)}
+                      >
+                        수정
+                      </button>
+                      <button
+                        className="edit-close-btn"
+                        onClick={() => modalClose(`#edit-comment-Modal-${comment.commentId}`)}
+                      >
+                        닫기
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              {/* Report Comment Modal */}
+              <div
+                className="modal"
+                id={`report-comment-Modal-${comment.commentId}`}
+                style={{ display: 'none' }}
+              >
+                <div className="modalContent">
+                  <label>신고 내용</label>
+                  <br />
+                  <input
+                    className="report_content"
+                    type="text"
+                    id={`reportContentInput-${comment.commentId}`}
+                  />
+                  <div className="report-comment-Box-btn">
+                    <button
+                      className="report-comment-btn"
+                      onClick={() => commentReport('comment', comment.commentId)}
+                    >
+                      신고
+                    </button>
+                    <button
+                      className="report-comment-close-btn"
+                      onClick={() => modalClose(`#report-comment-Modal-${comment.commentId}`)}
+                    >
+                      닫기
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          ))}
         </div>
-      </main>
-      <footer>제작 - TEAM 1이3김 : 이다영 김주희 김민규 김지혜</footer>
+      </div>
     </div>
   );
 };
