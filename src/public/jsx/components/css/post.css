@@ -82,3 +82,9 @@
     font-weight: 600;
     margin-right : 2px;
   }
+
+  .none {
+    background-color: black;
+    color: white
+  }
+  
