@@ -4,32 +4,32 @@ import LoginForm from '../../components/mypage/loginform.jsx';
 
 const MyInfo = () => {
   const [userData, setUserData] = useState(null);
-  const [isModalOpen, setIsModalOpen] = useState(false);
-  const [isEditMode, setIsEditMode] = useState(false);
+  const [password, setPassword] = useState('');
+  const [confirm, setConfirm] = useState('');
   const [newNickname, setNewNickname] = useState('');
+  const fetchData = async () => {
+    try {
+      const response = await fetch('./api/users', {
+        method: 'GET',
+        headers: {
+          Authorization: sessionStorage.getItem('Authorization'),
+        },
+      });
+
+      if (!response.ok) {
+        console.error('서버로부터 데이터를 가져오는 중 에러가 발생했습니다.');
+        return;
+      }
+
+      const result = await response.json();
+
+      setUserData(result.responseData.bodies);
+    } catch (error) {
+      console.error('데이터를 가져오는 중 에러가 발생했습니다.', error);
+    }
+  };
 
   useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const response = await fetch('./api/users', {
-          method: 'GET',
-          headers: {
-            Authorization: sessionStorage.getItem('Authorization'),
-          },
-        });
-
-        if (!response.ok) {
-          console.error('서버로부터 데이터를 가져오는 중 에러가 발생했습니다.');
-          return;
-        }
-
-        const result = await response.json();
-        setUserData(result.responseData.bodies);
-      } catch (error) {
-        console.error('데이터를 가져오는 중 에러가 발생했습니다.', error);
-      }
-    };
-
     fetchData();
   }, []);
 
@@ -40,6 +40,16 @@ const MyInfo = () => {
 
   const handleModalClose = () => {
     const target = document.querySelector('.modal');
+    target.style.display = 'none';
+  };
+
+  const handlePWChangeModalOn = () => {
+    const target = document.querySelector('#PWChange');
+    target.style.display = 'block';
+  };
+
+  const handlePWChangeModalClose = () => {
+    const target = document.querySelector('#PWChange');
     target.style.display = 'none';
   };
 
@@ -63,6 +73,31 @@ const MyInfo = () => {
       alert(code[result.responseData.code]);
       location.reload();
       handleModalClose();
+    } catch (error) {
+      console.error('API 호출 중 오류가 발생했습니다.', error);
+    }
+  };
+
+  const handlePWChange = async (password, confirm) => {
+    try {
+      const response = await fetch(`./api/users/password`, {
+        method: 'PATCH',
+        headers: {
+          Authorization: sessionStorage.getItem('Authorization'),
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ password, confirm }),
+      });
+
+      if (!response.ok) {
+        console.error('서버로부터 응답이 실패했습니다.');
+        return;
+      }
+
+      const result = await response.json();
+      alert(code[result.responseData.code]);
+      location.reload();
+      handlePWChangeModalClose();
     } catch (error) {
       console.error('API 호출 중 오류가 발생했습니다.', error);
     }
@@ -113,7 +148,6 @@ const MyInfo = () => {
     return <LoginForm />;
   }
 
-  const isAdmin = userData.userId === 1;
   const isKakaoUser = userData.email === 'kakaoId';
 
   return (
@@ -134,10 +168,19 @@ const MyInfo = () => {
       <p className="myinfo_signout" onClick={handleSignout}>
         회원탈퇴
       </p>
+      <p className="myinfo_pwchange" onClick={handlePWChangeModalOn}>
+        비밀번호 변경
+      </p>
+
       <div className="modal">
         <div className="modal-content">
           <h2>닉네임 변경</h2>
-          <input type="text" value={newNickname} placeholder={`${userData.nickname}`} />
+          <input
+            type="text"
+            value={newNickname}
+            placeholder={`${userData.nickname}`}
+            onChange={(e) => setNewNickname(e.target.value)}
+          />
           <div className="editBtn">
             <p
               onClick={() => {
@@ -147,6 +190,35 @@ const MyInfo = () => {
               변경
             </p>
             <p className="close" onClick={handleModalClose}>
+              취소
+            </p>
+          </div>
+        </div>
+      </div>
+      <div className="modal" id="PWChange">
+        <div className="modal-content">
+          <h2>비밀번호 변경</h2>
+          <input
+            type="password"
+            value={password}
+            placeholder={`비밀번호를 입력하세요.`}
+            onChange={(e) => setPassword(e.target.value)}
+          />
+          <input
+            type="password"
+            value={confirm}
+            placeholder={`확인 비밀번호를 입력하세요.`}
+            onChange={(e) => setConfirm(e.target.value)}
+          />
+          <div className="editBtn">
+            <p
+              onClick={() => {
+                handlePWChange(confirm, password);
+              }}
+            >
+              변경
+            </p>
+            <p className="close" onClick={handlePWChangeModalClose}>
               취소
             </p>
           </div>
