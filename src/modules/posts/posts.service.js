@@ -248,11 +248,15 @@ const onRequest = async (res, method, pathname, params, key, cb, mock) => {
       if (pathname === '/myposts') {
         try {
           const { userId } = params;
+          const { pageNum } = params.query;
           const result = await Posts.findAll({
             where: { userId },
             order: [['createdAt', 'DESC']],
+            limit: 12,
+            offset: (pageNum - 1) * 12,
             raw: true,
           });
+
           responseData = { result };
         } catch (err) {
           responseData = { code: 340 };

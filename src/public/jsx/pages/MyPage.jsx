@@ -20,7 +20,6 @@ function MyPage() {
             <CardSection />
           </section>
         </div>
-        <section>{/* 좋아요 한 글 */}</section>
       </main>
     </div>
   );
