@@ -23,7 +23,7 @@ const Board = ({ initialData }) => {
         },
       });
       const responseData = await response.json();
-      console.log("Fetched data:", responseData);
+      console.log('Fetched data:', responseData);
       return responseData.responseData;
     } catch (error) {
       console.error('게시판 데이터를 불러오는 중 오류 발생:', error);
@@ -42,11 +42,11 @@ const Board = ({ initialData }) => {
   const loadMoreData = async () => {
     if (!loading && hasMoreData) {
       setLoading(true);
-  
+
       const data = await fetchData(currentPage, itemsPerPage);
-  
+
       setLoading(false); // 데이터를 받아온 후에 로딩 비활성화
-  
+
       if (data.length > 0) {
         setBoard((prevBoard) => [...prevBoard, ...data]);
         setCurrentPage((prevPage) => prevPage + 1);
@@ -57,20 +57,20 @@ const Board = ({ initialData }) => {
       }
     }
   };
-  
+
   const handleIntersection = (entries, observer) => {
     const { current: sentinel } = sentinelRef;
-  
+
     entries.forEach((entry) => {
-      console.log("Intersection observed:", entry.isIntersecting);
+      console.log('Intersection observed:', entry.isIntersecting);
       if (entry.isIntersecting && !loading && observeSentinel) {
         observer.unobserve(sentinel);
-  
+
         // 이미 로딩 중이거나 observeSentinel이 false일 때는 추가 호출을 막음
         if (!loading && observeSentinel) {
           setLoading(true);
           setTimeout(() => {
-            console.log("Load more data...");
+            console.log('Load more data...');
             loadMoreData();
             setLoading(false);
             // observeSentinel이 여전히 true일 때만 다시 observe를 시작
@@ -82,7 +82,6 @@ const Board = ({ initialData }) => {
       }
     });
   };
-  
 
   useEffect(() => {
     setBoard(initialData || []);
@@ -99,9 +98,9 @@ const Board = ({ initialData }) => {
         rootMargin: '0px',
         threshold: 1.0,
       });
-  
+
       observer.observe(sentinel);
-  
+
       return () => {
         observer.disconnect();
       };
@@ -113,7 +112,7 @@ const Board = ({ initialData }) => {
     if (hasMoreData && observeSentinel) {
       loadMoreData();
     }
-  }, [observeSentinel]); 
+  }, [observeSentinel]);
 
   const breakpointColumnsObj = {
     default: itemsPerRow,
@@ -136,7 +135,9 @@ const Board = ({ initialData }) => {
           <h5 className="post-title">{post.title}</h5>
           <p className="post-content">{post.content}</p>
           <div>
-            <span>${new Date(post.createdAt).toLocaleDateString('ko-KR', { timeZone: 'Asia/Seoul' })}</span>
+            <span>
+              ${new Date(post.createdAt).toLocaleDateString('ko-KR', { timeZone: 'Asia/Seoul' })}
+            </span>
             <span>${post.viewCount}</span>
           </div>
         </div>

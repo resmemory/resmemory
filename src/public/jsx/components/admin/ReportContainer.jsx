@@ -5,7 +5,7 @@ const style = {
   div: {
     display: 'flex',
     flexDirection: 'column',
-    alignItems: 'center', // 필요에 따라 정렬을 조절하세요.
+    alignItems: 'center',
   },
   foo: {
     height: '50px',

@@ -8,14 +8,13 @@ const onRequest = async (res, method, pathname, params, key, cb) => {
     // 스레드 조회 함수
     case 'GET':
       // 스레드 개별조회 함수
-      if (pathname === '/threads' && params.query) {
+      if (pathname === '/threads' && params.query.threadId) {
         try {
           const { threadId } = params.query;
           const findThreadData = await Threads.findByPk(threadId, {});
 
           if (findThreadData) {
             responseData = { result: findThreadData };
-            console.log('여기가 첫번째');
           } else {
             responseData = { code: 711 };
           }
@@ -23,7 +22,7 @@ const onRequest = async (res, method, pathname, params, key, cb) => {
           responseData = { code: 713 };
           logger.error(`스레드 에러 발생:${error}`);
         }
-      } else if (pathname === '/threads' && !params.query) {
+      } else if (pathname === '/threads' && !params.query.threadId) {
         try {
           const today = new Date();
           let yesterday = Date.now(today) - 86400000;
@@ -35,7 +34,6 @@ const onRequest = async (res, method, pathname, params, key, cb) => {
           });
           if (result) {
             responseData = { result };
-            console.log('여기가 두번째');
           } else {
             responseData = { code: 711 };
           }
@@ -95,7 +93,7 @@ const onRequest = async (res, method, pathname, params, key, cb) => {
             responseData = { code: 0 };
           } else if (!threadData) {
             responseData = { code: 735 };
-          } else if (userId == threadData.userId) {
+          } else if (userId == threadData.userId || userId == '1') {
             if (threadId) {
               const result = await Threads.destroy({ where: { threadId } });
               if (result) {
