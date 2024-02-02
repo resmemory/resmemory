@@ -14,36 +14,35 @@ const onRequest = async (res, method, pathname, params, key, cb, mock) => {
       // 게시글 작성
       if (pathname === '/posts') {
         try {
-        const { title, content, category, img } = params.bodies;
-        let result = null;
-        let thumbnail = null;
-        if (!params.userId) {
-          responseData = { code: 312 };
-        } else if (!title) {
-          responseData = { code: 313 };
-        } else if (!content) {
-          responseData = { code: 314 };
-        } else if (!category) {
-          responseData = { code: 315 };
-        } else {
-          if (category === 'notice' && params.userId !== 1){
-            responseData = { code: 316 };
-          }
-        else {
-          result = await imageUpload(img);
-          thumbnail = await imageThumbnail(img);
+          const { title, content, category, img } = params.bodies;
+          let result = null;
+          let thumbnail = null;
+          if (!params.userId) {
+            responseData = { code: 312 };
+          } else if (!title) {
+            responseData = { code: 313 };
+          } else if (!content) {
+            responseData = { code: 314 };
+          } else if (!category) {
+            responseData = { code: 315 };
+          } else {
+            if (category === 'notice' && params.userId !== 1) {
+              responseData = { code: 316 };
+            } else {
+              result = await imageUpload(img);
+              thumbnail = await imageThumbnail(img);
 
-          await Posts.create({
-            title,
-            content,
-            thumbnail,
-            category,
-            img: result,
-            userId: params.userId,
-          });
-          responseData = { code: 311 };
-        }
-      }
+              await Posts.create({
+                title,
+                content,
+                thumbnail,
+                category,
+                img: result,
+                userId: params.userId,
+              });
+              responseData = { code: 311 };
+            }
+          }
         } catch (err) {
           responseData = { code: 310 };
         }
@@ -91,14 +90,14 @@ const onRequest = async (res, method, pathname, params, key, cb, mock) => {
           let result;
           const { pageNum } = params.query;
 
-          if (params.params == 'view') {
+          if (params.query.sort == 'view') {
             result = await Posts.findAll({
               order: [['viewCount', 'DESC']],
               limit: 12,
               offset: (pageNum - 1) * 12,
               raw: true,
             });
-          } else {
+          } else if (params.query.sort == 'new') {
             result = await Posts.findAll({
               order: [['createdAt', 'DESC']],
               limit: 12,
@@ -178,13 +177,23 @@ const onRequest = async (res, method, pathname, params, key, cb, mock) => {
           let result;
           const { category, pageNum } = params.query;
 
-          result = await Posts.findAll({
-            where: { category },
-            order: [['createdAt', 'DESC']],
-            limit: 10,
-            offset: (pageNum - 1) * 10,
-            raw: true,
-          });
+          if (params.query.sort == 'view') {
+            result = await Posts.findAll({
+              where: { category },
+              order: [['viewCount', 'DESC']],
+              limit: 12,
+              offset: (pageNum - 1) * 12,
+              raw: true,
+            });
+          } else if (params.query.sort == 'new') {
+            result = await Posts.findAll({
+              where: { category },
+              order: [['createdAt', 'DESC']],
+              limit: 12,
+              offset: (pageNum - 1) * 12,
+              raw: true,
+            });
+          }
 
           const userIds = result.map((post) => post.userId);
 
@@ -266,7 +275,7 @@ const onRequest = async (res, method, pathname, params, key, cb, mock) => {
           responseData = { code: 340 };
         }
       }
-              
+
       // 댓글 조회
       if (pathname === '/comments') {
         try {
