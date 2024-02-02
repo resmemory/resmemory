@@ -154,23 +154,6 @@ const onRequest = async (res, method, pathname, params, key, cb, mock) => {
         }
       }
 
-      // 게시글 전체 조회(리스트 출력용)
-      if (pathname === '/posts' && params.params === 'list') {
-        try {
-          if (params.query.category) {
-            const result = await Posts.count({
-              where: { category: params.query.category },
-            });
-            responseData = { bodies: result };
-          } else {
-            const result = await Posts.count();
-            responseData = { bodies: result };
-          }
-        } catch (err) {
-          responseData = { code: 390 };
-        }
-      }
-
       // 연도별 게시글 조회
       if (pathname === '/posts' && params.query.category && params.params !== 'list') {
         try {
