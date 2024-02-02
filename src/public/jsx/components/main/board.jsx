@@ -9,7 +9,7 @@ const Board = () => {
   const [loadingMore, setLoadingMore] = useState(false);
   const [hasMoreData, setHasMoreData] = useState(true);
   const [observeSentinel, setObserveSentinel] = useState(true);
-  const [sort, setSort] = useState('view');
+  const [sort, setSort] = useState('new');
   const containerRef = useRef(null);
   const sentinelRef = useRef(null);
   const itemsPerPage = 12;
@@ -82,9 +82,8 @@ const Board = () => {
   };
 
   useEffect(() => {
-    const masonry = document.querySelector('.my-masonry-grid');
     const observer = new IntersectionObserver(handleIntersection, {
-      root: masonry,
+      root: null,
       rootMargin: '0px',
       threshold: 1.0,
     });
@@ -101,10 +100,7 @@ const Board = () => {
   useEffect(() => {
     setCurrentPage(1);
     setBoard([]);
-    setHasMoreData(true);
-    setObserveSentinel(true);
-    loadMoreData();
-  }, [category]);
+  }, [category, sort]);
 
   const handleCategoryClick = (target) => {
     setCategory(target);
