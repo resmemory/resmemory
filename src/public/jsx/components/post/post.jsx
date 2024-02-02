@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import '../css/post.css';
 
 const ImageUpload = ({ onImageChange, onDeleteImage }) => {
@@ -75,7 +75,7 @@ const CategorySelect = ({ onCategoryChange }) => {
   return (
     <div className="annual">
       <select className="annual-select" onChange={handleCategoryChange}>
-        <option value="" disabled hidden>
+        <option className="none" value="" disabled selected >
           카테고리 선택
         </option>
         <option value="2020">2020's</option>
@@ -89,7 +89,7 @@ const CategorySelect = ({ onCategoryChange }) => {
       </select>
     </div>
   );
-};
+}
 
 const TitleInput = ({ title, onChange }) => {
   return (
@@ -113,7 +113,7 @@ const ContentInput = ({ content, onChange }) => {
   );
 };
 
-const Post = () => {
+const Post = ({ postId }) => {
   const [postData, setPostData] = useState({
     id: null,
     category: '',
@@ -121,6 +121,22 @@ const Post = () => {
     content: '',
     image: null,
   });
+
+  useEffect(() => {
+    // 여기서 postId를 사용하여 API 호출 또는 데이터를 가져오는 로직을 작성
+    const fetchData = async () => {
+      try {
+        const response = await fetch(`/api/posts?postId=${postId}`);
+        const result = await response.json();
+        console.log(result)
+        setPostData(result); // API에서 받아온 데이터로 상태 업데이트
+      } catch (error) {
+        console.error('데이터를 불러오는 중 에러 발생', error);
+      }
+    };
+
+    fetchData();
+  }, [postId]);
 
   const handleImageChange = (image) => {
     setPostData((prevData) => ({ ...prevData, image }));
@@ -166,7 +182,18 @@ const Post = () => {
 
   const handleEditPost = async () => {
     try {
-      // 게시물 수정 로직
+      const form = new FormData();
+      form.append('authorization', sessionStorage.getItem('Authorization'));
+      form.append('category', postData.category);
+      form.append('title', postData.title);
+      form.append('content', postData.content);
+      form.append('img', postData.image);
+
+      const response = await fetch(`./api/posts/${postId}`, {
+        method: 'PATCH',
+        body: form,
+      });
+      const result = await response.json();
     } catch (error) {
       console.error('게시물 수정 중 오류가 발생했습니다.', error);
     }
