@@ -1,6 +1,7 @@
 import React, { useEffect, useState, useRef } from 'react';
 import Masonry from 'react-masonry-css';
 import '../css/board.css';
+import '../css/annual.css';
 
 const Board = () => {
   const [board, setBoard] = useState([]);
@@ -15,9 +16,11 @@ const Board = () => {
   const itemsPerPage = 12;
   const itemsPerRow = 5;
   const [category, setCategory] = useState('전체');
+  const [selectedCategory, setSelectedCategory] = useState('전체'); // 선택된 카테고리 상태 추가
   const categories = ['전체', '2020', '2010', '2000', '1990', '1980', '1970'];
 
   const fetchData = async (page, perPage, category) => {
+    console.log(category);
     try {
       setLoading(true);
 
@@ -108,32 +111,36 @@ const Board = () => {
 
   const handleCategoryClick = (target) => {
     setCategory(target);
+    setSelectedCategory(target); // 선택된 카테고리 업데이트
     setObserveSentinel(true);
   };
 
   return (
-    <div>
-      <ul className="category">
-        {categories.map((target) => (
-          <button
-            key={target}
-            className="category-button"
-            onClick={() => handleCategoryClick(target)}
+    <div className="boardmain">
+      <div className="categorybox">
+        <div className="category">
+          {categories.map((target) => (
+            <button
+              key={target}
+              className={`category-button ${selectedCategory === target ? 'selected' : ''}`}
+              onClick={() => handleCategoryClick(target)}
+            >
+              {target}
+            </button>
+          ))}
+        </div>
+        <div className="sort">
+          <select
+            className="sort-select"
+            onChange={(e) => {
+              setSort(e.target.value);
+            }}
           >
-            {target}
-          </button>
-        ))}
-        <div className="sort"></div>
-        <select
-          className="sort-select"
-          onChange={(e) => {
-            setSort(e.target.value);
-          }}
-        >
-          <option value="new">최신순</option>
-          <option value="view">조회순</option>
-        </select>
-      </ul>
+            <option value="new">최신순</option>
+            <option value="view">조회순</option>
+          </select>
+        </div>
+      </div>
 
       <Masonry
         breakpointCols={{
@@ -148,13 +155,14 @@ const Board = () => {
       >
         {board.map((post) => (
           <div key={post.id} className="post" onClick={() => handlePostClick(post.postId)}>
-            <p>{post.category}</p>
             {post.img && <img src={post.img} alt="Post Image" />}
-            <h5 className="post-title">{post.title}</h5>
-            <p className="post-content">{post.content}</p>
-            <div>
+            <div className="postbox">
+              <p>{post.category}</p>
+              <p className="post-title">{post.title}</p>
+              <p className="post-nickname">{post.nickname}</p>
+              <br />
               <span>
-                ${new Date(post.createdAt).toLocaleDateString('ko-KR', { timeZone: 'Asia/Seoul' })}
+                {new Date(post.createdAt).toLocaleDateString('ko-KR', { timeZone: 'Asia/Seoul' })}
               </span>
             </div>
           </div>
