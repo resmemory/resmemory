@@ -22,7 +22,6 @@ function FilterReport(props) {
   const [completeColor, setCompleteButtonColor] = useState('black');
 
   const handleFilterAll = () => {
-    // 전체 필터를 적용하는 로직
     props.onFilterChange('all');
     setAllButtonColor('gray');
     setIncompleteButtonColor('black');
@@ -30,14 +29,12 @@ function FilterReport(props) {
   };
 
   const handleFilterIncomplete = () => {
-    // 미완료 필터를 적용하는 로직
     props.onFilterChange('incomplete');
     setIncompleteButtonColor('gray');
     setAllButtonColor('black');
     setCompleteButtonColor('black');
   };
   const handleFiltercomplete = () => {
-    // 미완료 필터를 적용하는 로직
     props.onFilterChange('complete');
     setCompleteButtonColor('gray');
     setAllButtonColor('black');

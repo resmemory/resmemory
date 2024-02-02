@@ -26,10 +26,15 @@ function ShowContent(props) {
       let requestUrl;
       const { reportType, contentId } = props.data;
 
-      if (reportType === 'post' || reportType === 'comment') {
-        requestUrl = `./api/${reportType}s?postId=${contentId}`;
+      if (reportType === 'post') {
+        const postId = contentId;
+        requestUrl = `./api/${reportType}s?postId=${postId}`;
+      } else if (reportType === 'comment') {
+        const commentId = contentId;
+        requestUrl = `./api/${reportType}s?commentId=${commentId}`;
       } else if (reportType === 'thread') {
-        requestUrl = `./api/${reportType}s?threadId=${contentId}`;
+        const threadId = contentId;
+        requestUrl = `./api/${reportType}s?threadId=${threadId}`;
       }
 
       try {
@@ -45,6 +50,7 @@ function ShowContent(props) {
         setData(result.responseData.result || []);
         setCommentData(result.responseData || []);
         setThreadData(result.responseData.result || []);
+        console.log(result);
       } catch (error) {
         console.error(error);
       }
@@ -56,6 +62,9 @@ function ShowContent(props) {
   }, [props.data.contentId, props.data.reportType]);
 
   const renderContent = () => {
+    if (props.data.isReport === 'true') {
+      return <div>삭제된 컨텐츠 입니다.</div>;
+    }
     switch (props.data.reportType) {
       case 'post':
         return ['nickname', 'title', 'content'].map((key) => (
@@ -66,26 +75,22 @@ function ShowContent(props) {
           </div>
         ));
       case 'comment':
-        return commentData.map((item, idx) => (
-          <div key={idx}>
-            <p>닉네임: {item.nickname}</p>
-            <p>내용: {item.content}</p>
+        return (
+          <div>
+            <p>내용: {commentData.content}</p>
           </div>
-        ));
+        );
       case 'thread':
-        return threadData.map((item, idx) => (
-          <div key={idx}>
-            <p>내용: {item.content}</p>
+        return (
+          <div>
+            <p>내용: {threadData.content}</p>
           </div>
-        ));
-      default:
-        return <div>삭제된 컨텐츠 입니다.</div>;
+        );
     }
   };
 
   return (
     <div style={styles.div}>
-      상세내용
       <div style={styles.DetailDiv}>{renderContent()}</div>
     </div>
   );
