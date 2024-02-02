@@ -98,6 +98,8 @@ const Board = () => {
   }, [hasMoreData, sentinelRef, handleIntersection, observeSentinel]);
 
   useEffect(() => {
+    setHasMoreData(true);
+    setObserveSentinel(true);
     setCurrentPage(1);
     setBoard([]);
   }, [category, sort]);
