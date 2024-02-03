@@ -31,7 +31,7 @@ function ChatPage() {
         // 닉네임 설정
         setUserNickname(nickname);
 
-        const newSocket = new WebSocket(`ws://13.209.87.137?nickname=${nickname}`);
+        const newSocket = new WebSocket(`ws://13.209.87.137:8000?nickname=${nickname}`);
 
         // 소켓 설정
         setSocket(newSocket);
