@@ -76,7 +76,7 @@ const Header = () => {
       <div className="Header_first">
         <div>
           <a href="http://localhost:8000">
-            <img src="/images/thn_logo.png" alt="thn_logo" />
+            <img src="../../../assets/image/thn_logo.png" alt="thn_logo" />
           </a>
         </div>
         <ul className="Header_ul">

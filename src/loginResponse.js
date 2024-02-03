@@ -18,9 +18,6 @@ function loginResponse(res, packet) {
     res.removeHeader('Set-Cookie');
     res.removeHeader('Authorization');
     res.end(JSON.stringify(packet));
-  } else if (packet.responseData.code == 1211) {
-    frontconnection('/oauth', res, packet.responseData.kakaocode);
   }
 }
-
 export default loginResponse;
