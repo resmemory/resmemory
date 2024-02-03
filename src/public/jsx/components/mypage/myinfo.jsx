@@ -149,6 +149,11 @@ const MyInfo = () => {
   }
 
   const isKakaoUser = userData.email === 'kakaoId';
+  const isAdmin = userData.userId === 1;
+
+  function adminPage() {
+    location.href = './admin';
+  }
 
   return (
     <div className="myinfo_first">
@@ -171,6 +176,11 @@ const MyInfo = () => {
       <p className="myinfo_pwchange" onClick={handlePWChangeModalOn}>
         비밀번호 변경
       </p>
+      {isAdmin && (
+        <p className="myinfo_admin" onClick={adminPage}>
+          관리자 페이지
+        </p>
+      )}
 
       <div className="modal">
         <div className="modal-content">
