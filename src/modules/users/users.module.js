@@ -24,7 +24,6 @@ class UsersModule extends TcpServer {
       'DELETE/bookmarks',
       'GET/bookmarks',
       'POST/oauth',
-      'GET/oauth',
       'POST/kakaoLogin',
     ]);
 

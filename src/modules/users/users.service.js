@@ -194,11 +194,6 @@ const onRequest = async (res, method, pathname, params, key, cb) => {
 
     // GET
     case 'GET':
-      // 카카오 인가 코드 발급
-      if (pathname == '/oauth' && query.code) {
-        const { code } = query;
-        responseData = { kakaocode: code, code: 1211 };
-      }
       // 내 정보 조회
       if (pathname == '/users' && !query.userId && !query.userIds) {
         try {

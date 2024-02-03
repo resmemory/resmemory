@@ -35,7 +35,7 @@ const General_Login = () => {
   return (
     <div>
       <div className="containerStyle">
-        <img src="/images/thn_logo.png" alt="Logo" className="logoStyle2" />
+        <img src="../../../assets/image/thn_logo.png" alt="Logo" className="logoStyle2" />
         <div className="textContainerStyle">
           <h2>로그인하기</h2>
           <p>추억 쌓기, 같이 하실래요?</p>
