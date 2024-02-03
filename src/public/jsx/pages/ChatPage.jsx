@@ -52,7 +52,7 @@ function ChatPage() {
             type: 'nickname',
             value: `${nickname}`,
           };
-          newSocket.onopen = () => newSocket.send(JSON.stringify(nicknameMessage));
+          newSocket.send(JSON.stringify(nicknameMessage));
         });
       }
     }
@@ -75,9 +75,9 @@ function ChatPage() {
       if (userNickname == null) {
         return alert('로그인이 필요한 기능입니다.');
       }
-      socket.onopen = () => {
-        socket.send(JSON.stringify(data)); // 서버로 메시지 전송
-      };
+
+      socket.send(JSON.stringify(data)); // 서버로 메시지 전송
+
       // 들어온 메시지 담기
       setMessageInput('');
     }
