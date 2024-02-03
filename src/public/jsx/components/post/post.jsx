@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import '../css/post.css';
+import './post.css';
 
 const ImageUpload = ({ onImageChange, onDeleteImage }) => {
   const [selectedImage, setSelectedImage] = useState(null);
@@ -75,7 +75,7 @@ const CategorySelect = ({ onCategoryChange }) => {
   return (
     <div className="annual">
       <select className="annual-select" onChange={handleCategoryChange}>
-        <option className="none" value="" disabled selected >
+        <option className="none" value="" disabled selected>
           카테고리 선택
         </option>
         <option value="2020">2020's</option>
@@ -89,7 +89,7 @@ const CategorySelect = ({ onCategoryChange }) => {
       </select>
     </div>
   );
-}
+};
 
 const TitleInput = ({ title, onChange }) => {
   return (
@@ -128,7 +128,7 @@ const Post = ({ postId }) => {
       try {
         const response = await fetch(`/api/posts?postId=${postId}`);
         const result = await response.json();
-        console.log(result)
+        console.log(result);
         setPostData(result); // API에서 받아온 데이터로 상태 업데이트
       } catch (error) {
         console.error('데이터를 불러오는 중 에러 발생', error);

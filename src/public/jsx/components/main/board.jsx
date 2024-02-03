@@ -1,7 +1,7 @@
 import React, { useEffect, useState, useRef } from 'react';
 import Masonry from 'react-masonry-css';
-import '../css/board.css';
-import '../css/annual.css';
+import './board.css';
+import './annual.css';
 
 const Board = () => {
   const [board, setBoard] = useState([]);

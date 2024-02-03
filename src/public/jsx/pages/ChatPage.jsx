@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import Header from '../components/main/header.jsx';
 
 // CSS 불러오기
-import '../../css/Chat.css';
+import './ChatPage.css';
 
 function ChatPage() {
   const [userNickname, setUserNickname] = useState('');

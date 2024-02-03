@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import Header from '../components/main/header.jsx';
-import '../../css/threads.css';
+import './ThreadsPage.css';
 
 function ThreadsPage() {
   const [loginedUserId, setLoginedUserId] = useState(null);
