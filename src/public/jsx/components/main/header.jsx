@@ -85,6 +85,9 @@ const Header = () => {
               <li className="thread_btn" onClick={handleThreadsClick}>
                 스레드
               </li>
+              <li className="thread_btn" onClick={handleThreadsClick}>
+                스레드
+              </li>
               <li className="chat_btn" onClick={handleChatClick}>
                 채팅
               </li>
