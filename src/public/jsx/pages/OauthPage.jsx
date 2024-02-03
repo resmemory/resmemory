@@ -1,6 +1,8 @@
 import React, { useEffect } from 'react';
+import { useHistory } from 'react-router-dom';
 
 function OauthPage() {
+  const history = useHistory();
   const oauth = async () => {
     const urlParams = new URL(window.location.href).searchParams;
     const code = urlParams.get('code');
@@ -67,6 +69,7 @@ function OauthPage() {
         alert(
           '로그인을 환영합니다! 최초로 카카오 로그인을 진행할 경우 랜덤 닉네임이 부여됩니다! 닉네임은 로그인 이후 마이페이지에서 수정할 수 있습니다.',
         );
+        history.push('/');
       } else {
         alert(result.responseData.code);
       }
