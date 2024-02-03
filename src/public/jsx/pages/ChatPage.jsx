@@ -35,17 +35,17 @@ function ChatPage() {
 
         // 소켓 설정
         setSocket(newSocket);
+        newSocket.onopen = () => {
+          newSocket.addEventListener('message', async (event) => {
+            const data = event.data;
+            const dataParse = await JSON.parse(data);
+            const message = dataParse.message;
+            const senderNickname = dataParse.nickname;
 
-        newSocket.addEventListener('message', async (event) => {
-          const data = event.data;
-          const dataParse = await JSON.parse(data);
-          const message = dataParse.message;
-          const senderNickname = dataParse.nickname;
-
-          // 채팅 데이터를 화면에 추가
-          displayMessage(message, senderNickname);
-        });
-
+            // 채팅 데이터를 화면에 추가
+            displayMessage(message, senderNickname);
+          });
+        };
         newSocket.addEventListener('close', (event) => {
           console.log('WebSocket 연결이 닫혔습니다.');
           const nicknameMessage = {
