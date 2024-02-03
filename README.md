@@ -1,9 +1,10 @@
-![thumbnail.png](./src/public/assets/image/thumbnail.png)
+![thumbnail.png](./src/public/assets/image/thn_logo.png)
 
-# 응답하라 추억시대
+# G:Then
 
-누군가의 기억을 가치있게 생각하는 공간, “ 응답하라 추억시대 “ 입니다.
+그땐 그랬지, “ G:Then “ 입니다.
 
+- 배포 주소 : http://resmemory.store
 - 브로셔 : https://gleaming-harp-2af.notion.site/f6539553476e4602bce58d1cd8bceeda
 
 # 🎞️ TEAM
@@ -13,44 +14,40 @@
 - 팀원 소개
   | 역할 | 이름 | Blog |
   | ------------------- | ------ | -------------------------------- |
-  | 리더 | 이다영 | https://verdantjuly.tistory.com/ |
-  | 부리더 | 김주희 | https://velog.io/@kinjoo |
-  | 팀원 | 김민규 | https://minker.tistory.com/ |
-  | 팀원 | 김지혜 | https://velog.io/@gajigaji04 |
-- 기능 역할 분담
+  | 리더, BE, FE | 이다영 | https://verdantjuly.tistory.com/ |
+  | 부리더, BE | 김주희 | https://velog.io/@kinjoo |
+  | BE | 김민규 | https://minker.tistory.com/ |
+  | BE | 김지혜 | https://velog.io/@gajigaji04 |
+  | UI/UX | 송정현 | |
+  | FE | 장시훈 | |
+  | FE | 배찬용 | |
+  | FE | 이은찬 | |
+- 개발 팀 기능 역할 분담
   | 이름 | Backend | Frontend |
   | ------ | -------------------------- | -------------------------------- |
-  | 이다영 | Users 서비스, CI/CD, 테스트코드, 로그전략 | 로그인, 글 상세 마이페이지 |
-  | 김주희 | Posts 서비스, 로그전략 | 메인페이지, 연도별 게시판, 글 작성 페이지|
-  | 김민규 | Admin 서비스, Chat 서비스 | 관리자 페이지 |
-  | 김지혜 | Threads 서비스, 테스트코드 | 스레드 페이지 |
+  | 이다영 | Users 서비스, CI/CD, 테스트코드, 로그전략 | 채팅, 글 작성 페이지, 스레드 페이지, 카카오 로그인 |
+  | 김주희 | Posts 서비스, 로그전략 | |
+  | 김민규 | Admin 서비스, Chat 서비스 | |
+  | 김지혜 | Threads 서비스, 테스트코드 | 로그인 페이지 |
+  | 장시훈 | Threads 서비스, 테스트코드 | 마이페이지, 일반 로그인 |
+  | 배찬용 | Threads 서비스, 테스트코드 | 메인페이지 |
+  | 이은찬 | Threads 서비스, 테스트코드 | 관리자페이지 |
 
-- 팀 규칙
-  - 회의 : 평일 아침 9시 15분(to-do, Q&A), 오후 9시 15분 (merge, code review, TIL)
-  - Ground Rules
-    ```jsx
-    1. 마지막까지 `FULL POWER`로!!
-    2. 120분 이상 현자가 되면 이슈 공유, 모두가 함께 현자 되어서 해결하기
-    3. 나쁜 말 쓰면 `예쁜 말`로 공격하기
-    4. 30분까지의 화장실 및 리프레시 이슈는 `nearby`, 30분 이상 미안해요는 `슬랙`에 남기기
-    5. 하루 동안 못 보면 DM 폭탄, 리벤지가 없는 경우 중대장이 담임매니저님께 `미사일` 날리기
-    ```
 - 개발 일정
 
-  개발 기간 : 2023년 8월 16일 ~ 2023년 9월 15일
-
-  [최종 프로젝트 개발 일정](https://www.notion.so/d1ecaba5df66497ba1cec65b342b814c?pvs=21)
+  1차 개발 기간 : 2023년 8월 16일 ~ 2023년 9월 15일
+  2차 개발 기간 : 2023년 9월 16일 ~ 2024년 2월
 
 - 개발 과정
 
   [타임라인](https://docs.google.com/spreadsheets/d/1VS6DMNqZnL9hOqyVi8oYATI6MF64jqYQTbuQ6T2LZA0/edit?usp=sharing)
 
-  [최종 프로젝트 회의록](https://www.notion.so/292995ec82cf49a1927783fcb4f10747?pvs=21)
+  [프로젝트 회의록](https://www.notion.so/292995ec82cf49a1927783fcb4f10747?pvs=21)
 
 # 📽️ Project
 
 - 프로젝트 명
-  응답하라 추억시대
+  그땐(G:Then)
 - 프로젝트 목적과 기능
   추억 공유 게시판 커뮤니티
   게시글과 댓글을 통해 서로의 추억을 교환하며 채팅과 익명을 통해 새로운 추억을 쌓아나간다.
@@ -132,10 +129,10 @@
 
 # 💻 Tech Spec
 
-- Backend Language : Node.js (ver 18.17.0)
+- Backend Language : Node.js (ver 18.19.0)
 - Frontend Language : Html5, Javascript
 - Server : Amazon EC2
-- DB : mysql(ver.8.0.33), MongoDB
+- DB : mysql(ver.8.0.35), MongoDB
 - Cache : Redis(ver.6.2.6)
 - CI/CD : Github Actions, Code Deploy
 - WebSocket, Nodemailer, S3
@@ -144,27 +141,39 @@
 
 ```
 resmemory
+├─ .github
+│  └─ workflows
+│     ├─ build.yml
+│     ├─ deploy.yml
+│     └─ test.yml
+├─ .gitignore
 ├─ .prettierrc
 ├─ README.md
+├─ __tests__
+│  └─ integeration
+│     ├─ mock.posts.module.js
+│     ├─ mock.threads.module.js
+│     ├─ mock.users.module.js
+│     ├─ posts.integration.spec.js
+│     ├─ threads.integration.spec.js
+│     └─ users.integration.spec.js
 ├─ appspec.yml
+├─ nodemon.json
 ├─ package-lock.json
 ├─ package.json
 ├─ scripts
 │  └─ after-deploy.sh
 ├─ sql
-│  └─ database.sql
+│  ├─ database.sql
+│  └─ dummydata.sql
 └─ src
-   ├─ __tests__
-   │  └─ integeration
-   │     ├─ posts.integration.spec.js
-   │     ├─ threads.integration.spec.js
-   │     └─ users.integration.spec.js
    ├─ app.js
    ├─ authmiddleware.js
    ├─ classes
    │  ├─ client.js
    │  └─ server.js
    ├─ frontconnection.js
+   ├─ logger.js
    ├─ loginResponse.js
    ├─ mail.js
    ├─ modules
@@ -179,6 +188,7 @@ resmemory
    │  │  ├─ chat.module.js
    │  │  ├─ chat.server.js
    │  │  └─ db
+   │  │     ├─ counter.collection.js
    │  │     └─ mongoose.js
    │  ├─ distributor.js
    │  ├─ posts
@@ -206,48 +216,71 @@ resmemory
    │     ├─ users.module.js
    │     └─ users.service.js
    ├─ public
-   │  ├─ admin.html
-   │  ├─ annual.html
    │  ├─ assets
    │  │  └─ image
    │  │     ├─ Untitled.png
+   │  │     ├─ architecture1.png
    │  │     ├─ architecture2.png
    │  │     ├─ erd.png
    │  │     ├─ kakao_login_large_narrow.png
-   │  │     ├─ logo.png
+   │  │     ├─ thn_logo.png
    │  │     └─ thumbnail.png
-   │  ├─ chat.html
-   │  ├─ css
-   │  │  ├─ admin.css
-   │  │  ├─ chat.css
-   │  │  ├─ detail.css
-   │  │  ├─ login.css
-   │  │  ├─ post.css
-   │  │  ├─ postlist.css
-   │  │  ├─ profile.css
-   │  │  ├─ reset.css
-   │  │  └─ threads.css
-   │  ├─ detail.html
    │  ├─ index.html
    │  ├─ js
-   │  │  ├─ admin.js
-   │  │  ├─ annual.js
-   │  │  ├─ chat.js
-   │  │  ├─ code.js
-   │  │  ├─ detail.js
-   │  │  ├─ index.js
-   │  │  ├─ kakao.js
-   │  │  ├─ login.js
-   │  │  ├─ oauth.js
-   │  │  ├─ post.js
-   │  │  ├─ profile.js
-   │  │  └─ threads.js
-   │  ├─ login.html
-   │  ├─ notfound.html
-   │  ├─ oauth.html
-   │  ├─ post.html
-   │  ├─ profile.html
-   │  └─ threads.html
+   │  │  └─ code.js
+   │  ├─ jsx
+   │  │  ├─ components
+   │  │  │  ├─ admin
+   │  │  │  │  ├─ DeleteButton.jsx
+   │  │  │  │  ├─ FilterReport.jsx
+   │  │  │  │  ├─ GetReport.jsx
+   │  │  │  │  ├─ ReportContainer.jsx
+   │  │  │  │  └─ ShowContent.jsx
+   │  │  │  ├─ login
+   │  │  │  │  ├─ General_Login.jsx
+   │  │  │  │  ├─ Kakao_Login.jsx
+   │  │  │  │  ├─ LoginMain.jsx
+   │  │  │  │  ├─ LoginPage.css
+   │  │  │  │  └─ button
+   │  │  │  │     └─ loginButton.jsx
+   │  │  │  ├─ main
+   │  │  │  │  ├─ annual.css
+   │  │  │  │  ├─ board.css
+   │  │  │  │  ├─ board.jsx
+   │  │  │  │  ├─ header.css
+   │  │  │  │  └─ header.jsx
+   │  │  │  ├─ mypage
+   │  │  │  │  ├─ NoPost.jsx
+   │  │  │  │  ├─ cardsection.css
+   │  │  │  │  ├─ cardsection.jsx
+   │  │  │  │  ├─ loginform.jsx
+   │  │  │  │  ├─ myinfo.css
+   │  │  │  │  └─ myinfo.jsx
+   │  │  │  ├─ post
+   │  │  │  │  ├─ post.css
+   │  │  │  │  └─ post.jsx
+   │  │  │  └─ sign
+   │  │  │     ├─ hello.css
+   │  │  │     └─ hello.jsx
+   │  │  ├─ index.jsx
+   │  │  └─ pages
+   │  │     ├─ AdminPage.jsx
+   │  │     ├─ App.jsx
+   │  │     ├─ ChatPage.css
+   │  │     ├─ ChatPage.jsx
+   │  │     ├─ HelloPage.jsx
+   │  │     ├─ HomePage.jsx
+   │  │     ├─ Login.jsx
+   │  │     ├─ LoginPage.jsx
+   │  │     ├─ MyPage.css
+   │  │     ├─ MyPage.jsx
+   │  │     ├─ OauthPage.jsx
+   │  │     ├─ PostPage.css
+   │  │     ├─ PostPage.jsx
+   │  │     ├─ ThreadsPage.css
+   │  │     ├─ ThreadsPage.jsx
+   │  │     └─ WritePostPage.jsx
+   │  └─ notfound.html
    ├─ redis.js
    └─ utils
       └─ makePacket.js
