@@ -122,5 +122,4 @@ jobs:
           echo "MOCK_THREADS_PORT=$MOCK_THREADS_PORT" >> .env
           echo "MOCK_USERS_PORT=$MOCK_USERS_PORT" >> .env
           npm ci
-          npm run test:posts
-          npm run test:users
+          npm run test

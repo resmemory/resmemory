@@ -88,7 +88,3 @@ jobs:
       - name: ✨ 빌드 과정을 시작
         working-directory: ./
         run: npm run build
-
-      - name: ✨ 웹팩
-        working-directory: ./
-        run: npx webpack

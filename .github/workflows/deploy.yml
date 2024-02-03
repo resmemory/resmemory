@@ -68,12 +68,14 @@ jobs:
           ES_ADDON_URI: ${{secrets.ES_ADDON_URI}}
           ES_ADDON_USER: ${{secrets.ES_ADDON_USER}}
           LOG_SOURCE: ${{secrets.LOG_SOURCE}}
-
           KAKAO_JS_KEY: ${{secrets.KAKAO_JS_KEY}}
           KAKAO_CLIENT_ID: ${{secrets.KAKAO_CLIENT_ID}}
           KAKAO_CLIENT_SECRET: ${{secrets.KAKAO_CLIENT_SECRET}}
           KAKAO_GRANT_TYPE: ${{secrets.KAKAO_GRANT_TYPE}}
           KAKAO_REDIRECT_URI: ${{secrets.KAKAO_REDIRECT_URI}}
+          MOCK_POSTS_PORT: ${{secrets.MOCK_POSTS_PORT}}
+          MOCK_THREADS_PORT: ${{secrets.MOCK_THREADS_PORT}}
+          MOCK_USERS_PORT: ${{secrets.MOCK_USERS_PORT}}
 
         run: |
           pwd
@@ -122,6 +124,9 @@ jobs:
           echo "KAKAO_CLIENT_SECRET=$KAKAO_CLIENT_SECRET" >> .env
           echo "KAKAO_GRANT_TYPE=$KAKAO_GRANT_TYPE" >> .env
           echo "KAKAO_REDIRECT_URI=$KAKAO_REDIRECT_URI" >> .env
+          echo "MOCK_POSTS_PORT=$MOCK_POSTS_PORT" >> .env
+          echo "MOCK_THREADS_PORT=$MOCK_THREADS_PORT" >> .env
+          echo "MOCK_USERS_PORT=$MOCK_USERS_PORT" >> .env
           cat .env
 
       - name: ✨ 패키지 설치
@@ -132,12 +137,8 @@ jobs:
         working-directory: ./
         run: npm run build
 
-      - name: ✨ 웹팩
-        working-directory: ./
-        run: npx webpack
-
       - name: 📦 빌드한 코드를 압축
-        run: zip -r verdantjuly.zip ./dist ./scripts ./appspec.yml ./.env ./package.json
+        run: zip -r gthen.zip ./dist ./scripts ./appspec.yml ./.env ./package.json
 
       - name: 🌎 AWS에 접속
         uses: aws-actions/configure-aws-credentials@v1
@@ -147,12 +148,12 @@ jobs:
           aws-region: ap-northeast-2
 
       - name: 🦖 S3에 압축된 서버 코드를 업로드
-        run: aws s3 cp --region ap-northeast-2 ./verdantjuly.zip s3://verdantjuly
+        run: aws s3 cp --region ap-northeast-2 ./gthen.zip s3://gthen-deploy-bucket
 
       - name: 🚀 AWS codeDeploy로 배포를 시작
         run: aws deploy create-deployment
           --ignore-application-stop-failures
-          --application-name verdantjuly
+          --application-name gthen-codedeploy
           --deployment-config-name CodeDeployDefault.OneAtATime
           --deployment-group-name dev
-          --s3-location bucket=verdantjuly,bundleType=zip,key=verdantjuly.zip
+          --s3-location bucket=gthen-deploy-bucket,bundleType=zip,key=gthen.zip
