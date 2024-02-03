@@ -1,0 +1,78 @@
+.boardmain {
+  padding: 0px, 42px, 80px, 42px;
+  gap: 24px;
+  margin-left: 25px;
+  margin-right: 25px;
+}
+
+.my-masonry-grid {
+  display: flex;
+  width: auto;
+}
+
+.my-masonry-grid_column {
+  background-clip: padding-box;
+  padding: 16px;
+  flex-grow: 1;
+}
+
+.post {
+  width: 12rem;
+  border: 1px solid #ccc;
+  cursor: pointer;
+  margin-bottom: 16px;
+  background-color: #ffffff;
+  box-shadow: 0 5px 5px rgba(185, 185, 189, 0.62);
+  border: none;
+  padding: 16px;
+}
+
+.post p {
+  margin: 0;
+}
+
+.postbox {
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  height: 81px;
+}
+
+.post-title {
+  margin-top: 0.3cm !important;
+  font-family: Poppins;
+  font-size: 17px !important;
+  font-weight: 600;
+  line-height: 24px;
+  letter-spacing: 0em;
+  text-align: left;
+}
+
+#post-category {
+  font-size: 15px !important;
+}
+
+.post-nickname {
+  margin-top: 0.2cm !important;
+  font-family: Poppins;
+  font-size: 12px;
+  font-weight: 400;
+  line-height: 18px;
+  letter-spacing: 0em;
+  text-align: left;
+  color: #979797;
+}
+
+.post span {
+  font-family: Poppins;
+  font-size: 10px;
+  font-weight: 400;
+  line-height: 15px;
+  letter-spacing: 0em;
+  color: #c2c2c2;
+  width: 47px;
+  height: 15px;
+  position: absolute;
+  right: 0;
+  bottom: -13px;
+}

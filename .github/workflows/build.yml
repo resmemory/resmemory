@@ -10,7 +10,7 @@ jobs:
 
     strategy:
       matrix:
-        node-version: [18.17.0]
+        node-version: [18.19.0]
         # See supported Node.js release schedule at https://nodejs.org/en/about/releases/
 
     steps:
@@ -66,6 +66,16 @@ jobs:
           echo ES_ADDON_URI=${{ secrets.ES_ADDON_URI }} >> .env
           echo ES_ADDON_USER=${{ secrets.ES_ADDON_USER }} >> .env
           echo LOG_SOURCE=${{ secrets.LOG_SOURCE }} >> .env
+          echo KAKAO_JS_KEY=${{ secrets.KAKAO_JS_KEY }} >> .env
+          echo KAKAO_CLIENT_ID=${{ secrets.KAKAO_CLIENT_ID }} >> .env
+          echo KAKAO_CLIENT_SECRET=${{ secrets.KAKAO_CLIENT_SECRET }} >> .env
+          echo KAKAO_GRANT_TYPE=${{ secrets.KAKAO_GRANT_TYPE }} >> .env
+          echo KAKAO_REDIRECT_URI=${{ secrets.KAKAO_REDIRECT_URI }} >> .env
+          echo MOCK_POSTS_PORT=${{ secrets.MOCK_POSTS_PORT }} >> .env
+          echo MOCK_THREADS_PORT=${{ secrets.MOCK_THREADS_PORT }} >> .env
+          echo MOCK_USERS_PORT=${{ secrets.MOCK_USERS_PORT }} >> .env
+
+
 
 
 
@@ -78,7 +88,3 @@ jobs:
       - name: ✨ 빌드 과정을 시작
         working-directory: ./
         run: npm run build
-
-      - name: ✨ 웹팩
-        working-directory: ./
-        run: npx webpack

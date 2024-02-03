@@ -10,7 +10,7 @@ jobs:
 
     strategy:
       matrix:
-        node-version: [18.17.0]
+        node-version: [18.19.0]
         # See supported Node.js release schedule at https://nodejs.org/en/about/releases/
 
     steps:
@@ -68,6 +68,15 @@ jobs:
           ES_ADDON_URI: ${{secrets.ES_ADDON_URI}}
           ES_ADDON_USER: ${{secrets.ES_ADDON_USER}}
           LOG_SOURCE: ${{secrets.LOG_SOURCE}}
+          KAKAO_JS_KEY: ${{secrets.KAKAO_JS_KEY}}
+          KAKAO_CLIENT_ID: ${{secrets.KAKAO_CLIENT_ID}}
+          KAKAO_CLIENT_SECRET: ${{secrets.KAKAO_CLIENT_SECRET}}
+          KAKAO_GRANT_TYPE: ${{secrets.KAKAO_GRANT_TYPE}}
+          KAKAO_REDIRECT_URI: ${{secrets.KAKAO_REDIRECT_URI}}
+          MOCK_POSTS_PORT: ${{secrets.MOCK_POSTS_PORT}}
+          MOCK_THREADS_PORT: ${{secrets.MOCK_THREADS_PORT}}
+          MOCK_USERS_PORT: ${{secrets.MOCK_USERS_PORT}}
+
         run: |
           pwd
           touch .env
@@ -110,22 +119,15 @@ jobs:
           echo "ES_ADDON_URI=$ES_ADDON_URI" >> .env
           echo "ES_ADDON_USER=$ES_ADDON_USER" >> .env
           echo "LOG_SOURCE=$LOG_SOURCE" >> .env
+          echo "KAKAO_JS_KEY=$KAKAO_JS_KEY" >> .env
+          echo "KAKAO_CLIENT_ID=$KAKAO_CLIENT_ID" >> .env
+          echo "KAKAO_CLIENT_SECRET=$KAKAO_CLIENT_SECRET" >> .env
+          echo "KAKAO_GRANT_TYPE=$KAKAO_GRANT_TYPE" >> .env
+          echo "KAKAO_REDIRECT_URI=$KAKAO_REDIRECT_URI" >> .env
+          echo "MOCK_POSTS_PORT=$MOCK_POSTS_PORT" >> .env
+          echo "MOCK_THREADS_PORT=$MOCK_THREADS_PORT" >> .env
+          echo "MOCK_USERS_PORT=$MOCK_USERS_PORT" >> .env
           cat .env
-
-          cd ./src/public/js
-          touch config.js
-          echo "const urlParams = new URL(location.href).searchParams;" >> config.js
-          echo "const kCode = urlParams.get('code');" >> config.js
-          echo "const config = {" >> config.js
-          echo "client_id: '$client_id' ," >> config.js
-          echo "client_secret: '$client_secret' , " >> config.js
-          echo "grant_type: 'authorization_code' ," >> config.js
-          echo "redirect_uri: '$redirect_uri' ," >> config.js
-          echo "code: kCode," >> config.js
-          echo "};" >> config.js
-          echo "const kakaoJSkey = '$kakaoJSkey' ;" >> config.js
-
-          cat config.js
 
       - name: ✨ 패키지 설치
         working-directory: ./
@@ -135,12 +137,8 @@ jobs:
         working-directory: ./
         run: npm run build
 
-      - name: ✨ 웹팩
-        working-directory: ./
-        run: npx webpack
-
       - name: 📦 빌드한 코드를 압축
-        run: zip -r verdantjuly.zip ./dist ./scripts ./appspec.yml ./.env ./package.json
+        run: zip -r gthen.zip ./dist ./scripts ./appspec.yml ./.env ./package.json
 
       - name: 🌎 AWS에 접속
         uses: aws-actions/configure-aws-credentials@v1
@@ -150,12 +148,12 @@ jobs:
           aws-region: ap-northeast-2
 
       - name: 🦖 S3에 압축된 서버 코드를 업로드
-        run: aws s3 cp --region ap-northeast-2 ./verdantjuly.zip s3://verdantjuly
+        run: aws s3 cp --region ap-northeast-2 ./gthen.zip s3://gthen-deploy-bucket
 
       - name: 🚀 AWS codeDeploy로 배포를 시작
         run: aws deploy create-deployment
           --ignore-application-stop-failures
-          --application-name verdantjuly
+          --application-name gthen-codedeploy
           --deployment-config-name CodeDeployDefault.OneAtATime
           --deployment-group-name dev
-          --s3-location bucket=verdantjuly,bundleType=zip,key=verdantjuly.zip
+          --s3-location bucket=gthen-deploy-bucket,bundleType=zip,key=gthen.zip

@@ -87,7 +87,7 @@ function GetReport(props) {
                 <div key={item.reportId} style={style.div}>
                   <div>
                     <div style={style.flexItem}>
-                      <div style={{ width: '88%' }}>
+                      <div style={{ width: '84.5%' }}>
                         <div
                           className="ItemDiv"
                           style={{
@@ -99,13 +99,13 @@ function GetReport(props) {
                         >
                           <p style={{ margin: '3px' }}>신고자 : {item.userId}</p>
                           <p style={{ margin: '3px' }}>유형 : {item.reportType}</p>
-                          <p style={{ margin: '3px' }}>contentId : {item.contentId}</p>
+                          <p style={{ margin: '3px' }}>게시물 고유번호 : {item.contentId}</p>
                         </div>
-                        <p style={{ marginTop: '3px', marginBottom: '15px' }}>
+                        <p style={{ marginTop: '3px', marginBottom: '15px', marginLeft: '2.5px' }}>
                           신고내용 : {item.content}
                         </p>
                       </div>
-                      <div style={{ width: '12%' }}>
+                      <div style={{ width: '15.5%' }}>
                         <div style={{ marginTop: '10px' }}>
                           <DeleteButton data={item} />
                         </div>
@@ -126,6 +126,7 @@ function GetReport(props) {
         <div>
           <div>로그인이 필요합니다.</div>
           {alert('세션이 만료되어 로그인페이지로 이동합니다.')}
+          {(window.location.href = '/login')}
         </div>
       )}
     </div>

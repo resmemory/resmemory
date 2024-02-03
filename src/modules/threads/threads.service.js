@@ -5,17 +5,16 @@ const onRequest = async (res, method, pathname, params, key, cb) => {
   let responseData = {};
 
   switch (method) {
-    // 스레드 조회 함수
+    // 스레드 조회
     case 'GET':
-      // 스레드 개별조회 함수
-      if (pathname === '/threads' && params.query) {
+      // 스레드 개별조회
+      if (pathname === '/threads' && params.query.threadId) {
         try {
           const { threadId } = params.query;
           const findThreadData = await Threads.findByPk(threadId, {});
 
           if (findThreadData) {
             responseData = { result: findThreadData };
-            console.log('여기가 첫번째');
           } else {
             responseData = { code: 711 };
           }
@@ -23,7 +22,8 @@ const onRequest = async (res, method, pathname, params, key, cb) => {
           responseData = { code: 713 };
           logger.error(`스레드 에러 발생:${error}`);
         }
-      } else if (pathname === '/threads' && !params.query) {
+        // 스레드 전체 조회
+      } else if (pathname === '/threads' && !params.query.threadId) {
         try {
           const today = new Date();
           let yesterday = Date.now(today) - 86400000;
@@ -35,7 +35,6 @@ const onRequest = async (res, method, pathname, params, key, cb) => {
           });
           if (result) {
             responseData = { result };
-            console.log('여기가 두번째');
           } else {
             responseData = { code: 711 };
           }
@@ -54,7 +53,7 @@ const onRequest = async (res, method, pathname, params, key, cb) => {
         },
         responseData,
       );
-    // 스레드 생성 함수
+    // 스레드 생성
     case 'POST':
       if (pathname === '/threads') {
         try {
@@ -84,7 +83,7 @@ const onRequest = async (res, method, pathname, params, key, cb) => {
         );
       }
 
-    // 스레드 삭제 함수
+    // 스레드 삭제
     case 'DELETE':
       if (pathname == '/threads' && params.params !== 'admin') {
         try {
@@ -95,7 +94,7 @@ const onRequest = async (res, method, pathname, params, key, cb) => {
             responseData = { code: 0 };
           } else if (!threadData) {
             responseData = { code: 735 };
-          } else if (userId == threadData.userId) {
+          } else if (userId == threadData.userId || userId == '1') {
             if (threadId) {
               const result = await Threads.destroy({ where: { threadId } });
               if (result) {
@@ -126,7 +125,7 @@ const onRequest = async (res, method, pathname, params, key, cb) => {
         );
       }
 
-      // 스레드 완전 삭제 함수
+      // 스레드 완전 삭제
       if (pathname == '/threads' && params.params == 'admin') {
         try {
           if (!params.userId) {

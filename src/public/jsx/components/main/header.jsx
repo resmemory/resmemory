@@ -61,6 +61,12 @@ const Header = () => {
     navigate('/mypage');
   };
 
+  const handleThreadsClick = () => {
+    navigate('/threads');
+  };
+  const handleChatClick = () => {
+    navigate('/chat');
+  };
   const handleLoginClick = () => {
     navigate('/login');
   };
@@ -76,8 +82,12 @@ const Header = () => {
         <ul className="Header_ul">
           {isLoggedIn && (
             <>
-              <li className="thread_btn">스레드</li>
-              <li className="chat_btn">채팅</li>
+              <li className="thread_btn" onClick={handleThreadsClick}>
+                스레드
+              </li>
+              <li className="chat_btn" onClick={handleChatClick}>
+                채팅
+              </li>
               <li className="mypage" onClick={handleMyPageClick}>
                 마이페이지
               </li>

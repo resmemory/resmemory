@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useLocation } from 'react-router-dom';
 import Header from '../components/main/header.jsx';
 
-import '../../css/detail.css';
+import './PostPage.css';
 
 const PostPage = () => {
   const location = useLocation();

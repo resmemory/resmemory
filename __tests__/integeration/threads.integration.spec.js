@@ -55,7 +55,7 @@ describe('GET /api/threads', () => {
           result = data;
           resolve();
         },
-        null,
+        {},
         null,
         { result },
         1,
