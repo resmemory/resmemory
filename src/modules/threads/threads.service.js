@@ -5,9 +5,9 @@ const onRequest = async (res, method, pathname, params, key, cb) => {
   let responseData = {};
 
   switch (method) {
-    // 스레드 조회 함수
+    // 스레드 조회
     case 'GET':
-      // 스레드 개별조회 함수
+      // 스레드 개별조회
       if (pathname === '/threads' && params.query.threadId) {
         try {
           const { threadId } = params.query;
@@ -22,6 +22,7 @@ const onRequest = async (res, method, pathname, params, key, cb) => {
           responseData = { code: 713 };
           logger.error(`스레드 에러 발생:${error}`);
         }
+        // 스레드 전체 조회
       } else if (pathname === '/threads' && !params.query.threadId) {
         try {
           const today = new Date();
@@ -52,7 +53,7 @@ const onRequest = async (res, method, pathname, params, key, cb) => {
         },
         responseData,
       );
-    // 스레드 생성 함수
+    // 스레드 생성
     case 'POST':
       if (pathname === '/threads') {
         try {
@@ -82,7 +83,7 @@ const onRequest = async (res, method, pathname, params, key, cb) => {
         );
       }
 
-    // 스레드 삭제 함수
+    // 스레드 삭제
     case 'DELETE':
       if (pathname == '/threads' && params.params !== 'admin') {
         try {
@@ -124,7 +125,7 @@ const onRequest = async (res, method, pathname, params, key, cb) => {
         );
       }
 
-      // 스레드 완전 삭제 함수
+      // 스레드 완전 삭제
       if (pathname == '/threads' && params.params == 'admin') {
         try {
           if (!params.userId) {

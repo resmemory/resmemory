@@ -29,10 +29,6 @@ Posts.init(
       type: DataTypes.STRING,
       defaultValue: false,
     },
-    notice: {
-      type: DataTypes.BOOLEAN,
-      defaultValue: null,
-    },
     viewCount: {
       type: DataTypes.BIGINT,
       defaultValue: 0,
@@ -40,7 +36,7 @@ Posts.init(
     category: {
       type: DataTypes.ENUM,
       allowNull: false,
-      values: ['1970', '1980', '1990', '2000', '2010', '2020'],
+      values: ['1970', '1980', '1990', '2000', '2010', '2020', 'notice'],
     },
   },
   {

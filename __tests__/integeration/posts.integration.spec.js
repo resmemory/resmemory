@@ -46,7 +46,7 @@ describe('POST /api/posts', () => {
 });
 
 describe('GET /api/posts', () => {
-  test('게시글 조회', async () => {
+  test('게시글 전체 조회', async () => {
     let result;
     await new Promise((resolve, reject) => {
       mockPostModule.dataconnection(
@@ -56,7 +56,7 @@ describe('GET /api/posts', () => {
           result = data;
           resolve();
         },
-        { pageNum: 1 },
+        { pageNum: 1, sort: 'view' },
         {},
         {},
         {},
@@ -78,7 +78,6 @@ describe('GET /api/posts', () => {
           deletedAt: null,
           img: null,
           nickname: 'test',
-          notice: null,
           postId: 1,
           thumbnail: null,
           title: '테스트',

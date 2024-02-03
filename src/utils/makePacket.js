@@ -1,4 +1,4 @@
-export const makePacket = (uri, method, key, params, mock) => {
+export const makePacket = (uri, method, key, params) => {
   return {
     uri,
     method,

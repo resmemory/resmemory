@@ -27,7 +27,6 @@ jobs:
           GATE_PORT: ${{secrets.GATE_PORT}}
           DIS_PORT: ${{secrets.DIS_PORT}}
           USERS_PORT: ${{secrets.USERS_PORT}}
-          TEST_USERS_PORT: ${{secrets.TEST_USERS_PORT}}
           POSTS_PORT: ${{secrets.POSTS_PORT}}
           THREADS_PORT: ${{secrets.THREADS_PORT}}
           ADMIN_PORT: ${{ secrets.ADMIN_PORT }}
@@ -67,11 +66,18 @@ jobs:
           ES_ADDON_URI: ${{secrets.ES_ADDON_URI}}
           ES_ADDON_USER: ${{secrets.ES_ADDON_USER}}
           LOG_SOURCE: ${{secrets.LOG_SOURCE}}
+          KAKAO_JS_KEY: ${{secrets.KAKAO_JS_KEY}}
+          KAKAO_CLIENT_ID: ${{secrets.KAKAO_CLIENT_ID}}
+          KAKAO_CLIENT_SECRET: ${{secrets.KAKAO_CLIENT_SECRET}}
+          KAKAO_GRANT_TYPE: ${{secrets.KAKAO_GRANT_TYPE}}
+          KAKAO_REDIRECT_URI: ${{secrets.KAKAO_REDIRECT_URI}}
+          MOCK_POSTS_PORT: ${{secrets.MOCK_POSTS_PORT}}
+          MOCK_THREADS_PORT: ${{secrets.MOCK_THREADS_PORT}}
+          MOCK_USERS_PORT: ${{secrets.MOCK_USERS_PORT}}
 
       - run: echo "HOST=$HOST" >>   .env.testpost
           echo "GATE_PORT=$GATE_PORT" >>   .env.testpost
           echo "DIS_PORT=$DIS_PORT" >>   .env.testpost
-          echo "USERS_PORT=$TEST_USERS_PORT" >>   .env.testpost
           echo "POSTS_PORT=$POSTS_PORT" >>   .env.testpost
           echo "ADMIN_PORT=$ADMIN_PORT" >>   .env.testpost
           echo "THREADS_PORT=$THREADS_PORT" >>   .env.testpost
@@ -107,6 +113,14 @@ jobs:
           echo "ES_ADDON_URI=$ES_ADDON_URI" >> .env
           echo "ES_ADDON_USER=$ES_ADDON_USER" >> .env
           echo "LOG_SOURCE=$LOG_SOURCE" >> .env
+          echo "KAKAO_JS_KEY=$KAKAO_JS_KEY" >> .env
+          echo "KAKAO_CLIENT_ID=$KAKAO_CLIENT_ID" >> .env
+          echo "KAKAO_CLIENT_SECRET=$KAKAO_CLIENT_SECRET" >> .env
+          echo "KAKAO_GRANT_TYPE=$KAKAO_GRANT_TYPE" >> .env
+          echo "KAKAO_REDIRECT_URI=$KAKAO_REDIRECT_URI" >> .env
+          echo "MOCK_POSTS_PORT=$MOCK_POSTS_PORT" >> .env
+          echo "MOCK_THREADS_PORT=$MOCK_THREADS_PORT" >> .env
+          echo "MOCK_USERS_PORT=$MOCK_USERS_PORT" >> .env
           npm ci
           npm run test:posts
           npm run test:users
