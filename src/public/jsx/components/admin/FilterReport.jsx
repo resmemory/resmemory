@@ -4,6 +4,7 @@ const style = {
   FilterButton: {
     display: 'flex',
     flexDirection: 'row',
+    marginTop: '20px',
     marginBottom: '20px',
   },
   botton: {
@@ -18,27 +19,27 @@ const style = {
 
 function FilterReport(props) {
   const [AllColor, setAllButtonColor] = useState('gray');
-  const [incompleteColor, setIncompleteButtonColor] = useState('black');
-  const [completeColor, setCompleteButtonColor] = useState('black');
+  const [incompleteColor, setIncompleteButtonColor] = useState('#ccc');
+  const [completeColor, setCompleteButtonColor] = useState('#ccc');
 
   const handleFilterAll = () => {
     props.onFilterChange('all');
     setAllButtonColor('gray');
-    setIncompleteButtonColor('black');
-    setCompleteButtonColor('black');
+    setIncompleteButtonColor('#ccc');
+    setCompleteButtonColor('#ccc');
   };
 
   const handleFilterIncomplete = () => {
     props.onFilterChange('incomplete');
     setIncompleteButtonColor('gray');
-    setAllButtonColor('black');
-    setCompleteButtonColor('black');
+    setAllButtonColor('#ccc');
+    setCompleteButtonColor('#ccc');
   };
   const handleFiltercomplete = () => {
     props.onFilterChange('complete');
-    setCompleteButtonColor('#87CEFA');
-    setAllButtonColor('black');
-    setIncompleteButtonColor('black');
+    setCompleteButtonColor('gray');
+    setAllButtonColor('#ccc');
+    setIncompleteButtonColor('#ccc');
   };
 
   return (

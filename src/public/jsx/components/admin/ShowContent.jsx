@@ -9,13 +9,13 @@ function ShowContent(props) {
 
   const styles = {
     div: {
-      border: '1px solid black',
+      border: 'none',
     },
     DetailDiv: {
+      backgroundColor: 'aliceblue',
+      borderRadius: '12px',
       width: '850px',
       minHeight: '10px',
-      backgroundColor: '#FFFFFF',
-      borderRadius: '12px',
       padding: '10px 10px 10px 10px',
       marginBottom: '10px',
     },

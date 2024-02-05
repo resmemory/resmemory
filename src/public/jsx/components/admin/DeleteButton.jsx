@@ -23,13 +23,13 @@ function DeleteButton(props) {
 
   useEffect(() => {
     if (isReport === 'true') {
-      setButtonColor('blue');
+      setButtonColor('skyblue');
       setButton('삭제 완료');
     } else if (isReport === '2') {
-      setButtonColor('gray');
+      setButtonColor('deepskyblue');
       setButton('삭제 완료');
     } else if (isReport === 'false') {
-      setButtonColor('black');
+      setButtonColor('blue');
       setButton('삭제 하기');
     }
   }, [isReport]);
@@ -37,7 +37,7 @@ function DeleteButton(props) {
   const handleDelete = async () => {
     if (isReport === 'false') {
       try {
-        setButtonColor('blue');
+        setButtonColor('skyblue');
         setButton('삭제 완료');
         await deleteContent(props.data.reportId, props.data.contentId, props.data.reportType);
       } catch (error) {
@@ -46,7 +46,7 @@ function DeleteButton(props) {
     }
 
     if (isReport === 'true' || isReport === '2') {
-      setButtonColor('blue');
+      setButtonColor('skyblue');
       await deleteContent(props.data.reportId, props.data.contentId, props.data.reportType);
     }
   };
