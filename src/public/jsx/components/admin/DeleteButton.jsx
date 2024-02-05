@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+
 const adminId = sessionStorage.getItem('Authorization');
 
 const style = {
@@ -14,6 +15,7 @@ const style = {
     cursor: 'pointer',
   },
 };
+
 function DeleteButton(props) {
   const isReport = props.data.isReport;
   const [buttonColor, setButtonColor] = useState('');
@@ -35,13 +37,16 @@ function DeleteButton(props) {
   const handleDelete = async () => {
     if (isReport === 'false') {
       try {
-        await deleteContent(props.data.reportId, props.data.contentId, props.data.reportType);
         setButtonColor('blue');
+        setButton('삭제 완료');
+        await deleteContent(props.data.reportId, props.data.contentId, props.data.reportType);
       } catch (error) {
         console.log(error);
       }
     }
+
     if (isReport === 'true' || isReport === '2') {
+      setButtonColor('blue');
       await deleteContent(props.data.reportId, props.data.contentId, props.data.reportType);
     }
   };
@@ -55,6 +60,7 @@ function DeleteButton(props) {
       },
       body: JSON.stringify({ reportId, contentId }),
     });
+
     const result = await response.json();
     alert(code[result.responseData.code]);
   }
