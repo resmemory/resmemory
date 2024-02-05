@@ -28,6 +28,10 @@ function ChatPage() {
       } else {
         const nickname = result.responseData.bodies.nickname;
 
+        if (!nickname) {
+          window.location.href = './login';
+        }
+
         // 닉네임 설정
         setUserNickname(nickname);
 

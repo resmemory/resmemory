@@ -4,7 +4,9 @@ import '../login/LoginPage.css';
 const LoginMain = () => {
   return (
     <div className="containerStyle">
-      <img src="../../../assets/image/thn_logo.png" alt="Logo" className="logoStyle" />
+      <a href="./">
+        <img src="../../../assets/image/thn_logo.png" alt="Logo" className="logoStyle" />
+      </a>
       <div className="textContainerStyle">
         <h2>로그인하기</h2>
         <p>추억 쌓기, 같이 하실래요?</p>
