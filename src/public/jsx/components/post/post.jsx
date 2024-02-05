@@ -183,8 +183,8 @@ const Post = ({ postId }) => {
 
   const handleWritePost = async () => {
     try {
-      if (postData.category === undefined) {
-      alert('카테고리를 선택해주세요')
+      if (postData.category === undefined || postData.title === undefined || postData.content === undefined) {
+      alert('카테고리, 제목, 내용을 전부 작성해주세요')
       return;
       }
       const form = new FormData();
