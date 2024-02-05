@@ -312,7 +312,6 @@ const onRequest = async (res, method, pathname, params, key, cb, mock) => {
         try {
           const { commentId } = params.query;
           const commentData = await Comments.findByPk(commentId);
-          console.log('이거 됨?', console.log(params.query));
 
           if (commentData) {
             responseData = commentData;
