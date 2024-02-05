@@ -1,5 +1,5 @@
 .boardmain {
-  padding: 0px, 42px, 80px, 42px;
+  padding: 0 42px 80px 42px;
   gap: 24px;
   margin-left: 25px;
   margin-right: 25px;
@@ -7,7 +7,6 @@
 
 .my-masonry-grid {
   display: flex;
-  width: auto;
 }
 
 .my-masonry-grid_column {
@@ -17,7 +16,6 @@
 }
 
 .post {
-  width: 12rem;
   border: 1px solid #ccc;
   cursor: pointer;
   margin-bottom: 16px;
@@ -63,7 +61,7 @@
   color: #979797;
 }
 
-.post span {
+.mypost span {
   font-family: Poppins;
   font-size: 10px;
   font-weight: 400;
