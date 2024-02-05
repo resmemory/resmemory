@@ -183,6 +183,10 @@ const Post = ({ postId }) => {
 
   const handleWritePost = async () => {
     try {
+      if (postData.category === undefined) {
+      alert('카테고리를 선택해주세요')
+      return;
+      }
       const form = new FormData();
       form.append('authorization', sessionStorage.getItem('Authorization'));
       form.append('category', postData.category);
@@ -227,7 +231,7 @@ const Post = ({ postId }) => {
   return (
     <div className="post-container">
       <CategorySelect onCategoryChange={handleCategoryChange} />
-      <TitleInput title={postData.title} onChange={handleTitleChange} />
+    <TitleInput title={postData.title} onChange={handleTitleChange} />
       <ImageUpload onImageChange={handleImageChange} onDeleteImage={handleDeleteImage} />
       <div className="content">
         <ContentInput content={postData.content} onChange={handleContentChange} />
