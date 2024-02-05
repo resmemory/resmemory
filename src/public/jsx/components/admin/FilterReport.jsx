@@ -36,7 +36,7 @@ function FilterReport(props) {
   };
   const handleFiltercomplete = () => {
     props.onFilterChange('complete');
-    setCompleteButtonColor('gray');
+    setCompleteButtonColor('#87CEFA');
     setAllButtonColor('black');
     setIncompleteButtonColor('black');
   };
