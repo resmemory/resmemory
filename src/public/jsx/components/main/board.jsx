@@ -17,13 +17,13 @@ const Board = () => {
   const itemsPerRow = 5;
   const [category, setCategory] = useState('전체');
   const [selectedCategory, setSelectedCategory] = useState('전체'); // 선택된 카테고리 상태 추가
-  const categories = ['전체', "2020's", "2010's", "2000's", "1990's", "1980's", "1970's"];
+  const categories = ['전체', 'notice', '2020', '2010', '2000', '1990', '1980', '1970'];
 
   const fetchData = async (page, category) => {
     try {
       setLoading(true);
 
-      category === '전체' ? (category = '') : (category = category.slice(0, 4));
+      category === '전체' ? (category = '') : (category = category);
 
       const response = await fetch(
         `./api/posts?category=${category}&pageNum=${page}&sort=${sort}`,
@@ -152,7 +152,7 @@ const Board = () => {
           <div key={post.id} className="post" onClick={() => handlePostClick(post.postId)}>
             {post.img && <img src={post.img} alt="Post Image" />}
             <div className="postbox">
-              <p id="post-category">{post.category}'s</p>
+              <p id="post-category">{post.category}</p>
               <p className="post-title">{post.title}</p>
               <p className="post-nickname">{post.nickname}</p>
               <br />
