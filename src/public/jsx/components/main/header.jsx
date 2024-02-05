@@ -56,6 +56,9 @@ const Header = () => {
       console.error('Logout error:', error);
     }
   };
+  const handleWritePostClick = () => {
+    navigate('/write');
+  };
 
   const handleMyPageClick = () => {
     navigate('/mypage');
@@ -75,15 +78,15 @@ const Header = () => {
     <section className="HeaderSection">
       <div className="Header_first">
         <div>
-          <a href="http://localhost:8000">
+          <a href="./">
             <img src="../../../assets/image/thn_logo.png" alt="thn_logo" />
           </a>
         </div>
         <ul className="Header_ul">
           {isLoggedIn && (
             <>
-              <li className="thread_btn" onClick={handleThreadsClick}>
-                스레드
+              <li className="writepost_btn" onClick={handleWritePostClick}>
+                글쓰기
               </li>
               <li className="thread_btn" onClick={handleThreadsClick}>
                 스레드

@@ -102,7 +102,9 @@ const Hello = () => {
   return (
     <div>
       <div className="containerStyle">
-        <img src="/images/thn_logo.png" alt="Logo" className="logoStyle2" />
+        <a href="./">
+          <img src="../../../assets/image/thn_logo.png" alt="Logo" className="logoStyle2" />
+        </a>
         <div className="textContainerStyle">
           <h2>회원 가입</h2>
           <p>추억 쌓기, 같이 해요!</p>
