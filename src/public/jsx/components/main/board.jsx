@@ -158,8 +158,9 @@ const Board = () => {
                 {post.title.length > 10 ? post.title.slice(0, 10) + '...' : post.title}
               </p>
               <p className="post-nickname">{post.nickname}</p>
-              <br />
-              <span>
+
+              <span className="post-viewcount">조회수 {post.viewCount}</span>
+              <span className="post-date">
                 {new Date(post.createdAt).toLocaleDateString('ko-KR', { timeZone: 'Asia/Seoul' })}
               </span>
             </div>

@@ -7,16 +7,17 @@
 
 .my-masonry-grid {
   display: flex;
+  width: fit-content;
 }
 
 .my-masonry-grid_column {
   background-clip: padding-box;
-  padding: 16px;
   flex-grow: 1;
+  margin: 0 0.7rem 0 0.7rem;
 }
 
 .post {
-  width: 14rem;
+  width: 12rem;
   border: 1px solid #ccc;
   cursor: pointer;
   margin-bottom: 16px;
@@ -53,6 +54,7 @@
 
 .post-nickname {
   margin-top: 0.2cm !important;
+  margin-bottom: 0.1cm !important;
   font-family: Poppins;
   font-size: 12px;
   font-weight: 400;
@@ -62,7 +64,7 @@
   color: #979797;
 }
 
-.mypost span {
+.post-date {
   font-family: Poppins;
   font-size: 10px;
   font-weight: 400;
@@ -74,4 +76,28 @@
   position: absolute;
   right: 0;
   bottom: -13px;
+}
+
+.post-viewcount {
+  font-family: Poppins;
+  font-size: 10px;
+  font-weight: 400;
+  line-height: 15px;
+  letter-spacing: 0em;
+  color: #c2c2c2;
+  width: 47px;
+  height: 15px;
+  position: absolute;
+  left: 0;
+  bottom: -13px;
+}
+@media screen and (max-width: 1400px) {
+  .boardmain {
+    padding: 0 !important;
+    margin: 0 !important;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+  }
 }

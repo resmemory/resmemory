@@ -273,3 +273,14 @@
   right: 50px;
   bottom: 5px;
 }
+@media screen and (max-width: 1400px) {
+  .myinfo_first {
+    width: 20rem !important;
+    height: 18rem !important;
+    margin-left: 0px !important;
+  }
+
+  .myinfo_sign {
+    width: 20rem !important;
+  }
+}

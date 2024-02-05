@@ -161,3 +161,10 @@
   right: 0;
   bottom: -13px;
 }
+@media screen and (max-width: 1400px) {
+  .CardSection {
+    width: 1rem !important;
+    height: 4rem !important;
+    min-height: 0 !important;
+  }
+}

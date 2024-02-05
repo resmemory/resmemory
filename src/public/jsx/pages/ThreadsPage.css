@@ -1,4 +1,3 @@
-/* Style for the report modal */
 .report-modal {
   display: flex;
   align-items: center;
@@ -8,19 +7,17 @@
   left: 0;
   width: 100%;
   height: 100%;
-  background-color: rgba(0, 0, 0, 0.5); /* Semi-transparent background */
+  background-color: rgba(0, 0, 0, 0.5);
 }
 
-/* Style for the content inside the report modal */
 .report-modal-content {
   position: relative;
-  background-color: #fff; /* White background for the modal content */
+  background-color: #fff;
   padding: 20px;
   border-radius: 10px;
-  width: 50%; /* Adjust the width as needed */
+  width: 50%;
 }
 
-/* Style for the close button in the modal */
 .report-modal-content .close {
   position: absolute;
   top: 10px;
@@ -29,7 +26,6 @@
   cursor: pointer;
 }
 
-/* Style for the textarea and submit button in the modal */
 .report-modal-content textarea {
   width: 100%;
   margin-bottom: 10px;
@@ -37,7 +33,7 @@
 
 .report-modal-content button {
   padding: 10px;
-  background-color: #323232; /* Green color for the submit button */
+  background-color: #323232;
   color: #fff;
   border: none;
   border-radius: 5px;
@@ -45,7 +41,7 @@
 }
 
 .report-modal-content button:hover {
-  background-color: black; /* Darker green color on hover */
+  background-color: black;
 }
 
 .writeThread {
@@ -94,4 +90,11 @@
   background-color: #ffffff;
   border: 1px solid #d5d5d5;
   color: #323232;
+  border-radius: 999px;
+}
+@media screen and (max-width: 430px) {
+  .container {
+    width: 80% !important;
+    margin: 1.4rem !important;
+  }
 }
