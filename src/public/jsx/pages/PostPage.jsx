@@ -267,7 +267,7 @@ const PostPage = () => {
         {postDetails && (
           <>
             <div className="post-category">{postDetails.category}</div>
-            <div className="post-title">{postDetails.title}</div>
+            <div className="post-page-title">{postDetails.title}</div>
             <div className="post-nickname">
               작성자 <p id="post-writter"> {'ㅤ' + postDetails.nickname}</p>
             </div>
