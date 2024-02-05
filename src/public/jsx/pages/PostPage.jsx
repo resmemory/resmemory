@@ -5,6 +5,7 @@ import Header from '../components/main/header.jsx';
 import './PostPage.css';
 
 const PostPage = () => {
+  const [selectedImage, setSelectedImage] = useState(null);
   const location = useLocation();
   const queryParams = new URLSearchParams(location.search);
   const postId = queryParams.get('post');
@@ -79,7 +80,7 @@ const PostPage = () => {
     });
     const result = await response.json();
     const commentList = result.responseData;
-    // Update each comment to include user information
+
     const commentsWithUser = commentList.map((comment) => ({
       ...comment,
       isCommentOwner: comment.userId === loginedUserId,
@@ -253,6 +254,12 @@ const PostPage = () => {
     const target = document.querySelector(classname);
     target.style.display = 'none';
   };
+
+  function handleImageDelete() {
+    const target = document.querySelector('.post_img');
+    target.value = '';
+  }
+
   return (
     <div>
       <Header />
@@ -277,6 +284,9 @@ const PostPage = () => {
                   <button className="button_delete-button" onClick={() => deletePost()}>
                     삭제하기
                   </button>
+                </>
+              ) : (
+                <>
                   <button className="button_bookmark-button" onClick={() => postBookmark()}>
                     북마크
                   </button>
@@ -288,8 +298,6 @@ const PostPage = () => {
                     신고하기
                   </button>
                 </>
-              ) : (
-                <></>
               )}
             </div>
             <div className="post-content">
@@ -352,10 +360,12 @@ const PostPage = () => {
                         type="text"
                         value={postDetails.img}
                       />
+
                       <br />
                       <label>변경할 이미지</label>
                       <br />
                       <input name="img" className="post_img" type="file" accept="image/*" />
+                      <button onClick={handleImageDelete}>이미지 삭제</button>
                     </div>
                     <div className="edit-post-Box-btn">
                       <button className="edit-post-btn" onClick={() => updatePost()}>
@@ -429,6 +439,9 @@ const PostPage = () => {
                       >
                         삭제하기
                       </button>
+                    </>
+                  ) : (
+                    <>
                       <button
                         className="button_report-comment-button"
                         onClick={() => modalOn(`#report-comment-Modal-${comment.commentId}`)}
@@ -436,8 +449,6 @@ const PostPage = () => {
                         신고하기
                       </button>
                     </>
-                  ) : (
-                    <></>
                   )}
                 </div>
               </div>

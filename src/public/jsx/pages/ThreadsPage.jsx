@@ -141,6 +141,9 @@ function ThreadsPage() {
                     <button className="delete-button" onClick={() => removeThread(thread.threadId)}>
                       삭제
                     </button>
+                  </>
+                ) : (
+                  <>
                     <button
                       className="report-button"
                       onClick={() => openReportModal(thread.threadId)}
@@ -148,8 +151,6 @@ function ThreadsPage() {
                       신고
                     </button>
                   </>
-                ) : (
-                  <></>
                 )}
               </p>
             </div>
