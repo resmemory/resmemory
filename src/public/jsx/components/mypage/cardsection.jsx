@@ -101,10 +101,10 @@ const CardSection = () => {
   }, [bookmark]);
 
   return (
-    <div className="CardSection">
+    <div className={`CardSection ${bookmark ? 'bookmark-bg' : 'mypost-bg'}`}>
       <div className="button-container flex space-x-2">
         <button
-          className="action-button1"
+          className={`action-button1 ${!bookmark ? 'active' : ''}`}
           onClick={() => {
             setBookmark(false);
           }}
@@ -112,7 +112,7 @@ const CardSection = () => {
           내가 쓴 글
         </button>
         <button
-          className="action-button2"
+          className={`action-button2 ${bookmark ? 'active' : ''}`}
           onClick={() => {
             setBookmark(true);
           }}
