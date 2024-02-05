@@ -56,11 +56,20 @@ const Header = () => {
       console.error('Logout error:', error);
     }
   };
+  const handleWritePostClick = () => {
+    navigate('/write');
+  };
 
   const handleMyPageClick = () => {
     navigate('/mypage');
   };
 
+  const handleThreadsClick = () => {
+    navigate('/threads');
+  };
+  const handleChatClick = () => {
+    navigate('/chat');
+  };
   const handleLoginClick = () => {
     navigate('/login');
   };
@@ -69,15 +78,22 @@ const Header = () => {
     <section className="HeaderSection">
       <div className="Header_first">
         <div>
-          <a href="http://localhost:8000">
-            <img src="/images/thn_logo.png" alt="thn_logo" />
+          <a href="./">
+            <img src="../../../assets/image/thn_logo.png" alt="thn_logo" />
           </a>
         </div>
         <ul className="Header_ul">
           {isLoggedIn && (
             <>
-              <li className="thread_btn">스레드</li>
-              <li className="chat_btn">채팅</li>
+              <li className="writepost_btn" onClick={handleWritePostClick}>
+                글쓰기
+              </li>
+              <li className="thread_btn" onClick={handleThreadsClick}>
+                스레드
+              </li>
+              <li className="chat_btn" onClick={handleChatClick}>
+                채팅
+              </li>
               <li className="mypage" onClick={handleMyPageClick}>
                 마이페이지
               </li>

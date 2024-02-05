@@ -194,11 +194,6 @@ const onRequest = async (res, method, pathname, params, key, cb) => {
 
     // GET
     case 'GET':
-      // 카카오 인가 코드 발급
-      if (pathname == '/oauth' && query.code) {
-        const { code } = query;
-        responseData = { kakaocode: code, code: 1211 };
-      }
       // 내 정보 조회
       if (pathname == '/users' && !query.userId && !query.userIds) {
         try {
@@ -255,12 +250,15 @@ const onRequest = async (res, method, pathname, params, key, cb) => {
       if (pathname === '/bookmarks') {
         try {
           const { userId } = params;
+          const { pageNum } = params.query;
           if (!userId) {
             responseData = { code: 0 };
           }
           const bookmarks = await Bookmarks.findAll({
             order: ['createdAt'],
             where: { userId },
+            limit: 12,
+            offset: (pageNum - 1) * 12,
           });
           const postIds = bookmarks.map((bookmark) => bookmark.postId);
 
@@ -287,7 +285,7 @@ const onRequest = async (res, method, pathname, params, key, cb) => {
             attributes: ['userId', 'nickname'],
           });
 
-          bodies = bodies
+          let result = bodies
             .map((post) => {
               const bookmark = bookmarks.filter((bookmark) => post.postId == bookmark.postId);
               const nickname = users.filter((user) => user.userId == post.userId);
@@ -301,10 +299,10 @@ const onRequest = async (res, method, pathname, params, key, cb) => {
             })
             .sort((prev, next) => next.order - prev.order);
 
-          responseData = { code: 211, bodies };
+          responseData = { code: 211, result };
         } catch (err) {
           console.log(err);
-          responseData = { code: 210, bodies: null };
+          responseData = { code: 210, result: null };
         }
       }
 

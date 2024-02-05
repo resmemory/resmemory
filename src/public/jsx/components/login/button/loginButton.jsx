@@ -31,6 +31,9 @@ Button.propTypes = {
   type: PropTypes.string.isRequired,
 };
 
+const handleClickSignup = () => {
+  window.location.href = './signup';
+};
 const LoginButton = () => {
   const navigate = useNavigate();
 
@@ -44,7 +47,9 @@ const LoginButton = () => {
       <Button label="로그인" type="login" onClick={handleLoginClick} />
       <div className="signuptext">
         <p>그땐이 처음이시라면?</p>
-        <p className="signupbtn">회원가입</p>
+        <p className="signupbtn" onClick={handleClickSignup}>
+          회원가입
+        </p>
       </div>
     </>
   );

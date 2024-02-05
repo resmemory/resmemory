@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useLocation } from 'react-router-dom';
 import Header from '../components/main/header.jsx';
 
-import '../../css/detail.css';
+import './PostPage.css';
 
 const PostPage = () => {
   const location = useLocation();
@@ -13,6 +13,7 @@ const PostPage = () => {
   const [comments, setComments] = useState([]);
   const [postDetails, setPostDetails] = useState(null);
   const [isPostOwner, setIsPostOwner] = useState(false);
+
   useEffect(() => {
     const fetchData = async () => {
       await loginChecker();
@@ -52,9 +53,9 @@ const PostPage = () => {
       timeZone: 'Asia/Seoul',
     });
     const nickname = postResult.nickname;
-    const title = postResult.title;
-    const content = postResult.content;
-    const category = postResult.category;
+    const title = postResult.title || '';
+    const content = postResult.content || '';
+    const category = postResult.category || '';
     let img = postResult.img || '';
     let thumbnail = postResult.thumbnail || '';
 
@@ -69,7 +70,6 @@ const PostPage = () => {
       thumbnail,
     });
 
-    // Check if the logged-in user is the owner of the post
     setIsPostOwner(loginedUserId === postResult.userId);
   };
 
@@ -259,7 +259,7 @@ const PostPage = () => {
       <div className="post-box" id="post-box">
         {postDetails && (
           <>
-            <div className="post-category">{postDetails.category + "'s"}</div>
+            <div className="post-category">{postDetails.category}</div>
             <div className="post-title">{postDetails.title}</div>
             <div className="post-nickname">
               작성자 <p id="post-writter"> {'ㅤ' + postDetails.nickname}</p>
@@ -299,7 +299,7 @@ const PostPage = () => {
                 style={{ display: postDetails.img ? '' : 'none' }}
               />
 
-              <p>{postDetails.content}</p>
+              <p style={{ display: postDetails.content ? '' : 'none' }}>{postDetails.content}</p>
             </div>
 
             <form

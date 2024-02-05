@@ -17,6 +17,7 @@
 }
 
 .post {
+  width: 12rem;
   border: 1px solid #ccc;
   cursor: pointer;
   margin-bottom: 16px;
@@ -40,11 +41,15 @@
 .post-title {
   margin-top: 0.3cm !important;
   font-family: Poppins;
-  font-size: 16px;
+  font-size: 17px !important;
   font-weight: 600;
   line-height: 24px;
   letter-spacing: 0em;
   text-align: left;
+}
+
+#post-category {
+  font-size: 15px !important;
 }
 
 .post-nickname {
@@ -70,15 +75,4 @@
   position: absolute;
   right: 0;
   bottom: -13px;
-}
-
-/* 브라우저 크기가 700px 이하일 때 post의 크기를 조절 */
-@media (max-width: 700px) {
-  .post {
-    padding: 8px;
-  }
-
-  .post-title {
-    font-size: 16px;
-  }
 }

@@ -7,6 +7,10 @@ const General_Login = () => {
   const emailRef = useRef();
   const passwordRef = useRef();
 
+  const handleClickSignup = () => {
+    window.location.href = './signup';
+  };
+
   const handleTogglePassword = () => {
     setShowPassword(!showPassword);
   };
@@ -35,7 +39,9 @@ const General_Login = () => {
   return (
     <div>
       <div className="containerStyle">
-        <img src="/images/thn_logo.png" alt="Logo" className="logoStyle2" />
+        <a href="./">
+          <img src="../../../assets/image/thn_logo.png" alt="Logo" className="logoStyle2" />
+        </a>
         <div className="textContainerStyle">
           <h2>로그인하기</h2>
           <p>추억 쌓기, 같이 하실래요?</p>
@@ -62,7 +68,9 @@ const General_Login = () => {
         </button>
         <div className="signuptext1">
           <p>그땐이 처음이시라면?</p>
-          <p className="signupbtn">회원가입</p>
+          <p className="signupbtn" onClick={handleClickSignup}>
+            회원가입
+          </p>
         </div>
       </div>
     </div>

@@ -154,23 +154,6 @@ const onRequest = async (res, method, pathname, params, key, cb, mock) => {
         }
       }
 
-      // 게시글 전체 조회(리스트 출력용)
-      if (pathname === '/posts' && params.params === 'list') {
-        try {
-          if (params.query.category) {
-            const result = await Posts.count({
-              where: { category: params.query.category },
-            });
-            responseData = { bodies: result };
-          } else {
-            const result = await Posts.count();
-            responseData = { bodies: result };
-          }
-        } catch (err) {
-          responseData = { code: 390 };
-        }
-      }
-
       // 연도별 게시글 조회
       if (pathname === '/posts' && params.query.category && params.params !== 'list') {
         try {
@@ -265,11 +248,15 @@ const onRequest = async (res, method, pathname, params, key, cb, mock) => {
       if (pathname === '/myposts') {
         try {
           const { userId } = params;
+          const { pageNum } = params.query;
           const result = await Posts.findAll({
             where: { userId },
             order: [['createdAt', 'DESC']],
+            limit: 12,
+            offset: (pageNum - 1) * 12,
             raw: true,
           });
+
           responseData = { result };
         } catch (err) {
           responseData = { code: 340 };
@@ -325,7 +312,6 @@ const onRequest = async (res, method, pathname, params, key, cb, mock) => {
         try {
           const { commentId } = params.query;
           const commentData = await Comments.findByPk(commentId);
-          console.log('이거 됨?', console.log(params.query));
 
           if (commentData) {
             responseData = commentData;

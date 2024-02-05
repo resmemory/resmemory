@@ -1,7 +1,7 @@
 import React, { useEffect, useState, useRef } from 'react';
 import Masonry from 'react-masonry-css';
-import '../css/board.css';
-import '../css/annual.css';
+import './board.css';
+import './annual.css';
 
 const Board = () => {
   const [board, setBoard] = useState([]);
@@ -17,10 +17,9 @@ const Board = () => {
   const itemsPerRow = 5;
   const [category, setCategory] = useState('전체');
   const [selectedCategory, setSelectedCategory] = useState('전체'); // 선택된 카테고리 상태 추가
-  const categories = ['전체', '2020', '2010', '2000', '1990', '1980', '1970'];
+  const categories = ['전체', 'notice', '2020', '2010', '2000', '1990', '1980', '1970'];
 
-  const fetchData = async (page, perPage, category) => {
-    console.log(category);
+  const fetchData = async (page, category) => {
     try {
       setLoading(true);
 
@@ -37,7 +36,6 @@ const Board = () => {
       );
 
       const responseData = await response.json();
-      console.log('Fetched data:', responseData);
       return responseData.responseData;
     } catch (error) {
       console.error('Error fetching data:', error);
@@ -48,8 +46,7 @@ const Board = () => {
   };
 
   const handlePostClick = (postId) => {
-    const postUrl = `./detail.html?post=${postId}`;
-    console.log(`ID가 ${postId}인 게시물이 클릭되었습니다. URL: ${postUrl}`);
+    const postUrl = `./post?post=${postId}`;
     window.location.href = postUrl;
   };
 
@@ -58,7 +55,7 @@ const Board = () => {
       setLoadingMore(true);
 
       try {
-        const data = await fetchData(currentPage, itemsPerPage, category);
+        const data = await fetchData(currentPage, category);
 
         if (data.length > 0) {
           setBoard((prevBoard) => [...prevBoard, ...data]);
@@ -155,7 +152,7 @@ const Board = () => {
           <div key={post.id} className="post" onClick={() => handlePostClick(post.postId)}>
             {post.img && <img src={post.img} alt="Post Image" />}
             <div className="postbox">
-              <p>{post.category}</p>
+              <p id="post-category">{post.category}</p>
               <p className="post-title">{post.title}</p>
               <p className="post-nickname">{post.nickname}</p>
               <br />

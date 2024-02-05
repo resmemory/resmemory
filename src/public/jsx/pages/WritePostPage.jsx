@@ -6,7 +6,6 @@ import Header from '../components/main/header.jsx';
 function WritePostPage() {
   return (
     <div>
-      <h1>글 작성 페이지</h1>
       <header>
         <Header />
       </header>

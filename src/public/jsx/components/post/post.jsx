@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import '../css/post.css';
+import './post.css';
 
 const ImageUpload = ({ onImageChange, onDeleteImage }) => {
   const [selectedImage, setSelectedImage] = useState(null);
@@ -52,6 +52,7 @@ const ImageUpload = ({ onImageChange, onDeleteImage }) => {
         readOnly
         value={selectedImage ? selectedImage.name : ''}
         style={{
+          whiteSpace: 'pre-line',
           width: 'calc(100% - 130px)', // 100%에서 버튼 너비와 여백을 뺀 값
           height: '30px', // 높이 조절
           border: '1px solid #ccc',
@@ -67,6 +68,26 @@ const ImageUpload = ({ onImageChange, onDeleteImage }) => {
 };
 
 const CategorySelect = ({ onCategoryChange }) => {
+  useEffect(() => {
+    loginChecker();
+  }, []);
+  const [displayNotice, setDisplayNotice] = useState('none');
+
+  const loginChecker = async () => {
+    if (sessionStorage.getItem('Authorization')) {
+      const profileresponse = await fetch(`./api/users`, {
+        method: 'GET',
+        headers: {
+          Authorization: sessionStorage.getItem('Authorization'),
+        },
+      });
+      const profileresult = await profileresponse.json();
+      if (profileresult.responseData.bodies.userId == 1) {
+        setDisplayNotice('block');
+      }
+    }
+  };
+
   const handleCategoryChange = (e) => {
     const selectedCategory = e.target.value;
     onCategoryChange(selectedCategory);
@@ -75,21 +96,23 @@ const CategorySelect = ({ onCategoryChange }) => {
   return (
     <div className="annual">
       <select className="annual-select" onChange={handleCategoryChange}>
-        <option className="none" value="" disabled selected >
+        <option className="none" value="" disabled selected>
           카테고리 선택
         </option>
-        <option value="2020">2020's</option>
-        <option value="2010">2010's</option>
-        <option value="2000">2000's</option>
-        <option value="1990">1990's</option>
-        <option value="1980">1980's</option>
-        <option value="1970">1970's</option>
-        <option value="1960">1960's</option>
-        <option value="notice">notice</option>
+        <option value="2020">2020</option>
+        <option value="2010">2010</option>
+        <option value="2000">2000</option>
+        <option value="1990">1990</option>
+        <option value="1980">1980</option>
+        <option value="1970">1970</option>
+        <option value="1960">1960</option>
+        <option value="notice" style={{ display: displayNotice }}>
+          notice
+        </option>
       </select>
     </div>
   );
-}
+};
 
 const TitleInput = ({ title, onChange }) => {
   return (
@@ -128,7 +151,7 @@ const Post = ({ postId }) => {
       try {
         const response = await fetch(`/api/posts?postId=${postId}`);
         const result = await response.json();
-        console.log(result)
+        console.log(result);
         setPostData(result); // API에서 받아온 데이터로 상태 업데이트
       } catch (error) {
         console.error('데이터를 불러오는 중 에러 발생', error);
@@ -175,6 +198,8 @@ const Post = ({ postId }) => {
         body: form,
       });
       const result = await response.json();
+      alert(code[result.responseData.code]);
+      window.location.href = './';
     } catch (error) {
       console.error('네트워크 오류 또는 예외가 발생했습니다.', error);
     }

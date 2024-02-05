@@ -11,5 +11,6 @@ sudo pm2 start "npm run start:posts_build"
 sudo pm2 start "npm run start:admin_build"
 sudo pm2 start "npm run start:threads_build"
 sudo pm2 start "npm run start:chat_build"
+
 sudo pm2 startup
 sudo pm2 save

@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import Header from '../components/main/header.jsx';
 
 // CSS 불러오기
-import '../../css/Chat.css';
+import './ChatPage.css';
 
 function ChatPage() {
   const [userNickname, setUserNickname] = useState('');
@@ -28,10 +28,14 @@ function ChatPage() {
       } else {
         const nickname = result.responseData.bodies.nickname;
 
+        if (!nickname) {
+          window.location.href = './login';
+        }
+
         // 닉네임 설정
         setUserNickname(nickname);
 
-        const newSocket = new WebSocket(`ws://127.0.0.1:8001/?nickname=${nickname}`);
+        const newSocket = new WebSocket(`ws://13.209.87.137:8001/?nickname=${nickname}`);
 
         // 소켓 설정
         setSocket(newSocket);

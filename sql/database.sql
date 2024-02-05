@@ -53,7 +53,6 @@ CREATE TABLE `Threads` (
   `createdAt` DATETIME, 
   `updatedAt` DATETIME, 
   `deletedAt` DATETIME DEFAULT NULL, 
-  `notice` BOOLEAN DEFAULT FALSE, 
   `thumbnail` VARCHAR(255) DEFAULT NULL, 
   PRIMARY KEY (`postId`)
 );
