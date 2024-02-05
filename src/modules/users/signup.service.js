@@ -26,10 +26,10 @@ async function signup(pathname, params, responseData, token) {
           const emailParam = {
             toEmail: email, // 수신할 이메일
 
-            subject: '[응답하라 추억시대] 인증번호를 확인하세요!', // 메일 제목
+            subject: '[그땐 G:Then] 인증번호를 확인하세요!', // 메일 제목
 
             text: `
-                    응답하라 추억시대에 찾아 주셔서 감사합니다!
+                    그땐 G:Then 에 찾아 주셔서 감사합니다!
                     회원 가입을 위해 이 숫자를 입력해 주세요. 
                     [ ${verifyNumber} ]`, // 메일 내용
           };
