@@ -305,6 +305,7 @@ const PostPage = () => {
                 src={postDetails.img}
                 alt={postDetails.img}
                 style={{ display: postDetails.img ? '' : 'none' }}
+                id="postImage"
               />
 
               <p style={{ display: postDetails.content ? '' : 'none' }}>{postDetails.content}</p>
@@ -406,10 +407,12 @@ const PostPage = () => {
       </div>
       <div className="comment-box">
         <h3>댓글</h3>
-        <input type="text" className="comment-input" placeholder="댓글을 작성하세요" />
-        <button className="comment-submit-button" onClick={() => postComment()}>
-          작성하기
-        </button>
+        <div className="writeCommentBox">
+          <input type="text" className="comment-input" placeholder="댓글을 작성하세요" />
+          <button className="comment-submit-button" onClick={() => postComment()}>
+            작성
+          </button>
+        </div>
         <div className="comment-list" id="comment-list">
           {comments.map((comment) => (
             <div key={comment.commentId} className="comment-item">
