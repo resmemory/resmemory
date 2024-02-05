@@ -153,7 +153,10 @@ const Board = () => {
             {post.img && <img src={post.img} alt="Post Image" />}
             <div className="postbox">
               <p id="post-category">{post.category}</p>
-              <p className="post-title">{post.title}</p>
+              <p className="post-title">
+                {' '}
+                {post.title.length > 10 ? post.title.slice(0, 10) + '...' : post.title}
+              </p>
               <p className="post-nickname">{post.nickname}</p>
               <br />
               <span>
