@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import '../../components/sign/hello.css';
 
 const Hello = () => {
@@ -8,6 +8,14 @@ const Hello = () => {
   const [confirm, setConfirm] = useState('');
   const [nickname, setNickname] = useState('');
   const [showPassword, setShowPassword] = useState(false);
+  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
+  const [buttonColor, setButtonColor] = useState('#b4b4b4');
+  const [timer, setTimer] = useState(-1);
+  const [minutes, setMinutes] = useState(5);
+  const [seconds, setSeconds] = useState(0);
+  const [timerDisplay, setTimerDisplay] = useState('none');
+  const [compeleteDisplay, setCompeleteDisplay] = useState('none');
+  const [buttonDisplay, setButtonDisplay] = useState('block');
 
   const handleEmail = async () => {
     try {
@@ -28,6 +36,9 @@ const Hello = () => {
 
       const result = await response.json();
       alert(code[result.responseData.code]);
+      if (result.responseData.code == 181) {
+        setTimer(300);
+      }
     } catch (error) {
       console.error('이메일 전송 중 에러 발생:', error);
     }
@@ -53,6 +64,12 @@ const Hello = () => {
 
       const result = await response.json();
       alert(code[result.responseData.code]);
+      if (result.responseData.code == 193) {
+        setTimer(-1);
+        setButtonColor('#427dee');
+        setCompeleteDisplay('block');
+        setTimerDisplay('none');
+      }
     } catch (error) {
       console.error('코드 확인 중 에러 발생:', error);
     }
@@ -94,10 +111,38 @@ const Hello = () => {
   const togglePasswordVisibility = () => {
     setShowPassword(!showPassword);
   };
-
-  const handleCancel = () => {
-    alert('취소 버튼이 눌렸습니다.');
+  const toggleConfirmPasswordVisibility = () => {
+    setShowConfirmPassword(!showConfirmPassword);
   };
+  const handleCancel = () => {
+    window.location.href = './login';
+  };
+
+  useEffect(() => {
+    const intervalId = setInterval(() => {
+      if (timer == 300) {
+        setButtonDisplay('none');
+        setTimerDisplay('block');
+      }
+      if (timer > 0) {
+        setTimer(timer - 1);
+        setMinutes(Math.floor(timer / 60));
+
+        if (timer % 60 < 10) {
+          setSeconds('0' + (timer % 60));
+        } else {
+          setSeconds(timer % 60);
+        }
+      } else if (timer == 0) {
+        alert('인증시간이 만료되었습니다.');
+        clearInterval(intervalId);
+        setButtonDisplay('block');
+        setTimerDisplay('none');
+      }
+    }, 1000);
+
+    return () => clearInterval(intervalId);
+  }, [timer]);
 
   return (
     <div>
@@ -121,10 +166,26 @@ const Hello = () => {
                 onChange={(e) => setSignupEmail(e.target.value)}
                 placeholder="이메일을 입력해주세요."
               />
-              <button type="button" className="verify-button" onClick={handleEmail}>
+              <button
+                type="button"
+                className="verify-button"
+                onClick={handleEmail}
+                style={{ display: buttonDisplay }}
+              >
                 인증
               </button>
+              <button className="timer" style={{ display: timerDisplay }}>
+                {minutes}:{seconds}
+              </button>
+              <button
+                type="button"
+                className="verify-button"
+                style={{ display: compeleteDisplay, backgroundColor: buttonColor }}
+              >
+                완료
+              </button>
             </div>
+
             <div className="signup-input">
               <input
                 type="text"
@@ -132,7 +193,12 @@ const Hello = () => {
                 onChange={(e) => setReceiveNumber(e.target.value)}
                 placeholder="인증번호를 10분 이내로 입력해주세요."
               />
-              <button type="button" className="verify-button" onClick={handleVerified}>
+              <button
+                type="button"
+                className="verify-button"
+                onClick={handleVerified}
+                style={{ backgroundColor: buttonColor }}
+              >
                 인증 확인
               </button>
             </div>
@@ -161,7 +227,7 @@ const Hello = () => {
             </div>
             <div className="double-input">
               <input
-                type={showPassword ? 'text' : 'password'}
+                type={showConfirmPassword ? 'text' : 'password'}
                 value={confirm}
                 onChange={(e) => setConfirm(e.target.value)}
                 placeholder="비밀번호 확인"
@@ -169,9 +235,9 @@ const Hello = () => {
               <button
                 type="button"
                 className="toggle-password-button"
-                onClick={togglePasswordVisibility}
+                onClick={toggleConfirmPasswordVisibility}
               >
-                {showPassword ? '숨기기' : '표시'}
+                {showConfirmPassword ? '숨기기' : '표시'}
               </button>
             </div>
           </div>
