@@ -9,13 +9,13 @@
   border-radius: 36px;
   border: 1px;
   width: 364px;
-  height: auto;
+  height: 288px;
   padding: 32px;
   gap: 24px;
   margin-left: 30px;
   border: 1px solid #d2d2d2;
-  align-items: center; /* 추가 */
-  justify-content: center; /* 추가 */
+  align-items: center;
+  justify-content: center;
 }
 
 .myinfo_nickname {
@@ -96,7 +96,6 @@
   padding: 8px, 16px;
   border-radius: 999px;
   gap: 4px;
-  background-color: #323232;
   color: #ffffff;
   font-family: Poppins;
   font-size: 20px;
@@ -109,7 +108,7 @@
 
 .myinfo_signout {
   text-align: center;
-  margin-top: 100px;
+  margin-top: 65px;
   color: red;
   font-family: Poppins;
   font-size: 20px;
@@ -191,7 +190,7 @@
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
   border: 1px solid #d2d2d2;
   width: 632px;
-  height: 400px;
+  height: 285px;
   gap: 24px;
 }
 
@@ -209,6 +208,8 @@
   letter-spacing: 0.02em;
   text-align: left;
   color: #979797;
+  margin-bottom: 12px;
+  position: relative;
 }
 
 .editBtn {
@@ -217,7 +218,6 @@
 }
 
 .editBtn p {
-  width: 38px;
   height: 30px;
   font-family: Poppins;
   font-size: 20px;
@@ -240,4 +240,36 @@
 
 .close {
   color: #ff6e4e;
+}
+
+#PWChange button {
+  position: absolute;
+  height: 24px;
+  right: 65px;
+  margin-top: 30px;
+  font-family: Poppins;
+  font-size: 16px;
+  font-weight: 600;
+  line-height: 24px;
+  letter-spacing: 0.02em;
+  text-align: left;
+  border: none;
+  background: none;
+  color: #427dee;
+  cursor: pointer;
+}
+
+.kakaoUser {
+  background-color: #ffeb00;
+  color: #000000;
+}
+
+.localUser {
+  background-color: #323232;
+}
+
+#PWChange .editBtn {
+  position: absolute;
+  right: 50px;
+  bottom: 5px;
 }
