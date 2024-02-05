@@ -132,7 +132,7 @@ const CardSection = () => {
         ref={containerRef}
       >
         {board.map((post) => (
-          <div key={post.id} className="post" onClick={() => handlePostClick(post.postId)}>
+          <div key={post.id} className="mypost" onClick={() => handlePostClick(post.postId)}>
             {post.img && <img src={post.img} alt="Post Image" />}
             <div className="postbox">
               <p>{post.category}</p>
