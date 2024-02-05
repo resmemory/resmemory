@@ -5,6 +5,8 @@ import '../../components/main/header.css';
 const Header = () => {
   const isLoggedIn = !!sessionStorage.getItem('Authorization');
   const [userData, setUserData] = useState(null);
+  const [accordianVisiblity, setaccordianVisiblity] = useState(false);
+
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -74,14 +76,54 @@ const Header = () => {
     navigate('/login');
   };
 
+  const handleAccordian = () => {
+    setaccordianVisiblity(!accordianVisiblity);
+  };
+
   return (
     <section className="HeaderSection">
       <div className="Header_first">
-        <div>
+        <div className="Header_box">
           <a href="./">
             <img src="../../../assets/image/thn_logo.png" alt="thn_logo" />
           </a>
+          <div>
+            <button className="accordian" onClick={handleAccordian}>
+              ☰
+            </button>
+            {accordianVisiblity ? (
+              <ul className="Header_ul_accordian">
+                {isLoggedIn && (
+                  <>
+                    <li className="writepost_btn" onClick={handleWritePostClick}>
+                      글쓰기
+                    </li>
+                    <li className="thread_btn" onClick={handleThreadsClick}>
+                      스레드
+                    </li>
+                    <li className="chat_btn" onClick={handleChatClick}>
+                      채팅
+                    </li>
+                    <li className="mypage" onClick={handleMyPageClick}>
+                      마이페이지
+                    </li>
+                    <li className="logout" onClick={logout}>
+                      로그아웃
+                    </li>
+                  </>
+                )}
+                {!isLoggedIn && (
+                  <li className="login" onClick={handleLoginClick}>
+                    로그인
+                  </li>
+                )}
+              </ul>
+            ) : (
+              <></>
+            )}
+          </div>
         </div>
+
         <ul className="Header_ul">
           {isLoggedIn && (
             <>

@@ -117,7 +117,7 @@ const CardSection = () => {
             setBookmark(true);
           }}
         >
-          좋아요한 글
+          북마크한 글
         </button>
       </div>
       <Masonry
@@ -136,10 +136,13 @@ const CardSection = () => {
             {post.img && <img src={post.img} alt="Post Image" />}
             <div className="postbox">
               <p>{post.category}</p>
-              <p className="post-title">{post.title}</p>
+              <p className="post-title">
+                {post.title.length > 10 ? post.title.slice(0, 10) + '...' : post.title}
+              </p>
               <p className="post-nickname">{post.nickname}</p>
               <br />
-              <span>
+              <span className="post-viewcount">조회수 {post.viewCount}</span>
+              <span className="post-date">
                 {new Date(post.createdAt).toLocaleDateString('ko-KR', { timeZone: 'Asia/Seoul' })}
               </span>
             </div>

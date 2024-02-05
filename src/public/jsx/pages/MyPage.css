@@ -33,3 +33,27 @@
   flex: 1;
   margin-left: 16px;
 }
+@media screen and (max-width: 1400px) {
+  .flex-container {
+    flex-direction: column !important;
+    gap: 1rem !important;
+  }
+  .MainSection {
+    justify-content: center !important;
+  }
+
+  .MyCard {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    margin-left: 0px !important;
+  }
+
+  .MyInformation {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+  }
+}
