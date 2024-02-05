@@ -27,10 +27,6 @@
   text-align: center;
   cursor: pointer;
 }
-.action-button1 {
-  background-color: #000;
-  color: #ffffff !important;
-}
 
 .content-container {
   display: flex;
@@ -98,4 +94,9 @@
 .write-button {
   padding: 10px 20px;
   font-size: 16px;
+}
+
+.active {
+  background-color: #000;
+  color: #ffffff !important;
 }

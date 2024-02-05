@@ -71,8 +71,8 @@ const MyInfo = () => {
 
       const result = await response.json();
       alert(code[result.responseData.code]);
-      location.reload();
       handleModalClose();
+      location.reload();
     } catch (error) {
       console.error('API 호출 중 오류가 발생했습니다.', error);
     }
@@ -96,11 +96,22 @@ const MyInfo = () => {
 
       const result = await response.json();
       alert(code[result.responseData.code]);
-      location.reload();
       handlePWChangeModalClose();
+      location.reload();
     } catch (error) {
       console.error('API 호출 중 오류가 발생했습니다.', error);
     }
+  };
+
+  const [showPassword, setShowPassword] = useState(false);
+  const [showConfirm, setShowConfirm] = useState(false);
+
+  const togglePasswordVisibility = () => {
+    setShowPassword((prevShowPassword) => !prevShowPassword);
+  };
+
+  const toggleConfirmVisibility = () => {
+    setShowConfirm((prevShowConfirm) => !prevShowConfirm);
   };
 
   const handleSignout = async () => {
@@ -168,19 +179,13 @@ const MyInfo = () => {
       </span>
       <div className="myinfo_sign">
         <p className="myinfo_signselect">가입방식</p>
-        <p className="myinfo_signmenu">{isKakaoUser ? '카카오톡' : '로컬'}</p>
+        <p className={`myinfo_signmenu ${isKakaoUser ? 'kakaoUser' : 'localUser'}`}>
+          {isKakaoUser ? 'kakao' : 'local'}
+        </p>
       </div>
       <p className="myinfo_signout" onClick={handleSignout}>
         회원탈퇴
       </p>
-      <p className="myinfo_pwchange" onClick={handlePWChangeModalOn}>
-        비밀번호 변경
-      </p>
-      {isAdmin && (
-        <p className="myinfo_admin" onClick={adminPage}>
-          관리자 페이지
-        </p>
-      )}
 
       <div className="modal">
         <div className="modal-content">
@@ -192,6 +197,9 @@ const MyInfo = () => {
             onChange={(e) => setNewNickname(e.target.value)}
           />
           <div className="editBtn">
+            <p className="myinfo_pwchange" onClick={handlePWChangeModalOn}>
+              비밀번호 변경
+            </p>
             <p
               onClick={() => {
                 handleSaveNickname(newNickname);
@@ -209,17 +217,23 @@ const MyInfo = () => {
         <div className="modal-content">
           <h2>비밀번호 변경</h2>
           <input
-            type="password"
+            type={showPassword ? 'text' : 'password'}
             value={password}
             placeholder={`비밀번호를 입력하세요.`}
             onChange={(e) => setPassword(e.target.value)}
           />
+          <button type="button" onClick={togglePasswordVisibility}>
+            {showPassword ? '숨기기' : '표시'}
+          </button>
           <input
-            type="password"
+            type={showConfirm ? 'text' : 'password'}
             value={confirm}
             placeholder={`확인 비밀번호를 입력하세요.`}
             onChange={(e) => setConfirm(e.target.value)}
           />
+          <button type="button" onClick={toggleConfirmVisibility}>
+            {showConfirm ? '숨기기' : '표시'}
+          </button>
           <div className="editBtn">
             <p
               onClick={() => {
