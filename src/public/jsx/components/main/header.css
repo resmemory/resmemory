@@ -41,3 +41,39 @@
 .logout {
   color: red !important;
 }
+.accordian {
+  display: none;
+}
+
+@media screen and (max-width: 430px) {
+  .Header_first {
+    height: 180px !important;
+  }
+  .Header_box {
+    display: flex;
+    flex-direction: row;
+    align-items: flex-start;
+    justify-content: space-between;
+  }
+  .accordian {
+    display: block;
+    background-color: #f8f8f8;
+    border: none;
+    width: 3rem;
+    height: 3rem;
+    font-size: 2rem;
+    float: right !important;
+  }
+  .Header_ul {
+    display: none;
+  }
+  .Header_ul_accordian {
+    list-style: none;
+    text-align: right;
+    float: right;
+  }
+  .Header_ul_accordian li {
+    font-size: 0.8rem;
+    margin-bottom: 0.2rem;
+  }
+}
