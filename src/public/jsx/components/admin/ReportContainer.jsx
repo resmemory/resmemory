@@ -14,7 +14,6 @@ const style = {
 function ReportContainer() {
   return (
     <div style={style.div}>
-      <h1>신고 내역</h1>
       <GetReport />
       <foo style={style.foo} />
     </div>
