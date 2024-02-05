@@ -16,6 +16,7 @@
 }
 
 .post {
+  width: 14rem;
   border: 1px solid #ccc;
   cursor: pointer;
   margin-bottom: 16px;
