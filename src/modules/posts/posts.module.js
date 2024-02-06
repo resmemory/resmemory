@@ -25,6 +25,7 @@ class PostsModule extends TcpServer {
       console.log('Users Notification', data);
     });
 
+    this.bookmarksCount;
     this.nickname;
     this.dataconnection;
   }
