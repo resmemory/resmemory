@@ -9,7 +9,6 @@ function ChatPage() {
   const [socket, setSocket] = useState(null);
   const [messageInput, setMessageInput] = useState('');
   const [chatMessages, setChatMessages] = useState([]);
-  const chatContainerRef = useRef(null);
 
   // 컴포넌트가 렌더링 될
   useEffect(() => {
@@ -65,6 +64,10 @@ function ChatPage() {
     initializeChat();
   }, []);
 
+  useEffect(() => {
+    scrollToBottom();
+  }, [chatMessages]);
+
   const displayMessage = (message, senderNickname) => {
     // 채팅 메시지 배열에 담기
     setChatMessages((prevMessages) => [...prevMessages, { message, senderNickname }]);
@@ -72,7 +75,9 @@ function ChatPage() {
 
   function scrollToBottom() {
     const chatMessages = document.getElementById('chat-messages');
-    chatMessages.scrollTop = chatMessages.scrollHeight;
+    if (chatMessages) {
+      chatMessages.scrollTop = chatMessages.scrollHeight;
+    }
   }
 
   const sendMessage = () => {
@@ -90,7 +95,6 @@ function ChatPage() {
 
       // 들어온 메시지 담기
       setMessageInput('');
-      scrollToBottom();
     }
   };
 
