@@ -54,8 +54,15 @@
 }
 
 .container {
-  width: 70%;
-  margin: 10rem;
+  max-width: 1080px;
+  margin: 0 auto;
+  background-color: #f9f9f9;
+  padding: 20px;
+  box-sizing: border-box;
+  margin-top: 20px;
+  display: flex;
+  flex-direction: column;
+  height: 90vh;
 }
 
 .writeThreadBtn {
