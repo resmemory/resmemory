@@ -6,6 +6,7 @@ import jwt from 'jsonwebtoken';
 import signup from './signup.service';
 import usersmodule from './users.module';
 import dotenv from 'dotenv';
+import sequelize from './db/users.init';
 
 dotenv.config();
 
@@ -304,8 +305,14 @@ const onRequest = async (res, method, pathname, params, key, cb) => {
           console.log(err);
           responseData = { code: 210, result: null };
         }
+      } else if (pathname == '/counts') {
+        const { postIds } = params.query;
+        let postIdString = postIds.join(',');
+        const bookmarks = await sequelize.query(
+          `SELECT postId, count(*) as count from Bookmarks WHERE postId IN (${postIdString}) GROUP BY postId`,
+        );
+        responseData = { code: 211, result: bookmarks };
       }
-
       return get(
         method,
         pathname,
