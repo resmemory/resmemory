@@ -11,7 +11,7 @@ const LoginForm = () => {
   return (
     <div className="myinfo_first">
       <p className="myinfo_login">로그인 해주세요</p>
-      <img src="/images/thn_logo.png" alt="LogoImg" />
+      <img src="../../../assets/image/thn_logo.png" alt="LogoImg" />
     </div>
   );
 };
