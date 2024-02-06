@@ -272,6 +272,22 @@ const onRequest = async (res, method, pathname, params, key, cb) => {
         }
       }
 
+      // 공지 조회
+      if (pathname === '/notice') {
+        try {
+          const result = await Posts.findAll({
+            where: { category: 'notice' },
+            order: [['createdAt', 'DESC']],
+            limit: 1,
+            raw: true,
+          });
+
+          responseData = { result };
+        } catch (err) {
+          responseData = { code: 340 };
+        }
+      }
+
       // 내가 쓴 글 조회
       if (pathname === '/myposts') {
         try {
