@@ -161,7 +161,7 @@
   right: 0;
   bottom: -13px;
 }
-@media screen and (max-width: 1400px) {
+@media screen and (max-width: 1320px) {
   .CardSection {
     width: 1rem !important;
     height: 4rem !important;

@@ -94,7 +94,7 @@
 .accordian-category {
   display: none;
 }
-@media screen and (max-width: 1400px) {
+@media screen and (max-width: 1320px) {
   .boardmain {
     padding: 0 !important;
     margin: 0 !important;
