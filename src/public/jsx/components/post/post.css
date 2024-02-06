@@ -80,6 +80,7 @@
   background-color: black;
   color: white;
 }
+
 @media screen and (max-width: 430px) {
   .write,
   .cancel {
