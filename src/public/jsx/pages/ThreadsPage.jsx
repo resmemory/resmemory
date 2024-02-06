@@ -18,6 +18,11 @@ function ThreadsPage() {
     fetchData();
   }, []);
 
+  const RandomThreadColors = () => {
+    const colors = ['#C6DBDA', '#FEE1E8', '#FED7C3', '#ECD5E3'];
+    return colors[Math.floor(Math.random() * colors.length)];
+  };
+
   async function loginChecker() {
     if (sessionStorage.getItem('Authorization')) {
       const profileresponse = await fetch(`./api/users`, {
@@ -130,7 +135,11 @@ function ThreadsPage() {
         </div>
         <div id="threadList">
           {threads.map((thread) => (
-            <div className="thread" key={thread.threadId}>
+            <div
+              className="thread"
+              key={thread.threadId}
+              style={{ backgroundColor: RandomThreadColors() }}
+            >
               <h2>{thread.content}</h2>
               <p>
                 {new Date(thread.createdAt).toLocaleString('ko-KR', {
