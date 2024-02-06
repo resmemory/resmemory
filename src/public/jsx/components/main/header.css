@@ -59,10 +59,12 @@
     display: block;
     background-color: #f8f8f8;
     border: none;
-    width: 3rem;
+    width: 5rem;
     height: 3rem;
     font-size: 2rem;
     float: right !important;
+    text-align: right;
+    color: black;
   }
   .Header_ul {
     display: none;
@@ -70,10 +72,10 @@
   .Header_ul_accordian {
     list-style: none;
     text-align: right;
-    float: right;
   }
   .Header_ul_accordian li {
     font-size: 0.8rem;
     margin-bottom: 0.2rem;
+    margin-right: 0.2rem;
   }
 }
