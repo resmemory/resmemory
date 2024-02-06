@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useRef } from 'react';
 import Header from '../components/main/header.jsx';
 
 // CSS 불러오기
@@ -9,6 +9,7 @@ function ChatPage() {
   const [socket, setSocket] = useState(null);
   const [messageInput, setMessageInput] = useState('');
   const [chatMessages, setChatMessages] = useState([]);
+  const chatContainerRef = useRef(null);
 
   // 컴포넌트가 렌더링 될
   useEffect(() => {

@@ -105,7 +105,6 @@ const CategorySelect = ({ onCategoryChange }) => {
         <option value="1990">1990</option>
         <option value="1980">1980</option>
         <option value="1970">1970</option>
-        <option value="1960">1960</option>
         <option value="notice" style={{ display: displayNotice }}>
           notice
         </option>
@@ -183,9 +182,13 @@ const Post = ({ postId }) => {
 
   const handleWritePost = async () => {
     try {
-      if (postData.category === undefined || postData.title === undefined || postData.content === undefined) {
-      alert('카테고리, 제목, 내용을 전부 작성해주세요')
-      return;
+      if (
+        postData.category === undefined ||
+        postData.title === undefined ||
+        postData.content === undefined
+      ) {
+        alert('카테고리, 제목, 내용을 전부 작성해주세요');
+        return;
       }
       const form = new FormData();
       form.append('authorization', sessionStorage.getItem('Authorization'));
@@ -231,7 +234,7 @@ const Post = ({ postId }) => {
   return (
     <div className="post-container">
       <CategorySelect onCategoryChange={handleCategoryChange} />
-    <TitleInput title={postData.title} onChange={handleTitleChange} />
+      <TitleInput title={postData.title} onChange={handleTitleChange} />
       <ImageUpload onImageChange={handleImageChange} onDeleteImage={handleDeleteImage} />
       <div className="content">
         <ContentInput content={postData.content} onChange={handleContentChange} />
@@ -246,8 +249,8 @@ const Post = ({ postId }) => {
           </>
         ) : (
           <>
-            <button className="cancel">취소</button>
-            <button className="write" onClick={handleWritePost}>
+            <button className="postcancel">취소</button>
+            <button className="postwrite" onClick={handleWritePost}>
               작성
             </button>
           </>
