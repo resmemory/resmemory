@@ -124,6 +124,23 @@ const Board = () => {
             </button>
           ))}
         </div>
+        <div className="accordian-category">
+          <select
+            className="accordian-select"
+            onChange={(e) => {
+              handleCategoryClick(e.target.value);
+            }}
+          >
+            <option value="전체">전체</option>
+            <option value="notice">notice</option>
+            <option value="2020">2020</option>
+            <option value="2010">2010</option>
+            <option value="2000">2000</option>
+            <option value="1990">1990</option>
+            <option value="1980">1980</option>
+            <option value="1970">1970</option>
+          </select>
+        </div>
         <div className="sort">
           <select
             className="sort-select"

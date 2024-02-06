@@ -91,6 +91,9 @@
   left: 0;
   bottom: -13px;
 }
+.accordian-category {
+  display: none;
+}
 @media screen and (max-width: 1400px) {
   .boardmain {
     padding: 0 !important;

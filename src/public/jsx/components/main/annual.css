@@ -56,46 +56,35 @@
   color: #ffffff;
 }
 @media screen and (max-width: 1400px) {
-  .categorybox {
-    display: flex;
-    position: relative;
-    padding: 0 !important;
-    justify-content: space-between;
-    height: 3rem !important;
-    margin: 0 !important;
-  }
-
   .category {
-    list-style: none;
-    padding: 0;
-    flex-direction: row; /* 가로 방향으로 나열하도록 설정 */
-  }
-
-  .category-button {
-    padding: 0px 0px !important; /* 버튼에 여백을 추가 */
-    border: none !important;
-    margin-right: 0.8rem !important;
-    width: 2rem;
-    height: 1rem;
-    position: relative;
-    font-family: Poppins;
-    font-size: 10px;
-    font-weight: 400;
-    line-height: 0 !important;
-    letter-spacing: 0.02em;
-    text-align: center;
+    display: none;
   }
 
   .sort {
-    position: absolute;
-    right: 0;
+    position: relative !important;
+  }
+  .accordian-category {
+    display: block;
+    position: relative !important;
+  }
+  .categorybox {
+    display: flex;
+    flex-direction: row;
+    position: relative;
+    padding: 0 !important;
+    justify-content: space-between;
+    height: 2rem !important;
+    margin: 1rem !important;
   }
 
-  .sort-select {
+  .sort-select,
+  .accordian-select {
+    font-family: Poppins;
+    color: black;
     border-radius: 999px;
-    width: 3rem !important;
+    width: 5rem !important;
     height: 1rem !important;
-    font-size: 8px !important;
+    font-size: 12px !important;
     line-height: 24px;
     font-weight: 500;
     text-align: center;
