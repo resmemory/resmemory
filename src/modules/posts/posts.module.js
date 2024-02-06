@@ -13,6 +13,7 @@ class PostsModule extends TcpServer {
       'POST/posts',
       'GET/posts',
       'GET/myposts',
+      'GET/notice',
       'PATCH/posts',
       'DELETE/posts',
       'POST/comments',
