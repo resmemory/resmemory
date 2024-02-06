@@ -61,7 +61,6 @@ const General_Login = () => {
           <button type="button" onClick={handleTogglePassword}>
             {showPassword ? '숨기기' : '표시'}
           </button>
-          <p className="missingPW">비밀번호를 잊으셨나요?</p>
         </div>
         <button className="loginBtn" onClick={login}>
           로그인

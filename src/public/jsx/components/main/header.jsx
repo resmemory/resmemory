@@ -3,10 +3,9 @@ import { useNavigate } from 'react-router-dom';
 import '../../components/main/header.css';
 
 const Header = () => {
-  const isLoggedIn = !!sessionStorage.getItem('Authorization');
-  const [userData, setUserData] = useState(null);
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [accordianVisiblity, setaccordianVisiblity] = useState(false);
-
+  const [isAdmin, setisAdmin] = useState(false);
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -25,7 +24,12 @@ const Header = () => {
         }
 
         const result = await response.json();
-        setUserData(result.responseData.bodies);
+        if (result.responseData.bodies.userId) {
+          setIsLoggedIn(true);
+          if (result.responseData.bodies.userId == 1) {
+            setisAdmin(true);
+          }
+        }
       } catch (error) {
         console.error('데이터를 가져오는 중 에러가 발생했습니다.', error);
       }
@@ -76,6 +80,10 @@ const Header = () => {
     navigate('/login');
   };
 
+  const handleAdminClick = () => {
+    navigate('/admin');
+  };
+
   const handleAccordian = () => {
     setaccordianVisiblity(!accordianVisiblity);
   };
@@ -93,6 +101,11 @@ const Header = () => {
             </button>
             {accordianVisiblity ? (
               <ul className="Header_ul_accordian">
+                {isAdmin && (
+                  <li className="admin" onClick={handleAdminClick}>
+                    관리자
+                  </li>
+                )}
                 {isLoggedIn && (
                   <>
                     <li className="writepost_btn" onClick={handleWritePostClick}>
@@ -125,6 +138,11 @@ const Header = () => {
         </div>
 
         <ul className="Header_ul">
+          {isAdmin && (
+            <li className="admin" onClick={handleAdminClick}>
+              관리자
+            </li>
+          )}
           {isLoggedIn && (
             <>
               <li className="writepost_btn" onClick={handleWritePostClick}>

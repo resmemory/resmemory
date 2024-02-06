@@ -1,83 +1,88 @@
-  .post-container {
-    width: 100%;
-    max-width: 1080px;
-    margin: 0 auto;
-    padding: 0 64px;
-    box-sizing: border-box;
-    height: auto;
-    display: flex;
-    flex-direction: column;
-    gap: 1px;
-  }
-  
-  .title {
-    font-size: 24px;
-    height: 56px; /* Adjusted height */
-    line-height: 32px; 
-    letter-spacing: 0.02em;
-    color: #000000; 
-    margin-bottom: 10px;
-    align-self: flex-end; /* Added align-self */
-    width : 99.2%;
-    border-radius: 6px;
-    align-items: center;
-    border : 1px solid #ddd
-  }
+.post-container {
+  width: 100%;
+  max-width: 1080px;
+  margin: 0 auto;
+  padding: 0 64px;
+  box-sizing: border-box;
+  height: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 1px;
+}
 
-  .content textarea {
-    width: calc(100% - 36px);
-    max-width: 952px;
-    height: 500px;
-    border-radius: 6px;
-    font-size: 16px;
-    padding: 16px;
-    border: 1px solid #ddd;
-    resize: none;
-    margin-top: 10px;
-    align-self: flex-end; 
-  }
-  
-  .annual-select {
-    width: 196px; /* 또는 필요한 크기로 조절 */
-    height: 56px; /* 또는 필요한 크기로 조절 */
-    padding: 1px; /* 옵션 내용과 경계 사이 여백 조절 */
-    font-size: 20px; /* 글자 크기 조절 */
-    border-radius: 6px; /* 필요한 경우에만 사용 */
-    /* border: 1px solid #ddd; */
-   margin-bottom: 10px;
-    align-self: flex-end; /* Added align-self */
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    border : 1px solid #ddd
-  } 
+.title {
+  font-size: 24px;
+  height: 56px; /* Adjusted height */
+  line-height: 32px;
+  letter-spacing: 0.02em;
+  color: #000000;
+  margin-bottom: 10px;
+  align-self: flex-end; /* Added align-self */
+  width: 99.2%;
+  border-radius: 6px;
+  align-items: center;
+  border: 1px solid #ddd;
+}
 
-  .button-container {
-    display: flex;
-    justify-content: flex-end;
-    font-size: 16px;
-  }
+.content textarea {
+  width: calc(100% - 36px);
+  max-width: 952px;
+  height: 500px;
+  border-radius: 6px;
+  font-size: 16px;
+  padding: 16px;
+  border: 1px solid #ddd;
+  resize: none;
+  margin-top: 10px;
+  align-self: flex-end;
+}
 
-  .write {
-    background-color : #323232;
-    color: #ffffff !important;
-    width: 50px !important;
-    height: 50px;
-    border-radius: 10px !important;
-    font-weight: 600;
-  }
+.annual-select {
+  width: 196px; /* 또는 필요한 크기로 조절 */
+  height: 56px; /* 또는 필요한 크기로 조절 */
+  padding: 1px; /* 옵션 내용과 경계 사이 여백 조절 */
+  font-size: 20px; /* 글자 크기 조절 */
+  border-radius: 6px; /* 필요한 경우에만 사용 */
+  /* border: 1px solid #ddd; */
+  margin-bottom: 10px;
+  align-self: flex-end; /* Added align-self */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border: 1px solid #ddd;
+}
 
+.button-container {
+  display: flex;
+  justify-content: flex-end;
+  font-size: 16px;
+}
+
+.write {
+  background-color: #323232;
+  color: #ffffff !important;
+  width: 50px !important;
+  height: 50px;
+  border-radius: 10px !important;
+  font-weight: 600;
+}
+
+.cancel {
+  background-color: #c2c2c2;
+  width: 50px !important;
+  height: 50px;
+  border-radius: 10px !important;
+  font-weight: 600;
+  margin-right: 2px;
+}
+
+.none {
+  background-color: black;
+  color: white;
+}
+@media screen and (max-width: 430px) {
+  .write,
   .cancel {
-    background-color : #c2c2c2;
-    width: 50px !important;
-    height: 50px;
-    border-radius: 10px !important;
-    font-weight: 600;
-    margin-right : 2px;
+    min-width: 6rem !important;
   }
-
-  .none {
-    background-color: black;
-    color: white
-  }
-  
+}
