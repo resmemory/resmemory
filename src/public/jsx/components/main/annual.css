@@ -55,7 +55,7 @@
   background-color: #323232;
   color: #ffffff;
 }
-@media screen and (max-width: 1400px) {
+@media screen and (max-width: 1320px) {
   .category {
     display: none;
   }
