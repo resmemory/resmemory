@@ -273,7 +273,7 @@
   right: 50px;
   bottom: 5px;
 }
-@media screen and (max-width: 1400px) {
+@media screen and (max-width: 1320px) {
   .myinfo_first {
     width: 20rem !important;
     height: 18rem !important;

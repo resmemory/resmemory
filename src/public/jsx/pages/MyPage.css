@@ -33,7 +33,7 @@
   flex: 1;
   margin-left: 16px;
 }
-@media screen and (max-width: 1400px) {
+@media screen and (max-width: 1320px) {
   .flex-container {
     flex-direction: column !important;
     gap: 1rem !important;
