@@ -176,3 +176,8 @@
   height: 50%;
   border-radius: 5px;
 }
+
+#post-writter,
+#comment-writter {
+  margin-left: 0.5rem;
+}

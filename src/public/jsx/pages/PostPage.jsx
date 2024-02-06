@@ -269,7 +269,7 @@ const PostPage = () => {
             <div className="post-category">{postDetails.category}</div>
             <div className="post-page-title">{postDetails.title}</div>
             <div className="post-nickname">
-              작성자 <p id="post-writter"> {'ㅤ' + postDetails.nickname}</p>
+              작성자 <p id="post-writter"> {postDetails.nickname}</p>
             </div>
 
             <div className="post-buttons">
@@ -418,7 +418,7 @@ const PostPage = () => {
             <div key={comment.commentId} className="comment-item">
               <div className="comment-info">
                 <div className="comment-nickname">
-                  댓글 작성자 <p id="comment-writter"> {'ㅤ' + comment.nickname} </p>
+                  댓글 작성자 <p id="comment-writter"> {comment.nickname} </p>
                 </div>
                 <div className="comment-content">{comment.content}</div>
                 <div className="comment-date">
