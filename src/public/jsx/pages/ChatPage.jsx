@@ -70,6 +70,11 @@ function ChatPage() {
     setChatMessages((prevMessages) => [...prevMessages, { message, senderNickname }]);
   };
 
+  function scrollToBottom() {
+    const chatMessages = document.getElementById('chat-messages');
+    chatMessages.scrollTop = chatMessages.scrollHeight;
+  }
+
   const sendMessage = () => {
     if (messageInput) {
       const data = {
@@ -77,7 +82,7 @@ function ChatPage() {
         nickname: userNickname,
       };
 
-      if (userNickname == null) {
+      if (!userNickname) {
         return alert('로그인이 필요한 기능입니다.');
       }
 
@@ -85,6 +90,7 @@ function ChatPage() {
 
       // 들어온 메시지 담기
       setMessageInput('');
+      scrollToBottom();
     }
   };
 
