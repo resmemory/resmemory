@@ -25,12 +25,12 @@
 - 개발 팀 기능 역할 분담
   | 이름 | Backend | Frontend |
   | -------- | -------------------------- | ---------------------------- |
-  | 이다영 | Users 서비스, CI/CD, 테스트코드, 로그전략 | 채팅, 글 작성 페이지, 스레드 페이지 |
+  | 이다영 | Users 서비스, CI/CD, 테스트코드, 로그전략 | 채팅, 글 상세 페이지, 스레드 페이지 |
   | 김주희 | Posts 서비스, 로그전략 | 1차 프론트엔드 |
   | 김민규 | Admin 서비스, Chat 서비스 | 1차 프론트엔드 |
   | 김지혜 | Threads 서비스, 테스트코드 | 로그인 페이지 |
   | 장시훈 | - | 마이페이지, 로그인 페이지 |
-  | 배찬용 | - | 메인페이지 |
+  | 배찬용 | - | 메인페이지, 글 작성 페이지 |
   | 이은찬 | - | 관리자페이지 |
 
 - 개발 일정
@@ -131,7 +131,7 @@
 # 💻 Tech Spec
 
 - Backend Language : Node.js (ver 18.19.0)
-- Frontend Language : Html5, Javascript
+- Frontend Language : React
 - Server : Amazon EC2
 - DB : mysql(ver.8.0.35), MongoDB
 - Cache : Redis(ver.6.2.6)
