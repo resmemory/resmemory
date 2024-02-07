@@ -2,7 +2,7 @@
 import React, { useState } from 'react';
 import Board from '../components/main/board.jsx';
 import Header from '../components/main/header.jsx';
-import Notice from '../components/main/Notice.jsx';
+import Notice from '../components/main/notice.jsx';
 
 const HomePage = () => {
   return (

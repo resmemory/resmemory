@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import '../../components/main/Header.css';
+import '../../components/main/header.css';
 import Logo from '../svg/Logo.jsx';
 
 const Header = () => {
