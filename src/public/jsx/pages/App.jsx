@@ -11,8 +11,8 @@ import ThreadsPage from './ThreadsPage.jsx';
 import WritePostPage from './WritePostPage.jsx';
 import PostPage from './PostPage.jsx';
 import OauthPage from './OauthPage.jsx';
-import KakaoLogin from '../components/login/Kakao_Login.jsx';
-import HelloPage from './HelloPage.jsx';
+import KakaoLogin from '../components/login/KakaoLogin.jsx';
+import SingUpPage from './SignUpPage.jsx';
 
 function App() {
   return (
@@ -29,7 +29,7 @@ function App() {
         <Route path="/mypage" element={<MyPage />} />
         <Route path="/write" element={<WritePostPage />} />
         <Route path="/post" element={<PostPage />} />
-        <Route path="/signup" element={<HelloPage />} />
+        <Route path="/signup" element={<SingUpPage />} />
       </Routes>
     </Router>
   );

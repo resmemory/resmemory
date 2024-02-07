@@ -1,0 +1,16 @@
+#login-button {
+  font-family: Poppins;
+  font-size: 15px;
+  border: none;
+  background: #323232;
+  color: white;
+  height: 45px;
+  width: 300px;
+  border-radius: 7px;
+  margin-bottom: 7px;
+}
+
+#kakao-login-button {
+  width: 300px;
+  margin-bottom: 7px;
+}
