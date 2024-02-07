@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react';
 import ReportContainer from '../components/admin/ReportContainer.jsx';
-import Header from '../components/main/header.jsx';
+import Header from '../components/main/Header.jsx';
 import { useNavigate } from 'react-router-dom';
 
 const styles = {
