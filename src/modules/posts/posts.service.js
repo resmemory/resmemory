@@ -282,7 +282,7 @@ const onRequest = async (res, method, pathname, params, key, cb) => {
             raw: true,
           });
 
-          responseData = { result };
+          responseData = result.length > 0 ? { result: result[0] } : { code: 340 };
         } catch (err) {
           responseData = { code: 340 };
         }

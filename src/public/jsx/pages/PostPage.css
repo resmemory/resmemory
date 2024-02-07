@@ -140,8 +140,15 @@
   color: tomato;
 }
 
+.button_report-button:hover {
+  color: black;
+}
 .button_bookmark-button {
   color: orange;
+}
+
+.button_bookmark-button:hover {
+  color: black;
 }
 .edit-comment-btn {
   color: black;
