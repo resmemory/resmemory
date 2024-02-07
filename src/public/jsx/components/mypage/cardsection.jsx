@@ -1,6 +1,5 @@
 import React, { useEffect, useState, useRef } from 'react';
 import Masonry from 'react-masonry-css';
-import '../../components/mypage/cardsection.css';
 
 const CardSection = () => {
   const [board, setBoard] = useState([]);

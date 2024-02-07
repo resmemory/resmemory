@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from 'react';
-import '../../components/mypage/myinfo.css';
 import LoginForm from '../../components/mypage/loginform.jsx';
 
 const MyInfo = () => {

@@ -1,5 +1,5 @@
 import React, { useEffect, useState, useRef } from 'react';
-import Header from '../components/main/header.jsx';
+import Header from '../components/main/Header.jsx';
 
 // CSS 불러오기
 import './ChatPage.css';

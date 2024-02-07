@@ -1,9 +1,8 @@
 import React from 'react';
 import MyInfo from '../../jsx/components/mypage/myinfo.jsx';
-// import Card from '../components/mypage/card.jsx';
-import '../pages/MyPage.css';
+
 import CardSection from '../components/mypage/cardsection.jsx';
-import Header from '../components/main/header.jsx';
+import Header from '../components/main/Header.jsx';
 
 function MyPage() {
   return (
