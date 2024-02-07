@@ -1,12 +1,11 @@
 import React from 'react';
-import '../components/login/LoginPage.css';
-import General_Login from '../components/login/General_Login.jsx';
+import GeneralLogin from '../components/login/GeneralLogin.jsx';
 
 const Login = () => {
   return (
-    <div className="pageContainer">
-      <div className="contentContainer">
-        <General_Login />
+    <div className="login">
+      <div>
+        <GeneralLogin />
       </div>
     </div>
   );

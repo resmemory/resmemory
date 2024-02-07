@@ -1,39 +1,7 @@
 import React from 'react';
-import PropTypes from 'prop-types';
-import { Link, useNavigate } from 'react-router-dom';
-import '../LoginPage.css';
+import { useNavigate } from 'react-router-dom';
+import './LoginButton.css';
 
-const Button = ({ label, type }) => {
-  let buttonStyle = 'button';
-
-  switch (type) {
-    case 'kakao':
-      buttonStyle += ' button-kakao';
-      break;
-    case 'login':
-      buttonStyle += ' button-login';
-      break;
-    default:
-      break;
-  }
-
-  const path = type === 'login' ? '/general_login' : `/kakao_login`;
-
-  return (
-    <Link to={path} className="button-link">
-      <button className={buttonStyle}>{label}</button>
-    </Link>
-  );
-};
-
-Button.propTypes = {
-  label: PropTypes.string.isRequired,
-  type: PropTypes.string.isRequired,
-};
-
-const handleClickSignup = () => {
-  window.location.href = './signup';
-};
 const LoginButton = () => {
   const navigate = useNavigate();
 
@@ -41,18 +9,22 @@ const LoginButton = () => {
     navigate('/general_login');
   };
 
+  const handleKakaoLoginClick = () => {
+    navigate('/kakao_login');
+  };
+
   return (
     <>
-      <Button label="카카오 로그인" type="kakao" />
-      <Button label="로그인" type="login" onClick={handleLoginClick} />
-      <div className="signuptext">
-        <p>그땐이 처음이시라면?</p>
-        <p className="signupbtn" onClick={handleClickSignup}>
-          회원가입
-        </p>
-      </div>
+      <img
+        src="../../../../assets/image/kakao_login_large_wide.png"
+        onClick={handleKakaoLoginClick}
+        id="kakao-login-button"
+      />
+      <button id="login-button" onClick={handleLoginClick}>
+        로그인
+      </button>
     </>
   );
 };
 
-export { Button, LoginButton };
+export default LoginButton;

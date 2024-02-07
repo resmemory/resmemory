@@ -1,14 +1,18 @@
 import React from 'react';
-import LoginMain from '../components/login/LoginMain.jsx';
-import { LoginButton } from '../components/login/button/loginButton.jsx';
-import '../components/login/LoginPage.css';
+
+import LoginTitle from '../components/login/LoginTitle.jsx';
+import LoginButton from '../components/login/button/loginButton.jsx';
+import SignUpButton from '../components/login/button/SignUpButton.jsx';
+
+import './LoginPage.css';
 
 function LoginPage() {
   return (
-    <div className="pageContainer">
-      <div className="contentContainer">
-        <LoginMain />
+    <div className="login">
+      <div>
+        <LoginTitle />
         <LoginButton />
+        <SignUpButton />
       </div>
     </div>
   );
