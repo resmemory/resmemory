@@ -1,5 +1,5 @@
 import React from 'react';
-import SignUp from '../components/signup/Signup.jsx';
+import SignUp from '../components/signup/SignUp.jsx';
 import SignUpTitle from '../components/signup/SignUpTitle.jsx';
 
 import './SignUpPage.css';
