@@ -2,8 +2,7 @@ import React, { useState, useEffect } from 'react';
 
 import './Verify.css';
 
-function Verify() {
-  const [signupEmail, setSignupEmail] = useState('');
+function Verify({ setSignupEmail, signupEmail }) {
   const [receiveNumber, setReceiveNumber] = useState('');
   const [buttonColor, setButtonColor] = useState('#b4b4b4');
   const [timer, setTimer] = useState(-1);

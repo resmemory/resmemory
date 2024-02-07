@@ -4,6 +4,7 @@ import Verify from './Verify.jsx';
 import './SignUp.css';
 
 const SignUp = () => {
+  const [signupEmail, setSignupEmail] = useState('');
   const [signupPassword, setSignupPassword] = useState('');
   const [confirm, setConfirm] = useState('');
   const [nickname, setNickname] = useState('');
@@ -55,7 +56,7 @@ const SignUp = () => {
 
   return (
     <>
-      <Verify />
+      <Verify setSignupEmail={setSignupEmail} signupEmail={signupEmail} />
       <form>
         <input
           type="text"
