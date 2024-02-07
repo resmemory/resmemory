@@ -1,7 +1,7 @@
 // HomePage 컴포넌트
 import React, { useState } from 'react';
 import Board from '../components/main/board.jsx';
-import Header from '../components/main/Header.jsx';
+import Header from '../components/main/header.jsx';
 import Notice from '../components/main/Notice.jsx';
 
 const HomePage = () => {

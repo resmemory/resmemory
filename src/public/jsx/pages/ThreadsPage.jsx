@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import Header from '../components/main/Header.jsx';
+import Header from '../components/main/header.jsx';
 import './ThreadsPage.css';
 
 function ThreadsPage() {

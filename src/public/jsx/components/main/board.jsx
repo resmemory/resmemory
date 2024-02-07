@@ -1,7 +1,7 @@
 import React, { useEffect, useState, useRef } from 'react';
 import Masonry from 'react-masonry-css';
 import View from '../svg/View.jsx';
-import './Board.css';
+import './board.css';
 import Heart from '../svg/Heart.jsx';
 
 const Board = () => {
