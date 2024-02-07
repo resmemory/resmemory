@@ -23,7 +23,7 @@ const PostPage = () => {
     };
 
     fetchData();
-  }, [postId, loginedUserId]);
+  }, []);
 
   const loginChecker = async () => {
     if (sessionStorage.getItem('Authorization')) {
@@ -34,7 +34,9 @@ const PostPage = () => {
         },
       });
       const profileresult = await profileresponse.json();
-      setLoginedUserId(profileresult.responseData.bodies.userId);
+      if (profileresult.responseData.bodies.userId) {
+        setLoginedUserId(profileresult.responseData.bodies.userId);
+      }
     }
   };
 
