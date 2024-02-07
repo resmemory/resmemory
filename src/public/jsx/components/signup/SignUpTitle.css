@@ -1,0 +1,6 @@
+.sign-up-title {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  margin-bottom: 20px;
+}

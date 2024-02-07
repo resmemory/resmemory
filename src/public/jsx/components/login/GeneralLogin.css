@@ -1,0 +1,24 @@
+.general-login {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: center;
+  height: 160px;
+  position: relative;
+}
+
+.general-login > input {
+  padding: 10px;
+  width: 280px;
+  border: 1px solid #d2d2d2;
+  border-radius: 7px;
+}
+
+.general-login > #show-password {
+  position: absolute;
+  top: 64px;
+  right: 10px;
+  border: none;
+  background: white;
+  color: #427dee;
+}

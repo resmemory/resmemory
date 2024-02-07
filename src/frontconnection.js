@@ -19,6 +19,8 @@ function frontconnection(pathname, res, data) {
       res.writeHead(200, { 'Content-Type': 'text/css' });
     } else if (pathname.endsWith('.png')) {
       res.writeHead(200, { 'Content-Type': 'image/png' });
+    } else if (pathname.endsWith('.svg')) {
+      res.writeHead(200, { 'Content-Type': 'image/svg+xml' });
     } else if (pathname.endsWith('.html')) {
       res.writeHead(200, { 'Content-Type': 'text/html' });
     } else {
