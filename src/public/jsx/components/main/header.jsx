@@ -11,7 +11,7 @@ const Header = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await fetch('./api/users', {
+        const response = await fetch('/api/users', {
           method: 'GET',
           headers: {
             Authorization: sessionStorage.getItem('Authorization'),
