@@ -1,10 +1,11 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import '../../components/main/header.css';
+import Logo from '../svg/Logo.jsx';
 
 const Header = () => {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
-  const [accordianVisiblity, setaccordianVisiblity] = useState(false);
+  const [isVisible, setIsVisible] = useState(false);
   const [isAdmin, setisAdmin] = useState(false);
   const navigate = useNavigate();
 
@@ -83,91 +84,49 @@ const Header = () => {
   const handleAdminClick = () => {
     navigate('/admin');
   };
-
-  const handleAccordian = () => {
-    setaccordianVisiblity(!accordianVisiblity);
+  const handleMenuClick = () => {
+    setIsVisible(!isVisible);
   };
 
   return (
-    <section className="HeaderSection">
-      <div className="Header_first">
-        <div className="Header_box">
-          <a href="./">
-            <img src="../../../assets/image/thn_logo.png" alt="thn_logo" />
-          </a>
-          <div>
-            <button className="accordian" onClick={handleAccordian}>
-              ☰
-            </button>
-            {accordianVisiblity ? (
-              <ul className="Header_ul_accordian">
-                {isAdmin && (
-                  <li className="admin" onClick={handleAdminClick}>
-                    관리자
-                  </li>
-                )}
-                {isLoggedIn && (
-                  <>
-                    <li className="writepost_btn" onClick={handleWritePostClick}>
-                      글쓰기
-                    </li>
-                    <li className="thread_btn" onClick={handleThreadsClick}>
-                      스레드
-                    </li>
-                    <li className="chat_btn" onClick={handleChatClick}>
-                      채팅
-                    </li>
-                    <li className="mypage" onClick={handleMyPageClick}>
-                      마이페이지
-                    </li>
-                    <li className="logout" onClick={logout}>
-                      로그아웃
-                    </li>
-                  </>
-                )}
-                {!isLoggedIn && (
-                  <li className="login" onClick={handleLoginClick}>
-                    로그인
-                  </li>
-                )}
-              </ul>
-            ) : (
-              <></>
-            )}
-          </div>
-        </div>
-
-        <ul className="Header_ul">
-          {isAdmin && (
-            <li className="admin" onClick={handleAdminClick}>
-              관리자
-            </li>
-          )}
+    <section>
+      <Logo />
+      <div>
+        <button onClick={handleMenuClick}>☰</button>
+      </div>
+      <div>
+        <ul className="web-nav">
+          {isAdmin && <li onClick={handleAdminClick}>관리자</li>}
           {isLoggedIn && (
             <>
-              <li className="writepost_btn" onClick={handleWritePostClick}>
-                글쓰기
-              </li>
-              <li className="thread_btn" onClick={handleThreadsClick}>
-                스레드
-              </li>
-              <li className="chat_btn" onClick={handleChatClick}>
-                채팅
-              </li>
-              <li className="mypage" onClick={handleMyPageClick}>
-                마이페이지
-              </li>
-              <li className="logout" onClick={logout}>
+              <li onClick={handleWritePostClick}>글쓰기</li>
+              <li onClick={handleThreadsClick}>스레드</li>
+              <li onClick={handleChatClick}>채팅</li>
+              <li onClick={handleMyPageClick}>마이페이지</li>
+              <li id="logout" onClick={logout}>
                 로그아웃
               </li>
             </>
           )}
-          {!isLoggedIn && (
-            <li className="login" onClick={handleLoginClick}>
-              로그인
-            </li>
-          )}
+          {!isLoggedIn && <li onClick={handleLoginClick}>로그인</li>}
         </ul>
+        {isVisible && (
+          <ul className="mobile-nav">
+            {isAdmin && <li onClick={handleAdminClick}>관리자</li>}
+            {isLoggedIn && (
+              <>
+                <li onClick={handleWritePostClick}>글쓰기</li>
+                <li onClick={handleThreadsClick}>스레드</li>
+                <li onClick={handleChatClick}>채팅</li>
+                <li onClick={handleMyPageClick}>마이페이지</li>
+                <li id="logout" onClick={logout}>
+                  로그아웃
+                </li>
+              </>
+            )}
+            {!isLoggedIn && <li onClick={handleLoginClick}>로그인</li>}
+          </ul>
+        )}
       </div>
     </section>
   );

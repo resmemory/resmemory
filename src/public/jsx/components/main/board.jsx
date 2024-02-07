@@ -1,7 +1,8 @@
 import React, { useEffect, useState, useRef } from 'react';
 import Masonry from 'react-masonry-css';
+import View from '../svg/View.jsx';
 import './board.css';
-import './annual.css';
+import Heart from '../svg/Heart.jsx';
 
 const Board = () => {
   const [board, setBoard] = useState([]);
@@ -111,8 +112,8 @@ const Board = () => {
   };
 
   return (
-    <div className="boardmain">
-      <div className="categorybox">
+    <div className="board">
+      <div className="board-nav">
         <div className="category">
           {categories.map((target) => (
             <button
@@ -123,23 +124,6 @@ const Board = () => {
               {target}
             </button>
           ))}
-        </div>
-        <div className="accordian-category">
-          <select
-            className="accordian-select"
-            onChange={(e) => {
-              handleCategoryClick(e.target.value);
-            }}
-          >
-            <option value="전체">전체</option>
-            <option value="notice">notice</option>
-            <option value="2020">2020</option>
-            <option value="2010">2010</option>
-            <option value="2000">2000</option>
-            <option value="1990">1990</option>
-            <option value="1980">1980</option>
-            <option value="1970">1970</option>
-          </select>
         </div>
         <div className="sort">
           <select
@@ -161,26 +145,35 @@ const Board = () => {
           700: 2,
           500: 1,
         }}
-        className="my-masonry-grid"
-        columnClassName="my-masonry-grid_column"
+        className="masonry-grid"
+        columnClassName="masonry-grid-column"
         ref={containerRef}
       >
         {board.map((post) => (
           <div key={post.id} className="post" onClick={() => handlePostClick(post.postId)}>
             {post.img && <img src={post.img} alt="Post Image" />}
             <div className="postbox">
-              <p id="post-category">{post.category}</p>
-              <p className="bookmarks">❤️ {post.bookmarks}</p>
-              <p className="post-title">
-                {' '}
+              <div>
+                <p>{post.category}</p>
+                <div>
+                  <p>
+                    <View /> {post.viewCount}
+                  </p>
+                  <p>
+                    <Heart /> {post.bookmarks ? post.bookmarks : 0}
+                  </p>
+                </div>
+              </div>
+              <p id="post-title">
                 {post.title.length > 10 ? post.title.slice(0, 10) + '...' : post.title}
               </p>
-              <p className="post-nickname">{post.nickname}</p>
+              <div>
+                <p>{post.nickname}</p>
 
-              <span className="post-viewcount">조회수 {post.viewCount}</span>
-              <span className="post-date">
-                {new Date(post.createdAt).toLocaleDateString('ko-KR', { timeZone: 'Asia/Seoul' })}
-              </span>
+                <p>
+                  {new Date(post.createdAt).toLocaleDateString('ko-KR', { timeZone: 'Asia/Seoul' })}
+                </p>
+              </div>
             </div>
           </div>
         ))}

@@ -6,7 +6,7 @@ import Notice from '../components/main/notice.jsx';
 
 const HomePage = () => {
   return (
-    <div className="#">
+    <div className="home-page">
       <Header />
       <Notice />
       <Board />

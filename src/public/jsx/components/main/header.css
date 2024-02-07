@@ -1,81 +1,62 @@
-.Header_first {
-  height: 312px;
-  padding: 5% 4%;
-  gap: 24px;
-  position: relative;
-  width: 100%;
-  box-sizing: border-box;
+section {
+  padding: 40px;
+  height: 100px;
 }
 
-.Header_first img {
-  width: 80px;
-  height: 112px;
-}
-
-.Header_ul {
-  display: flex;
-  justify-content: flex-end;
-  width: 100%;
-  height: 24px;
-  gap: 24px;
-  list-style: none;
-  box-sizing: border-box;
-  margin-top: 70px;
-}
-
-.Header_ul li {
-  height: 25px;
-  color: #323232;
-  white-space: nowrap;
-  text-decoration: none;
-  font-family: Poppins;
-  font-size: 16px;
-  font-weight: 600;
-  line-height: 24px;
-  letter-spacing: 0em;
-  text-align: left;
-  margin-left: 50px;
-  cursor: pointer;
-}
-
-.logout {
-  color: red !important;
-}
-.accordian {
+section > div > button {
+  width: 40px;
+  height: 40px;
+  font-size: 20px;
+  background: #f9f9f9;
+  color: black;
+  font-weight: 900;
+  border: none;
   display: none;
 }
 
-@media screen and (max-width: 430px) {
-  .Header_first {
-    height: 180px !important;
-  }
-  .Header_box {
-    display: flex;
-    flex-direction: row;
-    align-items: flex-start;
-    justify-content: space-between;
-  }
-  .accordian {
-    display: block;
-    background-color: #f8f8f8;
-    border: none;
-    width: 5rem;
-    height: 3rem;
-    font-size: 2rem;
-    float: right !important;
-    text-align: right;
-    color: black;
-  }
-  .Header_ul {
+section > div {
+  display: flex;
+  justify-content: flex-end;
+}
+
+section > div > ul {
+  display: flex;
+  flex-direction: row;
+  list-style: none;
+  justify-content: flex-end;
+}
+section > div > ul > li {
+  font-size: 14px;
+  margin: 18px;
+  font-weight: 600;
+  color: black;
+}
+
+#logout {
+  color: #ec5a5a;
+}
+.mobile-nav {
+  display: none;
+}
+@media screen and (max-width: 1200px) {
+  .web-nav {
     display: none;
   }
-  .Header_ul_accordian {
-    list-style: none;
-    text-align: right;
+  .mobile-nav {
+    padding-top: 18px;
+    height: 100vh;
+    flex-direction: column;
+    width: 170px;
+    display: block;
+    background: #323232;
+    opacity: 0.9;
+    z-index: 1;
   }
-  .Header_ul_accordian li {
-    font-size: 0.8rem;
-    margin-bottom: 0.2rem;
-    margin-right: 0.2rem;
+  .mobile-nav > li {
+    color: white;
+    font-weight: 400;
+  }
+  section > div > button {
+    display: block;
   }
 }
