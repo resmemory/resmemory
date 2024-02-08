@@ -20,6 +20,13 @@
   font-size: 14px;
   margin: 10px;
   width: 70px;
+  color: black;
+}
+.sort > select > option {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
 }
 
 .sort-select {
