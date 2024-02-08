@@ -1,4 +1,5 @@
 {
+  "homepage": ".",
   "name": "microservice-tcp-nbc",
   "version": "1.0.0",
   "description": "template for microservice ",
