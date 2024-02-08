@@ -1,5 +1,5 @@
 import React from 'react';
-import Logo from '../svg/logo.jsx';
+import Logo from '../svg/Logo.jsx';
 import './LoginTitle.css';
 const LoginMain = () => {
   return (

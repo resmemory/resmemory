@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import LoginForm from '../../components/mypage/loginform.jsx';
 
-import './myInfo.css';
+import './MyInfo.css';
 
 const MyInfo = () => {
   const [userData, setUserData] = useState(null);
