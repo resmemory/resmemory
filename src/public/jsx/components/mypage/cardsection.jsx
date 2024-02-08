@@ -1,6 +1,11 @@
 import React, { useEffect, useState, useRef } from 'react';
 import Masonry from 'react-masonry-css';
 
+import View from '../svg/view.jsx';
+import Heart from '../svg/heart.jsx';
+
+import './cardsection.css';
+
 const CardSection = () => {
   const [board, setBoard] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
@@ -100,57 +105,77 @@ const CardSection = () => {
   }, [bookmark]);
 
   return (
-    <div className={`CardSection ${bookmark ? 'bookmark-bg' : 'mypost-bg'}`}>
-      <div className="button-container flex space-x-2">
-        <button
-          className={`action-button1 ${!bookmark ? 'active' : ''}`}
-          onClick={() => {
-            setBookmark(false);
+    <>
+      <div className="card-section">
+        <div>
+          <button
+            className={`mypost-button ${!bookmark ? 'active' : ''}`}
+            onClick={() => {
+              setBookmark(false);
+            }}
+          >
+            내가 쓴 글
+          </button>
+          <button
+            className={`bookmark-button ${bookmark ? 'active' : ''}`}
+            onClick={() => {
+              setBookmark(true);
+            }}
+          >
+            북마크한 글
+          </button>
+        </div>
+        <Masonry
+          breakpointCols={{
+            default: itemsPerRow,
+            1100: 3,
+            700: 2,
+            500: 1,
           }}
+          className="masonry-grid"
+          columnClassName="masonry-grid_column"
+          ref={containerRef}
         >
-          내가 쓴 글
-        </button>
-        <button
-          className={`action-button2 ${bookmark ? 'active' : ''}`}
-          onClick={() => {
-            setBookmark(true);
-          }}
-        >
-          북마크한 글
-        </button>
-      </div>
-      <Masonry
-        breakpointCols={{
-          default: itemsPerRow,
-          1100: 3,
-          700: 2,
-          500: 1,
-        }}
-        className="my-masonry-grid"
-        columnClassName="my-masonry-grid_column"
-        ref={containerRef}
-      >
-        {board.map((post) => (
-          <div key={post.id} className="mypost" onClick={() => handlePostClick(post.postId)}>
-            {post.img && <img src={post.img} alt="Post Image" />}
-            <div className="postbox">
-              <p>{post.category}</p>
-              <p className="post-title">
-                {post.title.length > 10 ? post.title.slice(0, 10) + '...' : post.title}
-              </p>
-              <p className="post-nickname">{post.nickname}</p>
-              <br />
-              <span className="post-viewcount">조회수 {post.viewCount}</span>
-              <span className="post-date">
-                {new Date(post.createdAt).toLocaleDateString('ko-KR', { timeZone: 'Asia/Seoul' })}
-              </span>
+          {board.map((post) => (
+            <div
+              key={post.id}
+              className="post"
+              id="my-page-post"
+              onClick={() => handlePostClick(post.postId)}
+            >
+              {post.img && <img src={post.img} alt="Post Image" />}
+              <div className="postbox">
+                <div>
+                  <p>{post.category}</p>
+                  <div>
+                    <p>
+                      <View /> {post.viewCount}
+                    </p>
+                    <p>
+                      <Heart /> {post.bookmarks ? post.bookmarks : 0}
+                    </p>
+                  </div>
+                </div>
+                <p id="post-title">
+                  {post.title.length > 10 ? post.title.slice(0, 10) + '...' : post.title}
+                </p>
+                <div>
+                  <p>{post.nickname}</p>
+
+                  <p>
+                    {new Date(post.createdAt).toLocaleDateString('ko-KR', {
+                      timeZone: 'Asia/Seoul',
+                    })}
+                  </p>
+                </div>
+              </div>
             </div>
-          </div>
-        ))}
-        {hasMoreData && <div ref={sentinelRef}></div>}
-        {loading && <p>Loading...</p>}
-      </Masonry>
-    </div>
+          ))}
+          {hasMoreData && <div ref={sentinelRef}></div>}
+          {loading && <p>Loading...</p>}
+        </Masonry>
+      </div>
+    </>
   );
 };
 
