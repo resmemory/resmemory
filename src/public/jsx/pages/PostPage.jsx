@@ -1,6 +1,6 @@
 import React from 'react';
 import PostDetail from '../components/post/PostDetail.jsx';
-import Header from '../components/main/Header.jsx';
+import Header from '../components/main/header.jsx';
 import './PostPage.css';
 function PostPage() {
   return (
