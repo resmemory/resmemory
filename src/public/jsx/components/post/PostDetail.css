@@ -1,0 +1,65 @@
+.post-page #category {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50px;
+  background-color: #f9f9f9;
+  border: 1px solid #d2d2d2;
+  padding: 10px;
+  font-size: 14px;
+  width: 50px;
+  color: black;
+  cursor: pointer;
+}
+.post-page #writter {
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-start;
+  align-items: center;
+}
+
+#writter > p {
+  margin: 0 10px;
+  font-weight: 600;
+}
+#buttons {
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-end;
+  align-items: center;
+  height: 20px;
+}
+
+#buttons > button {
+  font-size: 18px;
+  font-weight: 600;
+  border: none;
+  background: #f9f9f9;
+}
+
+.post-page #edit-button,
+.post-page #bookmark-button {
+  color: #427dee;
+  margin-right: 20px;
+}
+
+.post-page #delete-button,
+.post-page #report-button {
+  color: #ff6e4e;
+}
+
+.post-page #content {
+  margin: 20px 0;
+  border-top: solid 1px #d2d2d2;
+  border-bottom: solid 1px #d2d2d2;
+  padding: 40px 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.post-page #content img {
+  width: 50%;
+}
