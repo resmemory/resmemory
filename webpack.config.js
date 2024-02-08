@@ -1,6 +1,7 @@
 const path = require('path');
 
 module.exports = {
+  stats: { errorDetails: true },
   mode: 'production',
   entry: './src/public/jsx/index.jsx',
   output: {
