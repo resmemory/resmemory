@@ -1,7 +1,7 @@
 import React from 'react';
 import MyInfo from '../../jsx/components/mypage/myinfo.jsx';
 
-import CardSection from '../components/mypage/cardsection.jsx';
+import CardSection from '../components/mypage/cardSection.jsx';
 import Header from '../components/main/header.jsx';
 
 import './MyPage.css';
