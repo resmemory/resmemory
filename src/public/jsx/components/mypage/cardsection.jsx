@@ -1,10 +1,10 @@
 import React, { useEffect, useState, useRef } from 'react';
 import Masonry from 'react-masonry-css';
 
-import View from '../svg/view.jsx';
-import Heart from '../svg/heart.jsx';
+import View from '../svg/View.jsx';
+import Heart from '../svg/Heart.jsx';
 
-import './CardSection.css';
+import './cardSection.css';
 
 const CardSection = () => {
   const [board, setBoard] = useState([]);

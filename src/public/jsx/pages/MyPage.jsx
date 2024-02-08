@@ -4,7 +4,7 @@ import MyInfo from '../../jsx/components/mypage/myinfo.jsx';
 import CardSection from '../components/mypage/cardsection.jsx';
 import Header from '../components/main/header.jsx';
 
-import './MyPage.css';
+import './myPage.css';
 
 function MyPage() {
   return (
