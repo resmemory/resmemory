@@ -4,23 +4,19 @@ import MyInfo from '../../jsx/components/mypage/myinfo.jsx';
 import CardSection from '../components/mypage/cardsection.jsx';
 import Header from '../components/main/header.jsx';
 
+import './mypage.css';
+
 function MyPage() {
   return (
-    <div className="#">
-      <header className="#">
-        <Header />
-      </header>
-      <main className="MainSection">
-        <div className="flex-container">
-          <section className="MyInformation">
-            <MyInfo />
-          </section>
-          <section className="MyCard">
-            <CardSection />
-          </section>
+    <>
+      <Header />
+      <div className="my-page">
+        <div>
+          <MyInfo />
+          <CardSection />
         </div>
-      </main>
-    </div>
+      </div>
+    </>
   );
 }
 

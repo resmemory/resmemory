@@ -54,4 +54,5 @@ form > div {
 .sign-up #close-button {
   width: 60px;
   background: #b4b4b4;
+  color: black;
 }

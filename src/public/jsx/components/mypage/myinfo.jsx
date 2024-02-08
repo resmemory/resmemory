@@ -1,6 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import LoginForm from '../../components/mypage/loginform.jsx';
 
+import './myinfo.css';
+
 const MyInfo = () => {
   const [userData, setUserData] = useState(null);
   const [password, setPassword] = useState('');
@@ -159,59 +161,56 @@ const MyInfo = () => {
   }
 
   const isKakaoUser = userData.email === 'kakaoId';
-  const isAdmin = userData.userId === 1;
-
-  function adminPage() {
-    location.href = './admin';
-  }
 
   return (
-    <div className="myinfo_first">
-      <div className="nicknamebox">
-        <p className="myinfo_nickname">닉네임</p>
-        <p className="myinfo_edit" onClick={handleModalOn}>
-          수정
-        </p>
+    <>
+      <div className="my-info">
+        <div>
+          <p>닉네임</p>
+          <button onClick={handleModalOn}>수정</button>
+        </div>
+        <div id="nickname">
+          <p>{userData.nickname}</p>
+        </div>
+        <div>
+          <p>가입방식</p>
+          <div className={`myinfo_user_type ${isKakaoUser ? 'kakaoUser' : 'localUser'}`}>
+            {isKakaoUser ? 'kakao' : 'local'}
+          </div>
+        </div>
+        <button id="signout" onClick={handleSignout}>
+          회원탈퇴
+        </button>
       </div>
-      <span className="myinfo_mynickname">
-        <p>{userData.nickname}</p>
-      </span>
-      <div className="myinfo_sign">
-        <p className="myinfo_signselect">가입방식</p>
-        <p className={`myinfo_signmenu ${isKakaoUser ? 'kakaoUser' : 'localUser'}`}>
-          {isKakaoUser ? 'kakao' : 'local'}
-        </p>
-      </div>
-      <p className="myinfo_signout" onClick={handleSignout}>
-        회원탈퇴
-      </p>
-
       <div className="modal">
         <div className="modal-content">
-          <h2>닉네임 변경</h2>
+          <h1>회원 정보 수정</h1>
           <input
             type="text"
             value={newNickname}
             placeholder={`${userData.nickname}`}
             onChange={(e) => setNewNickname(e.target.value)}
           />
-          <div className="editBtn">
-            <p className="myinfo_pwchange" onClick={handlePWChangeModalOn}>
-              비밀번호 변경
-            </p>
-            <p
+          <div>
+            <button
               onClick={() => {
                 handleSaveNickname(newNickname);
               }}
             >
-              변경
-            </p>
-            <p className="close" onClick={handleModalClose}>
+              닉네임 변경
+            </button>
+            <button id="close" onClick={handleModalClose}>
               취소
-            </p>
+            </button>
+          </div>
+          <div id="password-change">
+            <button id="my-info-password-change" onClick={handlePWChangeModalOn}>
+              비밀번호 변경 ➜
+            </button>
           </div>
         </div>
       </div>
+
       <div className="modal" id="PWChange">
         <div className="modal-content">
           <h2>비밀번호 변경</h2>
@@ -233,21 +232,20 @@ const MyInfo = () => {
           <button type="button" onClick={toggleConfirmVisibility}>
             {showConfirm ? '숨기기' : '표시'}
           </button>
-          <div className="editBtn">
-            <p
-              onClick={() => {
-                handlePWChange(confirm, password);
-              }}
-            >
-              변경
-            </p>
-            <p className="close" onClick={handlePWChangeModalClose}>
-              취소
-            </p>
-          </div>
+
+          <p
+            onClick={() => {
+              handlePWChange(confirm, password);
+            }}
+          >
+            변경
+          </p>
+          <p className="close" onClick={handlePWChangeModalClose}>
+            취소
+          </p>
         </div>
       </div>
-    </div>
+    </>
   );
 };
 
