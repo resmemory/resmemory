@@ -4,7 +4,7 @@ import Masonry from 'react-masonry-css';
 import View from '../svg/View.jsx';
 import Heart from '../svg/Heart.jsx';
 
-import './cardSection.css';
+import './CardSection.css';
 
 const CardSection = () => {
   const [board, setBoard] = useState([]);
