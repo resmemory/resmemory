@@ -32,7 +32,7 @@ const PostDetail = () => {
         },
       });
       const profileresult = await profileresponse.json();
-      if (profileresult.responseData.bodies.userId) {
+      if (profileresult.responseData.code == 171) {
         setLoginedUserId(profileresult.responseData.bodies.userId);
       }
     }

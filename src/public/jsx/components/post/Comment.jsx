@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import CommentEditModal from './modal/CommentEditModal.jsx';
 import CommentReportModal from './modal/CommentReportModal.jsx';
+import Balloon from '../svg/Balloon.jsx';
 
 function Comment({ userId, loginedUserId, postId }) {
   const [comments, setComments] = useState([]);
@@ -66,61 +67,54 @@ function Comment({ userId, loginedUserId, postId }) {
 
   return (
     <>
-      <div className="comment-box">
-        <h3>댓글</h3>
-        <div className="writeCommentBox">
-          <input type="text" className="comment-input" placeholder="댓글을 작성하세요" />
-          <button className="comment-submit-button" onClick={() => postComment()}>
-            작성
-          </button>
-        </div>
-        <div className="comment-list" id="comment-list">
-          {comments.map((comment) => (
-            <div key={comment.commentId} className="comment-item">
-              <div className="comment-info">
-                <div className="comment-nickname">
-                  댓글 작성자 <p id="comment-writter"> {comment.nickname} </p>
-                </div>
-                <div className="comment-content">{comment.content}</div>
-                <div className="comment-date">
-                  {new Date(comment.createdAt).toLocaleDateString('ko-KR', {
-                    timeZone: 'Asia/Seoul',
-                  })}
-                </div>
-
-                <div className="comment-buttons">
-                  {comment.isCommentOwner ? (
-                    <>
-                      <button
-                        className="button_edit-comment-button"
-                        onClick={() => modalOn(`#edit-comment-Modal-${comment.commentId}`)}
-                      >
-                        수정하기
-                      </button>
-                      <CommentEditModal commentId={comment.commentId} content={comment.content} />
-                      <button
-                        className="button_delete-comment-button"
-                        onClick={() => deleteComment(comment.commentId)}
-                      >
-                        삭제하기
-                      </button>
-                    </>
-                  ) : (
-                    <>
-                      <button
-                        className="button_report-comment-button"
-                        onClick={() => modalOn(`#report-comment-Modal-${comment.commentId}`)}
-                      >
-                        신고하기
-                      </button>
-                      <CommentReportModal commentId={comment.commentId} />
-                    </>
-                  )}
-                </div>
-              </div>
+      <h3>
+        <Balloon />
+        댓글
+      </h3>
+      <div className="comment">
+        <input type="text" placeholder="댓글을 작성하세요" />
+        <button onClick={() => postComment()}>작성</button>
+      </div>
+      <div className="comment-list">
+        {comments.map((comment) => (
+          <div key={comment.commentId}>
+            <div id="writter">
+              댓글 작성자 <p> {comment.nickname} </p>
             </div>
-          ))}
-        </div>
+            <p>{comment.content}</p>
+            <div className="comment-date">
+              {new Date(comment.createdAt).toLocaleDateString('ko-KR', {
+                timeZone: 'Asia/Seoul',
+              })}
+            </div>
+            <div id="buttons">
+              {comment.isCommentOwner ? (
+                <>
+                  <button
+                    id="edit-button"
+                    onClick={() => modalOn(`#edit-comment-Modal-${comment.commentId}`)}
+                  >
+                    수정하기
+                  </button>
+                  <CommentEditModal commentId={comment.commentId} content={comment.content} />
+                  <button id="delete-button" onClick={() => deleteComment(comment.commentId)}>
+                    삭제하기
+                  </button>
+                </>
+              ) : (
+                <>
+                  <button
+                    id="report-button"
+                    onClick={() => modalOn(`#report-comment-Modal-${comment.commentId}`)}
+                  >
+                    신고하기
+                  </button>
+                  <CommentReportModal commentId={comment.commentId} />
+                </>
+              )}
+            </div>
+          </div>
+        ))}
       </div>
     </>
   );
