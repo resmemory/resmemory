@@ -8,6 +8,7 @@
   border-radius: 7px;
   padding: 0 20px;
   opacity: 0.6;
+  cursor: pointer;
 }
 .notice > h1,
 .notice > p {

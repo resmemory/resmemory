@@ -16,6 +16,7 @@
   border: 1px solid #d2d2d2;
   border-radius: 7px;
   padding: 10px;
+  cursor: pointer;
 }
 .verify > div > button {
   width: 70px;
@@ -23,4 +24,5 @@
   background: #b4b4b4;
   color: white;
   border: none;
+  cursor: pointer;
 }

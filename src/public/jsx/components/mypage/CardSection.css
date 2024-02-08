@@ -18,6 +18,7 @@
   height: 40px;
   border-radius: 50px;
   border: 1px solid #d2d2d2;
+  cursor: pointer;
 }
 
 .card-section button.active {
@@ -28,6 +29,7 @@
 
 #my-page-post {
   width: 160px;
+  cursor: pointer;
 }
 @media screen and (max-width: 1200px) {
   .card-section {

@@ -21,12 +21,7 @@
   margin: 10px;
   width: 70px;
   color: black;
-}
-.sort > select > option {
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
+  cursor: pointer;
 }
 
 .sort-select {
@@ -52,6 +47,7 @@
 }
 
 .post {
+  cursor: pointer;
   border: 1px solid #ccc;
   cursor: pointer;
   margin: 10px;
@@ -67,7 +63,9 @@
   height: auto;
   display: block;
   margin-bottom: 10px;
-  box-shadow: 1px 1px 3px 1px #dadce0 inset;
+  box-shadow:
+    -2px -2px 2px rgba(197, 197, 197, 0.25),
+    2px 2px 2px rgba(197, 197, 197, 0.25);
 }
 
 .postbox p {
