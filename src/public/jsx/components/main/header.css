@@ -12,6 +12,7 @@ section > div > button {
   font-weight: 900;
   border: none;
   display: none;
+  cursor: pointer;
 }
 
 section > div {
@@ -26,6 +27,7 @@ section > div > ul {
   justify-content: flex-end;
 }
 section > div > ul > li {
+  cursor: pointer;
   font-size: 14px;
   margin: 18px;
   font-weight: 600;

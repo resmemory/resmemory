@@ -17,6 +17,7 @@
   align-items: center;
 }
 .sign-up-text button {
+  cursor: pointer;
   color: #427dee;
   font-family: Poppins;
   font-size: 13px;

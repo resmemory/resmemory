@@ -12,6 +12,7 @@ form > input {
   border: 1px solid #d2d2d2;
   border-radius: 7px;
   padding: 10px;
+  cursor: pointer;
 }
 
 form > #show-confirm,
@@ -23,6 +24,7 @@ form > #show-confirm,
   right: 0px;
   background: white;
   color: #427dee;
+  cursor: pointer;
 }
 form > #show-confirm {
   top: 95px;
@@ -43,6 +45,7 @@ form > div {
   height: 37px;
   border: none;
   border-radius: 7px;
+  cursor: pointer;
 }
 
 .sign-up #signup-button {
