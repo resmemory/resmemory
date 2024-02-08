@@ -306,12 +306,22 @@ const onRequest = async (res, method, pathname, params, key, cb) => {
           responseData = { code: 210, result: null };
         }
       } else if (pathname == '/counts') {
-        const { postIds } = params.query;
-        let postIdString = postIds.join(',');
-        const bookmarks = await sequelize.query(
-          `SELECT postId, count(*) as count from Bookmarks WHERE postId IN (${postIdString}) GROUP BY postId`,
-        );
-        responseData = { code: 211, result: bookmarks };
+        try {
+          const { postIds } = params.query;
+          let postIdString = postIds.join(',');
+
+          let bookmarks = [];
+          if (postIds) {
+            bookmarks = await sequelize.query(
+              `SELECT postId, count(*) as count from Bookmarks WHERE postId IN (${postIdString}) GROUP BY postId`,
+            );
+          }
+
+          responseData = { code: 211, result: bookmarks };
+        } catch (err) {
+          console.log(err);
+          responseData = { code: 210, result: null };
+        }
       }
       return get(
         method,

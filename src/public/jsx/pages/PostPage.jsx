@@ -13,16 +13,11 @@ const PostPage = () => {
   const [userId, setUserId] = useState(sessionStorage.getItem('Authorization'));
   const [comments, setComments] = useState([]);
   const [postDetails, setPostDetails] = useState(null);
-  const [isPostOwner, setIsPostOwner] = useState(false);
 
-  useEffect(() => {
-    const fetchData = async () => {
-      await loginChecker();
-      await loadPostDetail();
-      await loadComments();
-    };
-
-    fetchData();
+  useEffect(async () => {
+    await loginChecker();
+    await loadPostDetail();
+    await loadComments();
   }, []);
 
   const loginChecker = async () => {
@@ -61,7 +56,7 @@ const PostPage = () => {
     const category = postResult.category || '';
     let img = postResult.img || '';
     let thumbnail = postResult.thumbnail || '';
-
+    const userId = postResult.userId;
     setPostDetails({
       viewCount,
       updatedAt,
@@ -71,9 +66,8 @@ const PostPage = () => {
       category,
       img,
       thumbnail,
+      userId,
     });
-
-    setIsPostOwner(loginedUserId === postResult.userId);
   };
 
   const loadComments = async () => {
@@ -275,7 +269,7 @@ const PostPage = () => {
             </div>
 
             <div className="post-buttons">
-              {isPostOwner ? (
+              {loginedUserId == postDetails.userId ? (
                 <>
                   <button
                     className="button_edit-button"
