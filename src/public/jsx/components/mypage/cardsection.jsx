@@ -1,5 +1,6 @@
 import React, { useEffect, useState, useRef } from 'react';
 import Masonry from 'react-masonry-css';
+import { useNavigate } from 'react-router-dom';
 
 import View from '../svg/View.jsx';
 import Heart from '../svg/Heart.jsx';
@@ -7,6 +8,7 @@ import Heart from '../svg/Heart.jsx';
 import './CardSection.css';
 
 const CardSection = () => {
+  const navigate = useNavigate();
   const [board, setBoard] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
   const [loading, setLoading] = useState(false);
@@ -46,8 +48,7 @@ const CardSection = () => {
   };
 
   const handlePostClick = (postId) => {
-    const postUrl = `./post?post=${postId}`;
-    window.location.href = postUrl;
+    navigate('/post', { state: { postId: postId } });
   };
 
   const loadMoreData = async () => {

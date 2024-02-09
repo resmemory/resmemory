@@ -10,35 +10,33 @@ const Header = () => {
   const navigate = useNavigate();
 
   useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const response = await fetch('/api/users', {
-          method: 'GET',
-          headers: {
-            Authorization: sessionStorage.getItem('Authorization'),
-          },
-        });
-
-        if (!response.ok) {
-          console.error('서버로부터 데이터를 가져오는 중 에러가 발생했습니다.');
-          return;
-        }
-
-        const result = await response.json();
-        if (result.responseData.bodies.userId) {
-          setIsLoggedIn(true);
-          if (result.responseData.bodies.userId == 1) {
-            setisAdmin(true);
-          }
-        }
-      } catch (error) {
-        console.error('데이터를 가져오는 중 에러가 발생했습니다.', error);
-      }
-    };
-
     fetchData();
   }, []);
+  const fetchData = async () => {
+    try {
+      const response = await fetch('/api/users', {
+        method: 'GET',
+        headers: {
+          Authorization: sessionStorage.getItem('Authorization'),
+        },
+      });
 
+      if (!response.ok) {
+        console.error('서버로부터 데이터를 가져오는 중 에러가 발생했습니다.');
+        return;
+      }
+
+      const result = await response.json();
+      if (result.responseData.bodies.userId) {
+        setIsLoggedIn(true);
+        if (result.responseData.bodies.userId == 1) {
+          setisAdmin(true);
+        }
+      }
+    } catch (error) {
+      console.error('데이터를 가져오는 중 에러가 발생했습니다.', error);
+    }
+  };
   const logout = async () => {
     try {
       const response = await fetch(`/api/logout`, {

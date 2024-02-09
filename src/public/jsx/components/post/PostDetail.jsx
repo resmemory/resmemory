@@ -11,11 +11,9 @@ import './PostDetail.css';
 
 const PostDetail = () => {
   const location = useLocation();
-  const queryParams = new URLSearchParams(location.search);
-  const postId = queryParams.get('post');
+  const { postId } = location.state;
   const [loginedUserId, setLoginedUserId] = useState();
   const [userId, setUserId] = useState(sessionStorage.getItem('Authorization'));
-
   const [postDetails, setPostDetails] = useState(null);
 
   useEffect(async () => {
