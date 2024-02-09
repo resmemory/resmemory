@@ -39,7 +39,7 @@ function PostEditModal({ postId, postDetails }) {
       >
         <input type="hidden" name="authorization" className="Authorization" />
         <div className="modal" id="edit-post-Modal" style={{ display: 'none' }}>
-          <div className="modalContent">
+          <div className="modal-content">
             <div className="edit-post-Box">
               {/* Edit Post Modal Content */}
               <div>

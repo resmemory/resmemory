@@ -207,7 +207,7 @@ const onRequest = async (res, method, pathname, params, key, cb) => {
           }
 
           const userIds = result.map((post) => post.userId);
-
+          const postIds = result.map((post) => post.postId);
           await new Promise((resolve, reject) => {
             postModule.dataconnection(
               process.env.HOST,
@@ -225,11 +225,40 @@ const onRequest = async (res, method, pathname, params, key, cb) => {
             );
           });
 
+          await new Promise((resolve, reject) => {
+            postModule.dataconnection(
+              process.env.HOST,
+              process.env.USERS_PORT,
+              (data) => {
+                postModule.bookmarksCount = data;
+                resolve();
+              },
+              { postIds },
+              null,
+              null,
+              null,
+              'GET',
+              '/counts',
+            );
+          });
+
           const bodies = postModule.nickname.responseData.bodies;
+          const bookmarksBodies = postModule.bookmarksCount.responseData.result;
 
           responseData = result.map((post) => {
             const nickname = bodies.filter((nickname) => nickname.userId == post.userId);
             return { ...post, nickname: nickname[0].nickname };
+          });
+
+          responseData = responseData.map((post) => {
+            const bookmarksCount = bookmarksBodies[0].filter(
+              (count) => count.postId == post.postId,
+            );
+            if (bookmarksCount.length) {
+              return { ...post, bookmarks: bookmarksCount[0].count };
+            } else {
+              return { ...post, bookmarks: 0 };
+            }
           });
         } catch (err) {
           responseData = { code: 330 };
@@ -262,12 +291,35 @@ const onRequest = async (res, method, pathname, params, key, cb) => {
               );
             });
 
+            await new Promise((resolve, reject) => {
+              postModule.dataconnection(
+                process.env.HOST,
+                process.env.USERS_PORT,
+                (data) => {
+                  postModule.bookmarksCount = data;
+                  resolve();
+                },
+                { postIds: postId },
+                null,
+                null,
+                null,
+                'GET',
+                '/counts',
+              );
+            });
+            console.log('여기', postModule.bookmarksCount.responseData.result);
             result.nickname = postModule.nickname.responseData.bodies.nickname;
+            if (postModule.bookmarksCount.responseData.result) {
+              result.bookmarks = postModule.bookmarksCount.responseData.result[0][0].count;
+            } else {
+              result.bookmarks = 0;
+            }
 
             await Posts.update({ viewCount: result.viewCount + 1 }, { where: { postId } });
             responseData = { result };
           }
         } catch (err) {
+          console.log(err);
           responseData = { code: 340 };
         }
       }
