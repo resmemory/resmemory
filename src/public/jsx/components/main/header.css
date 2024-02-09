@@ -3,6 +3,10 @@ section {
   height: 100px;
 }
 
+section > svg {
+  cursor: pointer;
+}
+
 section > div > button {
   width: 40px;
   height: 40px;

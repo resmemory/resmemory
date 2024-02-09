@@ -1,0 +1,72 @@
+.comment {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 20px;
+  font-size: 12px;
+}
+.comment > p {
+  font-size: 12px;
+}
+#comment-input {
+  width: 900px;
+  padding: 0 5px;
+  height: 40px;
+  cursor: pointer;
+  border-radius: 7px;
+  border: 1px solid #d2d2d2;
+}
+
+.comment > button {
+  width: 80px;
+  height: 40px;
+  background: #323232;
+  color: white;
+  cursor: pointer;
+  border-radius: 7px;
+}
+
+.comment-list > div {
+  background: #eeeeee;
+  margin-top: 5px;
+  padding: 20px;
+  width: 960px;
+  border-radius: 7px;
+}
+#comment-buttons {
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-end;
+  align-items: end;
+  height: 20px;
+}
+
+#comment-buttons > button {
+  background: #eeeeee;
+  border: none;
+  font-weight: 600;
+}
+
+#comment-buttons > #edit-button {
+  color: #427dee;
+}
+
+#comment-buttons > #report-button,
+#comment-buttons > #delete-buton {
+  color: #ff6e4e;
+}
+
+#comment-bottom {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+}
+.comment-date {
+  color: #747474;
+  font-size: 12px;
+}
+.comment-list p {
+  font-size: 18px;
+}

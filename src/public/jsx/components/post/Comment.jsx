@@ -3,6 +3,10 @@ import CommentEditModal from './modal/CommentEditModal.jsx';
 import CommentReportModal from './modal/CommentReportModal.jsx';
 import Balloon from '../svg/Balloon.jsx';
 
+import './Comment.css';
+import Warn from '../svg/Warn.jsx';
+import Pencil from '../svg/Pencil.jsx';
+
 function Comment({ postId, modalOn, authorization }) {
   const [comments, setComments] = useState([]);
   const [loginedUserId, setLoginedUserId] = useState();
@@ -98,41 +102,48 @@ function Comment({ postId, modalOn, authorization }) {
               댓글 작성자 <p> {comment.nickname} </p>
             </div>
             <p>{comment.content}</p>
-            <div className="comment-date">
-              {new Date(comment.createdAt).toLocaleDateString('ko-KR', {
-                timeZone: 'Asia/Seoul',
-              })}
-            </div>
-            <div id="buttons">
-              {comment.userId == loginedUserId ? (
-                <>
-                  <button
-                    id="edit-button"
-                    onClick={() => modalOn(`#edit-comment-Modal-${comment.commentId}`)}
-                  >
-                    수정하기
-                  </button>
-                  <CommentEditModal
-                    commentId={comment.commentId}
-                    content={comment.content}
-                    authorization={authorization}
-                    postId={postId}
-                  />
-                  <button id="delete-button" onClick={() => deleteComment(comment.commentId)}>
-                    삭제하기
-                  </button>
-                </>
-              ) : (
-                <>
-                  <button
-                    id="report-button"
-                    onClick={() => modalOn(`#report-comment-Modal-${comment.commentId}`)}
-                  >
-                    신고하기
-                  </button>
-                  <CommentReportModal authorization={authorization} commentId={comment.commentId} />
-                </>
-              )}
+            <div id="comment-bottom">
+              <div className="comment-date">
+                {new Date(comment.createdAt).toLocaleDateString('ko-KR', {
+                  timeZone: 'Asia/Seoul',
+                })}
+              </div>
+
+              <div id="comment-buttons">
+                {comment.userId == loginedUserId ? (
+                  <>
+                    <button
+                      id="edit-button"
+                      onClick={() => modalOn(`#edit-comment-Modal-${comment.commentId}`)}
+                    >
+                      <Pencil />
+                      수정하기
+                    </button>
+                    <CommentEditModal
+                      commentId={comment.commentId}
+                      content={comment.content}
+                      authorization={authorization}
+                      postId={postId}
+                    />
+                    <button id="delete-button" onClick={() => deleteComment(comment.commentId)}>
+                      삭제하기
+                    </button>
+                  </>
+                ) : (
+                  <>
+                    <button
+                      id="report-button"
+                      onClick={() => modalOn(`#report-comment-Modal-${comment.commentId}`)}
+                    >
+                      <Warn /> 신고하기
+                    </button>
+                    <CommentReportModal
+                      authorization={authorization}
+                      commentId={comment.commentId}
+                    />
+                  </>
+                )}
+              </div>
             </div>
           </div>
         ))}
