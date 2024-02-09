@@ -1,6 +1,6 @@
 import React from 'react';
 
-function CommentReportModal(commentId) {
+function CommentReportModal(commentId, authorization) {
   const commentReport = async (reportType, commentId) => {
     const content = document.querySelector(`#reportContentInput-${commentId}`).value;
 
@@ -8,7 +8,7 @@ function CommentReportModal(commentId) {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
-        Authorization: userId,
+        Authorization: authorization,
       },
       body: JSON.stringify({ reportType, contentId: commentId, content }),
     });
