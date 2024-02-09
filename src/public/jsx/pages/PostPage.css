@@ -9,3 +9,9 @@
   margin-top: 50px;
   width: 1000px;
 }
+@media screen and (max-width: 1200px) {
+  .post-page > div {
+    margin-top: 0px;
+    width: 300px;
+  }
+}
