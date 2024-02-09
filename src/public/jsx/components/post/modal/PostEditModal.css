@@ -1,0 +1,74 @@
+.edit-post {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: flex-start;
+}
+.edit-post > div {
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-start;
+  align-items: center;
+  margin: 5px 0;
+}
+.edit-post > div > label {
+  width: 60px;
+  margin: 10px;
+}
+.edit-post > div > textarea {
+  width: 330px;
+  height: 20px;
+  border: 1px solid #d2d2d2;
+  border-radius: 7px;
+}
+.edit-post > div > input {
+  width: 280px;
+  height: 20px;
+  border: 1px solid #d2d2d2;
+  border-radius: 7px;
+}
+
+.edit-post select {
+  width: 330px;
+  height: 20px;
+  border: 1px solid #d2d2d2;
+  border-radius: 7px;
+}
+#img-delete {
+  height: 20px;
+  width: 40px;
+  color: #ff6e4e;
+  margin: 0px 0px 0px 10px;
+}
+#post-edit-post-buttons > button {
+  margin: 20px 60px;
+}
+#post-edit-post-buttons {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+  width: 450px;
+}
+#post-edit-close {
+  color: black;
+}
+@media screen and (max-width: 1200px) {
+  .edit-post > div {
+    flex-direction: column;
+    justify-self: flex-start;
+    align-items: flex-start;
+  }
+  .edit-post > div > textarea,
+  .edit-post > div > input,
+  .edit-post select {
+    width: 100px;
+  }
+  .edit-post > div > label {
+    width: 60px;
+    margin: 3px 0;
+  }
+  #img-delete {
+    margin: 0px 0px 0px 70px;
+  }
+}

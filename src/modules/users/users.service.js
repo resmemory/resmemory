@@ -7,6 +7,7 @@ import signup from './signup.service';
 import usersmodule from './users.module';
 import dotenv from 'dotenv';
 import sequelize from './db/users.init';
+import { isArray } from 'lodash';
 
 dotenv.config();
 
@@ -308,13 +309,18 @@ const onRequest = async (res, method, pathname, params, key, cb) => {
       } else if (pathname == '/counts') {
         try {
           const { postIds } = params.query;
-          let postIdString = postIds.join(',');
+          let sqlQuery;
+          let postIdString;
+          if (Array.isArray(postIds)) {
+            postIdString = postIds.join(',');
+            sqlQuery = `SELECT postId, count(*) as count from Bookmarks WHERE postId IN (${postIdString}) GROUP BY postId`;
+          } else {
+            sqlQuery = `SELECT COUNT(*) as count from Bookmarks WHERE postId = ${postIds}`;
+          }
 
-          let bookmarks = [];
+          let bookmarks;
           if (postIds) {
-            bookmarks = await sequelize.query(
-              `SELECT postId, count(*) as count from Bookmarks WHERE postId IN (${postIdString}) GROUP BY postId`,
-            );
+            bookmarks = await sequelize.query(sqlQuery);
           }
 
           responseData = { code: 211, result: bookmarks };

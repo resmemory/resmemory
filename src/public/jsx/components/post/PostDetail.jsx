@@ -6,6 +6,7 @@ import PostReportModal from './modal/PostReportModal.jsx';
 import Comment from './Comment.jsx';
 import Pencil from '../svg/Pencil.jsx';
 import Heart from '../svg/Heart.jsx';
+import View from '../svg/View.jsx';
 
 import './PostDetail.css';
 import Warn from '../svg/Warn.jsx';
@@ -48,8 +49,6 @@ const PostDetail = () => {
 
     const result = await response.json();
     const postResult = result.responseData.result;
-
-    const viewCount = postResult.viewCount;
     const updatedAt = new Date(postResult.updatedAt).toLocaleDateString('ko-KR', {
       timeZone: 'Asia/Seoul',
     });
@@ -60,6 +59,8 @@ const PostDetail = () => {
     let img = postResult.img || '';
     let thumbnail = postResult.thumbnail || '';
     const userId = postResult.userId;
+    const viewCount = postResult.viewCount;
+    const bookmarks = postResult.bookmarks;
     setPostDetails({
       viewCount,
       updatedAt,
@@ -70,6 +71,8 @@ const PostDetail = () => {
       img,
       thumbnail,
       userId,
+      viewCount,
+      bookmarks,
     });
   };
 
@@ -117,6 +120,12 @@ const PostDetail = () => {
           <h1>{postDetails.title}</h1>
           <div id="writter">
             작성자 <p> {postDetails.nickname}</p>
+            <p>
+              <View /> {postDetails.viewCount}
+            </p>
+            <p>
+              <Heart /> {postDetails.bookmarks}
+            </p>
           </div>
 
           <div id="buttons">
