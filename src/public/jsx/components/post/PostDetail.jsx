@@ -11,16 +11,15 @@ import './PostDetail.css';
 
 const PostDetail = () => {
   const location = useLocation();
-  const queryParams = new URLSearchParams(location.search);
-  const postId = queryParams.get('post');
-  const [loginedUserId, setLoginedUserId] = useState();
-  const [userId, setUserId] = useState(sessionStorage.getItem('Authorization'));
-
+  const { postId } = location.state;
+  const [loginedUserId, setLoginedUserId] = useState(0);
+  const [authorization, setAuthorization] = useState(sessionStorage.getItem('Authorization'));
   const [postDetails, setPostDetails] = useState(null);
+  const [doneLoginCheck, setDoneLoginCheck] = useState(false);
 
-  useEffect(async () => {
-    await loginChecker();
-    await loadPostDetail();
+  useEffect(() => {
+    loginChecker();
+    loadPostDetail();
   }, []);
 
   const loginChecker = async () => {
@@ -77,7 +76,7 @@ const PostDetail = () => {
     const response = await fetch(`api/posts/${postId}`, {
       method: 'DELETE',
       headers: {
-        Authorization: userId,
+        Authorization: authorization,
       },
     });
     const result = await response.json();
@@ -93,7 +92,7 @@ const PostDetail = () => {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
-        Authorization: userId,
+        Authorization: authorization,
       },
       body: JSON.stringify({ postId }),
     });
@@ -139,7 +138,7 @@ const PostDetail = () => {
                 <button id="report-button" onClick={() => modalOn('#report-post-Modal')}>
                   신고하기
                 </button>
-                <PostReportModal postId={postId} userId={userId} />
+                <PostReportModal postId={postId} authorization={authorization} />
               </>
             )}
           </div>
@@ -154,7 +153,7 @@ const PostDetail = () => {
           </div>
         </>
       )}
-      <Comment userId={userId} loginedUserId={loginedUserId} postId={postId} />
+      <Comment authorization={authorization} postId={postId} modalOn={modalOn} />
     </>
   );
 };
