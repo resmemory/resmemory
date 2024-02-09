@@ -45,8 +45,7 @@
   margin-right: 20px;
 }
 
-.post-page #delete-button,
-.post-page #report-button {
+.post-page #delete-button {
   color: #ff6e4e;
 }
 

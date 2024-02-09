@@ -98,7 +98,7 @@ function Comment({ postId, modalOn, authorization }) {
       <div className="comment-list">
         {comments.map((comment) => (
           <div key={comment.commentId}>
-            <div id="writter">
+            <div id="comment-writter">
               댓글 작성자 <p> {comment.nickname} </p>
             </div>
             <p>{comment.content}</p>
