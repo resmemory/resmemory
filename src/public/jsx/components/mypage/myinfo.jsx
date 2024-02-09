@@ -191,7 +191,7 @@ const MyInfo = () => {
             placeholder={`${userData.nickname}`}
             onChange={(e) => setNewNickname(e.target.value)}
           />
-          <div>
+          <div className="edit-info">
             <button
               onClick={() => {
                 handleSaveNickname(newNickname);
@@ -203,7 +203,7 @@ const MyInfo = () => {
               취소
             </button>
           </div>
-          <div id="password-change">
+          <div className="edit-info" id="password-change">
             <button id="my-info-password-change" onClick={handlePWChangeModalOn}>
               비밀번호 변경 ➜
             </button>

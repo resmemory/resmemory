@@ -1,4 +1,5 @@
 import React from 'react';
+import './PostEditModal.css';
 
 function PostEditModal({ postId, postDetails }) {
   const updatePost = async () => {
@@ -40,26 +41,25 @@ function PostEditModal({ postId, postDetails }) {
         <input type="hidden" name="authorization" className="Authorization" />
         <div className="modal" id="edit-post-Modal" style={{ display: 'none' }}>
           <div className="modal-content">
-            <div className="edit-post-Box">
-              {/* Edit Post Modal Content */}
+            <div className="edit-post">
+              <h3>글 수정하기</h3>
               <div>
-                <h3>글 수정하기</h3>
                 <label>제목</label>
-                <br />
-                <textarea name="title" className="post_title" type="text">
+
+                <textarea name="title" type="text">
                   {postDetails.title}
                 </textarea>
               </div>
               <div>
                 <label>내용</label>
-                <br />
-                <textarea name="content" className="post_content" type="text">
+
+                <textarea name="content" type="text">
                   {postDetails.content}
                 </textarea>
               </div>
               <div>
                 <label>연도</label>
-                <br />
+
                 <select name="category" className="post_category">
                   <option selected>{postDetails.category}</option>
                   <option>1970</option>
@@ -70,28 +70,23 @@ function PostEditModal({ postId, postDetails }) {
                   <option>2020</option>
                 </select>
               </div>
-              <br />
-              <div>
-                <label>현재 이미지</label>
-                <br />
-                <input
-                  name="previousImg"
-                  className="post_img"
-                  type="text"
-                  value={postDetails.img}
-                />
 
-                <br />
-                <label>변경할 이미지</label>
-                <br />
-                <input name="img" className="post_img" type="file" accept="image/*" />
-                <button onClick={handleImageDelete}>이미지 삭제</button>
-              </div>
-              <div className="edit-post-Box-btn">
-                <button className="edit-post-btn" onClick={() => updatePost()}>
-                  수정
+              <div>
+                <label>현재사진</label>
+
+                <input name="previousImg" type="text" value={postDetails.img} />
+                <button id="img-delete" onClick={handleImageDelete}>
+                  삭제
                 </button>
-                <button className="edit-close-btn" onClick={() => modalClose('#edit-post-Modal')}>
+              </div>
+              <div>
+                <label>변경사진</label>
+
+                <input name="img" type="file" accept="image/*" />
+              </div>
+              <div id="post-edit-post-buttons">
+                <button onClick={() => updatePost()}>수정</button>
+                <button id="post-edit-close" onClick={() => modalClose('#edit-post-Modal')}>
                   닫기
                 </button>
               </div>

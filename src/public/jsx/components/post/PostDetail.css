@@ -67,4 +67,7 @@
   .post-page #content img {
     width: 100%;
   }
+  .post-page #writter {
+    margin-bottom: 10px;
+  }
 }

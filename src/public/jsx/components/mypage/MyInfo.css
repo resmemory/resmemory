@@ -69,6 +69,7 @@
   width: 60px;
   height: 30px;
   background: #333333;
+  color: white;
 }
 .modal {
   display: none;
@@ -130,7 +131,7 @@
   color: gray;
 }
 
-.modal-content > div {
+.edit-info {
   display: flex;
   flex-direction: row;
   align-items: center;
@@ -146,7 +147,7 @@
   .modal-content > h1 {
     font-size: 14px;
   }
-  .modal-content > div {
+  .edit-info {
     flex-direction: column;
   }
   .modal-content button {

@@ -307,7 +307,6 @@ const onRequest = async (res, method, pathname, params, key, cb) => {
                 '/counts',
               );
             });
-            console.log('여기', postModule.bookmarksCount.responseData.result);
             result.nickname = postModule.nickname.responseData.bodies.nickname;
             if (postModule.bookmarksCount.responseData.result) {
               result.bookmarks = postModule.bookmarksCount.responseData.result[0][0].count;
