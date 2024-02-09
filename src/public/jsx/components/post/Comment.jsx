@@ -3,12 +3,29 @@ import CommentEditModal from './modal/CommentEditModal.jsx';
 import CommentReportModal from './modal/CommentReportModal.jsx';
 import Balloon from '../svg/Balloon.jsx';
 
-function Comment({ userId, loginedUserId, postId }) {
+function Comment({ postId, modalOn, authorization }) {
   const [comments, setComments] = useState([]);
+  const [loginedUserId, setLoginedUserId] = useState();
 
-  useEffect(async () => {
-    await loadComments();
+  useEffect(() => {
+    loginChecker();
+    loadComments();
   }, []);
+
+  const loginChecker = async () => {
+    if (sessionStorage.getItem('Authorization')) {
+      const profileresponse = await fetch(`./api/users`, {
+        method: 'GET',
+        headers: {
+          Authorization: sessionStorage.getItem('Authorization'),
+        },
+      });
+      const profileresult = await profileresponse.json();
+      if (profileresult.responseData.code == 171) {
+        setLoginedUserId(profileresult.responseData.bodies.userId);
+      }
+    }
+  };
 
   const loadComments = async () => {
     const response = await fetch(`./api/comments?postId=${postId}`, {
@@ -19,20 +36,19 @@ function Comment({ userId, loginedUserId, postId }) {
 
     const commentsWithUser = commentList.map((comment) => ({
       ...comment,
-      isCommentOwner: comment.userId === loginedUserId,
     }));
 
     setComments(commentsWithUser);
   };
 
   const postComment = async () => {
-    const content = document.querySelector('.comment-input').value;
+    const content = document.querySelector('#comment-input').value;
 
     const response = await fetch(`/api/comments`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
-        Authorization: userId,
+        Authorization: authorization,
       },
       body: JSON.stringify({ postId, content }),
     });
@@ -51,7 +67,7 @@ function Comment({ userId, loginedUserId, postId }) {
     const response = await fetch(`api/comments/${commentId}`, {
       method: 'DELETE',
       headers: {
-        Authorization: userId,
+        Authorization: authorization,
       },
     });
     const result = await response.json();
@@ -72,7 +88,7 @@ function Comment({ userId, loginedUserId, postId }) {
         댓글
       </h3>
       <div className="comment">
-        <input type="text" placeholder="댓글을 작성하세요" />
+        <input type="text" id="comment-input" placeholder="댓글을 작성하세요" />
         <button onClick={() => postComment()}>작성</button>
       </div>
       <div className="comment-list">
@@ -88,7 +104,7 @@ function Comment({ userId, loginedUserId, postId }) {
               })}
             </div>
             <div id="buttons">
-              {comment.isCommentOwner ? (
+              {comment.userId == loginedUserId ? (
                 <>
                   <button
                     id="edit-button"
@@ -96,7 +112,12 @@ function Comment({ userId, loginedUserId, postId }) {
                   >
                     수정하기
                   </button>
-                  <CommentEditModal commentId={comment.commentId} content={comment.content} />
+                  <CommentEditModal
+                    commentId={comment.commentId}
+                    content={comment.content}
+                    authorization={authorization}
+                    postId={postId}
+                  />
                   <button id="delete-button" onClick={() => deleteComment(comment.commentId)}>
                     삭제하기
                   </button>
@@ -109,7 +130,7 @@ function Comment({ userId, loginedUserId, postId }) {
                   >
                     신고하기
                   </button>
-                  <CommentReportModal commentId={comment.commentId} />
+                  <CommentReportModal authorization={authorization} commentId={comment.commentId} />
                 </>
               )}
             </div>

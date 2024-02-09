@@ -1,5 +1,5 @@
 import React from 'react';
-function CommentEditModal({ commentId, content }) {
+function CommentEditModal({ postId, commentId, content, authorization }) {
   const updateComment = async (commentId) => {
     const content = document.querySelector(`.comment_content${commentId}`).value;
 
@@ -7,7 +7,7 @@ function CommentEditModal({ commentId, content }) {
       method: 'PATCH',
       headers: {
         'Content-Type': 'application/json',
-        Authorization: userId,
+        Authorization: authorization,
       },
       body: JSON.stringify({ postId, content }),
     });
