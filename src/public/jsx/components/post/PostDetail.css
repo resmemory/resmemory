@@ -10,7 +10,6 @@
   font-size: 14px;
   width: 50px;
   color: black;
-  cursor: pointer;
 }
 .post-page #writter {
   display: flex;
@@ -35,16 +34,18 @@
   font-weight: 600;
   border: none;
   background: #f9f9f9;
+  cursor: pointer;
 }
 
-.post-page #edit-button,
-.post-page #bookmark-button {
+.post-page #edit-button {
   color: #427dee;
   margin-right: 20px;
 }
+.post-page #bookmark-button {
+  margin-right: 20px;
+}
 
-.post-page #delete-button,
-.post-page #report-button {
+.post-page #delete-button {
   color: #ff6e4e;
 }
 

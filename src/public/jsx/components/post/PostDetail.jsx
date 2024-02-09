@@ -8,6 +8,7 @@ import Pencil from '../svg/Pencil.jsx';
 import Heart from '../svg/Heart.jsx';
 
 import './PostDetail.css';
+import Warn from '../svg/Warn.jsx';
 
 const PostDetail = () => {
   const location = useLocation();
@@ -136,6 +137,7 @@ const PostDetail = () => {
                 </button>
 
                 <button id="report-button" onClick={() => modalOn('#report-post-Modal')}>
+                  <Warn />
                   신고하기
                 </button>
                 <PostReportModal postId={postId} authorization={authorization} />
