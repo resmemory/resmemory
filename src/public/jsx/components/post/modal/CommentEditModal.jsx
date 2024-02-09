@@ -29,7 +29,7 @@ function CommentEditModal({ postId, commentId, content, authorization }) {
   return (
     <>
       <div className="modal" id={`edit-comment-Modal-${commentId}`} style={{ display: 'none' }}>
-        <div className="modalContent">
+        <div className="modal-content">
           <div className="edit-comment-Box">
             <div>
               <label>댓글 수정하기</label>

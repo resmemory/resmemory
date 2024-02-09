@@ -30,7 +30,7 @@ function CommentReportModal(commentId, authorization) {
   return (
     <>
       <div className="modal" id={`report-comment-Modal-${commentId}`} style={{ display: 'none' }}>
-        <div className="modalContent">
+        <div className="modal-content">
           <label>신고 내용</label>
           <br />
           <input className="report_content" type="text" id={`reportContentInput-${commentId}`} />

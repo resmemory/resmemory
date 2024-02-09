@@ -30,7 +30,7 @@ function PostReportModal({ postId, authorization }) {
   return (
     <>
       <div className="modal" id="report-post-Modal" style={{ display: 'none' }}>
-        <div className="modalContent">
+        <div className="modal-content">
           {/* Report Post Modal Content */}
           <label>신고 내용</label>
           <br />
