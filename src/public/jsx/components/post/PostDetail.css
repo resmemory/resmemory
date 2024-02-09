@@ -63,3 +63,8 @@
 .post-page #content img {
   width: 50%;
 }
+@media screen and (max-width: 1200px) {
+  .post-page #content img {
+    width: 100%;
+  }
+}
