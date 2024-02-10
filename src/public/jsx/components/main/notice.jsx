@@ -30,7 +30,7 @@ const Notice = () => {
   };
 
   const handleNoticeClick = () => {
-    navigate(`/post?post=${noticeData.postId}`);
+    navigate(`/post`, { state: { postId: noticeData.postId } });
   };
   return (
     <>

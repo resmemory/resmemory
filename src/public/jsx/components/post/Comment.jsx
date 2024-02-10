@@ -104,7 +104,7 @@ function Comment({ postId, modalOn, authorization }) {
             <p>{comment.content}</p>
             <div id="comment-bottom">
               <div className="comment-date">
-                {new Date(comment.createdAt).toLocaleDateString('ko-KR', {
+                {new Date(comment.createdAt).toLocaleString('ko-KR', {
                   timeZone: 'Asia/Seoul',
                 })}
               </div>
