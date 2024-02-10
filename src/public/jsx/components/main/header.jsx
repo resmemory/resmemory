@@ -51,11 +51,9 @@ const Header = () => {
       alert(code[result.responseData.code]);
 
       if (result.responseData.code === 131) {
-        console.log('로그아웃 성공');
         sessionStorage.removeItem('Authorization');
         window.location.href = './';
       } else {
-        console.error('로그아웃 실패:', result);
       }
     } catch (error) {
       console.error('Logout error:', error);

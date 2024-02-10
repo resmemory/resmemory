@@ -51,9 +51,7 @@ function ShowContent(props) {
         setCommentData(result.responseData || []);
         setThreadData(result.responseData.result || []);
         console.log(result);
-      } catch (error) {
-        console.error(error);
-      }
+      } catch (error) {}
     }
   };
 

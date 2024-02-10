@@ -14,6 +14,8 @@ import OauthPage from './OauthPage.jsx';
 import KakaoLogin from '../components/login/KakaoLogin.jsx';
 import SingUpPage from './SignUpPage.jsx';
 
+import './App.css';
+
 function App() {
   return (
     <Router>
