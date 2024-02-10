@@ -132,7 +132,7 @@ const Post = ({ postId }) => {
       try {
         const response = await fetch(`/api/posts?postId=${postId}`);
         const result = await response.json();
-        console.log(result);
+
         setPostData(result); // API에서 받아온 데이터로 상태 업데이트
       } catch (error) {
         console.error('데이터를 불러오는 중 에러 발생', error);

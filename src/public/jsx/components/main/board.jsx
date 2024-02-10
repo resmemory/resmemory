@@ -21,7 +21,7 @@ const Board = () => {
   const [category, setCategory] = useState('전체');
   const [selectedCategory, setSelectedCategory] = useState('전체'); // 선택된 카테고리 상태 추가
   const categories = ['전체', 'notice', '2020', '2010', '2000', '1990', '1980', '1970'];
-  console.log(board);
+
   const fetchData = async (page, category) => {
     try {
       setLoading(true);

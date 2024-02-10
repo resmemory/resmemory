@@ -54,7 +54,6 @@ function GetReport(props) {
       setData(data);
       setFilteredData(data);
     } catch (error) {
-      console.log(error);
       setError(error);
     }
   };
