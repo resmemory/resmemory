@@ -49,7 +49,7 @@ const PostDetail = () => {
 
     const result = await response.json();
     const postResult = result.responseData.result;
-    const updatedAt = new Date(postResult.updatedAt).toLocaleDateString('ko-KR', {
+    const updatedAt = new Date(postResult.updatedAt).toLocaleString('ko-KR', {
       timeZone: 'Asia/Seoul',
     });
     const nickname = postResult.nickname;
@@ -127,7 +127,10 @@ const PostDetail = () => {
               <Heart /> {postDetails.bookmarks}
             </p>
           </div>
-
+          <div>
+            {' '}
+            <p>{postDetails.updatedAt}</p>
+          </div>
           <div id="buttons">
             {loginedUserId == postDetails.userId ? (
               <>
