@@ -352,7 +352,60 @@ const onRequest = async (res, method, pathname, params, key, cb) => {
             raw: true,
           });
 
-          responseData = { result };
+          const postIds = result.map((post) => post.postId);
+          const userIds = result.map((post) => post.userId);
+          await new Promise((resolve, reject) => {
+            postModule.dataconnection(
+              process.env.HOST,
+              process.env.USERS_PORT,
+              (data) => {
+                postModule.nickname = data;
+                resolve();
+              },
+              { userIds },
+              null,
+              null,
+              null,
+              'GET',
+              '/users',
+            );
+          });
+
+          await new Promise((resolve, reject) => {
+            postModule.dataconnection(
+              process.env.HOST,
+              process.env.USERS_PORT,
+              (data) => {
+                postModule.bookmarksCount = data;
+                resolve();
+              },
+              { postIds },
+              null,
+              null,
+              null,
+              'GET',
+              '/counts',
+            );
+          });
+
+          const bodies = postModule.nickname.responseData.bodies;
+          const bookmarksBodies = postModule.bookmarksCount.responseData.result;
+
+          responseData = result.map((post) => {
+            const nickname = bodies.filter((nickname) => nickname.userId == post.userId);
+            return { ...post, nickname: nickname[0].nickname };
+          });
+
+          responseData = responseData.map((post) => {
+            const bookmarksCount = bookmarksBodies[0].filter(
+              (count) => count.postId == post.postId,
+            );
+            if (bookmarksCount.length) {
+              return { ...post, bookmarks: bookmarksCount[0].count };
+            } else {
+              return { ...post, bookmarks: 0 };
+            }
+          });
         } catch (err) {
           responseData = { code: 340 };
         }

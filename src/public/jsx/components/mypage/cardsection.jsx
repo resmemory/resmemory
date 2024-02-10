@@ -10,6 +10,7 @@ import './CardSection.css';
 const CardSection = () => {
   const navigate = useNavigate();
   const [board, setBoard] = useState([]);
+
   const [currentPage, setCurrentPage] = useState(1);
   const [loading, setLoading] = useState(false);
   const [loadingMore, setLoadingMore] = useState(false);
@@ -37,8 +38,8 @@ const CardSection = () => {
       });
 
       const responseData = await response.json();
-      console.log(responseData.responseData.result);
-      return responseData.responseData.result;
+      console.log(responseData.responseData);
+      return responseData.responseData;
     } catch (error) {
       console.error('Error fetching data:', error);
       return [];
@@ -46,6 +47,18 @@ const CardSection = () => {
       setLoading(false);
     }
   };
+
+  async function RemoveBookmark(bookmarkId) {
+    const response = await fetch(`./api/bookmarks/${bookmarkId}`, {
+      method: 'DELETE',
+      headers: {
+        Authorization: sessionStorage.getItem('Authorization'),
+      },
+    });
+    const result = await response.json();
+    alert(code[result.responseData.code]);
+    location.reload();
+  }
 
   const handlePostClick = (postId) => {
     navigate('/post', { state: { postId: postId } });
@@ -138,39 +151,43 @@ const CardSection = () => {
           ref={containerRef}
         >
           {board.map((post) => (
-            <div
-              key={post.id}
-              className="post"
-              id="my-page-post"
-              onClick={() => handlePostClick(post.postId)}
-            >
-              {post.img && <img src={post.img} alt="Post Image" />}
-              <div className="postbox">
-                <div>
-                  <p>{post.category}</p>
-                  <div>
-                    <p>
-                      <View /> {post.viewCount}
+            <>
+              <div key={post.id} className="post" id="my-page-post">
+                <div onClick={() => handlePostClick(post.postId)} id="inner-my-page-post">
+                  {post.img && <img src={post.img} alt="Post Image" />}
+                  <div className="postbox">
+                    <div>
+                      <p>{post.category}</p>
+                      <div>
+                        <p>
+                          <View /> {post.viewCount}
+                        </p>
+                        <p>
+                          <Heart /> {post.bookmarks ? post.bookmarks : 0}
+                        </p>
+                      </div>
+                    </div>
+                    <p id="post-title">
+                      {post.title.length > 10 ? post.title.slice(0, 10) + '...' : post.title}
                     </p>
-                    <p>
-                      <Heart /> {post.bookmarks ? post.bookmarks : 0}
-                    </p>
+                    <div>
+                      <p>{post.nickname}</p>
+
+                      <p>
+                        {new Date(post.createdAt).toLocaleDateString('ko-KR', {
+                          timeZone: 'Asia/Seoul',
+                        })}
+                      </p>
+                    </div>
                   </div>
                 </div>
-                <p id="post-title">
-                  {post.title.length > 10 ? post.title.slice(0, 10) + '...' : post.title}
-                </p>
-                <div>
-                  <p>{post.nickname}</p>
-
-                  <p>
-                    {new Date(post.createdAt).toLocaleDateString('ko-KR', {
-                      timeZone: 'Asia/Seoul',
-                    })}
-                  </p>
-                </div>
+                {bookmark && (
+                  <div id="bookmark-buttons">
+                    <button onClick={() => RemoveBookmark(post.bookmarkId)}>북마크 취소</button>
+                  </div>
+                )}
               </div>
-            </div>
+            </>
           ))}
           {hasMoreData && <div ref={sentinelRef}></div>}
           {loading && <p>Loading...</p>}
