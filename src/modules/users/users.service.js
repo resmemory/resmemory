@@ -264,6 +264,20 @@ const onRequest = async (res, method, pathname, params, key, cb) => {
           });
           const postIds = bookmarks.map((bookmark) => bookmark.postId);
 
+          let sqlQuery;
+          let postIdString;
+          if (postIds.length > 1) {
+            postIdString = postIds.join(',');
+            sqlQuery = `SELECT postId, count(*) as count from Bookmarks WHERE postId IN (${postIdString}) GROUP BY postId`;
+          } else {
+            sqlQuery = `SELECT COUNT(*) as count from Bookmarks WHERE postId = ${postIds[0]}`;
+          }
+
+          let bookmarksCounts;
+          if (postIds) {
+            bookmarksCounts = await sequelize.query(sqlQuery);
+          }
+
           await new Promise((resolve, reject) => {
             usersmodule.dataconnection(
               process.env.HOST,
@@ -291,9 +305,11 @@ const onRequest = async (res, method, pathname, params, key, cb) => {
             .map((post) => {
               const bookmark = bookmarks.filter((bookmark) => post.postId == bookmark.postId);
               const nickname = users.filter((user) => user.userId == post.userId);
+              const count = bookmarksCounts[0].filter((bookmark) => bookmark.postId == post.postId);
 
               return {
                 ...post,
+                bookmarks: count[0].count,
                 bookmarkId: bookmark[0].bookmarkId,
                 nickname: nickname[0].nickname,
                 order: bookmark[0].createdAt,
@@ -301,7 +317,7 @@ const onRequest = async (res, method, pathname, params, key, cb) => {
             })
             .sort((prev, next) => next.order - prev.order);
 
-          responseData = { code: 211, result };
+          responseData = result;
         } catch (err) {
           console.log(err);
           responseData = { code: 210, result: null };
