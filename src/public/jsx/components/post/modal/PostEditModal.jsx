@@ -82,7 +82,7 @@ function PostEditModal({ postId, postDetails }) {
               <div>
                 <label>변경사진</label>
 
-                <input name="img" type="file" accept="image/*" />
+                <input id="change-image" name="img" type="file" accept="image/*" />
               </div>
               <div id="post-edit-post-buttons">
                 <button onClick={() => updatePost()}>수정</button>

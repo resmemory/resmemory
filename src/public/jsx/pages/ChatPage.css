@@ -1,0 +1,17 @@
+.chat-page {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.chat-page > div {
+  margin-top: 50px;
+  width: 1000px;
+}
+@media screen and (max-width: 1200px) {
+  .chat-page > div {
+    margin-top: 0px;
+    width: 300px;
+  }
+}

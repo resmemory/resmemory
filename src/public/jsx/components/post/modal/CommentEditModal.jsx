@@ -1,4 +1,7 @@
 import React from 'react';
+
+import './CommentEditModal.css';
+
 function CommentEditModal({ postId, commentId, content, authorization }) {
   const updateComment = async (commentId) => {
     const content = document.querySelector(`.comment_content${commentId}`).value;
@@ -30,29 +33,22 @@ function CommentEditModal({ postId, commentId, content, authorization }) {
     <>
       <div className="modal" id={`edit-comment-Modal-${commentId}`} style={{ display: 'none' }}>
         <div className="modal-content">
-          <div className="edit-comment-Box">
-            <div>
-              <label>댓글 수정하기</label>
-              <br />
-              <textarea
-                id="comment-edit-textarea"
-                name={`comment_content-${commentId}`}
-                className={`comment_content${commentId}`}
-                type="text"
-                defaultValue={content}
-              />
-            </div>
-            <div className="edit-comment-Box-btn">
-              <button className="edit-comment-btn" onClick={() => updateComment(commentId)}>
-                수정
-              </button>
-              <button
-                className="edit-close-btn"
-                onClick={() => modalClose(`#edit-comment-Modal-${commentId}`)}
-              >
-                닫기
-              </button>
-            </div>
+          <h3>댓글 수정하기</h3>
+
+          <textarea
+            name={`comment_content-${commentId}`}
+            className={`comment_content${commentId}`}
+            type="text"
+            defaultValue={content}
+          />
+
+          <div className="edit-comment-buttons">
+            <button className="edit-comment-btn" onClick={() => updateComment(commentId)}>
+              수정
+            </button>
+            <button id="close" onClick={() => modalClose(`#edit-comment-Modal-${commentId}`)}>
+              닫기
+            </button>
           </div>
         </div>
       </div>
