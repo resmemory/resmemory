@@ -34,6 +34,7 @@
   height: 20px;
   border: 1px solid #d2d2d2;
   border-radius: 30px;
+  cursor: pointer;
 }
 #img-delete {
   height: 20px;
@@ -56,6 +57,7 @@
 }
 #change-image {
   width: 100%;
+  cursor: pointer;
 }
 
 @media screen and (max-width: 1200px) {

@@ -1,18 +1,16 @@
 import React, { useState, useEffect } from 'react';
+
+import Picture from '../svg/Picture.jsx';
+
 import './post.css';
 
 const ImageUpload = ({ onImageChange, onDeleteImage }) => {
   const [selectedImage, setSelectedImage] = useState(null);
-  const [imageDescription, setImageDescription] = useState('');
 
   const handleImageChange = (event) => {
     const file = event.target.files[0];
     setSelectedImage(file);
     onImageChange(file);
-  };
-
-  const handleImageDescriptionChange = (event) => {
-    setImageDescription(event.target.value);
   };
 
   const handleButtonAction = () => {
@@ -25,44 +23,23 @@ const ImageUpload = ({ onImageChange, onDeleteImage }) => {
   };
 
   return (
-    <div style={{ display: 'flex', alignItems: 'center' }}>
+    <div>
       <input
         type="file"
         accept="image/*"
         onChange={handleImageChange}
         style={{ display: 'none' }}
-        className="img"
       />
-      <label htmlFor="imageInput">
-        <button
-          onClick={handleButtonAction}
-          style={{
-            borderRadius: '6px',
-            color: 'white',
-            backgroundColor: selectedImage ? '#FF6E4E' : '#323232',
-            height: '42px', // 높이 조절
-            width: '120px', // 너비 조절
-            marginRight: '3px', // 버튼과 textarea 사이 여백
-          }}
-        >
-          {selectedImage ? `이미지 삭제` : '이미지 업로드'}
-        </button>
-      </label>
-      <textarea
-        readOnly
-        value={selectedImage ? selectedImage.name : ''}
-        style={{
-          whiteSpace: 'pre-line',
-          width: 'calc(100% - 130px)', // 100%에서 버튼 너비와 여백을 뺀 값
-          height: '30px', // 높이 조절
-          border: '1px solid #ccc',
-          borderRadius: '8px',
-          padding: '5px',
-          resize: 'none',
-          fontSize: '20px',
-          textAlign: 'left',
-        }}
-      />
+
+      <button
+        id="imgae-upload"
+        onClick={handleButtonAction}
+        style={{ background: selectedImage ? '#FF6E4E' : '#323232' }}
+      >
+        <Picture /> {selectedImage ? `이미지 삭제` : `이미지 업로드`}
+      </button>
+
+      <textarea id="image-path" readOnly value={selectedImage ? selectedImage.name : ''} />
     </div>
   );
 };
@@ -94,7 +71,7 @@ const CategorySelect = ({ onCategoryChange }) => {
   };
 
   return (
-    <div className="annual">
+    <div>
       <select className="annual-select" onChange={handleCategoryChange}>
         <option className="none" value="" disabled selected>
           카테고리 선택
@@ -130,7 +107,12 @@ const TitleInput = ({ title, onChange }) => {
 const ContentInput = ({ content, onChange }) => {
   return (
     <div>
-      <textarea placeholder="내용을 입력하세요" value={content} onChange={onChange}></textarea>
+      <textarea
+        id="content"
+        placeholder="내용을 입력하세요"
+        value={content}
+        onChange={onChange}
+      ></textarea>
     </div>
   );
 };
@@ -232,29 +214,18 @@ const Post = ({ postId }) => {
   };
 
   return (
-    <div className="post-container">
+    <div>
       <CategorySelect onCategoryChange={handleCategoryChange} />
       <TitleInput title={postData.title} onChange={handleTitleChange} />
       <ImageUpload onImageChange={handleImageChange} onDeleteImage={handleDeleteImage} />
-      <div className="content">
-        <ContentInput content={postData.content} onChange={handleContentChange} />
-      </div>
-      <div className="button-container">
-        {postData.id ? (
-          <>
-            <button className="cancel">취소</button>
-            <button className="edit" onClick={handleEditPost}>
-              수정
-            </button>
-          </>
-        ) : (
-          <>
-            <button className="postcancel">취소</button>
-            <button className="postwrite" onClick={handleWritePost}>
-              작성
-            </button>
-          </>
-        )}
+
+      <ContentInput content={postData.content} onChange={handleContentChange} />
+
+      <div id="write-post-buttons">
+        <button id="post-cancle">취소</button>
+        <button id="post-write" onClick={handleWritePost}>
+          작성
+        </button>
       </div>
     </div>
   );
