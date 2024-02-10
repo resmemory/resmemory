@@ -1,11 +1,10 @@
-![thumbnail.png](./src/public/assets/image/thn_logo.png)
+![image](https://github.com/resmemory/resmemory/assets/131671804/0d35072f-40c3-4cb7-a929-85a00f8f2e6a)
 
 # G:Then
 
 그땐 그랬지, “ G:Then “ 입니다.
 
 - 배포 주소 : http://resmemory.store
-- 브로셔 : https://gleaming-harp-2af.notion.site/f6539553476e4602bce58d1cd8bceeda
 
 # 🎞️ TEAM
 
