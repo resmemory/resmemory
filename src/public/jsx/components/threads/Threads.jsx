@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import './Threads.css';
+import Warn from '../svg/Warn.jsx';
 
 function Threads() {
   const [loginedUserId, setLoginedUserId] = useState(null);
@@ -18,7 +19,15 @@ function Threads() {
   }, []);
 
   const RandomThreadColors = () => {
-    const colors = ['#F08080', '#FAFAD2', '#87CEEB', '#90EE90', '#87CEFA', '#7B68EE', '#FFC0CB'];
+    const colors = [
+      '#F0808033',
+      '#FAFAD233',
+      '#87CEEB33',
+      '#90EE9033',
+      '#87CEFA33',
+      '#7B68EE33',
+      '#FFC0CB33',
+    ];
     return colors[Math.floor(Math.random() * colors.length)];
   };
 
@@ -63,7 +72,7 @@ function Threads() {
   }
 
   async function writeThread() {
-    const content = document.querySelector('.writeThread').value;
+    const content = document.querySelector('#write-thread').value;
     const response = await fetch(`./api/threads`, {
       method: 'POST',
       headers: {
@@ -117,70 +126,65 @@ function Threads() {
 
   return (
     <div>
-      <div className="container">
-        <h1>그땐 스레드</h1>
-        <p>아무말 대잔치의 현장을 보고 계십니다.</p>
-        <div className="writeThreadBox">
-          <textarea
-            className="writeThread"
-            type="text"
-            placeholder="내가 남긴 스레드는 무슨 색으로 전해질까요?"
-          />
+      <h1>그땐 스레드</h1>
+      <p>아무말 대잔치의 현장을 보고 계십니다.</p>
+      <div className="write-thread-box">
+        <textarea id="write-thread" type="text" placeholder="당신을 어떤 색으로 만날까요?" />
 
-          <button className="writeThreadBtn" onClick={writeThread}>
-            작성
-          </button>
-        </div>
-        <div id="threadList">
-          {threads.map((thread) => (
-            <div
-              className="thread"
-              key={thread.threadId}
-              style={{ backgroundColor: RandomThreadColors() }}
-            >
-              <h2>{thread.content}</h2>
+        <button onClick={writeThread}>작성</button>
+      </div>
+      <div id="threadList">
+        {threads.map((thread) => (
+          <div
+            className="thread"
+            key={thread.threadId}
+            style={{ background: RandomThreadColors() }}
+          >
+            <h4>{thread.content}</h4>
+            <div className="threads-buttons">
               <p>
                 {new Date(thread.createdAt).toLocaleString('ko-KR', {
                   timeZone: 'Asia/Seoul',
                 })}
-                {loginedUserId === thread.userId ? (
-                  <>
-                    <button className="delete-button" onClick={() => removeThread(thread.threadId)}>
-                      삭제
-                    </button>
-                  </>
-                ) : (
-                  <>
-                    <button
-                      className="report-button"
-                      onClick={() => openReportModal(thread.threadId)}
-                    >
-                      신고
-                    </button>
-                  </>
-                )}
               </p>
+              {loginedUserId === thread.userId ? (
+                <>
+                  <button className="delete-button" onClick={() => removeThread(thread.threadId)}>
+                    삭제
+                  </button>
+                </>
+              ) : (
+                <>
+                  <button
+                    className="report-button"
+                    onClick={() => openReportModal(thread.threadId)}
+                  >
+                    <Warn />
+                    신고
+                  </button>
+                </>
+              )}
             </div>
-          ))}
-        </div>
+          </div>
+        ))}
       </div>
 
       {isReportModalOpen && (
         <div className="report-modal">
           <div className="report-modal-content">
-            <span className="close" onClick={closeReportModal}>
-              &times;
-            </span>
-            <h2>신고 내용 입력</h2>
+            <h3>신고 내용</h3>
             <textarea
-              id="reportReason"
               rows="4"
               cols="50"
               value={reportContent}
               onChange={(e) => setReportContent(e.target.value)}
-              placeholder="신고 내용을 입력하세요."
             ></textarea>
-            <button onClick={submitReport}>신고 제출</button>
+            <div className="thread-report-buttons">
+              <button onClick={submitReport}>신고</button>
+              <button id="close" onClick={closeReportModal}>
+                취소
+              </button>
+            </div>
           </div>
         </div>
       )}

@@ -17,92 +17,90 @@
   border-radius: 10px;
   width: 50%;
 }
+h1 {
+  font-size: 28px;
+  font-weight: 900;
+}
 
-.report-modal-content .close {
-  position: absolute;
-  top: 10px;
-  right: 10px;
-  font-size: 20px;
-  cursor: pointer;
+.write-thread-box {
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 20px;
+}
+
+.write-thread-box > textarea {
+  width: 90%;
+  cursor: text;
+  border-radius: 7px;
+  border: 1px solid #d2d2d2;
+  font-size: 14px;
+  padding: 5px;
+  height: 30px;
+}
+
+.write-thread-box > button {
+  width: 10%;
+  font-size: 14px;
+  border-radius: 7px;
+  background: #323232;
+  color: white;
+  padding: 5px;
+  height: 40px;
+  font-weight: 600;
+}
+
+.thread {
+  margin: 5px;
+  border-radius: 7px;
+  padding: 10px 20px;
+  border: none;
+}
+.threads-buttons {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+}
+.threads-buttons > p {
+  color: #5f5f5f;
+  font-size: 12px;
+}
+
+.threads-buttons > button {
+  background: none;
+  color: #323232;
+  font-weight: 600;
+  border: none;
 }
 
 .report-modal-content textarea {
   width: 100%;
-  margin-bottom: 10px;
+  border: #d2d2d2 solid 1px;
+  border-radius: 7px;
 }
 
-.report-modal-content button {
-  padding: 10px;
-  background-color: #323232;
-  color: #fff;
-  border: none;
-  border-radius: 5px;
-  cursor: pointer;
-}
-
-.report-modal-content button:hover {
-  background-color: black;
-}
-
-.writeThread {
-  width: 98.6%;
-  height: 6rem;
-  padding: 1rem;
-  font-size: 15px;
-  border: 1px solid #ccc;
-  border-radius: 5px;
-  resize: none;
-}
-
-.container {
-  max-width: 1080px;
-  margin: 0 auto;
-  background-color: #f9f9f9;
-  padding: 20px;
-  box-sizing: border-box;
+.thread-report-buttons {
   display: flex;
-  flex-direction: column;
-  height: 90vh;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
 }
 
-.writeThreadBtn {
-  background-color: #323232;
-  padding: 0.7rem 1rem;
-  color: white;
-  border-radius: 5px;
-  margin: 1rem -1rem 0 0;
-  float: right;
-  cursor: pointer;
-}
-
-.thread {
-  width: 95%;
-  padding: 2rem;
-  font-size: 12px;
-  background-color: #ffffff;
-  box-shadow: 1px 1px 1px #d5d5d5;
-  color: #323232;
-  border-radius: 5px;
-  margin: 2rem 0rem;
-}
-
-.delete-button,
-.report-button {
-  font-size: 12px;
-  font-weight: 600;
-  float: right;
-  padding: 0.5rem;
-  margin: 0.5rem -1rem 3rem 0.5rem;
+.thread-report-buttons > button {
   border: none;
-  color: #323232;
-  border-radius: 16px;
-  cursor: pointer;
-  background: none;
+  background: white;
+  font-weight: 600;
+  color: #427dee;
 }
 
-@media screen and (max-width: 430px) {
-  .container {
-    width: 80% !important;
-    margin: 1.4rem !important;
+@media screen and (max-width: 1200px) {
+  .write-thread-box > textarea {
+    width: 80%;
+  }
+  .write-thread-box > button {
+    width: 20%;
   }
 }
