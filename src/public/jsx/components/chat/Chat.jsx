@@ -50,7 +50,6 @@ function Chat() {
         });
 
         newSocket.addEventListener('close', (event) => {
-          console.log('WebSocket 연결이 닫혔습니다.');
           const nicknameMessage = {
             type: 'nickname',
             value: `${nickname}`,

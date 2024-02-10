@@ -40,9 +40,7 @@ function DeleteButton(props) {
         setButtonColor('skyblue');
         setButton('삭제 완료');
         await deleteContent(props.data.reportId, props.data.contentId, props.data.reportType);
-      } catch (error) {
-        console.log(error);
-      }
+      } catch (error) {}
     }
 
     if (isReport === 'true' || isReport === '2') {
