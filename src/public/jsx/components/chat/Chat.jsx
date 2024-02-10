@@ -106,35 +106,37 @@ function Chat() {
 
   return (
     <div>
-      <div id="chat-container">
-        <h1>그땐 채팅</h1>
-        <div id="chat-header">
-          <span>{userNickname} 님의 아름다운 채팅 문화 선도를 믿습니다.</span>
-        </div>
-        <div id="chat-messages">
-          {chatMessages.map((msg, index) => (
+      <h1>그땐 채팅</h1>
+      <div id="chat-header">
+        <span>{userNickname} 님의 아름다운 채팅 문화 선도를 믿습니다.</span>
+      </div>
+      <div id="chat-messages">
+        {chatMessages.map((msg, index) => (
+          <>
             <div
               key={index}
               className={`chat-message ${
                 msg.senderNickname === userNickname ? 'right-align' : 'left-align'
               }`}
             >
-              {`${msg.senderNickname} : ${msg.message}`}
+              <p>{msg.message}</p>
+
+              <p id="sender">{msg.senderNickname}</p>
             </div>
-          ))}
-        </div>
-        <div id="chat-input">
-          <input
-            type="text"
-            id="message-input"
-            value={messageInput}
-            onChange={(e) => setMessageInput(e.target.value)}
-            onKeyPress={handleInputKeyPress}
-          />
-          <button id="send-button" onClick={sendMessage}>
-            전송
-          </button>
-        </div>
+          </>
+        ))}
+      </div>
+      <div id="chat-input">
+        <input
+          type="text"
+          id="message-input"
+          value={messageInput}
+          onChange={(e) => setMessageInput(e.target.value)}
+          onKeyPress={handleInputKeyPress}
+        />
+        <button id="send-button" onClick={sendMessage}>
+          전송
+        </button>
       </div>
     </div>
   );

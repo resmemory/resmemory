@@ -1,115 +1,83 @@
-.post-container {
+.write-post-page > div {
+  width: 70%;
+}
+
+.write-post-page > div > div {
+  margin: 12px;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: flex-start;
+}
+.annual-select,
+.write-post-page input,
+.write-post-page #content {
+  padding: 7px;
+  font-size: 14px;
+  border-radius: 5px;
+  border: 1px solid #d2d2d2;
+}
+.annual-select {
+  cursor: pointer;
+}
+
+#image-path {
+  border-radius: 5px;
+  border: 1px solid #d2d2d2;
+  font-size: 10px;
+  width: 88%;
+}
+
+.write-post-page input {
   width: 100%;
-  max-width: 1080px;
-  margin: 0 auto;
-  padding: 0 64px;
-  box-sizing: border-box;
-  height: auto;
-  display: flex;
-  flex-direction: column;
-  gap: 1px;
+  cursor: text;
 }
-
-.title {
-  font-size: 16px;
-  line-height: 32px;
-  letter-spacing: 0.02em;
-  color: #000000;
-  margin-bottom: 10px;
-  align-self: flex-end;
-  width: 99.2%;
-  border-radius: 6px;
-  align-items: center;
-  border: 1px solid #ddd;
-}
-
-.content textarea {
-  width: calc(100% - 36px);
-  max-width: 952px;
-  height: 500px;
-  border-radius: 6px;
-  font-size: 16px;
-  padding: 16px;
-  border: 1px solid #ddd;
-  resize: none;
-  margin-top: 10px;
-  align-self: flex-end;
-}
-
-.annual-select {
-  width: 115px;
-  padding: 1px; /* 옵션 내용과 경계 사이 여백 조절 */
-  font-size: 16px;
-  border-radius: 6px; /* 필요한 경우에만 사용 */
-  /* border: 1px solid #ddd; */
-  margin-bottom: 10px;
-  align-self: flex-end; /* Added align-self */
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  border: 1px solid #ddd;
-}
-
-.button-container {
-  display: flex;
-  justify-content: flex-end;
-  font-size: 16px;
-}
-
-/* .write {
-  background-color: #323232;
-  color: #ffffff !important;
-  width: 50px !important;
-  height: 50px;
-  border-radius: 10px !important;
-  font-weight: 600;
-}
-
-.cancel {
-  background-color: #c2c2c2;
-  width: 50px !important;
-  height: 50px;
-  border-radius: 10px !important;
-  font-weight: 600;
-  margin-right: 2px;
-} */
-
-.none {
-  background-color: black;
+#imgae-upload {
+  width: 12%;
+  font-size: 10px;
   color: white;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+}
+.write-post-page #content {
+  height: 300px;
+  width: 100%;
+  cursor: text;
+}
+#write-post-buttons {
+  display: flex;
+  flex-direction: row;
+  align-items: flex-end;
+  justify-content: flex-end;
+  width: 98%;
+}
+#write-post-buttons > button {
+  margin: 0 5px;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 7px;
+  cursor: pointer;
 }
 
-@media screen and (max-width: 430px) {
-  .write,
-  .cancel {
-    min-width: 6rem !important;
+#post-cancle {
+  background: #c2c2c2;
+  color: black;
+}
+#post-write {
+  color: white;
+  background: #323232;
+}
+@media screen and (max-width: 1200px) {
+  #imgae-upload {
+    width: 40%;
   }
-}
-
-.content textarea {
-  height: 250px;
-}
-
-.title {
-  height: 30px;
-}
-
-.annual-select {
-  height: 30px;
-}
-
-.postcancel {
-  background-color: #c2c2c2;
-  height: 35px !important;
-  border-radius: 10px !important;
-  font-weight: 600;
-  margin-right: 2px;
-}
-
-.postwrite {
-  background-color: #323232;
-  color: #ffffff !important;
-  height: 35px !important;
-  border-radius: 10px !important;
-  font-weight: 600;
+  #image-path {
+    width: 60%;
+  }
+  #write-post-buttons {
+    width: 95%;
+  }
 }

@@ -1,17 +1,10 @@
-img {
-  width: 100%;
-  height: auto;
-}
 h1 {
   font-size: 28px;
   font-weight: 900;
 }
 
 body {
-  font-family: 'poppins';
-  margin: 0;
-  padding: 0;
-  background-color: #f9f9f9;
+  background: #f9f9f9;
 }
 #nickname {
   float: right;
@@ -20,19 +13,9 @@ body {
   margin-top: 5px;
 }
 
-#chat-container {
-  max-width: 1080px;
-  margin: 0 auto;
-  background-color: #f9f9f9;
-  padding: 20px;
-  box-sizing: border-box;
-  display: flex;
-  flex-direction: column;
-  height: 60vh;
-}
-
 #chat-messages {
-  flex-grow: 1;
+  margin-top: 20px;
+  height: 300px;
   overflow-y: scroll;
   padding: 10px;
 }
@@ -41,7 +24,14 @@ body {
   margin: 5px 0;
   padding: 8px;
   border-radius: 8px;
-  max-width: 70%;
+}
+
+.chat-message > p {
+  margin: 1px;
+}
+
+#sender {
+  font-size: 8px;
 }
 
 /* 왼쪽 정렬 */
@@ -51,6 +41,10 @@ body {
   float: left;
   clear: both;
   box-shadow: 2px 2px 2px #d5d5d5;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: flex-start;
 }
 
 /* 오른쪽 정렬 */
@@ -60,6 +54,10 @@ body {
   color: #323232;
   float: right;
   clear: both;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  justify-content: flex-end;
 }
 
 /* 사용자 닉네임 스타일 */

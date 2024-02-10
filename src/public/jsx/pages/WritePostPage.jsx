@@ -1,15 +1,16 @@
 import React from 'react';
-import { useParams } from 'react-router-dom';
 import Post from '../components/writepost/post.jsx';
 import Header from '../components/main/header.jsx';
+
+import './WritePostPage.css';
 
 function WritePostPage() {
   return (
     <div>
-      <header>
-        <Header />
-      </header>
-      <Post />
+      <Header />
+      <div className="write-post-page">
+        <Post />
+      </div>
     </div>
   );
 }
