@@ -1,8 +1,10 @@
 import React from 'react';
 
+import './PostReportModal.css';
+
 function PostReportModal({ postId, authorization }) {
   const postReport = async (reportType, postId) => {
-    const content = document.querySelector('#reportContentInput').value;
+    const content = document.querySelector('#report-content-input').value;
 
     const response = await fetch(`api/reports`, {
       method: 'POST',
@@ -29,20 +31,14 @@ function PostReportModal({ postId, authorization }) {
   };
   return (
     <>
-      <div className="modal" id="report-post-Modal" style={{ display: 'none' }}>
+      <div className="modal" id="report-post-Modal">
         <div className="modal-content">
-          {/* Report Post Modal Content */}
-          <label>신고 내용</label>
-          <br />
-          <input className="report_content" type="text" id="reportContentInput" />
-          <div className="report-post-Box-btn">
-            <button className="report-post-btn" onClick={() => postReport('post', postId)}>
-              신고
-            </button>
-            <button
-              className="report-post-close-btn"
-              onClick={() => modalClose('#report-post-Modal')}
-            >
+          <h3>신고 내용</h3>
+
+          <input type="text" id="report-content-input" />
+          <div className="report-post-buttons">
+            <button onClick={() => postReport('post', postId)}>신고</button>
+            <button id="close" onClick={() => modalClose('#report-post-Modal')}>
               닫기
             </button>
           </div>

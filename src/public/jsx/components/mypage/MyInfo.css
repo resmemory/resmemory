@@ -58,6 +58,7 @@
   width: 60px;
   background: #fae300;
 }
+
 .localUser {
   font-weight: 700;
   display: flex;
@@ -83,6 +84,7 @@
 }
 
 .modal-content {
+  position: relative;
   background-color: #fefefe;
   padding: 20px;
   border-radius: 15px;
@@ -90,7 +92,7 @@
   box-shadow: 0px 4px 8px 0px rgb(0, 0, 0, 0.1);
   color: #000;
   height: 65%;
-  position: absolute;
+
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
@@ -105,6 +107,16 @@
 .modal-content > label {
   font-size: 12px;
 }
+.modal-content > div > input {
+  margin-top: 10px;
+  padding: 10px;
+  font-size: 12px;
+  width: 90%;
+  border: 1px solid #d2d2d2;
+  border-radius: 30px;
+  cursor: pointer;
+}
+
 .modal-content > input {
   margin-top: 10px;
   padding: 10px;
@@ -115,7 +127,11 @@
   cursor: pointer;
 }
 
-.modal-content button {
+.modal-content > div {
+  position: relative;
+}
+.modal-content button,
+.modal-content > div > button {
   font-weight: 900;
   font-size: 14px;
   color: #427dee;
@@ -130,6 +146,17 @@
 #close {
   color: gray;
 }
+.login-required {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  width: 300px;
+  border: 1px solid #d2d2d2;
+  background: #ffffff;
+  padding: 15px 0;
+  border-radius: 30px;
+}
 
 .edit-info {
   display: flex;
@@ -139,6 +166,22 @@
 }
 #password-change {
   justify-content: flex-end;
+}
+#PWChange #show-password {
+  position: absolute;
+  margin: 0;
+  top: 20px;
+  right: 30px;
+  width: 50px;
+  height: 20px;
+}
+#PWChange #show-confirm-password {
+  position: absolute;
+  width: 50px;
+  height: 20px;
+  top: 20px;
+  right: 30px;
+  margin: 0;
 }
 @media screen and (max-width: 1200px) {
   .modal-content > input {
@@ -152,5 +195,8 @@
   }
   .modal-content button {
     margin: 10px 0px;
+  }
+  .modal-content {
+    width: 50%;
   }
 }

@@ -1,6 +1,8 @@
 import React from 'react';
 
-function CommentReportModal(commentId, authorization) {
+import './CommentReportModal.css';
+
+function CommentReportModal({ commentId, authorization }) {
   const commentReport = async (reportType, commentId) => {
     const content = document.querySelector(`#reportContentInput-${commentId}`).value;
 
@@ -29,22 +31,14 @@ function CommentReportModal(commentId, authorization) {
   };
   return (
     <>
-      <div className="modal" id={`report-comment-Modal-${commentId}`} style={{ display: 'none' }}>
+      <div className="modal" id={`report-comment-Modal-${commentId}`}>
         <div className="modal-content">
           <label>신고 내용</label>
           <br />
-          <input className="report_content" type="text" id={`reportContentInput-${commentId}`} />
-          <div className="report-comment-Box-btn">
-            <button
-              className="report-comment-btn"
-              onClick={() => commentReport('comment', commentId)}
-            >
-              신고
-            </button>
-            <button
-              className="report-comment-close-btn"
-              onClick={() => modalClose(`#report-comment-Modal-${commentId}`)}
-            >
+          <input type="text" id={`reportContentInput-${commentId}`} />
+          <div className="report-comment-buttons">
+            <button onClick={() => commentReport('comment', commentId)}>신고</button>
+            <button id="close" onClick={() => modalClose(`#report-comment-Modal-${commentId}`)}>
               닫기
             </button>
           </div>
