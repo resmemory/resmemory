@@ -80,7 +80,7 @@ function GetReport(props) {
               </div>
             ))
           ) : (
-            <div>신고 내역이 없습니다.</div>
+            <div className="no-reports">신고 내역이 없습니다.</div>
           )}
         </>
       ) : (

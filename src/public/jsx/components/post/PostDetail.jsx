@@ -105,6 +105,7 @@ const PostDetail = () => {
     if (result.responseData.code === 0) {
       window.location.href = `./login`;
     }
+    window.location.reload();
   };
 
   const modalOn = (classname) => {

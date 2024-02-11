@@ -27,9 +27,6 @@
   color: white;
 }
 
-#my-page-post {
-  width: 160px;
-}
 #inner-my-page-post {
   cursor: pointer;
 }
@@ -51,9 +48,6 @@
     margin-top: 10px;
     justify-content: center;
     width: 300px;
-  }
-  #my-page-post {
-    width: 260px;
   }
   .card-section > div {
     justify-content: center;
