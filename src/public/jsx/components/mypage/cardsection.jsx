@@ -142,9 +142,7 @@ const CardSection = () => {
         <Masonry
           breakpointCols={{
             default: itemsPerRow,
-            1100: 3,
-            700: 2,
-            500: 1,
+            1200: 1,
           }}
           className="masonry-grid"
           columnClassName="masonry-grid_column"

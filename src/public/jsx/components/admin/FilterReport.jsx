@@ -1,62 +1,41 @@
 import React, { useState } from 'react';
 
-const style = {
-  FilterButton: {
-    display: 'flex',
-    flexDirection: 'row',
-    marginTop: '20px',
-    marginBottom: '20px',
-  },
-  botton: {
-    width: '100px',
-    height: '30px',
-    marginRight: '20px',
-    color: 'white',
-    borderRadius: '5px',
-    border: '0px',
-  },
-};
+import './FilterReport.css';
 
 function FilterReport(props) {
-  const [AllColor, setAllButtonColor] = useState('gray');
-  const [incompleteColor, setIncompleteButtonColor] = useState('#ccc');
-  const [completeColor, setCompleteButtonColor] = useState('#ccc');
+  const [allColor, setAllButtonColor] = useState('#d2d2d2');
+  const [incompleteColor, setIncompleteButtonColor] = useState('#ffffff');
+  const [completeColor, setCompleteButtonColor] = useState('#ffffff');
 
   const handleFilterAll = () => {
     props.onFilterChange('all');
-    setAllButtonColor('gray');
-    setIncompleteButtonColor('#ccc');
-    setCompleteButtonColor('#ccc');
+    setAllButtonColor('#d2d2d2');
+    setIncompleteButtonColor('#ffffff');
+    setCompleteButtonColor('#ffffff');
   };
 
   const handleFilterIncomplete = () => {
     props.onFilterChange('incomplete');
-    setIncompleteButtonColor('gray');
-    setAllButtonColor('#ccc');
-    setCompleteButtonColor('#ccc');
+    setIncompleteButtonColor('#d2d2d2');
+    setAllButtonColor('#ffffff');
+    setCompleteButtonColor('#ffffff');
   };
   const handleFiltercomplete = () => {
     props.onFilterChange('complete');
-    setCompleteButtonColor('gray');
-    setAllButtonColor('#ccc');
-    setIncompleteButtonColor('#ccc');
+    setCompleteButtonColor('#d2d2d2');
+    setAllButtonColor('#ffffff');
+    setIncompleteButtonColor('#ffffff');
   };
 
   return (
-    <div style={style.FilterButton}>
-      <button style={{ ...style.botton, backgroundColor: AllColor }} onClick={handleFilterAll}>
+    <div className="filter-buttons">
+      <button style={{ background: allColor }} onClick={handleFilterAll}>
         전체
       </button>
-      <button
-        style={{ ...style.botton, backgroundColor: incompleteColor }}
-        onClick={handleFilterIncomplete}
-      >
+      <button style={{ background: incompleteColor }} onClick={handleFilterIncomplete}>
         미완료
       </button>
-      <button
-        style={{ ...style.botton, backgroundColor: completeColor }}
-        onClick={handleFiltercomplete}
-      >
+      <button style={{ background: completeColor }} onClick={handleFiltercomplete}>
         삭제 완료
       </button>
     </div>
