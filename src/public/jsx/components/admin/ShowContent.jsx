@@ -1,25 +1,13 @@
 import React, { useEffect, useState } from 'react';
 
+import './ShowContent.css';
+
 const adminId = sessionStorage.getItem('Authorization');
 
 function ShowContent(props) {
   const [data, setData] = useState([]);
   const [commentData, setCommentData] = useState([]);
   const [threadData, setThreadData] = useState([]);
-
-  const styles = {
-    div: {
-      border: 'none',
-    },
-    DetailDiv: {
-      backgroundColor: 'aliceblue',
-      borderRadius: '12px',
-      width: '850px',
-      minHeight: '10px',
-      padding: '10px 10px 10px 10px',
-      marginBottom: '10px',
-    },
-  };
 
   const fetchData = async () => {
     if (props.data && props.data.isReport === 'false') {
@@ -67,29 +55,30 @@ function ShowContent(props) {
       case 'post':
         return ['nickname', 'title', 'content'].map((key) => (
           <div key={key}>
-            <p>
-              {key === 'nickname' ? '닉네임' : key === 'title' ? '제목' : '내용'}: {data[key]}
-            </p>
+            <label>{key === 'nickname' ? '회원' : key === 'title' ? '제목' : '내용'}</label>
+            <p>{data[key]}</p>
           </div>
         ));
       case 'comment':
         return (
           <div>
-            <p>내용: {commentData.content}</p>
+            <label>내용</label>
+            <p> {commentData.content}</p>
           </div>
         );
       case 'thread':
         return (
           <div>
-            <p>내용: {threadData.content}</p>
+            <label>내용</label>
+            <p> {threadData.content}</p>
           </div>
         );
     }
   };
 
   return (
-    <div style={styles.div}>
-      <div style={styles.DetailDiv}>{renderContent()}</div>
+    <div className="report-content">
+      <div>{renderContent()}</div>
     </div>
   );
 }

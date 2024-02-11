@@ -1,19 +1,9 @@
 import React, { useEffect } from 'react';
-import ReportContainer from '../components/admin/ReportContainer.jsx';
 import Header from '../components/main/header.jsx';
 import { useNavigate } from 'react-router-dom';
+import GetReport from '../components/admin/GetReport.jsx';
 
-const styles = {
-  header: {
-    width: '100%',
-    height: '200px',
-  },
-  ReportContainer: {
-    alignItems: 'center',
-    display: 'flex',
-    justifyContent: 'center',
-  },
-};
+import './AdminPage.css';
 
 function AdminPage() {
   const navigate = useNavigate();
@@ -45,10 +35,14 @@ function AdminPage() {
     fetchData();
   }, []);
   return (
-    <div>
+    <>
       <Header />
-      <ReportContainer style={styles.ReportContainer} />
-    </div>
+      <div className="admin-page">
+        <div>
+          <GetReport />
+        </div>
+      </div>
+    </>
   );
 }
 

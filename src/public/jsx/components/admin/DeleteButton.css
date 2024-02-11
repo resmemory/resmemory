@@ -1,0 +1,21 @@
+.admin-page #delete-button {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: flex-end;
+}
+
+#delete-buttons > button {
+  color: white;
+  border: none;
+  padding: 10px;
+  width: 90px;
+  border-radius: 30px;
+}
+
+@media screen and (max-width: 1200px) {
+  #delete-buttons > button {
+    font-size: 10px;
+    width: 60px;
+  }
+}
