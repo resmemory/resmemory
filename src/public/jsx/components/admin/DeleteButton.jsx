@@ -1,20 +1,8 @@
 import React, { useEffect, useState } from 'react';
 
-const adminId = sessionStorage.getItem('Authorization');
+import './DeleteButton.css';
 
-const style = {
-  div: {
-    alignItems: 'right',
-  },
-  button: {
-    width: '100px',
-    color: 'white',
-    borderRadius: '5px',
-    border: 'none',
-    padding: '10px 20px',
-    cursor: 'pointer',
-  },
-};
+const adminId = sessionStorage.getItem('Authorization');
 
 function DeleteButton(props) {
   const isReport = props.data.isReport;
@@ -23,13 +11,13 @@ function DeleteButton(props) {
 
   useEffect(() => {
     if (isReport === 'true') {
-      setButtonColor('skyblue');
+      setButtonColor('#323232');
       setButton('삭제 완료');
     } else if (isReport === '2') {
-      setButtonColor('deepskyblue');
+      setButtonColor('darkgray');
       setButton('삭제 완료');
     } else if (isReport === 'false') {
-      setButtonColor('blue');
+      setButtonColor('#FF6E4E');
       setButton('삭제 하기');
     }
   }, [isReport]);
@@ -37,14 +25,14 @@ function DeleteButton(props) {
   const handleDelete = async () => {
     if (isReport === 'false') {
       try {
-        setButtonColor('skyblue');
+        setButtonColor('#323232');
         setButton('삭제 완료');
         await deleteContent(props.data.reportId, props.data.contentId, props.data.reportType);
       } catch (error) {}
     }
 
     if (isReport === 'true' || isReport === '2') {
-      setButtonColor('skyblue');
+      setButtonColor('darkgray');
       await deleteContent(props.data.reportId, props.data.contentId, props.data.reportType);
     }
   };
@@ -64,8 +52,8 @@ function DeleteButton(props) {
   }
 
   return (
-    <div style={style.div}>
-      <button style={{ ...style.button, backgroundColor: buttonColor }} onClick={handleDelete}>
+    <div id="delete-buttons">
+      <button onClick={handleDelete} style={{ background: buttonColor }}>
         {button}
       </button>
     </div>

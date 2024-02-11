@@ -1,0 +1,25 @@
+.report-content {
+  background: white;
+  border: none;
+  border-radius: 7px;
+  width: 100%;
+  padding: 20px;
+  margin-top: 20px;
+}
+
+.report-content > div > div {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: flex-start;
+}
+
+.report-content > div > div > label {
+  margin-right: 10px;
+  font-weight: 600;
+}
+@media screen and (max-width: 1200px) {
+  .report-content {
+    width: 85%;
+  }
+}
