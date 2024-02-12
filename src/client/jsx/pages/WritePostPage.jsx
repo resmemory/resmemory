@@ -1,6 +1,6 @@
 import React from 'react';
 import Post from '../components/writepost/Post.jsx';
-import Header from '../components/main/Header.jsx';
+import Header from '../components/main/header.jsx';
 
 import './WritePostPage.css';
 

@@ -1,8 +1,8 @@
 import React from 'react';
-import MyInfo from '../../jsx/components/mypage/Myinfo.jsx';
+import MyInfo from '../../jsx/components/mypage/myinfo.jsx';
 
 import CardSection from '../components/mypage/CardSection.jsx';
-import Header from '../components/main/Header.jsx';
+import Header from '../components/main/header.jsx';
 
 import './MyPage.css';
 
