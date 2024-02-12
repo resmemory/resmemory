@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 
 import Picture from '../svg/Picture.jsx';
 
-import './post.css';
+import './Post.css';
 
 const ImageUpload = ({ onImageChange, onDeleteImage }) => {
   const [selectedImage, setSelectedImage] = useState(null);
