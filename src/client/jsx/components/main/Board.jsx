@@ -1,7 +1,7 @@
 import React, { useEffect, useState, useRef } from 'react';
 import Masonry from 'react-masonry-css';
 import View from '../svg/View.jsx';
-import './board.css';
+import './Board.css';
 import Heart from '../svg/Heart.jsx';
 import { useNavigate } from 'react-router-dom';
 
