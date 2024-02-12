@@ -269,7 +269,7 @@ const onRequest = async (res, method, pathname, params, key, cb) => {
           if (postIds.length > 1) {
             postIdString = postIds.join(',');
             sqlQuery = `SELECT postId, count(*) as count from Bookmarks WHERE postId IN (${postIdString}) GROUP BY postId`;
-          } else {
+          } else if (postIds) {
             sqlQuery = `SELECT COUNT(*) as count from Bookmarks WHERE postId = ${postIds[0]}`;
           }
 
