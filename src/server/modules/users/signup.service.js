@@ -14,8 +14,7 @@ async function signup(pathname, params, responseData, token) {
       const verifyNumber = Math.floor(Math.random() * (999999 - 111111 + 1)) + 111111;
 
       const { email } = params.bodies;
-      const emailcheck =
-        /^[0-9a-zA-Z]([-_\.]?[0-9a-zA-Z])*@[0-9a-zA-Z]([-_\.]?[0-9a-zA-Z])*\.[a-zA-Z]{2,3}$/i;
+      const emailcheck = /^[0-9a-zA-Z-_\.]*@[0-9a-zA-Z]([-_\.]?[0-9a-zA-Z])*\.[a-zA-Z]{2,3}$/i;
       if (!emailcheck.test(email)) {
         responseData = { code: 113 };
       } else {
@@ -71,7 +70,7 @@ async function signup(pathname, params, responseData, token) {
   // 회원가입
   if (pathname == '/signup') {
     try {
-      const passwordcheck = /^[A-Za-z0-9@$!%*#?&]{6,12}$/;
+      const passwordcheck = /^[A-Za-z0-9@$!%*#?&\.]{6,30}$/;
       const { email, nickname, password, confirm } = params.bodies;
       const isExistNickname = await Users.findOne({ where: { nickname } });
       if (!email || !nickname || !password) {

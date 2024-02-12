@@ -8,9 +8,9 @@ const directory = process.env.DIRECTORY;
 function frontconnection(pathname, res, data) {
   let filePath;
   if (pathname == '/') {
-    filePath = `./${directory}/public/index.html`;
+    filePath = `./${directory}/client/index.html`;
   } else {
-    filePath = `./${directory}/public${pathname}`;
+    filePath = `./${directory}/client${pathname}`;
     if (pathname.endsWith('.js')) {
       res.writeHead(200, { 'Content-Type': 'text/javascript' });
     } else if (pathname.endsWith('.jsx')) {
