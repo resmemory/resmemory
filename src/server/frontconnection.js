@@ -25,14 +25,14 @@ function frontconnection(pathname, res, data) {
       res.writeHead(200, { 'Content-Type': 'text/html' });
     } else {
       // filePath = `./${directory}/public${pathname}.html`;
-      filePath = `./${directory}/public/index.html`;
+      filePath = `./${directory}/client/index.html`;
       res.writeHead(200, { 'Content-Type': 'text/html' });
     }
   }
 
   const readStream = fs.createReadStream(filePath);
   readStream.on('error', () => {
-    filePath = `./${directory}/public/notfound.html`;
+    filePath = `./${directory}/client/notfound.html`;
     const readStream404 = fs.createReadStream(filePath);
     res.writeHead(404, { 'Content-Type': 'text/html' });
     readStream404.pipe(res);
