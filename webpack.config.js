@@ -3,9 +3,9 @@ const path = require('path');
 module.exports = {
   stats: { errorDetails: true },
   mode: 'production',
-  entry: './src/public/jsx/index.jsx',
+  entry: './src/client/jsx/index.jsx',
   output: {
-    filename: './public/jsx/index.js',
+    filename: './client/jsx/index.js',
     path: path.resolve(__dirname, 'dist'),
   },
   module: {
