@@ -6,16 +6,24 @@ import { API } from "../../api.js";
 import { Post } from "../../data/post.jsx";
 import { LogoIcon } from "../../assets/icons/logo.jsx";
 import { NumberUtil } from "../../util/number.jsx";
+import { ArrayUtil } from "../../util/array.jsx";
+import { Disable } from "../components/disable.jsx";
+import { Image } from "../../data/image.jsx";
 
 import "./Home.css";
 
-
-
 class Category {
     pageCount = 1;
-    canLoadMore = true;
 
+    // 다음 페이지에 해당하는 포스트의 수.
+    nextPageItemCount = 0;
+    
     cachedPosts = null;
+
+    // 카테고리 관련 포스트를 더 로드해야 하는 경우의 여부를 반환합니다.
+    get canLoadMore() {
+        return this.nextPageItemCount != 0;
+    }
 
     constructor(id, displayName) {
         this.id = id;
@@ -24,19 +32,18 @@ class Category {
 
     /**
      * @param {number} pageNum 
-     * @returns {}
+     * @returns {Promise<Post[]>}
      */
     async load(pageNum = this.pageCount) {
         return this.cachedPosts ?? (this.cachedPosts = await this.fetch(pageNum));
     }
 
-    async moreLoad() {
-
+    async loadMore(pageNum = ++this.pageCount) {
+        
     }
     
     /**
-     * @param {number} pageNum 
-     * 
+     * @param {number} pageNum
      * @returns {Promise<Post[]>}
     */
     async fetch(
@@ -49,7 +56,7 @@ class Category {
         
         const response = await fetch(`${API.endpoint}/posts?${params}`);
         if (!(response.ok || response.status === 200)) {
-            this.canLoadMore = false;
+            this.nextPageItemCount = 0;
 
             throw new Error(`reponse status ${response.status}`);
         }
@@ -77,15 +84,31 @@ export const HomePage = () => {
 
     /** @type {[Post[], React.Dispatch<React.SetStateAction<Post[]>>]} posts */
     const [ posts, setPosts ] = useState(null);
+    const [ disabled, setDisabled ] = useState(false);
 
     useEffect(() => {
-        const category = categorys.find(it => it.id === type);
-        const posts = category?.load() ?? [];
+        setDisabled(true);
 
-        posts.then(setPosts);
+        (async () => {
+            const category = categorys.find(it => it.id === type);
+            const posts = await category?.load() ?? [];
+
+            setPosts(posts);
+            setDisabled(false);
+        })()
     }, [type]);
 
-    // {posts.map(post => <PostItem post={post} />)}
+    const postElement = () => {
+        if (posts) {
+            return [
+                posts.map(post => <PostItem post={post} />), // loaded
+                ArrayUtil.builder(6, () => <PostPlaceholder />) // placeholder
+            ]
+        }
+
+        // 초기 로딩 시
+        return ArrayUtil.builder(30, () => <PostPlaceholder />)
+    }
 
     return (
         <>
@@ -93,22 +116,19 @@ export const HomePage = () => {
             <div className="categorys row-scrollable">
                 {categorys.map(it => {
                     return (
-                        <Button.Selectable text={it.displayName} isSelected={type === it.id} onSelect={() => navigate(`?category=${it.id}`)} />
+                        <Button.Selectable
+                            text={it.displayName}
+                            isSelected={type === it.id}
+                            onSelect={() => navigate(`?category=${it.id}`)}
+                        />
                     );
                 })}
             </div>
-            <div style={{padding: "var(--padding)"}}>
-                <Masonry rows={5} gap="var(--grid-gap)">
-                    {
-                    posts
-                        ? [
-                            posts.map(post => <PostItem post={post} />),
-                            Array(6).fill(null).map(_ => <PostPlaceholder />)
-                        ] // real posts
-                        : Array(30).fill(null).map(_ => <PostPlaceholder />)
-                    }
-                </Masonry>
-            </div>
+            <Disable isDisabled={disabled}>
+                <div style={{padding: "var(--padding)"}}>
+                    <Masonry rows={5} gap="var(--grid-gap)">{postElement()}</Masonry>
+                </div>
+            </Disable>
         </>
     )
 }
@@ -149,7 +169,7 @@ const PostPlaceholder = () => {
         }}>
             <div style={{height: height}} className="placeholder"></div>
             <div style={{height: "20px", width: `${width1}%`}} className="placeholder-inner"></div>
-            <div style={{height: "20px", width: `${width2}%`}} className="placeholder-inner"></div>
+            <div style={{height: "15px", width: `${width2}%`}} className="placeholder-inner"></div>
         </div>
     )
 }

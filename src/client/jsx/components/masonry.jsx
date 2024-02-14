@@ -7,10 +7,13 @@ export const Masonry = ({
     gap = "0px",
     rowGap = gap,
     columnGap = gap,
+    padding,
     children,
 }) => {
     const childArray = React.Children.toArray(children);
-    const byRow      = new Map();
+
+    /** @type {Map<number, React.ReactNode>} */
+    const byRow = new Map();
 
     {
         let count = 0;
@@ -25,6 +28,7 @@ export const Masonry = ({
         <div style={{
             display: "flex",
             gap: rowGap,
+            padding: padding,
         }}>
             {Array(rows).fill(null).map((_, i) => {
                 return (

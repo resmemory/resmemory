@@ -23,6 +23,12 @@ a, p { margin: 0px; }
 
 /* 기반 동작 선언 */
 
+.disable { transition: opacity var(--transition-duration); }
+.disabled {
+    opacity: 0.25;
+    pointer-events: none;
+}
+
 .row-scrollable {
     max-width: 100%;
     overflow-x: auto;
