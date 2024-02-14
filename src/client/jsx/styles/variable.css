@@ -10,12 +10,15 @@
     --line: rgb(230, 230, 230);
     --box: white;
     --box-line: rgb(240, 240, 240);
+    --box-placeholder: rgb(235, 235, 235);
+    --box-placeholder-inner: rgb(240, 240, 240);
 }
 
 :root {
     --transition-duration: 0.1s;
     --padding: 15px;
-    --gap: calc(var(--padding) / 2);
+    --items-gap: calc(var(--padding) / 2);
+    --grid-gap: var(--items-gap);
     --column-spacing: 5px;
     --row-spacing: 5px;
     --box-radius: 5px;

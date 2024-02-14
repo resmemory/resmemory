@@ -26,7 +26,6 @@ a, p { margin: 0px; }
 .row-scrollable {
     max-width: 100%;
     overflow-x: auto;
-    
 }
 .row-scrollable::-webkit-scrollbar { display: none; }
 .row-scrollable > * { min-width: max-content; }

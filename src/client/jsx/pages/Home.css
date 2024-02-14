@@ -8,5 +8,15 @@
 .header > .nav {
     display: flex;
     justify-content: right;
-    gap: var(--gap);
+    gap: var(--items-gap);
+}
+
+.categorys {
+    position: sticky;
+    top: 0px;
+    z-index: 1;
+    display: flex;
+    padding: var(--padding);
+    gap: var(--items-gap);
+    background-color: var(--background);
 }

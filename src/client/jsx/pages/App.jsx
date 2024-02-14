@@ -4,6 +4,7 @@ import { BrowserRouter, Route, Routes } from "react-router-dom";
 import "../styles/variable.css";
 import "../styles/main.css";
 import "../styles/template.css";
+import "../styles/keyframe.css";
 
 import { HomePage } from "./Home.jsx";
 
