@@ -24,7 +24,7 @@ export class Button {
      */
     static Tertiary({text, onClick, sub}) {
         return (
-            <button className="tertiary" onClick={onclick}>
+            <button className="tertiary" onClick={onClick}>
                 {text}
                 {sub ? <div className="sub">{sub}</div> : undefined}
             </button>

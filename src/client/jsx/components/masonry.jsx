@@ -1,7 +1,8 @@
-import React, { FC, ReactNode } from "react"
+import React, { FC, ReactNode, useLayoutEffect, useState } from "react"
 
 
 
+/** @type {React.FC<{rows: number, gap: number, rowGap: number, columnGap: number, padding: string, children: React.ReactDOM}>} */
 export const Masonry = ({
     rows,
     gap = "0px",

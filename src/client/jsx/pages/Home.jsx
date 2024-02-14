@@ -1,6 +1,6 @@
 import React, { useEffect, useRef, useState } from "react"
 import { useLocation, useNavigate } from "react-router-dom";
-import { Masonry } from "../components/masonry.jsx";
+import { Masonry, MasonryBuilder } from "../components/masonry.jsx";
 import { Button, SelectableButton } from "../components/button.jsx";
 import { API } from "../../api.js";
 import { Post } from "../../data/post.jsx";
@@ -8,9 +8,9 @@ import { LogoIcon } from "../../assets/icons/logo.jsx";
 import { NumberUtil } from "../../util/number.jsx";
 import { ArrayUtil } from "../../util/array.jsx";
 import { Disable } from "../components/disable.jsx";
-import { Image } from "../../data/image.jsx";
 
 import "./Home.css";
+import { Constraint, RawSizeBuilder, SizeBuilder } from "../components/size_builder.jsx";
 
 class Category {
     pageCount = 1;
@@ -31,7 +31,7 @@ class Category {
     }
 
     /**
-     * @param {number} pageNum 
+     * @param {number} pageNum
      * @returns {Promise<Post[]>}
      */
     async load(pageNum = this.pageCount) {
@@ -86,12 +86,17 @@ export const HomePage = () => {
     const [ posts, setPosts ] = useState(null);
     const [ disabled, setDisabled ] = useState(false);
 
+    /** @type {() => Category?} */
+    const currentCategory = () => {
+        return categorys.find(it => it.id === type);
+    }
+
+    // 카테고리별 포스트 불러오기.
     useEffect(() => {
         setDisabled(true);
 
         (async () => {
-            const category = categorys.find(it => it.id === type);
-            const posts = await category?.load() ?? [];
+            const posts = await currentCategory()?.load() ?? [];
 
             setPosts(posts);
             setDisabled(false);
@@ -113,7 +118,7 @@ export const HomePage = () => {
     return (
         <>
             <Header />
-            <div className="categorys row-scrollable">
+            <div className="categorys row-scrollable" style={{pointerEvents: disabled ? "none" : null}}>
                 {categorys.map(it => {
                     return (
                         <Button.Selectable
@@ -126,7 +131,18 @@ export const HomePage = () => {
             </div>
             <Disable isDisabled={disabled}>
                 <div style={{padding: "var(--padding)"}}>
-                    <Masonry rows={5} gap="var(--grid-gap)">{postElement()}</Masonry>
+                    <SizeBuilder
+                        constraints={[
+                            new Constraint(1000, Infinity, 5),
+                            new Constraint(800, 1000, 4),
+                            new Constraint(600, 800, 3),
+                            new Constraint(400, 600, 2),
+                            new Constraint(-Infinity, 400, 1),
+                        ]}
+                        builder={(rows) => {
+                            return <Masonry rows={rows} gap="var(--grid-gap)">{postElement()}</Masonry>
+                        }
+                    } />
                 </div>
             </Disable>
         </>
