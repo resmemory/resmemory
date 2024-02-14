@@ -2,7 +2,7 @@ import Posts from './db/posts.db';
 import Comments from './db/comments.db';
 import postModule from './posts.module';
 import dotenv from 'dotenv';
-import { imageUpload, imageDelete, imageThumbnail } from './imageManager';
+import { imageUpload, imageDelete, imageThumbnail, imageFetch } from './imageManager';
 
 dotenv.config();
 
@@ -144,21 +144,42 @@ const onRequest = async (res, method, pathname, params, key, cb) => {
           const bodies = postModule.nickname.responseData.bodies;
           const bookmarksBodies = postModule.bookmarksCount.responseData.result;
 
-          responseData = result.map((post) => {
-            const nickname = bodies.filter((nickname) => nickname.userId == post.userId);
-            return { ...post, nickname: nickname[0].nickname };
-          });
-
-          responseData = responseData.map((post) => {
-            const bookmarksCount = bookmarksBodies[0].filter(
-              (count) => count.postId == post.postId,
-            );
-            if (bookmarksCount.length) {
-              return { ...post, bookmarks: bookmarksCount[0].count };
-            } else {
-              return { ...post, bookmarks: 0 };
-            }
-          });
+          responseData = await Promise.all(
+            result.map(async (post) => {
+              const nickname = bodies.filter((nickname) => nickname.userId == post.userId);
+              const bookmarksCount = bookmarksBodies[0].filter(
+                (count) => count.postId == post.postId,
+              );
+              let bookmarks = 0;
+              let img = {};
+              let thumbnail = {};
+              if (bookmarksCount.length) {
+                bookmarks = bookmarksCount[0].count;
+              }
+              if (post.img) {
+                img = await imageFetch(post.img, 600);
+              }
+              if (post.thumbnail) {
+                thumbnail = await imageFetch(post.thumbnail, 220);
+              }
+              return {
+                category: post.category,
+                content: post.content,
+                img,
+                thumbnail,
+                title: post.title,
+                userId: post.userId,
+                postId: post.postId,
+                nickname: post.nickname,
+                viewCount: post.viewCount,
+                createdAt: post.createdAt,
+                updatedAt: post.updatedAt,
+                deletedAt: post.deletedAt,
+                nickname: nickname[0].nickname,
+                bookmarks,
+              };
+            }),
+          );
         } catch (err) {
           responseData = { code: 320 };
           console.log(err);
@@ -244,24 +265,44 @@ const onRequest = async (res, method, pathname, params, key, cb) => {
 
           const bodies = postModule.nickname.responseData.bodies;
           const bookmarksBodies = postModule.bookmarksCount.responseData.result;
-
-          responseData = result.map((post) => {
-            const nickname = bodies.filter((nickname) => nickname.userId == post.userId);
-            return { ...post, nickname: nickname[0].nickname };
-          });
-
-          responseData = responseData.map((post) => {
-            const bookmarksCount = bookmarksBodies[0].filter(
-              (count) => count.postId == post.postId,
-            );
-            if (bookmarksCount.length) {
-              return { ...post, bookmarks: bookmarksCount[0].count };
-            } else {
-              return { ...post, bookmarks: 0 };
-            }
-          });
+          let img = {};
+          let thumbnail = {};
+          responseData = await Promise.all(
+            result.map(async (post) => {
+              const nickname = bodies.filter((nickname) => nickname.userId == post.userId);
+              const bookmarksCount = bookmarksBodies[0].filter(
+                (count) => count.postId == post.postId,
+              );
+              if (bookmarksCount.length) {
+                bookmarks = bookmarksCount[0].count;
+              }
+              if (post.img) {
+                img = await imageFetch(post.img, 600);
+              }
+              if (post.thumbnail) {
+                thumbnail = await imageFetch(post.thumbnail, 220);
+              }
+              return {
+                category: post.category,
+                content: post.content,
+                img,
+                thumbnail,
+                title: post.title,
+                userId: post.userId,
+                postId: post.postId,
+                nickname: post.nickname,
+                viewCount: post.viewCount,
+                createdAt: post.createdAt,
+                updatedAt: post.updatedAt,
+                deletedAt: post.deletedAt,
+                nickname: nickname[0].nickname,
+                bookmarks,
+              };
+            }),
+          );
         } catch (err) {
           responseData = { code: 330 };
+          console.log(err);
         }
       }
 
@@ -307,6 +348,16 @@ const onRequest = async (res, method, pathname, params, key, cb) => {
                 '/counts',
               );
             });
+            let img = {};
+            let thumbnail = {};
+            if (result.img) {
+              img = await imageFetch(result.img, 600);
+            }
+            if (result.thumbnail) {
+              thumbnail = await imageFetch(result.thumbnail, 220);
+            }
+            result.img = img;
+            result.thumbnail = thumbnail;
             result.nickname = postModule.nickname.responseData.bodies.nickname;
             if (postModule.bookmarksCount.responseData.result) {
               result.bookmarks = postModule.bookmarksCount.responseData.result[0][0].count;
@@ -391,23 +442,45 @@ const onRequest = async (res, method, pathname, params, key, cb) => {
           const bodies = postModule.nickname.responseData.bodies;
           const bookmarksBodies = postModule.bookmarksCount.responseData.result;
 
-          responseData = result.map((post) => {
-            const nickname = bodies.filter((nickname) => nickname.userId == post.userId);
-            return { ...post, nickname: nickname[0].nickname };
-          });
-
-          responseData = responseData.map((post) => {
-            const bookmarksCount = bookmarksBodies[0].filter(
-              (count) => count.postId == post.postId,
-            );
-            if (bookmarksCount.length) {
-              return { ...post, bookmarks: bookmarksCount[0].count };
-            } else {
-              return { ...post, bookmarks: 0 };
-            }
-          });
+          responseData = await Promise.all(
+            result.map(async (post) => {
+              const nickname = bodies.filter((nickname) => nickname.userId == post.userId);
+              const bookmarksCount = bookmarksBodies[0].filter(
+                (count) => count.postId == post.postId,
+              );
+              let bookmarks = 0;
+              let img = {};
+              let thumbnail = {};
+              if (bookmarksCount.length) {
+                bookmarks = bookmarksCount[0].count;
+              }
+              if (post.img) {
+                img = await imageFetch(post.img, 600);
+              }
+              if (post.thumbnail) {
+                thumbnail = await imageFetch(post.thumbnail, 220);
+              }
+              return {
+                category: post.category,
+                content: post.content,
+                img,
+                thumbnail,
+                title: post.title,
+                userId: post.userId,
+                postId: post.postId,
+                nickname: post.nickname,
+                viewCount: post.viewCount,
+                createdAt: post.createdAt,
+                updatedAt: post.updatedAt,
+                deletedAt: post.deletedAt,
+                nickname: nickname[0].nickname,
+                bookmarks,
+              };
+            }),
+          );
         } catch (err) {
           responseData = { code: 340 };
+          console.log(err);
         }
       }
 
