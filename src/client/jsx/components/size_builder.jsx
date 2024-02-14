@@ -35,7 +35,7 @@ export const SizeBuilder = ({
     return (
         <RawSizeBuilder builder={(width) => {
             // 주어진 제약 조건에 부합하는 값을 정의합니다.
-            const value = constraints.find(e => e.min < width && e.max > width)?.value;
+            const value = constraints.find(e => e.min <= width && e.max >= width)?.value;
             if (value == null) {
                 throw new Error("제약 조건에 부합하는 값을 찾을 수 없습니다, 모든 제약 조건에서 하나 이상의 부합하는 값이 존재해야 합니다.");
             }
