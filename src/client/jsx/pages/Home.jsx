@@ -172,9 +172,9 @@ const Header = () => {
  * @type {React.FC}
  */
 const PostPlaceholder = () => {
-    const height = NumberUtil.random(150, 300);
-    const width1 = NumberUtil.random(30, 80);
-    const width2 = NumberUtil.random(50, 100);
+    const height = useRef(NumberUtil.random(150, 300));
+    const width1 = useRef(NumberUtil.random(30, 80));
+    const width2 = useRef(NumberUtil.random(50, 100));
 
     return (
         <div style={{
@@ -183,9 +183,9 @@ const PostPlaceholder = () => {
             padding: "var(--padding)",
             gap: "var(--column-spacing)",
         }}>
-            <div style={{height: height}} className="placeholder"></div>
-            <div style={{height: "20px", width: `${width1}%`}} className="placeholder-inner"></div>
-            <div style={{height: "15px", width: `${width2}%`}} className="placeholder-inner"></div>
+            <div style={{height: height.current}} className="placeholder"></div>
+            <div style={{height: "20px", width: `${width1.current}%`}} className="placeholder-inner"></div>
+            <div style={{height: "15px", width: `${width2.current}%`}} className="placeholder-inner"></div>
         </div>
     )
 }
