@@ -1,0 +1,12 @@
+
+.header {
+    padding: var(--padding);
+    padding-top: 64px;
+    padding-bottom: 64px;
+}
+.header > svg { margin-bottom: var(--padding); }
+.header > .nav {
+    display: flex;
+    justify-content: right;
+    gap: var(--gap);
+}

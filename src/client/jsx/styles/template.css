@@ -1,0 +1,88 @@
+
+button {
+    display: flex;
+    align-items: center;
+    gap: var(--gap);
+    background-color: transparent;
+    padding: 10px 15px;
+    border: none;
+    font-weight: 500;
+
+    transition: background-color, color, border;
+    transition-duration: var(--transition-duration);
+}
+button > .sub {
+    padding: 2.5px 5px;
+    font-size: 10px;
+    font-weight: bold;
+    border-radius: var(--box-radius);
+    color: white;
+    background-color: rgb(255, 94, 0);
+}
+
+button.selectable {
+    border: 1px solid var(--line);
+    border-radius: 1e10px;
+
+    cursor: pointer;
+}
+button.selectable:hover {
+    background-color: var(--background-hover);
+}
+button.selectable.selected {
+    border: 1px solid var(--foreground);
+    background-color: var(--foreground);
+    color: var(--background);
+
+    cursor: auto;
+}
+
+button.tertiary {
+    font-weight: bold;
+    border-radius: var(--box-radius);
+    
+    transition: background-color var(--transition-duration);
+    cursor: pointer;
+}
+button.tertiary:hover { background-color: var(--background-hover); }
+
+
+
+.post_item {
+    display: flex;
+    flex-direction: column;
+    padding: var(--padding);
+    border: 1px solid var(--box-line);
+    border-radius: var(--box-radius);
+    gap: var(--padding);
+    background-color: var(--box);
+
+    box-shadow: 0px 2.5px 5px rgb(0, 0, 0, 0.05);
+    cursor: pointer;
+    transition: box-shadow 0.25s;
+}
+.post_item:hover { box-shadow: 0px 5px 10px rgb(0, 0, 0, 0.1); }
+.post_item p { font-size: 12px; color: var(--foreground3); }
+.post_item > .clamp-profile {
+    position: relative;
+    display: flex;
+    overflow: hidden;
+    border-radius: var(--box-radius);
+}
+.post_item > .clamp-profile > .inner-shadow {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+
+    box-shadow: inset 0px -150px 50px -150px rgb(0, 0, 0, 0.3);
+    transition: box-shadow 0.25s;
+}
+.post_item:hover > .clamp-profile > .inner-shadow {
+    box-shadow: none;
+}
+.post_item > .clamp-profile img {
+    width: 100%;
+    transition: 0.25s;
+    pointer-events: none;
+}
+.post_item:hover > .clamp-profile img { scale: 1.05; }
