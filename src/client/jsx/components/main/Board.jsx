@@ -39,6 +39,7 @@ const Board = () => {
       );
 
       const responseData = await response.json();
+      console.log(responseData.responseData);
       return responseData.responseData;
     } catch (error) {
       console.error('Error fetching data:', error);

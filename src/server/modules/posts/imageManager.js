@@ -2,6 +2,7 @@ import aws from 'aws-sdk';
 import fs from 'fs';
 import dotenv from 'dotenv';
 import sharp from 'sharp';
+import axios from 'axios';
 
 dotenv.config();
 
@@ -80,4 +81,16 @@ async function imageDelete(key) {
   return await s3.deleteObject(params).promise();
 }
 
-export { imageUpload, imageDelete, imageThumbnail };
+async function imageFetch(img, imgWidth) {
+  const response = await axios.get(img, { responseType: 'arraybuffer' });
+  const buffer = Buffer.from(response.data);
+  const imageInfo = await sharp(buffer).metadata();
+  let width = imageInfo.width;
+  let height = imageInfo.height;
+  const resizeRate = width / imgWidth;
+  height = height * resizeRate;
+  width = imgWidth;
+  return { width, height, url: img };
+}
+
+export { imageUpload, imageDelete, imageThumbnail, imageFetch };
