@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 
 export class Constraint {
     /**
@@ -20,9 +20,14 @@ export const RawSizeBuilder = ({
     // 해당 값은 완벽하게 레이아웃의 제약 조건이 될 수 없습니다.
     const [width, setWidth] = useState(window.innerWidth);
 
-    window.addEventListener("resize", () => {
-        setWidth(window.innerWidth);
-    });
+    useEffect(() => {
+        const handleResize = () => setWidth(window.innerWidth);
+        window.addEventListener("resize", handleResize);
+        
+        return () => {
+            window.removeEventListener(handleResize)
+        };
+    }, []);
 
     return (<>{builder(width)}</>)
 }
