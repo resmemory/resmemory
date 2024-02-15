@@ -18,6 +18,8 @@ export class Image {
      * @returns {Image}
      */
     static parse(object) {
+        if (object == null) return null;
+
         return new Image(
             object["width"],
             object["height"],

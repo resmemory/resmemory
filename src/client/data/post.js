@@ -1,5 +1,4 @@
-
-
+import { Image } from "./image";
 
 export class Post {
     constructor(
@@ -20,8 +19,8 @@ export class Post {
         /** @type {number} */ this.userId    = userId;
         /** @type {string} */ this.title     = title;
         /** @type {string} */ this.content   = content;
-        /** @type {string} */ this.img       = img;
-        /** @type {string} */ this.thumbnail = thumbnail;
+        /** @type {Image}  */ this.img       = img;
+        /** @type {Image}  */ this.thumbnail = thumbnail;
         /** @type {number} */ this.viewCount = viewCount;
         /** @type {string} */ this.category  = category;
         /** @type {string} */ this.createdAt = createdAt;
@@ -40,8 +39,8 @@ export class Post {
             object["userId"],
             object["title"],
             object["content"],
-            object["img"],
-            object["thumbnail"],
+            Image.parse(object["img"]),
+            Image.parse(object["thumbnail"]),
             object["viewCount"],
             object["category"],
             object["createdAt"],

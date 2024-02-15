@@ -265,10 +265,12 @@ const onRequest = async (res, method, pathname, params, key, cb) => {
 
           const bodies = postModule.nickname.responseData.bodies;
           const bookmarksBodies = postModule.bookmarksCount.responseData.result;
-          let img = {};
-          let thumbnail = {};
           responseData = await Promise.all(
             result.map(async (post) => {
+              let img = {};
+              let thumbnail = {};
+              let bookmarks;
+
               const nickname = bodies.filter((nickname) => nickname.userId == post.userId);
               const bookmarksCount = bookmarksBodies[0].filter(
                 (count) => count.postId == post.postId,

@@ -10,6 +10,6 @@
 }
 
 @keyframes placeholder-effect {
-    from { opacity: 0.5; }
+    from { opacity: 0.75; }
     to   { opacity: 1; }
 }

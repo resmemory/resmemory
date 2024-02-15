@@ -1,16 +1,16 @@
 import React, { useEffect, useRef, useState } from "react"
 import { useLocation, useNavigate } from "react-router-dom";
-import { Masonry, MasonryBuilder } from "../components/masonry.jsx";
-import { Button, SelectableButton } from "../components/button.jsx";
+import { Masonry } from "../components/masonry.jsx";
+import { Button } from "../components/button.jsx";
 import { API } from "../../api.js";
-import { Post } from "../../data/post.jsx";
+import { Post } from "../../data/post.js";
 import { LogoIcon } from "../../assets/icons/logo.jsx";
 import { NumberUtil } from "../../util/number.jsx";
 import { ArrayUtil } from "../../util/array.jsx";
 import { Disable } from "../components/disable.jsx";
+import { Constraint, SizeBuilder } from "../components/size_builder.jsx";
 
 import "./Home.css";
-import { Constraint, RawSizeBuilder, SizeBuilder } from "../components/size_builder.jsx";
 
 class Category {
     pageCount = 1;
@@ -172,9 +172,9 @@ const Header = () => {
  * @type {React.FC}
  */
 const PostPlaceholder = () => {
-    const height = useRef(NumberUtil.random(150, 300));
-    const width1 = useRef(NumberUtil.random(30, 80));
-    const width2 = useRef(NumberUtil.random(50, 100));
+    const height = useRef(NumberUtil.random(150, 300)).current;
+    const width1 = useRef(NumberUtil.random(30, 80)).current;
+    const width2 = useRef(NumberUtil.random(50, 100)).current;
 
     return (
         <div style={{
@@ -183,9 +183,9 @@ const PostPlaceholder = () => {
             padding: "var(--padding)",
             gap: "var(--column-spacing)",
         }}>
-            <div style={{height: height.current}} className="placeholder"></div>
-            <div style={{height: "20px", width: `${width1.current}%`}} className="placeholder-inner"></div>
-            <div style={{height: "15px", width: `${width2.current}%`}} className="placeholder-inner"></div>
+            <div style={{height: height}} className="placeholder"></div>
+            <div style={{height: "20px", width: `${width1}%`}} className="placeholder-inner"></div>
+            <div style={{height: "15px", width: `${width2}%`}} className="placeholder-inner"></div>
         </div>
     )
 }
@@ -198,7 +198,7 @@ const PostItem = ({post}) => {
     return (
         <div className="post_item">
             <div className="clamp-profile">
-                <img src={post.img} alt="post profile" />
+                <img src={post.img.url} alt="post profile" />
                 <div className="inner-shadow"></div>
             </div>
             <div>
