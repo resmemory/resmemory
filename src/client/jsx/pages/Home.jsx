@@ -11,6 +11,7 @@ import { Disable } from "../components/disable.jsx";
 import { Constraint, SizeBuilder } from "../components/size_builder.jsx";
 
 import "./Home.css";
+import { HoverAlt } from "../components/hover_alt.jsx";
 
 class Category {
     pageCount = 1;
@@ -155,7 +156,9 @@ const Header = () => {
         <div className="header">
             <LogoIcon />
             <div className="nav">
-                <Button.Tertiary text="쓰레드" sub="NEW" onClick={() => { console.log("hello world") }} />
+                <HoverAlt text="쓰레드의 호버 메세지">
+                    <Button.Tertiary text="쓰레드" sub="NEW" onClick={() => { console.log("hello world") }} />
+                </HoverAlt>
                 <Button.Tertiary text="채팅" onClick={() => { console.log("hello world") }} />
                 <Button.Tertiary text="로그인 하기" onClick={() => { console.log("hello world") }} />
             </div>

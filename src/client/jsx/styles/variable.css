@@ -10,8 +10,8 @@
     --line: rgb(230, 230, 230);
     --box: white;
     --box-line: rgb(240, 240, 240);
-    --box-placeholder: rgb(230, 230, 230);
-    --box-placeholder-inner: rgb(240, 240, 240);
+    --box-placeholder: rgb(220, 220, 220);
+    --box-placeholder-inner: rgb(230, 230, 230);
 }
 
 :root {

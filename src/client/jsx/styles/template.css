@@ -9,7 +9,7 @@
     background-color: var(--box-placeholder-inner);
     border-radius: 1e10px;
 
-    animation: 0.25s infinite alternate placeholder-effect;
+    animation: 0.5s infinite alternate placeholder-effect;
 }
 
 button {
