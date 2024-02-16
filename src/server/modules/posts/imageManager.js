@@ -81,15 +81,12 @@ async function imageDelete(key) {
   return await s3.deleteObject(params).promise();
 }
 
-async function imageFetch(img, imgWidth) {
+async function imageFetch(img) {
   const response = await axios.get(img, { responseType: 'arraybuffer' });
   const buffer = Buffer.from(response.data);
   const imageInfo = await sharp(buffer).metadata();
   let width = imageInfo.width;
   let height = imageInfo.height;
-  const resizeRate = width / imgWidth;
-  height = height * resizeRate;
-  width = imgWidth;
   return { width, height, url: img };
 }
 

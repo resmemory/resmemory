@@ -12,6 +12,7 @@ import { Constraint, SizeBuilder } from "../components/size_builder.jsx";
 import { Listener } from "../components/listener.jsx";
 
 import "./Home.css";
+import { AsyncImg } from "../components/async_img.jsx";
 
 class Category {
     constructor(id, displayName) {
@@ -220,7 +221,7 @@ const PostItem = ({post}) => {
     return (
         <div className="post_item">
             <div className="clamp-profile">
-                <img src={post.img.url} alt="post profile" />
+                <AsyncImg src={post.img} isLazyLoad={true}></AsyncImg>
                 <div className="inner-shadow"></div>
             </div>
             <div>
