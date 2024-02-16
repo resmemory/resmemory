@@ -279,10 +279,10 @@ const onRequest = async (res, method, pathname, params, key, cb) => {
                 bookmarks = bookmarksCount[0].count;
               }
               if (post.img) {
-                img = await imageFetch(post.img, 600);
+                img = await imageFetch(post.img);
               }
               if (post.thumbnail) {
-                thumbnail = await imageFetch(post.thumbnail, 220);
+                thumbnail = await imageFetch(post.thumbnail);
               }
               return {
                 category: post.category,
@@ -353,10 +353,10 @@ const onRequest = async (res, method, pathname, params, key, cb) => {
             let img = {};
             let thumbnail = {};
             if (result.img) {
-              img = await imageFetch(result.img, 600);
+              img = await imageFetch(result.img);
             }
             if (result.thumbnail) {
-              thumbnail = await imageFetch(result.thumbnail, 220);
+              thumbnail = await imageFetch(result.thumbnail);
             }
             result.img = img;
             result.thumbnail = thumbnail;
@@ -457,10 +457,10 @@ const onRequest = async (res, method, pathname, params, key, cb) => {
                 bookmarks = bookmarksCount[0].count;
               }
               if (post.img) {
-                img = await imageFetch(post.img, 600);
+                img = await imageFetch(post.img);
               }
               if (post.thumbnail) {
-                thumbnail = await imageFetch(post.thumbnail, 220);
+                thumbnail = await imageFetch(post.thumbnail);
               }
               return {
                 category: post.category,

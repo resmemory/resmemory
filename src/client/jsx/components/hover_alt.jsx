@@ -17,7 +17,7 @@ export const HoverAlt = ({
         let timer;
         element.onpointerenter = () => {
             element.onpointerleave = () => { clearTimeout(timer ?? undefined); }
-
+            
             timer = setTimeout(() => {
                 console.log("hello world");
             }, delay);
