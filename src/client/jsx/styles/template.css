@@ -7,7 +7,7 @@
 }
 .placeholder-inner {
     background-color: var(--box-placeholder-inner);
-    border-radius: 1e10px;
+    border-radius: var(--box-radius);
 
     animation: 0.5s infinite alternate placeholder-effect;
 }

@@ -10,6 +10,10 @@
     justify-content: right;
     gap: var(--items-gap);
 }
+@media screen and (max-width: 600px) {
+    .header    { padding: var(--padding) !important; }
+    .categorys { border-bottom: 1px solid var(--line); }
+}
 
 .categorys {
     position: sticky;

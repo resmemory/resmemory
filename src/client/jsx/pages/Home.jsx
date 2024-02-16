@@ -9,26 +9,22 @@ import { NumberUtil } from "../../util/number.jsx";
 import { ArrayUtil } from "../../util/array.jsx";
 import { Disable } from "../components/disable.jsx";
 import { Constraint, SizeBuilder } from "../components/size_builder.jsx";
+import { Listener } from "../components/listener.jsx";
 
 import "./Home.css";
-import { HoverAlt } from "../components/hover_alt.jsx";
 
 class Category {
-    pageCount = 1;
-
-    // 다음 페이지에 해당하는 포스트의 수.
-    nextPageItemCount = 0;
-    
-    cachedPosts = null;
-
-    // 카테고리 관련 포스트를 더 로드해야 하는 경우의 여부를 반환합니다.
-    get canLoadMore() {
-        return this.nextPageItemCount != 0;
-    }
-
     constructor(id, displayName) {
         this.id = id;
         this.displayName = displayName;
+        this.pageCount = 1;
+        this.nextPageItemCount = 0; // 다음 페이지에 해당하는 포스트의 수.
+        this.cachedPosts = null;
+    }
+
+    // 카테고리 관련 포스트를 더 로드해야 하는 경우의 여부를 반환합니다.
+    get canLoadMore() {
+        return this.isLoading == false && this.nextPageItemCount != 0;
     }
 
     /**
@@ -40,7 +36,11 @@ class Category {
     }
 
     async loadMore(pageNum = ++this.pageCount) {
-        
+        if (this.canLoadMore == false) {
+            throw new Error("추가적인 페이지 로드가 필요하지 않습니다.");
+        }
+
+        console.log("load more");
     }
     
     /**
@@ -50,6 +50,8 @@ class Category {
     async fetch(
         pageNum = this.pageCount
     ) {
+        this.isLoading = true;
+
         const params = new URLSearchParams();
         params.set("category", this.id === "all" ? "" : this.id);
         params.set("pageNum", pageNum); // from 1 to infinity.
@@ -61,6 +63,8 @@ class Category {
 
             throw new Error(`reponse status ${response.status}`);
         }
+
+        this.isLoading = false;
 
         return Post.parseByList((await response.json()).responseData);
     }
@@ -81,10 +85,11 @@ export const HomePage = () => {
     const navigate = useNavigate();
 
     const params = new URLSearchParams(useLocation().search);
-    const type   = params.get("category") ?? "all";
+    const type = params.get("category") ?? "all";
+    const sort = params.get("sort") ?? "view";
 
-    /** @type {[Post[], React.Dispatch<React.SetStateAction<Post[]>>]} posts */
-    const [ posts, setPosts ] = useState(null);
+    /** @type {[{parent: Category, posts: Post[]}, React.Dispatch<React.SetStateAction<Post[]>>]} posts */
+    const [ contents, setContents ] = useState(null);
     const [ disabled, setDisabled ] = useState(false);
 
     /** @type {() => Category?} */
@@ -92,28 +97,44 @@ export const HomePage = () => {
         return categorys.find(it => it.id === type);
     }
 
-    // 카테고리별 포스트 불러오기.
+    // 카테고리 또는 정렬 기준별 포스트 불러오기.
     useEffect(() => {
         setDisabled(true);
 
         (async () => {
-            const posts = await currentCategory()?.load() ?? [];
+            const target = currentCategory();
+            const posts = await target?.load() ?? [];
 
-            setPosts(posts);
+            setContents({parent: target, posts: posts});
             setDisabled(false);
         })()
-    }, [type]);
+    }, [type, sort]);
+    
+    const createPostItems = () => {
+        if (contents) {
+            if (contents.posts.length == 0) {
+                return undefined;
+            }
 
-    const postElement = () => {
-        if (posts) {
             return [
-                posts.map(post => <PostItem post={post} />), // loaded
-                ArrayUtil.builder(6, () => <PostPlaceholder />) // placeholder
+                // 최종적으로 응답된 포스트들.
+                contents.posts.map(post => <PostItem post={post} />),
+
+                // 다음 페이지의 포스트 갯수 만큼 Placeholder를 표시합니다.
+                ArrayUtil.builder(15, () => {
+                    return (
+                        <Listener.Intersection callback={() => {
+                            if (contents.parent.canLoadMore) contents.parent.loadMore();
+                        }}>
+                            <PostPlaceholder />
+                        </Listener.Intersection>
+                    )
+                })
             ]
         }
 
         // 초기 로딩 시
-        return ArrayUtil.builder(30, () => <PostPlaceholder />)
+        return ArrayUtil.builder(15, () => <PostPlaceholder />)
     }
 
     return (
@@ -130,7 +151,7 @@ export const HomePage = () => {
                     );
                 })}
             </div>
-            <Disable isDisabled={disabled}>
+            <Disable isDisabled={contents ? disabled : false}>
                 <div style={{padding: "var(--padding)"}}>
                     <SizeBuilder
                         constraints={[
@@ -141,7 +162,7 @@ export const HomePage = () => {
                             new Constraint(-Infinity, 400, 1),
                         ]}
                         builder={(rows) => {
-                            return <Masonry rows={rows} gap="var(--grid-gap)">{postElement()}</Masonry>
+                            return <Masonry rows={rows} gap="var(--grid-gap)">{createPostItems()}</Masonry>
                         }
                     } />
                 </div>
@@ -156,9 +177,7 @@ const Header = () => {
         <div className="header">
             <LogoIcon />
             <div className="nav">
-                <HoverAlt text="쓰레드의 호버 메세지">
-                    <Button.Tertiary text="쓰레드" sub="NEW" onClick={() => { console.log("hello world") }} />
-                </HoverAlt>
+                <Button.Tertiary text="쓰레드" sub="NEW" onClick={() => { console.log("hello world") }} />
                 <Button.Tertiary text="채팅" onClick={() => { console.log("hello world") }} />
                 <Button.Tertiary text="로그인 하기" onClick={() => { console.log("hello world") }} />
             </div>
