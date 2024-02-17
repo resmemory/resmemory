@@ -162,7 +162,7 @@ const onRequest = async (res, method, pathname, params, key, cb) => {
               if (bookmarksCount.length) {
                 bookmarks = bookmarksCount[0].count;
               }
-
+              
               return {
                 ...post,
                 nickname: nickname[0].nickname,

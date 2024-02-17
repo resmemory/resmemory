@@ -1,3 +1,5 @@
+import "./Home.css";
+
 import React, { useEffect, useRef, useState } from "react"
 import { useLocation, useNavigate } from "react-router-dom";
 import { Masonry } from "../components/masonry.jsx";
@@ -10,8 +12,6 @@ import { ArrayUtil } from "../../util/array.jsx";
 import { Disable } from "../components/disable.jsx";
 import { Constraint, SizeBuilder } from "../components/size_builder.jsx";
 import { Listener } from "../components/listener.jsx";
-
-import "./Home.css";
 import { AsyncImg } from "../components/async_img.jsx";
 import { Option, OptionSelector } from "../components/option_selector.jsx";
 
@@ -86,6 +86,8 @@ class Category {
         { // 응답 데이터 파싱 후 포스트 데이터를 반환합니다.
             const responseData = (await response.json())["responseData"];
             this.nextItemCount = responseData["nextItemCount"];
+
+            console.log(responseData);
             
             return Post.parseByList(responseData["posts"]);
         }
@@ -155,7 +157,7 @@ export const HomePage = () => {
             setDisabled(false);
         })()
     }, [type, sort]);
-    
+
     return (
         <>
             <title>그땐 G:Then</title>
