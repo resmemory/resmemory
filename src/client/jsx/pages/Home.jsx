@@ -16,7 +16,7 @@ import { AsyncImg } from "../components/async_img.jsx";
 import { Option, OptionSelector } from "../components/option_selector.jsx";
 
 /**
- * @typedef {React.Dispatch<React.SetStateAction<Post[]>>} SetStatePost
+ * @typedef {React.Dispatch<React.SetStateAction<Category>>} SetStatePost
  */
 
 class Category {
@@ -52,13 +52,6 @@ class Category {
 
         this.posts.push(...(await this.fetch(pageNum)));
     }
-    
-    /**
-     * @param {SetStatePost} func
-     */
-    setState(func) {
-        func({parent: this, posts: this.posts})
-    }
 
     /**
      * @param {number} pageNum
@@ -86,18 +79,16 @@ class Category {
         { // 응답 데이터 파싱 후 포스트 데이터를 반환합니다.
             const responseData = (await response.json())["responseData"];
             this.nextItemCount = responseData["nextItemCount"];
-
-            console.log(responseData);
             
             return Post.parseByList(responseData["posts"]);
         }
     }
 
     /**
-     * @param {SetStatePost} setStateFunc
+     * @param {SetStatePost} setState
      * @returns
      */
-    createElements(setStateFunc) { 
+    createElements(setState) { 
         if (this.posts == null) {
             return ArrayUtil.builder(15, () => <PostPlaceholder />)
         }
@@ -114,7 +105,7 @@ class Category {
                 return (
                     <PostPlaceholder onVisible={() => {
                         if (this.canLoadMore) {
-                            this.loadMore().then(async () => this.setState(setStateFunc));
+                            this.loadMore().then(() => setState({current: this}));
                         }
                     }} />
                 )
@@ -139,23 +130,21 @@ export const HomePage = () => {
     const type = params.get("category") ?? "all";
     const sort = params.get("sort") ?? "view";
 
-    /** @type {[{parent: Category, posts: Post[]}, React.Dispatch<React.SetStateAction<Post[]>>]} posts */
-    const [ contents, setContents ] = useState(null);
-    const [ disabled, setDisabled ] = useState(false);
-
-    /** @type {Category?} */
+    /** @type {Category} */
     const category = categorys.find(it => it.id === type);
+
+    /** @type {[{current: Category}, React.Dispatch<React.SetStateAction<Category>>]} */
+    const [ contents, setContents ] = useState({current: category});
+    const [ disabled, setDisabled ] = useState(false);
 
     // 카테고리 또는 정렬 기준별 포스트 불러오기.
     useEffect(() => {
         setDisabled(true);
 
-        (async () => {
-            const posts = await category?.load() ?? [];
-            
-            setContents({parent: category, posts: posts});
+        category.load().then(_ => {
+            setContents({current: category});
             setDisabled(false);
-        })()
+        });
     }, [type, sort]);
 
     return (
@@ -174,7 +163,7 @@ export const HomePage = () => {
                             new Constraint(-Infinity, 400, 1),
                         ]}
                         builder={(rows) => {
-                            return <Masonry rows={rows}>{category.createElements(setContents)}</Masonry>
+                            return <Masonry rows={rows}>{contents.current.createElements(setContents)}</Masonry>
                         }
                     } />
                 </div>
