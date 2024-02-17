@@ -25,10 +25,6 @@ Posts.init(
       type: DataTypes.STRING,
       defaultValue: null,
     },
-    thumbnail: {
-      type: DataTypes.STRING,
-      defaultValue: false,
-    },
     viewCount: {
       type: DataTypes.BIGINT,
       defaultValue: 0,

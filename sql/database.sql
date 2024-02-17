@@ -47,13 +47,12 @@ CREATE TABLE `Threads` (
   `userId` BIGINT NOT NULL, 
   `title` VARCHAR(255) NOT NULL, 
   `content` VARCHAR(500) NOT NULL, 
-  `img` VARCHAR(255) DEFAULT NULL, 
+  `img` JSON DEFAULT NULL, 
   `viewCount` BIGINT DEFAULT 0, 
   `category` ENUM('1970', '1980', '1990', '2000', '2010', '2020', "notice") NOT NULL, 
   `createdAt` DATETIME, 
   `updatedAt` DATETIME, 
   `deletedAt` DATETIME DEFAULT NULL, 
-  `thumbnail` VARCHAR(255) DEFAULT NULL, 
   PRIMARY KEY (`postId`)
 );
 

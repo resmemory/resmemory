@@ -2,7 +2,7 @@ import Posts from './db/posts.db';
 import Comments from './db/comments.db';
 import postModule from './posts.module';
 import dotenv from 'dotenv';
-import { imageUpload, imageDelete, imageThumbnail, imageFetch } from './imageManager';
+import { imageUpload, imageDelete } from './imageManager';
 
 dotenv.config();
 
@@ -16,7 +16,7 @@ const onRequest = async (res, method, pathname, params, key, cb) => {
         try {
           const { title, content, category, img } = params.bodies;
           let result = null;
-          let thumbnail = null;
+
           if (!params.userId) {
             responseData = { code: 312 };
           } else if (!title) {
@@ -30,14 +30,12 @@ const onRequest = async (res, method, pathname, params, key, cb) => {
               responseData = { code: 316 };
             } else {
               result = await imageUpload(img);
-              thumbnail = await imageThumbnail(img);
 
               await Posts.create({
                 title,
                 content,
-                thumbnail,
                 category,
-                img: result,
+                img: JSON.stringify(result),
                 userId: params.userId,
               });
               responseData = { code: 311 };
@@ -89,20 +87,28 @@ const onRequest = async (res, method, pathname, params, key, cb) => {
         try {
           let result;
           const { pageNum } = params.query;
-
+          const count = await Posts.count({ where: { deletedAt: null } });
+          let nextItemCount = 15;
+          if (count - pageNum * 15 < 16) {
+            nextItemCount = count - pageNum * 15;
+          } else if (count - pageNum * 15 < 0) {
+            nextItemCount = 0;
+          }
           if (params.query.sort == 'view') {
             result = await Posts.findAll({
               order: [['viewCount', 'DESC']],
-              limit: 12,
-              offset: (pageNum - 1) * 12,
+              limit: 15,
+              offset: (pageNum - 1) * 15,
               raw: true,
+              nextItemCount,
             });
           } else if (params.query.sort == 'new') {
             result = await Posts.findAll({
               order: [['createdAt', 'DESC']],
-              limit: 12,
-              offset: (pageNum - 1) * 12,
+              limit: 15,
+              offset: (pageNum - 1) * 15,
               raw: true,
+              nextItemCount,
             });
           }
           const postIds = result.map((post) => post.postId);
@@ -151,30 +157,13 @@ const onRequest = async (res, method, pathname, params, key, cb) => {
                 (count) => count.postId == post.postId,
               );
               let bookmarks = 0;
-              let img = {};
-              let thumbnail = {};
+
               if (bookmarksCount.length) {
                 bookmarks = bookmarksCount[0].count;
               }
-              if (post.img) {
-                img = await imageFetch(post.img, 600);
-              }
-              if (post.thumbnail) {
-                thumbnail = await imageFetch(post.thumbnail, 220);
-              }
+
               return {
-                category: post.category,
-                content: post.content,
-                img,
-                thumbnail,
-                title: post.title,
-                userId: post.userId,
-                postId: post.postId,
-                nickname: post.nickname,
-                viewCount: post.viewCount,
-                createdAt: post.createdAt,
-                updatedAt: post.updatedAt,
-                deletedAt: post.deletedAt,
+                ...post,
                 nickname: nickname[0].nickname,
                 bookmarks,
               };
@@ -208,22 +197,30 @@ const onRequest = async (res, method, pathname, params, key, cb) => {
         try {
           let result;
           const { category, pageNum } = params.query;
-
+          const count = await Posts.count({ where: { deletedAt: null } });
+          let nextItemCount = 15;
+          if (count - pageNum * 15 < 16) {
+            nextItemCount = count - pageNum * 15;
+          } else if (count - pageNum * 15 < 0) {
+            nextItemCount = 0;
+          }
           if (params.query.sort == 'view') {
             result = await Posts.findAll({
               where: { category },
               order: [['viewCount', 'DESC']],
-              limit: 12,
-              offset: (pageNum - 1) * 12,
+              limit: 15,
+              offset: (pageNum - 1) * 15,
               raw: true,
+              nextItemCount,
             });
           } else if (params.query.sort == 'new') {
             result = await Posts.findAll({
               where: { category },
               order: [['createdAt', 'DESC']],
-              limit: 12,
-              offset: (pageNum - 1) * 12,
+              limit: 15,
+              offset: (pageNum - 1) * 15,
               raw: true,
+              nextItemCount,
             });
           }
 
@@ -267,8 +264,6 @@ const onRequest = async (res, method, pathname, params, key, cb) => {
           const bookmarksBodies = postModule.bookmarksCount.responseData.result;
           responseData = await Promise.all(
             result.map(async (post) => {
-              let img = {};
-              let thumbnail = {};
               let bookmarks;
 
               const nickname = bodies.filter((nickname) => nickname.userId == post.userId);
@@ -278,25 +273,9 @@ const onRequest = async (res, method, pathname, params, key, cb) => {
               if (bookmarksCount.length) {
                 bookmarks = bookmarksCount[0].count;
               }
-              if (post.img) {
-                img = await imageFetch(post.img);
-              }
-              if (post.thumbnail) {
-                thumbnail = await imageFetch(post.thumbnail);
-              }
+
               return {
-                category: post.category,
-                content: post.content,
-                img,
-                thumbnail,
-                title: post.title,
-                userId: post.userId,
-                postId: post.postId,
-                nickname: post.nickname,
-                viewCount: post.viewCount,
-                createdAt: post.createdAt,
-                updatedAt: post.updatedAt,
-                deletedAt: post.deletedAt,
+                ...post,
                 nickname: nickname[0].nickname,
                 bookmarks,
               };
@@ -350,16 +329,7 @@ const onRequest = async (res, method, pathname, params, key, cb) => {
                 '/counts',
               );
             });
-            let img = {};
-            let thumbnail = {};
-            if (result.img) {
-              img = await imageFetch(result.img);
-            }
-            if (result.thumbnail) {
-              thumbnail = await imageFetch(result.thumbnail);
-            }
-            result.img = img;
-            result.thumbnail = thumbnail;
+
             result.nickname = postModule.nickname.responseData.bodies.nickname;
             if (postModule.bookmarksCount.responseData.result) {
               result.bookmarks = postModule.bookmarksCount.responseData.result[0][0].count;
@@ -451,30 +421,12 @@ const onRequest = async (res, method, pathname, params, key, cb) => {
                 (count) => count.postId == post.postId,
               );
               let bookmarks = 0;
-              let img = {};
-              let thumbnail = {};
               if (bookmarksCount.length) {
                 bookmarks = bookmarksCount[0].count;
               }
-              if (post.img) {
-                img = await imageFetch(post.img);
-              }
-              if (post.thumbnail) {
-                thumbnail = await imageFetch(post.thumbnail);
-              }
+
               return {
-                category: post.category,
-                content: post.content,
-                img,
-                thumbnail,
-                title: post.title,
-                userId: post.userId,
-                postId: post.postId,
-                nickname: post.nickname,
-                viewCount: post.viewCount,
-                createdAt: post.createdAt,
-                updatedAt: post.updatedAt,
-                deletedAt: post.deletedAt,
+                ...post,
                 nickname: nickname[0].nickname,
                 bookmarks,
               };
