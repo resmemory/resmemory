@@ -50,6 +50,13 @@ class Category {
     }
     
     /**
+     * @param {React.Dispatch<React.SetStateAction<Post[]>>} func
+     */
+    setState(func) {
+        func({parent: this, posts: this.posts})
+    }
+
+    /**
      * @param {number} pageNum
      * @returns {Promise<Post[]>}
     */
@@ -72,10 +79,12 @@ class Category {
 
         this.isLoading = false;
 
-        const responseData = (await response.json()).responseData;
-        this.nextItemCount = responseData["nextItemCount"];
-        
-        return Post.parseByList(responseData["posts"]);
+        { // 응답 데이터 파싱 후 포스트 데이터를 반환합니다.
+            const responseData = (await response.json())["responseData"];
+            this.nextItemCount = responseData["nextItemCount"];
+            
+            return Post.parseByList(responseData["posts"]);
+        }
     }
 }
 
@@ -133,17 +142,13 @@ export const HomePage = () => {
                 // 다음 페이지의 포스트 갯수 만큼 Placeholder를 표시합니다.
                 ArrayUtil.builder(nextItemCount, () => {
                     return (
-                        <Listener.Intersection callback={async () => {
+                        <PostPlaceholder onVisible={() => {
                             const parent = contents.parent;
-
+                            
                             if (parent.canLoadMore) {
-                                parent.loadMore().then(async () => {
-                                    setContents({parent: parent, posts: parent.posts});
-                                });
+                                parent.loadMore().then(async () => parent.setState(setContents));
                             }
-                        }}>
-                            <PostPlaceholder />
-                        </Listener.Intersection>
+                        }} />
                     )
                 })
             ]
@@ -228,24 +233,26 @@ const HeaderSelector = ({type, disabled}) => {
  * 클라이언트가 서버에게 요청하여 포스트 정보의 응답을 기다리고 있을 경우,
  * 사용자에게 이를 시각적으로 표시하기 위해 사용됩니다.
  * 
- * @type {React.FC}
+ * @type {React.FC<{onVisible: VoidFunction}>}
  */
-const PostPlaceholder = () => {
+const PostPlaceholder = ({onVisible}) => {
     const height = useRef(NumberUtil.random(150, 300)).current;
     const width1 = useRef(NumberUtil.random(30, 80)).current;
     const width2 = useRef(NumberUtil.random(50, 100)).current;
 
     return (
-        <div style={{
-            display: "flex",
-            flexDirection: "column",
-            padding: "var(--padding)",
-            gap: "var(--column-spacing)",
-        }}>
-            <div style={{height: height}} className="placeholder"></div>
-            <div style={{height: "20px", width: `${width1}%`}} className="placeholder-inner"></div>
-            <div style={{height: "15px", width: `${width2}%`}} className="placeholder-inner"></div>
-        </div>
+        <Listener.Intersection callback={onVisible}>
+            <div style={{
+                display: "flex",
+                flexDirection: "column",
+                padding: "var(--padding)",
+                gap: "var(--column-spacing)",
+            }}>
+                <div style={{height: height}} className="placeholder"></div>
+                <div style={{height: "20px", width: `${width1}%`}} className="placeholder-inner"></div>
+                <div style={{height: "15px", width: `${width2}%`}} className="placeholder-inner"></div>
+            </div>
+        </Listener.Intersection>
     )
 }
 
