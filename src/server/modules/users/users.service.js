@@ -330,8 +330,10 @@ const onRequest = async (res, method, pathname, params, key, cb) => {
           if (Array.isArray(postIds)) {
             postIdString = postIds.join(',');
             sqlQuery = `SELECT postId, count(*) as count from Bookmarks WHERE postId IN (${postIdString}) GROUP BY postId`;
-          } else {
+          } else if (postIds) {
             sqlQuery = `SELECT COUNT(*) as count from Bookmarks WHERE postId = ${postIds}`;
+          } else {
+            responseData = { code: 210, result: null };
           }
 
           let bookmarks;
