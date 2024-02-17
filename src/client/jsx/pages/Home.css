@@ -16,15 +16,15 @@
 }
 
 .header_selector {
+    position: sticky;
+    top: 0px;
     display: flex;
+    z-index: 1;
+    background-color: var(--background);
 }
 
 .categorys {
-    position: sticky;
-    top: 0px;
-    z-index: 1;
     display: flex;
     padding: var(--padding);
     gap: var(--items-gap);
-    background-color: var(--background);
 }

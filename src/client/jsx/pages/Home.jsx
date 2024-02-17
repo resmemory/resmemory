@@ -20,8 +20,12 @@ class Category {
         this.id = id;
         this.displayName = displayName;
         this.pageCount = 1;
-        this.nextPageItemCount = 0; // 다음 페이지에 해당하는 포스트의 수.
-        this.cachedPosts = null;
+        this.nextItemCount = 0; // 다음 페이지에 해당하는 포스트의 수.
+        this.posts = null;
+    }
+
+    get length() {
+        return this.posts?.length ?? 0;
     }
 
     // 카테고리 관련 포스트를 더 로드해야 하는 경우의 여부를 반환합니다.
@@ -34,7 +38,7 @@ class Category {
      * @returns {Promise<Post[]>}
      */
     async load(pageNum = this.pageCount) {
-        return this.cachedPosts ?? (this.cachedPosts = await this.fetch(pageNum));
+        return this.posts ?? (this.posts = await this.fetch(pageNum));
     }
 
     async loadMore(pageNum = ++this.pageCount) {
@@ -42,7 +46,7 @@ class Category {
             throw new Error("추가적인 페이지 로드가 필요하지 않습니다.");
         }
 
-        console.log("load more");
+        this.posts.push(...(await this.fetch(pageNum)));
     }
     
     /**
@@ -68,7 +72,10 @@ class Category {
 
         this.isLoading = false;
 
-        return Post.parseByList((await response.json()).responseData);
+        const responseData = (await response.json()).responseData;
+        this.nextItemCount = responseData["nextItemCount"];
+        
+        return Post.parseByList(responseData["posts"]);
     }
 }
 
@@ -116,15 +123,24 @@ export const HomePage = () => {
                 return undefined;
             }
 
+            const parent = contents.parent;
+            const nextItemCount = parent.nextItemCount;
+
             return [
                 // 최종적으로 응답된 포스트들.
                 contents.posts.map(post => <PostItem post={post} />),
 
                 // 다음 페이지의 포스트 갯수 만큼 Placeholder를 표시합니다.
-                ArrayUtil.builder(15, () => {
+                ArrayUtil.builder(nextItemCount, () => {
                     return (
-                        <Listener.Intersection callback={() => {
-                            if (contents.parent.canLoadMore) contents.parent.loadMore();
+                        <Listener.Intersection callback={async () => {
+                            const parent = contents.parent;
+
+                            if (parent.canLoadMore) {
+                                parent.loadMore().then(async () => {
+                                    setContents({parent: parent, posts: parent.posts});
+                                });
+                            }
                         }}>
                             <PostPlaceholder />
                         </Listener.Intersection>
@@ -194,14 +210,14 @@ const HeaderSelector = ({type, disabled}) => {
                 })}
             </div>
             <div style={{
+                minWidth: "max-content",
                 marginLeft: "auto",
                 marginTop: "auto",
                 marginBottom: "auto",
             }}>
                 <OptionSelector options={[
-                    new Option("1", () => console.log("selected 1")),
-                    new Option("2", () => console.log("selected 2")),
-                    new Option("3", () => console.log("selected 3"))
+                    new Option("최신 순", true,  () => console.log("'최신 순' 선택 됨")),
+                    new Option("조회 순", false, () => console.log("'조회 순' 선택 됨")),
                 ]} />
             </div>
         </div>

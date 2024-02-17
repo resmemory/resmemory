@@ -85,7 +85,7 @@ const onRequest = async (res, method, pathname, params, key, cb) => {
       // 게시글 전체 조회
       if (pathname === '/posts' && params.query.pageNum && !params.query.category) {
         try {
-          let result;
+          let posts;
           const { pageNum } = params.query;
           const count = await Posts.count({ where: { deletedAt: null } });
           let nextItemCount = 15;
@@ -95,7 +95,7 @@ const onRequest = async (res, method, pathname, params, key, cb) => {
             nextItemCount = 0;
           }
           if (params.query.sort == 'view') {
-            result = await Posts.findAll({
+            posts = await Posts.findAll({
               order: [['viewCount', 'DESC']],
               limit: 15,
               offset: (pageNum - 1) * 15,
@@ -103,7 +103,7 @@ const onRequest = async (res, method, pathname, params, key, cb) => {
               nextItemCount,
             });
           } else if (params.query.sort == 'new') {
-            result = await Posts.findAll({
+            posts = await Posts.findAll({
               order: [['createdAt', 'DESC']],
               limit: 15,
               offset: (pageNum - 1) * 15,
@@ -111,8 +111,9 @@ const onRequest = async (res, method, pathname, params, key, cb) => {
               nextItemCount,
             });
           }
-          const postIds = result.map((post) => post.postId);
-          const userIds = result.map((post) => post.userId);
+          if (nextItemCount < 0) nextItemCount = 0;
+          const postIds = posts.map((post) => post.postId);
+          const userIds = posts.map((post) => post.userId);
           await new Promise((resolve, reject) => {
             postModule.dataconnection(
               process.env.HOST,
@@ -150,8 +151,8 @@ const onRequest = async (res, method, pathname, params, key, cb) => {
           const bodies = postModule.nickname.responseData.bodies;
           const bookmarksBodies = postModule.bookmarksCount.responseData.result;
 
-          responseData = await Promise.all(
-            result.map(async (post) => {
+          const responsedPosts = await Promise.all(
+            posts.map(async (post) => {
               const nickname = bodies.filter((nickname) => nickname.userId == post.userId);
               const bookmarksCount = bookmarksBodies[0].filter(
                 (count) => count.postId == post.postId,
@@ -169,6 +170,11 @@ const onRequest = async (res, method, pathname, params, key, cb) => {
               };
             }),
           );
+          
+          responseData = {
+            "posts": responsedPosts,
+            "nextItemCount": nextItemCount,
+          }
         } catch (err) {
           responseData = { code: 320 };
           console.log(err);
