@@ -89,9 +89,9 @@ const onRequest = async (res, method, pathname, params, key, cb) => {
           const { pageNum } = params.query;
           const count = await Posts.count({ where: { deletedAt: null } });
           let nextItemCount = 15;
-          if (count - pageNum * 15 < 16) {
+          if (count - pageNum * 15 < 16 && count !== 0) {
             nextItemCount = count - pageNum * 15;
-          } else if (count - pageNum * 15 < 0) {
+          } else if (count - pageNum * 15 < 0 && count == 0) {
             nextItemCount = 0;
           }
           if (params.query.sort == 'view') {
@@ -201,11 +201,11 @@ const onRequest = async (res, method, pathname, params, key, cb) => {
         try {
           let result;
           const { category, pageNum } = params.query;
-          const count = await Posts.count({ where: { deletedAt: null } });
+          const count = await Posts.count({ where: { deletedAt: null, category } });
           let nextItemCount = 15;
-          if (count - pageNum * 15 < 16) {
+          if (count - pageNum * 15 < 16 && count !== 0) {
             nextItemCount = count - pageNum * 15;
-          } else if (count - pageNum * 15 < 0) {
+          } else if (count - pageNum * 15 < 0 && count == 0) {
             nextItemCount = 0;
           }
           if (params.query.sort == 'view') {
@@ -283,7 +283,10 @@ const onRequest = async (res, method, pathname, params, key, cb) => {
               };
             }),
           );
-          responseData.nextItemCount = nextItemCount;
+          responseData = {
+            posts: responseData,
+            nextItemCount: nextItemCount,
+          };
         } catch (err) {
           responseData = { code: 330 };
           console.log(err);
