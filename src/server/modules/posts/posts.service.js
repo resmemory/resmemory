@@ -270,7 +270,7 @@ const onRequest = async (res, method, pathname, params, key, cb) => {
           const bookmarksBodies = postModule.bookmarksCount.responseData.result;
           responseData = await Promise.all(
             result.map(async (post) => {
-              let bookmarks;
+              let bookmarks = 0;
 
               const nickname = bodies.filter((nickname) => nickname.userId == post.userId);
               const bookmarksCount = bookmarksBodies[0].filter(
