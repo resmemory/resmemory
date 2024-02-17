@@ -208,6 +208,7 @@ const onRequest = async (res, method, pathname, params, key, cb) => {
           } else if (count - pageNum * 15 < 0 && count == 0) {
             nextItemCount = 0;
           }
+          if (nextItemCount < 0) nextItemCount = 0;
           if (params.query.sort == 'view') {
             result = await Posts.findAll({
               where: { category },
