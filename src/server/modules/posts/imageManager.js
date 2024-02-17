@@ -44,7 +44,7 @@ async function imageUpload(img) {
 async function imageDelete(key) {
   const params = {
     Bucket: process.env.S3_AWS_BUCKET_NAME,
-    Key: key,
+    Key: key + '.webp',
   };
 
   return await s3.deleteObject(params).promise();
