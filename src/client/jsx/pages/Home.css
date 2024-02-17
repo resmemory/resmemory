@@ -11,8 +11,12 @@
     gap: var(--items-gap);
 }
 @media screen and (max-width: 600px) {
-    .header    { padding: var(--padding) !important; }
-    .categorys { border-bottom: 1px solid var(--line); }
+    .header          { padding: var(--padding) !important; }
+    .header_selector { border-bottom: 1px solid var(--line); }
+}
+
+.header_selector {
+    display: flex;
 }
 
 .categorys {

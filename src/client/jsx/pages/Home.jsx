@@ -13,6 +13,7 @@ import { Listener } from "../components/listener.jsx";
 
 import "./Home.css";
 import { AsyncImg } from "../components/async_img.jsx";
+import { Option, OptionSelector } from "../components/option_selector.jsx";
 
 class Category {
     constructor(id, displayName) {
@@ -83,8 +84,6 @@ const categorys = [
 ]
 
 export const HomePage = () => {
-    const navigate = useNavigate();
-
     const params = new URLSearchParams(useLocation().search);
     const type = params.get("category") ?? "all";
     const sort = params.get("sort") ?? "view";
@@ -140,18 +139,9 @@ export const HomePage = () => {
 
     return (
         <>
+            <title>그땐 G:Then</title>
             <Header />
-            <div className="categorys row-scrollable" style={{pointerEvents: disabled ? "none" : null}}>
-                {categorys.map(it => {
-                    return (
-                        <Button.Selectable
-                            text={it.displayName}
-                            isSelected={type === it.id}
-                            onSelect={() => navigate(`?category=${it.id}`)}
-                        />
-                    );
-                })}
-            </div>
+            <HeaderSelector type={type} disabled={disabled} />
             <Disable isDisabled={contents ? disabled : false}>
                 <div style={{padding: "var(--padding)"}}>
                     <SizeBuilder
@@ -163,7 +153,7 @@ export const HomePage = () => {
                             new Constraint(-Infinity, 400, 1),
                         ]}
                         builder={(rows) => {
-                            return <Masonry rows={rows} gap="var(--grid-gap)">{createPostItems()}</Masonry>
+                            return <Masonry rows={rows}>{createPostItems()}</Masonry>
                         }
                     } />
                 </div>
@@ -186,7 +176,37 @@ const Header = () => {
     )
 }
 
+/** @type {React.FC} */
+const HeaderSelector = ({type, disabled}) => {
+    const navigate = useNavigate();
 
+    return (
+        <div className="header_selector">
+            <div className="categorys row-scrollable" style={{pointerEvents: disabled ? "none" : null}}>
+                {categorys.map(it => {
+                    return (
+                        <Button.Selectable
+                            text={it.displayName}
+                            isSelected={type === it.id}
+                            onSelect={() => navigate(`?category=${it.id}`)}
+                        />
+                    );
+                })}
+            </div>
+            <div style={{
+                marginLeft: "auto",
+                marginTop: "auto",
+                marginBottom: "auto",
+            }}>
+                <OptionSelector options={[
+                    new Option("1", () => console.log("selected 1")),
+                    new Option("2", () => console.log("selected 2")),
+                    new Option("3", () => console.log("selected 3"))
+                ]} />
+            </div>
+        </div>
+    )
+}
 
 /**
  * 클라이언트가 서버에게 요청하여 포스트 정보의 응답을 기다리고 있을 경우,

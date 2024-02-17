@@ -5,7 +5,7 @@ import React, { FC, ReactNode, useLayoutEffect, useState } from "react"
 /** @type {React.FC<{rows: number, gap: number, rowGap: number, columnGap: number, padding: string, children: React.ReactDOM}>} */
 export const Masonry = ({
     rows,
-    gap = "0px",
+    gap = "var(--grid-gap)",
     rowGap = gap,
     columnGap = gap,
     padding,

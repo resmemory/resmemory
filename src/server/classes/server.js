@@ -43,7 +43,12 @@ class TcpServer {
           } else if (arr[n] === '') {
             break;
           } else {
-            this.onRead(socket, JSON.parse(arr[n]));
+            try {
+              this.onRead(socket, JSON.parse(arr[n]));
+            } catch (error) {
+              console.error("유효하지 않는 JSON 문자열:", arr[n]);
+              console.error("JSON 파싱 과정에서 예외가 발생하였습니다.", error);
+            }
           }
         }
       });
