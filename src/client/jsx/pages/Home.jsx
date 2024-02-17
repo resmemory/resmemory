@@ -15,6 +15,10 @@ import "./Home.css";
 import { AsyncImg } from "../components/async_img.jsx";
 import { Option, OptionSelector } from "../components/option_selector.jsx";
 
+/**
+ * @typedef {React.Dispatch<React.SetStateAction<Post[]>>} SetStatePost
+ */
+
 class Category {
     constructor(id, displayName) {
         this.id = id;
@@ -50,7 +54,7 @@ class Category {
     }
     
     /**
-     * @param {React.Dispatch<React.SetStateAction<Post[]>>} func
+     * @param {SetStatePost} func
      */
     setState(func) {
         func({parent: this, posts: this.posts})
@@ -86,6 +90,35 @@ class Category {
             return Post.parseByList(responseData["posts"]);
         }
     }
+
+    /**
+     * @param {SetStatePost} setStateFunc
+     * @returns
+     */
+    createElements(setStateFunc) { 
+        if (this.posts == null) {
+            return ArrayUtil.builder(15, () => <PostPlaceholder />)
+        }
+        if (this.posts.length == 0) {
+            return undefined;
+        }
+
+        return [
+            // 최종적으로 응답된 포스트들.
+            this.posts.map(post => <PostItem post={post} />),
+
+            // 다음 페이지의 포스트 갯수 만큼 Placeholder를 표시합니다.
+            ArrayUtil.builder(this.nextItemCount, () => {
+                return (
+                    <PostPlaceholder onVisible={() => {
+                        if (this.canLoadMore) {
+                            this.loadMore().then(async () => this.setState(setStateFunc));
+                        }
+                    }} />
+                )
+            })
+        ]
+    }
 }
 
 const categorys = [
@@ -108,56 +141,21 @@ export const HomePage = () => {
     const [ contents, setContents ] = useState(null);
     const [ disabled, setDisabled ] = useState(false);
 
-    /** @type {() => Category?} */
-    const currentCategory = () => {
-        return categorys.find(it => it.id === type);
-    }
+    /** @type {Category?} */
+    const category = categorys.find(it => it.id === type);
 
     // 카테고리 또는 정렬 기준별 포스트 불러오기.
     useEffect(() => {
         setDisabled(true);
 
         (async () => {
-            const target = currentCategory();
-            const posts = await target?.load() ?? [];
-
-            setContents({parent: target, posts: posts});
+            const posts = await category?.load() ?? [];
+            
+            setContents({parent: category, posts: posts});
             setDisabled(false);
         })()
     }, [type, sort]);
     
-    const createPostItems = () => {
-        if (contents) {
-            if (contents.posts.length == 0) {
-                return undefined;
-            }
-
-            const parent = contents.parent;
-            const nextItemCount = parent.nextItemCount;
-
-            return [
-                // 최종적으로 응답된 포스트들.
-                contents.posts.map(post => <PostItem post={post} />),
-
-                // 다음 페이지의 포스트 갯수 만큼 Placeholder를 표시합니다.
-                ArrayUtil.builder(nextItemCount, () => {
-                    return (
-                        <PostPlaceholder onVisible={() => {
-                            const parent = contents.parent;
-                            
-                            if (parent.canLoadMore) {
-                                parent.loadMore().then(async () => parent.setState(setContents));
-                            }
-                        }} />
-                    )
-                })
-            ]
-        }
-
-        // 초기 로딩 시
-        return ArrayUtil.builder(15, () => <PostPlaceholder />)
-    }
-
     return (
         <>
             <title>그땐 G:Then</title>
@@ -174,7 +172,7 @@ export const HomePage = () => {
                             new Constraint(-Infinity, 400, 1),
                         ]}
                         builder={(rows) => {
-                            return <Masonry rows={rows}>{createPostItems()}</Masonry>
+                            return <Masonry rows={rows}>{category.createElements(setContents)}</Masonry>
                         }
                     } />
                 </div>
