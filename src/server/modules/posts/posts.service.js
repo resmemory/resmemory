@@ -100,7 +100,6 @@ const onRequest = async (res, method, pathname, params, key, cb) => {
               limit: 15,
               offset: (pageNum - 1) * 15,
               raw: true,
-              nextItemCount,
             });
           } else if (params.query.sort == 'new') {
             posts = await Posts.findAll({
@@ -108,7 +107,6 @@ const onRequest = async (res, method, pathname, params, key, cb) => {
               limit: 15,
               offset: (pageNum - 1) * 15,
               raw: true,
-              nextItemCount,
             });
           }
           if (nextItemCount < 0) nextItemCount = 0;
@@ -162,7 +160,7 @@ const onRequest = async (res, method, pathname, params, key, cb) => {
               if (bookmarksCount.length) {
                 bookmarks = bookmarksCount[0].count;
               }
-              
+
               return {
                 ...post,
                 nickname: nickname[0].nickname,
@@ -170,11 +168,11 @@ const onRequest = async (res, method, pathname, params, key, cb) => {
               };
             }),
           );
-          
+
           responseData = {
-            "posts": responsedPosts,
-            "nextItemCount": nextItemCount,
-          }
+            posts: responsedPosts,
+            nextItemCount: nextItemCount,
+          };
         } catch (err) {
           responseData = { code: 320 };
           console.log(err);
@@ -217,7 +215,6 @@ const onRequest = async (res, method, pathname, params, key, cb) => {
               limit: 15,
               offset: (pageNum - 1) * 15,
               raw: true,
-              nextItemCount,
             });
           } else if (params.query.sort == 'new') {
             result = await Posts.findAll({
@@ -226,7 +223,6 @@ const onRequest = async (res, method, pathname, params, key, cb) => {
               limit: 15,
               offset: (pageNum - 1) * 15,
               raw: true,
-              nextItemCount,
             });
           }
 
@@ -287,6 +283,7 @@ const onRequest = async (res, method, pathname, params, key, cb) => {
               };
             }),
           );
+          responseData.nextItemCount = nextItemCount;
         } catch (err) {
           responseData = { code: 330 };
           console.log(err);
