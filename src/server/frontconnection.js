@@ -12,7 +12,8 @@ function frontconnection(pathname, res, data) {
   } else {
     filePath = `./${directory}/client${pathname}`;
     if (pathname.endsWith('.js')) {
-      res.writeHead(200, { 'Content-Type': 'text/javascript' });
+      filePath = filePath + '.br';
+      res.writeHead(200, { 'Content-Type': 'application/javascript', 'Content-Encoding': 'br' });
     } else if (pathname.endsWith('.jsx')) {
       res.writeHead(200, { 'Content-Type': 'text/jsx' });
     } else if (pathname.endsWith('.css')) {
