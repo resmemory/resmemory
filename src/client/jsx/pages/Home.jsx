@@ -90,7 +90,7 @@ class Category {
      */
     createElements(setState) { 
         if (this.posts == null) {
-            return ArrayUtil.builder(15, () => <PostPlaceholder />)
+            return ArrayUtil.builder(15, (_, i) => (<div key={i}><PostPlaceholder /></div>));
         }
         if (this.posts.length == 0) {
             return undefined;
@@ -99,7 +99,7 @@ class Category {
         return [
             // 최종적으로 응답된 포스트들.
             this.posts.map(post => <PostItem post={post} />),
-
+            
             // 다음 페이지의 포스트 갯수 만큼 Placeholder를 표시합니다.
             ArrayUtil.builder(this.nextItemCount, () => {
                 return (
@@ -151,8 +151,9 @@ export const HomePage = () => {
         <>
             <title>그땐 G:Then</title>
             <Header />
+            <HeaderNotice />
             <HeaderSelector type={type} disabled={disabled} />
-            <Disable isDisabled={contents ? disabled : false}>
+            <Disable isDisabled={contents.current.posts ? disabled : false}>
                 <div style={{padding: "var(--padding)"}}>
                     <SizeBuilder
                         constraints={[
@@ -173,12 +174,19 @@ export const HomePage = () => {
 }
 
 /** @type {React.FC} */
+const HeaderNotice = () => {
+    return (
+        <div className="header-notice">📢 사이트 개발 중...</div>
+    )
+}
+
+/** @type {React.FC} */
 const Header = () => {
     return (
         <div className="header">
             <LogoIcon />
             <div className="nav">
-                <Button.Tertiary text="쓰레드" sub="NEW" onClick={() => { console.log("hello world") }} />
+                <Button.Tertiary text="쓰레드" isNew={true} onClick={() => { console.log("hello world") }} />
                 <Button.Tertiary text="채팅" onClick={() => { console.log("hello world") }} />
                 <Button.Tertiary text="로그인 하기" onClick={() => { console.log("hello world") }} />
             </div>
@@ -195,11 +203,13 @@ const HeaderSelector = ({type, disabled}) => {
             <div className="categorys row-scrollable" style={{pointerEvents: disabled ? "none" : null}}>
                 {categorys.map(it => {
                     return (
-                        <Button.Selectable
-                            text={it.displayName}
-                            isSelected={type === it.id}
-                            onSelect={() => navigate(`?category=${it.id}`)}
-                        />
+                        <div key={it.id}>
+                            <Button.Selectable
+                                text={it.displayName}
+                                isSelected={type === it.id}
+                                onSelect={() => navigate(`?category=${it.id}`)}
+                            />
+                        </div>
                     );
                 })}
             </div>
@@ -251,7 +261,7 @@ const PostPlaceholder = ({onVisible}) => {
  */
 const PostItem = ({post}) => {
     return (
-        <div className="post_item">
+        <div className="post_item" key={post.postId}>
             <div className="clamp-profile">
                 <AsyncImg src={post.img} isLazyLoad={true}></AsyncImg>
                 <div className="inner-shadow"></div>

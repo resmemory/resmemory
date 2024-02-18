@@ -23,6 +23,23 @@
     background-color: var(--background);
 }
 
+.header-notice {
+    display: flex;
+    padding: var(--padding);
+    margin: var(--padding);
+    background-color: rgb(240, 240, 240);
+
+    border: 2px solid rgb(220, 220, 220);
+    border-radius: var(--box-radius);
+    cursor: pointer;
+    
+    transition: background-color var(--transition-duration);
+}
+
+.header-notice:hover {
+    background-color: rgb(235, 235, 235);
+}
+
 .categorys {
     display: flex;
     padding: var(--padding);

@@ -24,7 +24,8 @@ button {
     transition: background-color, color, border;
     transition-duration: var(--transition-duration);
 }
-button > .sub {
+button.new::after {
+    content: "NEW";
     padding: 2.5px 5px;
     font-size: 10px;
     font-weight: bold;

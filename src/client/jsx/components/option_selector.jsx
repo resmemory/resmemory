@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useRef } from "react";
 import { BottomArrowIcon } from "../../assets/icons/bottom_arrow.jsx";
 
 export class Option {
@@ -23,7 +23,16 @@ export const OptionSelector = ({
         throw new Error("주어진 옵션 중에서 선택된 상태의 옵션이 존재하지 않습니다.");
     }
 
+    /** @type {React.MutableRefObject<HTMLElement>} */
+    const ref = useRef(null);
+
     return (
-        <button className={type}>{selected.title} <BottomArrowIcon /></button>
+        <button ref={ref} className={type} onClick={() => {
+            const element = ref.current;
+
+            console.log(element);
+        }}>
+            {selected.title} <BottomArrowIcon />
+        </button>
     )
 }

@@ -20,13 +20,12 @@ export class Button {
     }
 
     /**
-     * @param {{text: string, onClick: Function, sub: string}} 
+     * @param {{text: string, onClick: Function, isNew: boolean}} 
      */
-    static Tertiary({text, onClick, sub}) {
+    static Tertiary({text, onClick, isNew}) {
         return (
-            <button className="tertiary" onClick={onClick}>
+            <button className={`tertiary ${isNew ? "new" : ""}`} onClick={onClick}>
                 {text}
-                {sub ? <div className="sub">{sub}</div> : undefined}
             </button>
         )
     }
