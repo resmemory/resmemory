@@ -191,7 +191,7 @@ export const server = http
         });
       } else {
         if (!pathname.startsWith('/api')) {
-          frontconnection(pathname, res);
+          frontconnection(pathname, req, res);
         } else {
           let path = pathname.replace('/api', '');
           if (req.headers.authorization) {
