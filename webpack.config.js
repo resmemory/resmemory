@@ -24,6 +24,13 @@ module.exports = {
       minRatio: 0.8,
       deleteOriginalAssets: false,
     }),
+    new CompressionPlugin({
+      filename: '[path][base].gz',
+      algorithm: 'gzip',
+      test: /\.(jsx|png|js|css|html|svg)$/,
+      threshold: 10240,
+      minRatio: 0.8,
+    }),
   ],
   module: {
     rules: [
