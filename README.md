@@ -120,12 +120,12 @@
 
 [https://drawsql.app/teams/verdantjuly/diagrams/resmemory](https://drawsql.app/teams/verdantjuly/diagrams/resmemory)
 
-![drawSQL-resmemory-export-2023-08-21 (2).png](./src/public/assets/image/erd.png)
+![drawSQL-resmemory-export-2023-08-21 (2).png](./src/client/assets/image/erd.png)
 
 # 📽️ Project Architecture
 
-![architecture1](./src/public/assets/image/architecture1.png)
-![architecture2](./src/public/assets/image/architecture2.png)
+![architecture1](./src/client/assets/image/architecture1.png)
+![architecture2](./src/client/assets/image/architecture2.png)
 
 # 💻 Tech Spec
 
