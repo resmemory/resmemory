@@ -11,8 +11,11 @@ function frontconnection(pathname, res, data) {
     filePath = `./${directory}/client/index.html`;
   } else {
     filePath = `./${directory}/client${pathname}`;
-    if (pathname.endsWith('.js')) {
-      res.writeHead(200, { 'Content-Type': 'text/javascript' });
+    if (pathname.endsWith('index.js')) {
+      filePath = filePath + '.br';
+      res.writeHead(200, { 'Content-Type': 'application/javascript', 'Content-Encoding': 'br' });
+    } else if (pathname.endsWith('.js') && !pathname.endsWith('index.js')) {
+      res.writeHead(200, { 'Content-Type': 'application/javascript' });
     } else if (pathname.endsWith('.jsx')) {
       res.writeHead(200, { 'Content-Type': 'text/jsx' });
     } else if (pathname.endsWith('.css')) {
@@ -24,7 +27,6 @@ function frontconnection(pathname, res, data) {
     } else if (pathname.endsWith('.html')) {
       res.writeHead(200, { 'Content-Type': 'text/html' });
     } else {
-      // filePath = `./${directory}/public${pathname}.html`;
       filePath = `./${directory}/client/index.html`;
       res.writeHead(200, { 'Content-Type': 'text/html' });
     }
