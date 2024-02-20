@@ -24,6 +24,7 @@ async function imageUpload(img) {
         height: null,
         fit: 'inside',
       })
+      .webp({ quality: 80 })
       .toFile(`${resizedFilename}`);
 
     let uploadParams = { Bucket: process.env.S3_AWS_BUCKET_NAME, Key: filename, Body: '' };
@@ -33,7 +34,7 @@ async function imageUpload(img) {
     });
 
     uploadParams.Body = fileStream;
-    uploadParams.ContentType = img.mimetype;
+    uploadParams.ContentType = 'image/webp';
     const result = await s3.upload(uploadParams).promise();
     fs.unlinkSync(`${resizedFilename}`);
 
@@ -54,6 +55,7 @@ async function imageThumbnail(img) {
         height: null,
         fit: 'inside',
       })
+      .webp({ quality: 80 })
       .toFile(`${thumbnailFilename}`);
 
     let uploadParams = { Bucket: process.env.S3_AWS_BUCKET_NAME, Key: filename, Body: '' };
@@ -63,7 +65,7 @@ async function imageThumbnail(img) {
     });
 
     uploadParams.Body = thumbnailStream;
-    uploadParams.ContentType = img.mimetype;
+    uploadParams.ContentType = 'image/webp';
     const thumbnail = await s3.upload(uploadParams).promise();
     fs.unlinkSync(`${thumbnailFilename}`);
 

@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
 import Verify from './Verify.jsx';
-
 import './SignUp.css';
 
 const SignUp = () => {
