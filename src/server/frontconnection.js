@@ -5,15 +5,28 @@ dotenv.config();
 
 const directory = process.env.DIRECTORY;
 
-function frontconnection(pathname, res, data) {
+function frontconnection(pathname, req, res) {
   let filePath;
   if (pathname == '/') {
     filePath = `./${directory}/client/index.html`;
   } else {
     filePath = `./${directory}/client${pathname}`;
     if (pathname.endsWith('index.js')) {
-      filePath = filePath + '.br';
-      res.writeHead(200, { 'Content-Type': 'application/javascript', 'Content-Encoding': 'br' });
+      if (req.headers['accept-encoding'].includes('br')) {
+        filePath = filePath + '.br';
+        res.writeHead(200, { 'Content-Type': 'application/javascript', 'Content-Encoding': 'br' });
+      } else if (
+        req.headers['accept-encoding'].includes('gzip') &&
+        !req.headers['accept-encoding'].includes('br')
+      ) {
+        filePath = filePath + '.gz';
+        res.writeHead(200, {
+          'Content-Type': 'application/javascript',
+          'Content-Encoding': 'gzip',
+        });
+      } else {
+        res.writeHead(200, { 'Content-Type': 'application/javascript' });
+      }
     } else if (pathname.endsWith('.js') && !pathname.endsWith('index.js')) {
       res.writeHead(200, { 'Content-Type': 'application/javascript' });
     } else if (pathname.endsWith('.jsx')) {
